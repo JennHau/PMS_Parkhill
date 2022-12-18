@@ -74,7 +74,7 @@ public class homePage extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("©2022 Parkhill Residence All Right Reserved");
+        jLabel5.setText("©2022 Parkhill Residence - All Right Reserved");
         jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 10, 739, 50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
