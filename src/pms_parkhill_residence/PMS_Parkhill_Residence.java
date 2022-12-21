@@ -9,7 +9,6 @@ package pms_parkhill_residence;
  * @author wongj
  */
 public class PMS_Parkhill_Residence {
-
     /**
      * @param args the command line arguments
      */
