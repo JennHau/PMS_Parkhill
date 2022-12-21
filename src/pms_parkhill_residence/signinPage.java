@@ -4,6 +4,8 @@
  */
 package pms_parkhill_residence;
 
+import java.awt.Toolkit;
+
 /**
  *
  * @author wongj
@@ -15,6 +17,7 @@ public class signinPage extends javax.swing.JFrame {
      */
     public signinPage() {
         initComponents();
+        setWindowIcon();
     }
 
     /**
@@ -191,6 +194,10 @@ public class signinPage extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void setWindowIcon() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
+    }
+    
     /**
      * @param args the command line arguments
      */
