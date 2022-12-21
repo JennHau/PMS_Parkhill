@@ -339,7 +339,7 @@
                           <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                           <Component id="jLabel8" min="-2" pref="42" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jScrollPane1" min="-2" pref="317" max="-2" attributes="0"/>
+                          <Component id="jScrollPane1" min="-2" pref="343" max="-2" attributes="0"/>
                       </Group>
                       <Component id="jLabel22" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -402,7 +402,7 @@
                 </Property>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Calibri" size="18" style="1"/>
+                  <Font name="Adobe Devanagari" size="18" style="0"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="33" green="33" red="33" type="rgb"/>
@@ -411,6 +411,8 @@
                 <Property name="rows" type="int" value="5"/>
                 <Property name="text" type="java.lang.String" value="You will be well served by its close proximity to the major highways such as the Kuala Lumpur - Seremban Highway, Maju Express Highway (MEX) and the Middle Ring Road 2 (MRR2). PARKHILL RESIDENCE is also less than 20 km away from the city centre.&#xa;&#xa;Amenities:&#xa;     &#xb7; 3.8km to Endah Parade&#xa;     &#xb7; 9km to The Mines Shopping Mall&#xa;     &#xb7; 15km to Sunway City &amp; Puchong&#xa;     &#xb7; 3.2km to Bukit Jalil National Stadium&#xa;     &#xb7; 1km to Bukit Jalil LRT Station&#xa;     &#xb7; 4km to Sri Petaling LRT Station&#xa;     &#xb7; 6.6km to Sungai Besi LRT Station"/>
                 <Property name="wrapStyleWord" type="boolean" value="true"/>
+                <Property name="autoscrolls" type="boolean" value="false"/>
+                <Property name="focusable" type="boolean" value="false"/>
               </Properties>
             </Component>
           </SubComponents>

@@ -5,7 +5,14 @@
 package pms_parkhill_residence;
 
 import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Toolkit;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -216,12 +223,14 @@ public class location extends javax.swing.JFrame {
         jTextArea1.setEditable(false);
         jTextArea1.setBackground(new java.awt.Color(255, 255, 255));
         jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+        jTextArea1.setFont(new java.awt.Font("Adobe Devanagari", 0, 18)); // NOI18N
         jTextArea1.setForeground(new java.awt.Color(51, 51, 51));
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(5);
         jTextArea1.setText("You will be well served by its close proximity to the major highways such as the Kuala Lumpur - Seremban Highway, Maju Express Highway (MEX) and the Middle Ring Road 2 (MRR2). PARKHILL RESIDENCE is also less than 20 km away from the city centre.\n\nAmenities:\n     · 3.8km to Endah Parade\n     · 9km to The Mines Shopping Mall\n     · 15km to Sunway City & Puchong\n     · 3.2km to Bukit Jalil National Stadium\n     · 1km to Bukit Jalil LRT Station\n     · 4km to Sri Petaling LRT Station\n     · 6.6km to Sungai Besi LRT Station");
         jTextArea1.setWrapStyleWord(true);
+        jTextArea1.setAutoscrolls(false);
+        jTextArea1.setFocusable(false);
         jScrollPane1.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -253,7 +262,7 @@ public class location extends javax.swing.JFrame {
                         .addGap(30, 30, 30)
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel22))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -294,7 +303,12 @@ public class location extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            Desktop.getDesktop().browse(new URL("https://www.google.com/maps/place/Parkhill+Residence/@3.0549726,101.6936196,17z/data=!3m1!4b1!4m5!3m4!1s0x31cc4b07526fa23d:0xdec6a36b8e45cc14!8m2!3d3.0549672!4d101.6958083").toURI());
+        } catch (Exception e) {
+            {}
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
