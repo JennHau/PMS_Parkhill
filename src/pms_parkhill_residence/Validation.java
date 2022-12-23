@@ -9,5 +9,6 @@ package pms_parkhill_residence;
  * @author wongj
  */
 public class Validation {
-    
+    private String email;
+    private String password;
 }
