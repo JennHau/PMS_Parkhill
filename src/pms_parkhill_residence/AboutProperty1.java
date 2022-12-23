@@ -14,7 +14,7 @@ import java.awt.Toolkit;
 public class AboutProperty1 extends javax.swing.JFrame {
 
     /**
-     * Creates new form homePage
+     * Creates new form HomePage1
      */
     public AboutProperty1() {
         initComponents();
@@ -410,7 +410,7 @@ public class AboutProperty1 extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         dispose();
-        new signinPage().setVisible(true);
+        new SignInPage1().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jPanel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseClicked
@@ -420,13 +420,13 @@ public class AboutProperty1 extends javax.swing.JFrame {
     private void jPanel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseClicked
         // TODO add your handling code here:
         dispose();
-        new featuresNFacilities().setVisible(true);
+        new FeaturesNFacilities1().setVisible(true);
     }//GEN-LAST:event_jPanel4MouseClicked
 
     private void jPanel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel6MouseClicked
         // TODO add your handling code here:
         dispose();
-        new location().setVisible(true);
+        new Location1().setVisible(true);
     }//GEN-LAST:event_jPanel6MouseClicked
 
     private void jPanel5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseEntered
@@ -447,7 +447,7 @@ public class AboutProperty1 extends javax.swing.JFrame {
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
         // TODO add your handling code here:
         dispose();
-        new homePage().setVisible(true);
+        new HomePage1().setVisible(true);
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void jLabel3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseEntered
