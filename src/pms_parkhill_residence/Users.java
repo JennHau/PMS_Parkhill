@@ -51,6 +51,7 @@ public class Users {
         this.gender = gender;
         this.birthOfDate = birthOfDate;
         this.unitNo = unitNo;
+        System.out.println("helo");
     }
 
     /**
