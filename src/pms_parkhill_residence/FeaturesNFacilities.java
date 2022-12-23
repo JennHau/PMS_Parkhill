@@ -11,12 +11,12 @@ import java.awt.Toolkit;
  *
  * @author wongj
  */
-public class FeaturesNFacilities1 extends javax.swing.JFrame {
+public class FeaturesNFacilities extends javax.swing.JFrame {
 
     /**
-     * Creates new form HomePage1
+     * Creates new form HomePage
      */
-    public FeaturesNFacilities1() {
+    public FeaturesNFacilities() {
         initComponents();
         setWindowIcon();
     }
@@ -263,7 +263,7 @@ public class FeaturesNFacilities1 extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         dispose();
-        new SignInPage1().setVisible(true);
+        new SignInPage().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jPanel5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseEntered
@@ -284,19 +284,19 @@ public class FeaturesNFacilities1 extends javax.swing.JFrame {
     private void jPanel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseClicked
         // TODO add your handling code here:
         dispose();
-        new AboutProperty1().setVisible(true);
+        new AboutProperty().setVisible(true);
     }//GEN-LAST:event_jPanel5MouseClicked
 
     private void jPanel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel6MouseClicked
         // TODO add your handling code here:
         dispose();
-        new Location1().setVisible(true);
+        new Location().setVisible(true);
     }//GEN-LAST:event_jPanel6MouseClicked
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
         // TODO add your handling code here:
         dispose();
-        new HomePage1().setVisible(true);
+        new HomePage().setVisible(true);
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void jLabel3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseEntered
@@ -321,14 +321,46 @@ public class FeaturesNFacilities1 extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FeaturesNFacilities1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FeaturesNFacilities.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FeaturesNFacilities1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FeaturesNFacilities.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FeaturesNFacilities1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FeaturesNFacilities.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FeaturesNFacilities1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FeaturesNFacilities.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -365,7 +397,7 @@ public class FeaturesNFacilities1 extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FeaturesNFacilities1().setVisible(true);
+                new FeaturesNFacilities().setVisible(true);
             }
         });
     }
