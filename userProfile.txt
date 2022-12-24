@@ -1,0 +1,5 @@
+userID;email;password;firstName;lastName;identificationNo;gender;phoneNo;unitNo;
+rsd146273;wongjennhau@gmail.com;Yeeha@123;asdasd;asdasd;012345678900;asdasd;0198808339;fghfgh;
+rsd888888;wongjennhau@gmail.com;Yeeha@123;asdasd;asdasd;012345678900;asdasd;0198808339;D-10-01;
+rsd234543;sdfdfgertesr@gmail.com;09A23@;asdasd;asdasd;45345345345;asdasd;01983654335;fghfgh;
+rsd078956;23454sdfsdf@gmail.com;sfgr4%;asdasd;asdasd;3452344;asdasd;01283754433;sdfsdf;
