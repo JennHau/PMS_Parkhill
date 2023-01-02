@@ -53,38 +53,41 @@
                   <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
-                          <Component id="jButton1" min="-2" pref="85" max="-2" attributes="0"/>
+                          <Component id="backBTN" min="-2" pref="85" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Component id="jButton3" min="-2" pref="85" max="-2" attributes="0"/>
+                          <Component id="deleteBTN" min="-2" pref="85" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                          <Component id="jButton2" min="-2" pref="85" max="-2" attributes="0"/>
+                          <Component id="updateBTN" min="-2" pref="85" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="jLabel23" max="32767" attributes="0"/>
-                                  <Component id="jTextField5" min="-2" pref="92" max="-2" attributes="0"/>
-                              </Group>
                               <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jTextField2" max="32767" attributes="0"/>
-                                      <Component id="jLabel15" min="-2" pref="109" max="-2" attributes="0"/>
+                                  <Component id="posTF" min="-2" pref="233" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Component id="jLabel23" min="-2" pref="99" max="-2" attributes="0"/>
+                                          <Component id="complaintIdTF" min="-2" pref="100" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="employeeIdTF" pref="100" max="32767" attributes="0"/>
+                                          <Component id="jLabel15" max="32767" attributes="0"/>
+                                      </Group>
                                   </Group>
-                                  <Component id="jTextField3" min="-2" pref="233" max="-2" attributes="0"/>
                               </Group>
                               <Component id="jLabel16" alignment="0" min="-2" pref="159" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jTextField1" max="32767" attributes="0"/>
+                              <Component id="employeeNameTF" max="32767" attributes="0"/>
                               <Component id="jLabel14" alignment="0" min="-2" pref="233" max="-2" attributes="0"/>
-                              <Component id="jTextField4" max="32767" attributes="0"/>
+                              <Component id="contNoTF" max="32767" attributes="0"/>
                               <Component id="jLabel17" alignment="0" min="-2" pref="233" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="jLabel1" alignment="1" min="-2" pref="335" max="-2" attributes="0"/>
+                              <Component id="messagesTF" alignment="1" min="-2" pref="335" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jLabel22" alignment="1" max="32767" attributes="0"/>
@@ -92,18 +95,18 @@
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
                                               <Component id="jLabel19" pref="193" max="32767" attributes="0"/>
-                                              <Component id="jComboBox1" pref="193" max="32767" attributes="0"/>
+                                              <Component id="jobComboBox" pref="193" max="32767" attributes="0"/>
                                           </Group>
                                           <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                              <Component id="datePicker1" alignment="0" pref="193" max="32767" attributes="0"/>
+                                              <Component id="datePicker" alignment="0" pref="193" max="32767" attributes="0"/>
                                               <Component id="jLabel24" alignment="0" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                       <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="jSpinner1" max="32767" attributes="0"/>
+                                          <Component id="repititionSpinner" max="32767" attributes="0"/>
                                           <Component id="jLabel20" max="32767" attributes="0"/>
-                                          <Component id="timePicker1" max="32767" attributes="0"/>
+                                          <Component id="timePicker" max="32767" attributes="0"/>
                                           <Component id="jLabel25" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
@@ -113,7 +116,7 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jPanel3" max="32767" attributes="0"/>
                               <Component id="jLabel21" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jCheckBox8" max="32767" attributes="0"/>
+                              <Component id="multipleDaysCheckBox" max="32767" attributes="0"/>
                               <Component id="jLabel26" alignment="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -140,14 +143,14 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jLabel23" min="-2" pref="25" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                                  <Component id="jTextField5" min="-2" pref="30" max="-2" attributes="0"/>
+                                  <Component id="complaintIdTF" min="-2" pref="30" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jLabel15" min="-2" pref="25" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="jTextField2" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                                      <Component id="jTextField1" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                                      <Component id="employeeIdTF" alignment="1" min="-2" pref="30" max="-2" attributes="0"/>
+                                      <Component id="employeeNameTF" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -156,12 +159,12 @@
                               <Group type="102" attributes="0">
                                   <Component id="jLabel16" min="-2" pref="25" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                                  <Component id="jTextField3" min="-2" pref="30" max="-2" attributes="0"/>
+                                  <Component id="posTF" min="-2" pref="30" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
                                   <Component id="jLabel17" min="-2" pref="25" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                                  <Component id="jTextField4" min="-2" pref="30" max="-2" attributes="0"/>
+                                  <Component id="contNoTF" min="-2" pref="30" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
@@ -169,7 +172,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jLabel19" min="-2" pref="25" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                                  <Component id="jComboBox1" min="-2" pref="30" max="-2" attributes="0"/>
+                                  <Component id="jobComboBox" min="-2" pref="30" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="3" attributes="0">
@@ -178,8 +181,8 @@
                                   </Group>
                                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jSpinner1" pref="30" max="32767" attributes="0"/>
-                                      <Component id="jCheckBox8" max="32767" attributes="0"/>
+                                      <Component id="repititionSpinner" pref="30" max="32767" attributes="0"/>
+                                      <Component id="multipleDaysCheckBox" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -192,8 +195,8 @@
                                   </Group>
                                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="timePicker1" max="32767" attributes="0"/>
-                                      <Component id="datePicker1" min="-2" pref="30" max="-2" attributes="0"/>
+                                      <Component id="timePicker" max="32767" attributes="0"/>
+                                      <Component id="datePicker" min="-2" pref="30" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jLabel22" min="-2" pref="25" max="-2" attributes="0"/>
@@ -207,12 +210,12 @@
                               </Group>
                           </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          <Component id="jLabel1" min="-2" pref="22" max="-2" attributes="0"/>
+                          <Component id="messagesTF" min="-2" pref="22" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jButton1" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
-                              <Component id="jButton3" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
-                              <Component id="jButton2" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                              <Component id="backBTN" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                              <Component id="deleteBTN" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                              <Component id="updateBTN" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -265,17 +268,17 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField1">
+        <Component class="javax.swing.JTextField" name="employeeNameTF">
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField2">
+        <Component class="javax.swing.JTextField" name="employeeIdTF">
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField3">
+        <Component class="javax.swing.JTextField" name="posTF">
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -291,7 +294,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField4">
+        <Component class="javax.swing.JTextField" name="contNoTF">
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -307,7 +310,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="jComboBox1">
+        <Component class="javax.swing.JComboBox" name="jobComboBox">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="4">
@@ -333,7 +336,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JSpinner" name="jSpinner1">
+        <Component class="javax.swing.JSpinner" name="repititionSpinner">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel21">
           <Properties>
@@ -365,13 +368,13 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jCheckBox1" min="-2" pref="123" max="-2" attributes="0"/>
-                          <Component id="jCheckBox2" min="-2" pref="123" max="-2" attributes="0"/>
-                          <Component id="jCheckBox3" min="-2" pref="123" max="-2" attributes="0"/>
-                          <Component id="jCheckBox5" min="-2" pref="123" max="-2" attributes="0"/>
-                          <Component id="jCheckBox4" min="-2" pref="123" max="-2" attributes="0"/>
-                          <Component id="jCheckBox7" min="-2" pref="123" max="-2" attributes="0"/>
-                          <Component id="jCheckBox6" min="-2" pref="123" max="-2" attributes="0"/>
+                          <Component id="mondayCheckBox" min="-2" pref="123" max="-2" attributes="0"/>
+                          <Component id="tuesCheckBox" min="-2" pref="123" max="-2" attributes="0"/>
+                          <Component id="wedCheckBox" min="-2" pref="123" max="-2" attributes="0"/>
+                          <Component id="thursCheckBox" min="-2" pref="123" max="-2" attributes="0"/>
+                          <Component id="friCheckBox" min="-2" pref="123" max="-2" attributes="0"/>
+                          <Component id="satCheckBox" min="-2" pref="123" max="-2" attributes="0"/>
+                          <Component id="sunCheckBox" min="-2" pref="123" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -380,25 +383,25 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="jCheckBox1" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="mondayCheckBox" min="-2" pref="30" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                      <Component id="jCheckBox2" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="tuesCheckBox" min="-2" pref="30" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                      <Component id="jCheckBox3" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="wedCheckBox" min="-2" pref="30" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                      <Component id="jCheckBox5" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="thursCheckBox" min="-2" pref="30" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                      <Component id="jCheckBox4" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="friCheckBox" min="-2" pref="30" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                      <Component id="jCheckBox7" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="satCheckBox" min="-2" pref="30" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="jCheckBox6" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="sunCheckBox" min="-2" pref="30" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JCheckBox" name="jCheckBox1">
+            <Component class="javax.swing.JCheckBox" name="mondayCheckBox">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Monday"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -408,12 +411,15 @@
                     </LineBorder>
                   </Border>
                 </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Yu Gothic UI" size="12" style="0"/>
+                </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="33" green="33" red="33" type="rgb"/>
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="jCheckBox2">
+            <Component class="javax.swing.JCheckBox" name="tuesCheckBox">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Tuesday"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -423,12 +429,15 @@
                     </LineBorder>
                   </Border>
                 </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Yu Gothic UI" size="12" style="0"/>
+                </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="33" green="33" red="33" type="rgb"/>
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="jCheckBox3">
+            <Component class="javax.swing.JCheckBox" name="wedCheckBox">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Wednesday"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -438,12 +447,15 @@
                     </LineBorder>
                   </Border>
                 </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Yu Gothic UI" size="12" style="0"/>
+                </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="33" green="33" red="33" type="rgb"/>
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="jCheckBox4">
+            <Component class="javax.swing.JCheckBox" name="friCheckBox">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Friday"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -453,15 +465,18 @@
                     </LineBorder>
                   </Border>
                 </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Yu Gothic UI" size="12" style="0"/>
+                </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="33" green="33" red="33" type="rgb"/>
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBox4ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="friCheckBoxActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="jCheckBox5">
+            <Component class="javax.swing.JCheckBox" name="thursCheckBox">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Thursday"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -471,12 +486,15 @@
                     </LineBorder>
                   </Border>
                 </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Yu Gothic UI" size="12" style="0"/>
+                </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="33" green="33" red="33" type="rgb"/>
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="jCheckBox6">
+            <Component class="javax.swing.JCheckBox" name="sunCheckBox">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Sunday"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -486,15 +504,18 @@
                     </LineBorder>
                   </Border>
                 </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Yu Gothic UI" size="12" style="0"/>
+                </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="33" green="33" red="33" type="rgb"/>
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBox6ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sunCheckBoxActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="jCheckBox7">
+            <Component class="javax.swing.JCheckBox" name="satCheckBox">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Saturday"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -504,12 +525,15 @@
                     </LineBorder>
                   </Border>
                 </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Yu Gothic UI" size="12" style="0"/>
+                </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="33" green="33" red="33" type="rgb"/>
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBox7ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="satCheckBoxActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -521,7 +545,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTextArea" name="jTextArea1">
+            <Component class="javax.swing.JTextArea" name="remarksTA">
               <Properties>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="4"/>
@@ -540,15 +564,15 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="backBTN">
           <Properties>
             <Property name="text" type="java.lang.String" value="Back"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backBTNActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton2">
+        <Component class="javax.swing.JButton" name="updateBTN">
           <Properties>
             <Property name="text" type="java.lang.String" value="Update"/>
           </Properties>
@@ -564,7 +588,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField5">
+        <Component class="javax.swing.JTextField" name="complaintIdTF">
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -576,7 +600,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="jTable1">
+            <Component class="javax.swing.JTable" name="assignedJobTable">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="4" rowCount="4">
@@ -643,7 +667,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField6ActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton3">
+        <Component class="javax.swing.JButton" name="deleteBTN">
           <Properties>
             <Property name="text" type="java.lang.String" value="Delete"/>
           </Properties>
@@ -659,14 +683,14 @@
             <Property name="text" type="java.lang.String" value="Date:"/>
           </Properties>
         </Component>
-        <Component class="com.github.lgooddatepicker.components.DatePicker" name="datePicker1">
+        <Component class="com.github.lgooddatepicker.components.DatePicker" name="datePicker">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
           </Properties>
         </Component>
-        <Component class="com.github.lgooddatepicker.components.TimePicker" name="timePicker1">
+        <Component class="com.github.lgooddatepicker.components.TimePicker" name="timePicker">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -684,8 +708,11 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JCheckBox" name="jCheckBox8">
+        <Component class="javax.swing.JCheckBox" name="multipleDaysCheckBox">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Yu Gothic UI" size="12" style="0"/>
+            </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="33" green="33" red="33" type="rgb"/>
             </Property>
@@ -703,7 +730,7 @@
             <Property name="text" type="java.lang.String" value="Days to Assign:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel1">
+        <Component class="javax.swing.JLabel" name="messagesTF">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Yu Gothic UI" size="12" style="2"/>
