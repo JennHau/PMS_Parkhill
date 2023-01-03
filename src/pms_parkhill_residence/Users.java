@@ -23,6 +23,8 @@ public class Users {
     private String unitNo;
     
     //Constructor for non-redidents
+    public Users(){}
+    
     public Users(String userID, String firstName, String lastName, String email,
                  String password, String phoneNo, String identificationNo,
                  String gender, Date birthOfDate) { 

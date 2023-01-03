@@ -5,6 +5,11 @@
 package pms_parkhill_residence;
 
 import java.awt.Toolkit;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,9 +20,16 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
+    BuildingExecutive BE = new BuildingExecutive();
+    
     public BuildingExecutiveJobManagement() {
         initComponents();
         setWindowIcon();
+        try {
+            tableSetup();
+        } catch (IOException ex) {
+            Logger.getLogger(BuildingExecutiveJobManagement.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -399,20 +411,17 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
 
         unassignedEmplyTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
-                "Employee ID", "Employee Name", "Position", "Last Assignee ID", "Action"
+                "Employee ID", "Employee Name", "Position", "Action"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -429,7 +438,6 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
             unassignedEmplyTable.getColumnModel().getColumn(1).setResizable(false);
             unassignedEmplyTable.getColumnModel().getColumn(2).setResizable(false);
             unassignedEmplyTable.getColumnModel().getColumn(3).setResizable(false);
-            unassignedEmplyTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
         jLabel14.setFont(new java.awt.Font("Yu Gothic UI", 1, 16)); // NOI18N
@@ -452,10 +460,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
 
         assignedEmplyTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Employee ID", "Employee Name", "Position", "Last Assignee", "View"
@@ -530,12 +535,13 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(employeeIdTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(roleComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jobManagementBTN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jobManagementBTN, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(employeeIdTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(roleComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
@@ -589,6 +595,27 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
+    }
+    
+    private void tableSetup() throws IOException {
+        DefaultTableModel assignedEmployeeTable = (DefaultTableModel) assignedEmplyTable.getModel();
+        DefaultTableModel unassignedEmployeeTable = (DefaultTableModel) unassignedEmplyTable.getModel();
+        
+        ArrayList<ArrayList> assignedANDunassignedEmpl = BE.getAssignedEmployees();
+        
+        ArrayList<String> assignedEmplyList = assignedANDunassignedEmpl.get(0);
+        ArrayList<String> unassignedEmplyList = assignedANDunassignedEmpl.get(1);
+
+        setTableRow(unassignedEmployeeTable, unassignedEmplyList);
+        setTableRow(assignedEmployeeTable, assignedEmplyList);
+    }
+    
+    private void setTableRow(DefaultTableModel table, ArrayList arrayList) {
+        for (int unassignedCount = 0; unassignedCount < arrayList.size(); unassignedCount++) {
+            String[] unassignedRow = String.valueOf(arrayList.get(unassignedCount)).split("; ");
+            String[] tableRow = {unassignedRow[0], unassignedRow[1], unassignedRow[3]};
+            table.addRow(tableRow);
+        }
     }
     
     /**
