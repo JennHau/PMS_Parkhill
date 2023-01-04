@@ -1,5 +1,2 @@
-userID; email; fullName; phoneNo; jobStatus;
-scg184574; asdw; asdwasdw; 0198765432; 0; 
-scg184576; hi; hihi; 0198765432; 0; 
-scg184577; bye; byebye; 0198765432; 0; 
-scg184573; qwer; qwerqwer; 0198765432; 0; 
+userID; complaintID; assignedJob; date; time; expectedTime; jobEndTime; remarks; updatedBy; lastUpdated;
+scg184573; null; Electrical Check-Up; 2023-01-05; 01:00:00; 2; 03:00:00; To do electrical check-up; admin1001; 2023-01-04;

@@ -25,21 +25,21 @@ public class Users {
     //Constructor for non-redidents
     public Users(){}
     
+    // Constructor for admin
     public Users(String userID, String firstName, String lastName, String email,
-                 String password, String phoneNo, String identificationNo,
+                 String phoneNo, String identificationNo,
                  String gender, Date birthOfDate) { 
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = password;
         this.phoneNo = phoneNo;
         this.identificationNo = identificationNo;
         this.gender = gender;
         this.birthOfDate = birthOfDate;
     }
     
-    //Constructor for redidents
+    //Constructor for residents
     public Users(String userID, String firstName, String lastName, String email,
                  String password, String phoneNo, String identificationNo,
                  String gender, Date birthOfDate, String unitNo) { 

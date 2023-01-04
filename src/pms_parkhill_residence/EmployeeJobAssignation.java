@@ -11,13 +11,15 @@ import java.awt.Toolkit;
  * @author Winson
  */
 public class EmployeeJobAssignation extends javax.swing.JFrame {
-
+    private String selectedEmployee;
     /**
      * Creates new form EmployeeJobAssignation
+     * @param employeeID
      */
-    public EmployeeJobAssignation() {
+    public EmployeeJobAssignation(String userID, String employeeID) {
         initComponents();
         setWindowIcon();
+        setSelectedEmployee(employeeID);
     }
 
     private void setWindowIcon() {
@@ -30,8 +32,8 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         Security,
     }
     
-    enum CleanerJob {
-        
+    private void setSelectedEmployee(String employeeID) {
+        this.selectedEmployee = employeeID;
     }
     
     /**
@@ -290,9 +292,9 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
 
         deleteBTN.setText("Delete");
 
+        jLabel24.setText("Date:");
         jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel24.setText("Date:");
 
         datePicker.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -302,16 +304,16 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         jLabel25.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(51, 51, 51));
 
+        multipleDaysCheckBox.setText("Multiple Days");
         multipleDaysCheckBox.setFont(new java.awt.Font("Yu Gothic UI", 0, 12)); // NOI18N
         multipleDaysCheckBox.setForeground(new java.awt.Color(51, 51, 51));
-        multipleDaysCheckBox.setText("Multiple Days");
 
+        jLabel26.setText("Days to Assign:");
         jLabel26.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel26.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel26.setText("Days to Assign:");
 
-        messagesTF.setFont(new java.awt.Font("Yu Gothic UI", 2, 12)); // NOI18N
         messagesTF.setText("jLabel1");
+        messagesTF.setFont(new java.awt.Font("Yu Gothic UI", 2, 12)); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -352,13 +354,11 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                                 .addComponent(jScrollPane2)
                                 .addComponent(jLabel22, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
-                                            .addComponent(jobComboBox, 0, 193, Short.MAX_VALUE))
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(datePicker, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
-                                            .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                                        .addComponent(jobComboBox, 0, 193, Short.MAX_VALUE)
+                                        .addComponent(jLabel24, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                                        .addComponent(datePicker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addGap(32, 32, 32)
                                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(repititionSpinner)
@@ -556,7 +556,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EmployeeJobAssignation().setVisible(true);
+                new EmployeeJobAssignation(null, null).setVisible(true);
             }
         });
     }

@@ -5,6 +5,9 @@
 package pms_parkhill_residence;
 
 import java.awt.Toolkit;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,7 +18,7 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public BuildingExecutiveComplaints() {
+    public BuildingExecutiveComplaints() throws IOException {
         initComponents();
         setWindowIcon();
     }
@@ -692,7 +695,11 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BuildingExecutiveComplaints().setVisible(true);
+                try {
+                    new BuildingExecutiveComplaints().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(BuildingExecutiveComplaints.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
