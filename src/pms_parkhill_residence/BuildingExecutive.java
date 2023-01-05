@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -23,8 +24,6 @@ import javax.swing.JFrame;
  * @author Winson
  */
 public class BuildingExecutive extends Users{
-    Users users = new Users();
-    
     // text file seperator
     String sp = "; ";
     
@@ -38,7 +37,7 @@ public class BuildingExecutive extends Users{
     File inactiveAcc = new File("inactiveAcc.txt");
     
     // employee name list link
-    File arrayToAppend = new File("employeeList.txt");
+    File fullEmployeeList = new File("employeeList.txt");
     
     // employee job file link
     File employeeJobFile = new File("employeeJobFile.txt");
@@ -46,18 +45,11 @@ public class BuildingExecutive extends Users{
     // selected Employee record
     File recordSelectedEmployee = new File("recordSelectedEmployee.txt");
     
-    public Users BuildingExecutive(String userID, String firstName, String lastName, 
-                                   String email, String phoneNo, String identificationNo,
-                                   String gender, Date dateOfBirth){
-        
-        return new Users(userID, firstName, lastName, email, phoneNo, identificationNo, gender, dateOfBirth);
-    }
-    
     // to get employee list only from the user profile text file
     public void updateEmployeeList() throws IOException{
             BufferedReader brUserProfile = fileReader(userProfile);
 
-            BufferedWriter bwJobFile = fileWriter(arrayToAppend, false);
+            BufferedWriter bwJobFile = fileWriter(fullEmployeeList, false);
 
             ArrayList<String> newEmployeeList = new ArrayList<>();
 
@@ -82,7 +74,7 @@ public class BuildingExecutive extends Users{
     }
     
     private ArrayList getEmployeeJobList(LocalDate localDate, LocalTime localTime) throws IOException {
-        BufferedReader readEmployeeList = fileReader(arrayToAppend);
+        BufferedReader readEmployeeList = fileReader(fullEmployeeList);
         
         BufferedReader readJobFile = fileReader(employeeJobFile);
         
@@ -97,19 +89,19 @@ public class BuildingExecutive extends Users{
         for (String jobFileLine = readJobFile.readLine(); jobFileLine != null; jobFileLine = readJobFile.readLine()) {
             if (!firstLine) {
                 String[] jobLineDetails = jobFileLine.split(sp);
-                String workingEmplyId = jobLineDetails[0];
-                String jobAssigned = jobLineDetails[2];
-                String assignee = jobLineDetails[8];
+                String workingEmplyId = jobLineDetails[1];
+                String jobAssigned = jobLineDetails[3];
+                String assignee = jobLineDetails[14];
                 
-                LocalDate workingDate = formatDate(jobLineDetails[3]);
-                LocalTime workingTime = formatTime(jobLineDetails[4]);
-                LocalTime workingEndTime = formatTime(jobLineDetails[6]);    
+                LocalDate workingDate = formatDate(jobLineDetails[4]);
+                LocalTime workingTime = formatTime(jobLineDetails[5]);
+                LocalTime workingEndTime = formatTime(jobLineDetails[7]);    
                 
                 if (localDate.equals(workingDate) && !(localTime.isBefore(workingTime) || localTime.isAfter(workingEndTime))) {
                     if (!workingList.contains(workingEmplyId)) {
                         workingList.add(workingEmplyId);
                         
-                        String[] employeeDetails = getEmployeeDetails(workingEmplyId).split(sp);
+                        String[] employeeDetails = getEmployeeDetails(workingEmplyId);
                         String workingEmplyName = employeeDetails[2];
                         String workingEmplyPos = employeeDetails[4];
                         
@@ -144,19 +136,7 @@ public class BuildingExecutive extends Users{
         return assignedANDunassigned;
     }
     
-    public ArrayList getAssignedEmployeeList(LocalDate localDate, LocalTime localTime, String role) throws IOException {
-        
-        ArrayList<ArrayList> employeeJobList = getEmployeeJobList(localDate, localTime);
-        ArrayList<String> assignedEmployee = employeeJobList.get(0);
-        
-        if (role != null) {
-            return getSpecificRoleList(assignedEmployee, role);
-        }
-        
-        return assignedEmployee;
-    }
-    
-    public ArrayList getEmployeeList(LocalDate localDate, LocalTime localTime, String role, String searchText, int employeeStatus) throws IOException {
+    public ArrayList getSpecificStatusEmployeeList(LocalDate localDate, LocalTime localTime, String role, String searchText, int employeeStatus) throws IOException {
         ArrayList<ArrayList> employeeJobList = getEmployeeJobList(localDate, localTime);
         ArrayList<String> employeeList = employeeJobList.get(employeeStatus);
         
@@ -265,8 +245,8 @@ public class BuildingExecutive extends Users{
         return time;
     }
     
-    public String getEmployeeDetails(String employeeID) throws IOException {
-        BufferedReader readEmployeeList = fileReader(arrayToAppend);
+    public String[] getEmployeeDetails(String employeeID) throws IOException {
+        BufferedReader readEmployeeList = fileReader(fullEmployeeList);
         
         boolean firstLine = true;
         for (String employeeList = readEmployeeList.readLine(); employeeList != null; employeeList = readEmployeeList.readLine()) {
@@ -276,7 +256,7 @@ public class BuildingExecutive extends Users{
                 
                 if (emplyId.equals(employeeID)) {
                     readEmployeeList.close();
-                    return employeeList;
+                    return employeeInfo;
                 }
             }
             
@@ -285,6 +265,43 @@ public class BuildingExecutive extends Users{
         readEmployeeList.close();
         
         return null;
+    }
+    
+    public String[] getCurrentBE(String currentBEid) throws IOException {
+        BufferedReader readUserProfile = fileReader(userProfile);
+        
+        boolean firstLine = true;
+        for (String userLine = readUserProfile.readLine(); userLine != null; userLine = readUserProfile.readLine()) {
+            if (!firstLine) {
+                String[] userDetails = userLine.split(sp);
+                String userID = userDetails[0];
+                if (userID.equals(currentBEid)) {
+                    readUserProfile.close();
+                    return userDetails;
+                }
+            }
+            
+            firstLine = false;
+        }
+        readUserProfile.close();
+        
+        return null;
+    }
+    
+    public ArrayList getAssignedJobForSpecificEmployee(String employeeId) throws IOException {
+        BufferedReader readJobFile = fileReader(employeeJobFile);
+        ArrayList<String> employeeJobList = new ArrayList<>();
+        
+        for (String jobLine = readJobFile.readLine(); jobLine != null; jobLine = readJobFile.readLine()) {
+            String[] jobDetails = jobLine.split(sp);
+            String emplyID = jobDetails[0];
+            
+            if (emplyID.equals(employeeId)) {
+                employeeJobList.add(jobLine);
+            }
+        }
+        
+        return employeeJobList;
     }
     
     public void fileCleaner(File fileName) throws IOException {
@@ -307,9 +324,7 @@ public class BuildingExecutive extends Users{
     public void toJobManagement(JFrame frame) {
         try {
             BuildingExecutiveJobManagement page;
-            page = new BuildingExecutiveJobManagement(users.getUserID(), users.getFirstName(), users.getLastName(), 
-                                                      users.getPhoneNo(), users.getEmail(), users.getIdentificationNo(), 
-                                                      users.getGender(), users.getBirthOfDate());
+            page = new BuildingExecutiveJobManagement(this.getUserID());
             page.setVisible(true);
             frame.dispose();
         } catch (IOException ex) {

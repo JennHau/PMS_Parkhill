@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -20,40 +22,37 @@ import javax.swing.table.DefaultTableModel;
  */
 public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
     BuildingExecutive BE = new BuildingExecutive();
+    
+    private DefaultTableModel assignedEmployeeTable;
+    private DefaultTableModel unassignedEmployeeTable;
 
+    private String currentBEid;
     private LocalDate localDate;
     private LocalTime localTime;
     private String selectedRole;
     private String searchText;
-    
-    Users buildingExecutive;
-    
+    private String selectedEmployeeId = "scg184577";
     
     /**
      * Creates new form homePage
-     * @param userID
-     * @param firstName
-     * @param lastName
-     * @param email
-     * @param phoneNo
-     * @param identificationNo
-     * @param gender
-     * @param birthOfDate
+     * @param beID current building executive ID
      * @throws java.io.IOException
      */
-    public BuildingExecutiveJobManagement(String userID, String firstName, String lastName, 
-                                          String email, String phoneNo, String identificationNo,
-                                          String gender, Date birthOfDate) throws IOException {
-        
+    public BuildingExecutiveJobManagement(String beID) throws IOException 
+    {
         initComponents();
-        setWindowIcon();
-        
-        buildingExecutive = BE.BuildingExecutive(userID, firstName, lastName, email, phoneNo, identificationNo, gender, birthOfDate);
-        
-        employeeJobTableSetup();
-        setUserProfile();
+        runDefaultSetUp(beID);
     }
         
+    private void runDefaultSetUp(String beID) throws IOException {
+        assignedEmployeeTable = (DefaultTableModel) assignedEmplyTable.getModel();
+        unassignedEmployeeTable = (DefaultTableModel) unassignedEmplyTable.getModel();
+        
+        setWindowIcon();
+        employeeJobTableSetup();
+        setUserProfile(beID);
+    }
+    
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
@@ -67,8 +66,14 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         updateTable();
     }
     
-    private void setUserProfile() {
-        usernameLabel.setText(buildingExecutive.getFirstName());
+    private void setUserProfile(String beID) throws IOException {
+        String[] beDetails = BE.getCurrentBE(beID);
+        
+        if (beDetails != null) {
+            this.currentBEid = beDetails[0];
+            String beName = beDetails[1] + " " + beDetails[2];
+            usernameLabel.setText(beName);
+        }
     }
     
     /**
@@ -754,7 +759,20 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
 
     private void unassignedEmplyTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unassignedEmplyTableMouseClicked
         // TODO add your handling code here:
+        int selectedCol = unassignedEmplyTable.getSelectedColumn();
+        int selectedRow = unassignedEmplyTable.getSelectedRow();
         
+        boolean isSelected = getSelectedTableRow(unassignedEmployeeTable, selectedCol, selectedRow, 3);
+        
+        if (isSelected) {
+            EmployeeJobAssignation EJA;
+            try {
+                EJA = new EmployeeJobAssignation(this.currentBEid, this.selectedEmployeeId);
+                EJA.setVisible(true);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_unassignedEmplyTableMouseClicked
 
     private void setTableRow(DefaultTableModel table, ArrayList arrayList) {
@@ -767,11 +785,9 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
     }
     
     private void updateTable() throws IOException {
-        DefaultTableModel assignedEmployeeTable = (DefaultTableModel) assignedEmplyTable.getModel();
-        DefaultTableModel unassignedEmployeeTable = (DefaultTableModel) unassignedEmplyTable.getModel();
-        
-        ArrayList<String> assignedEmplyList = BE.getEmployeeList(this.localDate, this.localTime, this.selectedRole, this.searchText, BE.assignedEmployee);
-        ArrayList<String> unassignedEmplyList = BE.getEmployeeList(this.localDate, this.localTime, this.selectedRole, this.searchText, BE.unassignedEmployee);
+        // Red Error from here
+        ArrayList<String> assignedEmplyList = BE.getSpecificStatusEmployeeList(this.localDate, this.localTime, this.selectedRole, this.searchText, BE.assignedEmployee);
+        ArrayList<String> unassignedEmplyList = BE.getSpecificStatusEmployeeList(this.localDate, this.localTime, this.selectedRole, this.searchText, BE.unassignedEmployee);
         
         setTableRow(unassignedEmployeeTable, unassignedEmplyList);
         setTableRow(assignedEmployeeTable, assignedEmplyList);
@@ -795,6 +811,20 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         this.searchText = text;
     }
     
+    private boolean getSelectedTableRow(DefaultTableModel table, int selectedColumn, int selectedRow, int expectedColumn) {
+        if (selectedColumn == expectedColumn) {
+            String employeeData = (String) table.getValueAt(selectedRow, 0);
+            setSelectedEmployee(employeeData);
+            return true;
+        }
+        
+        return false;
+    }
+    
+    private void setSelectedEmployee (String employeeID) {
+        this.selectedEmployeeId = employeeID;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -806,7 +836,6 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
          */
         
         try {
-
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
@@ -824,7 +853,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
             @Override
             public void run() {
                 try {
-                    new BuildingExecutiveJobManagement(null, null, null, null, null, null, null, null).setVisible(true);
+                    new BuildingExecutiveJobManagement(null).setVisible(true);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }

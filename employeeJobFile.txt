@@ -1,2 +1,2 @@
-userID; complaintID; assignedJob; date; time; expectedTime; jobEndTime; remarks; updatedBy; lastUpdated;
-scg184573; null; Electrical Check-Up; 2023-01-05; 01:00:00; 2; 03:00:00; To do electrical check-up; admin1001; 2023-01-04;
+jobID; userID; complaintID; assignedJob; date; time; expectedTime; jobEndTime; endDateTime; remarks; multipleDays; daySelected; repitition; occuredTime; updatedBy; lastUpdated;
+1; scg184573; null; Electrical Check-Up; 2023-01-05; 01:00:00; 2; 03:00:00; 2023-01-05 00:00:00; To do electrical check-up; 0; []; 0; 0; admin1001; 2023-01-04;
