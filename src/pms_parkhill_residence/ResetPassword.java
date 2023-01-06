@@ -4,12 +4,8 @@
  */
 package pms_parkhill_residence;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Toolkit;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -45,7 +41,7 @@ public class ResetPassword extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        verifyBt = new javax.swing.JButton();
+        confirmBt = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         instructionMessage = new javax.swing.JLabel();
         warningMessage = new javax.swing.JLabel();
@@ -105,13 +101,13 @@ public class ResetPassword extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(51, 51, 51));
         jLabel6.setText("CONFIRM PASSWORD");
 
-        verifyBt.setBackground(new java.awt.Color(13, 24, 42));
-        verifyBt.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
-        verifyBt.setForeground(new java.awt.Color(255, 255, 255));
-        verifyBt.setText("CONFIRM");
-        verifyBt.addActionListener(new java.awt.event.ActionListener() {
+        confirmBt.setBackground(new java.awt.Color(13, 24, 42));
+        confirmBt.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
+        confirmBt.setForeground(new java.awt.Color(255, 255, 255));
+        confirmBt.setText("CONFIRM");
+        confirmBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                verifyBtActionPerformed(evt);
+                confirmBtActionPerformed(evt);
             }
         });
 
@@ -195,7 +191,7 @@ public class ResetPassword extends javax.swing.JFrame {
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(144, 144, 144)
-                        .addComponent(verifyBt, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(confirmBt, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(39, 39, 39)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -240,7 +236,7 @@ public class ResetPassword extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(confirmPasswordTF, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
-                .addComponent(verifyBt, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(confirmBt, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23))
         );
 
@@ -299,7 +295,7 @@ public class ResetPassword extends javax.swing.JFrame {
         new HomePage().setVisible(true);
     }//GEN-LAST:event_jLabel9MouseClicked
 
-    private void verifyBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verifyBtActionPerformed
+    private void confirmBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmBtActionPerformed
         String newPass = String.valueOf(newPasswordTF.getPassword());
         String confirmPass = String.valueOf(confirmPasswordTF.getPassword());
         try {
@@ -329,7 +325,7 @@ public class ResetPassword extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }//GEN-LAST:event_verifyBtActionPerformed
+    }//GEN-LAST:event_confirmBtActionPerformed
 
     private void jLabel7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseEntered
         // TODO add your handling code here:
@@ -443,6 +439,7 @@ public class ResetPassword extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton confirmBt;
     private javax.swing.JPasswordField confirmPasswordTF;
     private javax.swing.JLabel instructionMessage;
     private javax.swing.JLabel jLabel1;
@@ -461,7 +458,6 @@ public class ResetPassword extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPasswordField newPasswordTF;
-    private javax.swing.JButton verifyBt;
     private javax.swing.JLabel warningMessage;
     // End of variables declaration//GEN-END:variables
 }

@@ -107,7 +107,7 @@
                   <Component id="jPanel9" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jPanel10" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="308" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Component id="jPanel11" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jPanel13" min="-2" max="-2" attributes="0"/>
@@ -214,7 +214,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="First Module"/>
+                <Property name="text" type="java.lang.String" value="Issue Invoice"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -258,7 +258,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Second Module"/>
+                <Property name="text" type="java.lang.String" value="Payment"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -299,7 +299,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Third Module"/>
+                <Property name="text" type="java.lang.String" value="Outstanding Fee"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -544,7 +544,7 @@
                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                   <Component id="jLabel2" min="-2" pref="569" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jLabel7" pref="459" max="32767" attributes="0"/>
+                  <Component id="jLabel7" max="32767" attributes="0"/>
                   <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -572,7 +572,7 @@
               <Color blue="2a" green="18" red="d" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="PARKHILL RESIDENCE OWNER"/>
+            <Property name="text" type="java.lang.String" value="ACCOUNT EXECUTIVE"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel7">

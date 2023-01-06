@@ -237,7 +237,7 @@ public class SignInPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         try{
             Users users = new Users();
-            boolean valid = users.login(email.getText(), password.getText());
+            boolean valid = users.login(email.getText(), String.valueOf(password.getPassword()));
             if (valid) {
                 users.userRole(email.getText());
                 dispose();

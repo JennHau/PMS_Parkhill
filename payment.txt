@@ -1,0 +1,1 @@
+invoiceNo;unitNo;feeType;target;consumption;unit;unitPrice(RM);totalPrice(RM);period;paymentDate;
