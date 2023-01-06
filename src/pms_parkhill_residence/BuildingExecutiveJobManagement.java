@@ -4,6 +4,8 @@
  */
 package pms_parkhill_residence;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.io.IOException;
@@ -11,10 +13,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 /**
  *
@@ -31,7 +31,8 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
     private LocalTime localTime;
     private String selectedRole;
     private String searchText;
-    private String selectedEmployeeId = "scg184577";
+    private String selectedEmployeeId;
+    private String jobId;
     
     /**
      * Creates new form homePage
@@ -44,6 +45,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         runDefaultSetUp(beID);
     }
         
+    // Method to run all default setting when page is open
     private void runDefaultSetUp(String beID) throws IOException {
         assignedEmployeeTable = (DefaultTableModel) assignedEmplyTable.getModel();
         unassignedEmployeeTable = (DefaultTableModel) unassignedEmplyTable.getModel();
@@ -53,22 +55,29 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         setUserProfile(beID);
     }
     
+    // To set the window Icon
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
     
+    // Setup employee job table
     private void employeeJobTableSetup() throws IOException {
+        // Set the current date and time for the table results
         setCurrentDateTime();
         
         LocalDateTime localDateTime = LocalDateTime.of(localDate, localTime);
         dateTimePicker.setDateTimePermissive(localDateTime);
         
+        // Update table
         updateTable();
     }
     
+    // Method to set current user (Business Executive) profile
     private void setUserProfile(String beID) throws IOException {
+        // get current user details
         String[] beDetails = BE.getCurrentBE(beID);
         
+        // Set text field
         if (beDetails != null) {
             this.currentBEid = beDetails[0];
             String beName = beDetails[1] + " " + beDetails[2];
@@ -112,7 +121,35 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         employeeIdTF = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        unassignedEmplyTable = new javax.swing.JTable();
+        unassignedEmplyTable = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if(columnIndex == 3){
+                    componenet.setBackground(new Color(75, 162, 162));
+                    componenet.setForeground(new Color(255, 255, 255));
+                }
+
+                else {
+                    if (rowIndex%2 == 0) {
+                        componenet.setBackground(new Color(249, 249, 249));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    } else {
+                        componenet.setBackground(new Color(225, 225, 225));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    }
+
+                }
+
+                return componenet;
+            }
+
+        };
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
@@ -121,10 +158,10 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
-        dateTimePicker = new com.github.lgooddatepicker.components.DateTimePicker();
         roleComboBox = new javax.swing.JComboBox<>();
         clearBTN = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        clearBTN1 = new javax.swing.JButton();
+        dateTimePicker = new com.github.lgooddatepicker.components.DateTimePicker();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -536,14 +573,14 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Employee ID", "Employee Name", "Position", "Job Assigned", "Last Assignee", "View"
+                "Job ID", "Employee ID", "Employee Name", "Position", "Job Assigned", "Last Assignee", "View"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -554,6 +591,11 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        assignedEmplyTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                assignedEmplyTableMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(assignedEmplyTable);
         if (assignedEmplyTable.getColumnModel().getColumnCount() > 0) {
             assignedEmplyTable.getColumnModel().getColumn(0).setResizable(false);
@@ -562,6 +604,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
             assignedEmplyTable.getColumnModel().getColumn(3).setResizable(false);
             assignedEmplyTable.getColumnModel().getColumn(4).setResizable(false);
             assignedEmplyTable.getColumnModel().getColumn(5).setResizable(false);
+            assignedEmplyTable.getColumnModel().getColumn(6).setResizable(false);
         }
 
         jTextField2.setEditable(false);
@@ -592,7 +635,12 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Edit Job");
+        clearBTN1.setText("Search");
+        clearBTN1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearBTN1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -614,21 +662,20 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
                         .addComponent(roleComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(35, 35, 35)
                         .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dateTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(44, 44, 44)
-                        .addComponent(jButton2))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(clearBTN1)
+                        .addGap(0, 38, Short.MAX_VALUE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(6, 6, 6)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel15)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jLabel15)
                             .addComponent(jScrollPane2))))
                 .addGap(10, 10, 10))
         );
@@ -637,32 +684,34 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dateTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(employeeIdTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel18)
-                        .addComponent(dateTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(roleComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(clearBTN)))
+                        .addComponent(clearBTN)
+                        .addComponent(clearBTN1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 565, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
                                 .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 565, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 565, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(8, 8, 8))
-                    .addComponent(jTextField2))
-                .addGap(11, 11, 11))
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 565, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(8, 8, 8))
+                            .addComponent(jTextField2))
+                        .addContainerGap())))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -759,38 +808,50 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
 
     private void unassignedEmplyTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unassignedEmplyTableMouseClicked
         // TODO add your handling code here:
+        
         int selectedCol = unassignedEmplyTable.getSelectedColumn();
         int selectedRow = unassignedEmplyTable.getSelectedRow();
         
         boolean isSelected = getSelectedTableRow(unassignedEmployeeTable, selectedCol, selectedRow, 3);
         
         if (isSelected) {
-            EmployeeJobAssignation EJA;
-            try {
-                EJA = new EmployeeJobAssignation(this.currentBEid, this.selectedEmployeeId);
-                EJA.setVisible(true);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            BE.toEmployeeJobAssignation(currentBEid, selectedEmployeeId, jobId);
         }
     }//GEN-LAST:event_unassignedEmplyTableMouseClicked
 
-    private void setTableRow(DefaultTableModel table, ArrayList arrayList) {
-        table.setRowCount(0);
+    private void clearBTN1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBTN1ActionPerformed
+        // TODO add your handling code here:
+        this.localDate = dateTimePicker.datePicker.getDate();
+        this.localTime = dateTimePicker.timePicker.getTime();
         
-        for (int rowCount = 0; rowCount < arrayList.size(); rowCount++) {
-            String[] rowDetails = String.valueOf(arrayList.get(rowCount)).split(BE.sp);
-            table.addRow(rowDetails);
+        try {
+            updateTable();
+        } catch (IOException ex) {
+           ex.printStackTrace();
         }
-    }
-    
+    }//GEN-LAST:event_clearBTN1ActionPerformed
+
+    private void assignedEmplyTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_assignedEmplyTableMouseClicked
+        // TODO add your handling code here:
+        int selectedCol = assignedEmplyTable.getSelectedColumn();
+        int selectedRow = assignedEmplyTable.getSelectedRow();
+        
+        boolean isSelected = getSelectedTableRow(assignedEmployeeTable, selectedCol, selectedRow, 6);
+        
+        if (isSelected) {
+            this.jobId = (String) assignedEmployeeTable.getValueAt(selectedRow, 0);
+            this.selectedEmployeeId = (String) assignedEmployeeTable.getValueAt(selectedRow, 1);
+            BE.toEmployeeJobAssignation(currentBEid, selectedEmployeeId, jobId);
+        }
+    }//GEN-LAST:event_assignedEmplyTableMouseClicked
+
     private void updateTable() throws IOException {
         // Red Error from here
-        ArrayList<String> assignedEmplyList = BE.getSpecificStatusEmployeeList(this.localDate, this.localTime, this.selectedRole, this.searchText, BE.assignedEmployee);
-        ArrayList<String> unassignedEmplyList = BE.getSpecificStatusEmployeeList(this.localDate, this.localTime, this.selectedRole, this.searchText, BE.unassignedEmployee);
+        ArrayList<String> assignedEmplyList = BE.getSpecificStatusEmployeeList(localDate, localTime, selectedRole, searchText, BE.assignedEmployee);
+        ArrayList<String> unassignedEmplyList = BE.getSpecificStatusEmployeeList(localDate, localTime, selectedRole, searchText, BE.unassignedEmployee);
         
-        setTableRow(unassignedEmployeeTable, unassignedEmplyList);
-        setTableRow(assignedEmployeeTable, assignedEmplyList);
+        BE.setTableRow(unassignedEmployeeTable, unassignedEmplyList);
+        BE.setTableRow(assignedEmployeeTable, assignedEmplyList);
     }
     
     public void setCurrentDateTime() {
@@ -866,9 +927,9 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
     private javax.swing.JPanel BEdashboardOuterPanel;
     private javax.swing.JTable assignedEmplyTable;
     private javax.swing.JButton clearBTN;
+    private javax.swing.JButton clearBTN1;
     private com.github.lgooddatepicker.components.DateTimePicker dateTimePicker;
     private javax.swing.JTextField employeeIdTF;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;

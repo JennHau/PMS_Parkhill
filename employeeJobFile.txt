@@ -1,2 +1,2 @@
-jobID; userID; complaintID; assignedJob; date; time; expectedTime; jobEndTime; endDateTime; remarks; multipleDays; daySelected; repitition; occuredTime; updatedBy; lastUpdated;
-1; scg184573; null; Electrical Check-Up; 2023-01-05; 01:00:00; 2; 03:00:00; 2023-01-05 00:00:00; To do electrical check-up; 0; []; 0; 0; admin1001; 2023-01-04;
+jobId; userId; complaintId; assignedJob; repitition; expectedTimeRequired; startDate; startTime; expectedEndTime; dayToRepeat; remarks; updatedBy; lastUpdate; 
+1; scg184573; null; Night Shift (8pm-8am); 1; 10; 2023-01-06; 13:00:00; 23:00:00; monday,tuesday,friday; To do checkup; 10001; 2023-06-01; 

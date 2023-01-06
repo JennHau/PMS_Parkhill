@@ -11,13 +11,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
 import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -26,6 +26,13 @@ import javax.swing.JFrame;
 public class BuildingExecutive extends Users{
     // text file seperator
     String sp = "; ";
+    
+    final String technician = "tcn";
+    final String cleaner = "cln";
+    final String securityGuard = "scg";
+    
+    final int repititionON = 1;
+    final int repititionOFF = 0;
     
     final int assignedEmployee = 1;
     final int unassignedEmployee = 0;
@@ -44,6 +51,9 @@ public class BuildingExecutive extends Users{
     
     // selected Employee record
     File recordSelectedEmployee = new File("recordSelectedEmployee.txt");
+    
+    // job list link
+    File jobListFile = new File("jobList.txt");
     
     // to get employee list only from the user profile text file
     public void updateEmployeeList() throws IOException{
@@ -83,19 +93,33 @@ public class BuildingExecutive extends Users{
         ArrayList<String> unassignedEmployee = new ArrayList<>();
         ArrayList<ArrayList> assignedANDunassigned = new ArrayList<>();
 
+        String dayOfWeek = localDate.getDayOfWeek().toString().toLowerCase();
+        
         boolean firstLine;
         
         firstLine = true;
         for (String jobFileLine = readJobFile.readLine(); jobFileLine != null; jobFileLine = readJobFile.readLine()) {
             if (!firstLine) {
                 String[] jobLineDetails = jobFileLine.split(sp);
+                int repitition = Integer.valueOf(jobLineDetails[4]);
                 String workingEmplyId = jobLineDetails[1];
                 String jobAssigned = jobLineDetails[3];
-                String assignee = jobLineDetails[14];
+                String assignee = jobLineDetails[11];
                 
-                LocalDate workingDate = formatDate(jobLineDetails[4]);
-                LocalTime workingTime = formatTime(jobLineDetails[5]);
-                LocalTime workingEndTime = formatTime(jobLineDetails[7]);    
+                LocalDate workingDate = null;
+                
+                if (repitition == repititionON) {
+                    ArrayList<String> dayToRepeat = new ArrayList<>(Arrays.asList(jobLineDetails[9].split(",")));
+                    if (dayToRepeat.contains(dayOfWeek)) {
+                        workingDate = localDate;
+                    }
+                }
+                else {
+                    workingDate = formatDate(jobLineDetails[6]);
+                }
+                
+                LocalTime workingTime = formatTime(jobLineDetails[7]);
+                LocalTime workingEndTime = formatTime(jobLineDetails[8]);    
                 
                 if (localDate.equals(workingDate) && !(localTime.isBefore(workingTime) || localTime.isAfter(workingEndTime))) {
                     if (!workingList.contains(workingEmplyId)) {
@@ -105,7 +129,9 @@ public class BuildingExecutive extends Users{
                         String workingEmplyName = employeeDetails[2];
                         String workingEmplyPos = employeeDetails[4];
                         
-                        assignedEmployee.add(jobLineDetails[0] + sp + workingEmplyName + sp + workingEmplyPos + sp + jobAssigned + sp + assignee + sp);
+                        assignedEmployee.add(jobLineDetails[0] + sp + workingEmplyId + sp + 
+                                             workingEmplyName + sp + workingEmplyPos + sp + 
+                                             jobAssigned + sp + assignee + sp + "View" + sp);
                     }
                 }
             }
@@ -123,7 +149,7 @@ public class BuildingExecutive extends Users{
                 String emplyPos = employeeInfo[4];
                 
                 if (!workingList.contains(emplyId)) {
-                    unassignedEmployee.add(emplyId + sp + emplyName + sp + emplyPos + sp);
+                    unassignedEmployee.add(emplyId + sp + emplyName + sp + emplyPos + sp + "Assign" + sp);
                 }
             }
             
@@ -294,7 +320,7 @@ public class BuildingExecutive extends Users{
         
         for (String jobLine = readJobFile.readLine(); jobLine != null; jobLine = readJobFile.readLine()) {
             String[] jobDetails = jobLine.split(sp);
-            String emplyID = jobDetails[0];
+            String emplyID = jobDetails[1];
             
             if (emplyID.equals(employeeId)) {
                 employeeJobList.add(jobLine);
@@ -302,6 +328,87 @@ public class BuildingExecutive extends Users{
         }
         
         return employeeJobList;
+    }
+    
+    public String[] getSpecificJobDetails(String employeeId, String jobId) throws IOException {
+        BufferedReader readJobFile = fileReader(employeeJobFile);
+        
+        for (String jobLine = readJobFile.readLine(); jobLine != null; jobLine = readJobFile.readLine()) {
+            String[] jobDetails = jobLine.split(sp);
+            String jobID = jobDetails[0];
+            String emplyID = jobDetails[1];
+            
+            if (jobID.equals(jobId) && emplyID.equals(employeeId)) {
+                return jobDetails;
+            }
+        }
+        
+        return null;
+    }
+    
+    public ArrayList getAvailableJobs(String employeeId, String complaintId) throws IOException {
+        BufferedReader readJobList = fileReader(jobListFile);
+        ArrayList<String> jobLists = new ArrayList<>();
+        
+        boolean firstLine = true;
+        for (String jobLine = readJobList.readLine(); jobLine != null; jobLine = readJobList.readLine()) {
+            if (!firstLine) {
+                String[] jobDetails = jobLine.split(sp);
+                String roleCode = jobDetails[0];
+                String role = employeeId.substring(0, 3);
+
+                if (roleCode.equals(role)) {
+                    jobLists.add(jobLine);
+                }
+
+                if ((roleCode.equals("cmp")) && (complaintId != null)) {
+                    jobLists.add(jobLine);
+                }
+            }
+            
+            firstLine = false;
+        }
+        
+        return jobLists;
+    }
+    
+    public String getNewId(File fileName, int idColumn) throws IOException {
+        BufferedReader readFile = fileReader(fileName);
+        String idSubstring = null;
+        int largestId = 0;        
+        
+        for (String fileLine = readFile.readLine(); fileLine != null; fileLine = readFile.readLine()){
+            String[] lineDetails = fileLine.split(sp);
+            String id = lineDetails[idColumn];
+            idSubstring = id.substring(0, 3);
+            
+            id = id.replace(idSubstring, "");
+            int intId = Integer.valueOf(id);
+            
+            if (intId > largestId) {
+                largestId = intId;
+            }
+        }
+        
+        largestId += 1;
+        
+        return idSubstring + largestId;
+    }
+    
+    public String getDateTimeNow() {
+        LocalDate dateNow = formatDate(String.valueOf(LocalDate.now()));
+        LocalTime timeNow = formatTime(String.valueOf(LocalTime.now()));
+        
+        return String.valueOf(dateNow + " " + timeNow);
+    }
+    
+    public void setTableRow(DefaultTableModel table, ArrayList arrayList) {
+        table.setRowCount(0);
+        
+        for (int rowCount = 0; rowCount < arrayList.size(); rowCount++) {
+            String[] rowDetails = String.valueOf(arrayList.get(rowCount)).split(sp);
+            table.addRow(rowDetails);
+        }
     }
     
     public void fileCleaner(File fileName) throws IOException {
@@ -355,5 +462,15 @@ public class BuildingExecutive extends Users{
         page = new BuildingExecutiveReports();
         page.setVisible(true);
         frame.dispose();
+    }
+    
+    public void toEmployeeJobAssignation(String beID, String employeeID, String jobID) {
+        EmployeeJobAssignation EJA;
+        try {
+            EJA = new EmployeeJobAssignation(beID, employeeID, jobID);
+            EJA.setVisible(true);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }
