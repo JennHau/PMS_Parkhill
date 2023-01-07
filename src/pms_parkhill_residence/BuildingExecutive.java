@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -27,13 +28,16 @@ public class BuildingExecutive extends Users{
     // text file seperator
     String sp = "; ";
     
+    // Employee position
     final String technician = "tcn";
     final String cleaner = "cln";
     final String securityGuard = "scg";
     
+    // Repitition
     final int repititionON = 1;
     final int repititionOFF = 0;
     
+    // Assign and Unassign Job to Employee
     final int assignedEmployee = 1;
     final int unassignedEmployee = 0;
     
@@ -72,7 +76,7 @@ public class BuildingExecutive extends Users{
                 String userId = data[0];
                 String role = userId.substring(0, 3);
                 if (isEmployee(role)){
-                    String position = employeeRole(role);
+                    String position = showEmployeeFullRoleName(role);
                     newEmployeeList.add(data[0] + sp + data[1] + sp + data[3] + " " + data[4] + sp + data[7] + sp + position + sp);
                 }
             }
@@ -106,10 +110,20 @@ public class BuildingExecutive extends Users{
                 String jobAssigned = jobLineDetails[3];
                 String assignee = jobLineDetails[11];
                 
+                String timeNeeded = jobLineDetails[5];
                 LocalDate workingDate = null;
+                LocalTime workingTime = formatTime(jobLineDetails[7]);
+                String[] workingEndDateTime = jobLineDetails[8].split(" ");
                 
                 if (repitition == repititionON) {
+                    boolean isOvernight = checkOvernight(formatTime(workingEndDateTime[1]), timeNeeded);
                     ArrayList<String> dayToRepeat = new ArrayList<>(Arrays.asList(jobLineDetails[9].split(",")));
+                    System.out.println(isOvernight + workingEmplyId);
+                    if (isOvernight) {
+                        dayOfWeek = localDate.getDayOfWeek().minus(1).toString().toLowerCase();
+                        workingTime = LocalTime.parse("00:00:00");
+                    }
+                    
                     if (dayToRepeat.contains(dayOfWeek)) {
                         workingDate = localDate;
                     }
@@ -118,20 +132,23 @@ public class BuildingExecutive extends Users{
                     workingDate = formatDate(jobLineDetails[6]);
                 }
                 
-                LocalTime workingTime = formatTime(jobLineDetails[7]);
-                LocalTime workingEndTime = formatTime(jobLineDetails[8]);    
+                LocalDateTime selectedDateTime = LocalDateTime.of(localDate, localTime);
+                LocalDateTime startDateTime = LocalDateTime.of(workingDate, workingTime);
+                LocalDateTime endDateTime = LocalDateTime.of(formatDate(workingEndDateTime[0]), formatTime(workingEndDateTime[1]));
                 
-                if (localDate.equals(workingDate) && !(localTime.isBefore(workingTime) || localTime.isAfter(workingEndTime))) {
+                if ((selectedDateTime.equals(startDateTime) || selectedDateTime.isAfter(startDateTime)) 
+                 && (selectedDateTime.equals(endDateTime) || selectedDateTime.isBefore(endDateTime))) {
+                    
                     if (!workingList.contains(workingEmplyId)) {
                         workingList.add(workingEmplyId);
-                        
+
                         String[] employeeDetails = getEmployeeDetails(workingEmplyId);
                         String workingEmplyName = employeeDetails[2];
                         String workingEmplyPos = employeeDetails[4];
-                        
-                        assignedEmployee.add(jobLineDetails[0] + sp + workingEmplyId + sp + 
-                                             workingEmplyName + sp + workingEmplyPos + sp + 
-                                             jobAssigned + sp + assignee + sp + "View" + sp);
+
+                        assignedEmployee.add(jobLineDetails[0] + sp + workingEmplyId + sp +
+                                workingEmplyName + sp + workingEmplyPos + sp +
+                                jobAssigned + sp + assignee + sp + "View" + sp);
                     }
                 }
             }
@@ -155,6 +172,7 @@ public class BuildingExecutive extends Users{
             
             firstLine = false;
         }
+        readEmployeeList.close();
         
         assignedANDunassigned.add(unassignedEmployee);
         assignedANDunassigned.add(assignedEmployee);
@@ -209,7 +227,7 @@ public class BuildingExecutive extends Users{
         return roleCode.equals("scg") || roleCode.equals("tcn") || roleCode.equals("cln");
     }
     
-    public String employeeRole(String role) {
+    public String showEmployeeFullRoleName(String role) {
         String employeeRole = null;
         
         switch (role) {
@@ -219,6 +237,17 @@ public class BuildingExecutive extends Users{
         }
         
         return employeeRole;
+    }
+    
+    public String getEmployeePositionCode(String employeeId) throws IOException {
+        String[] employeeDetails = getEmployeeDetails(employeeId);
+        String employeePos = employeeDetails[4];
+        return switch (employeePos) {
+            case "Technician" -> technician;
+            case "Cleaner" -> cleaner;
+            case "Security Guard" -> securityGuard;
+            default -> null;
+        };
     }
     
     public void recordSelectedEmployee(String employeeID) throws IOException {
@@ -254,7 +283,7 @@ public class BuildingExecutive extends Users{
     public LocalTime formatTime(String time) {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         
-        LocalTime localTime = LocalTime.parse(time, timeFormatter);
+        LocalTime localTime = LocalTime.parse(LocalTime.parse(time).format(timeFormatter)).withSecond(1);
         
         return localTime;
     }
@@ -326,6 +355,7 @@ public class BuildingExecutive extends Users{
                 employeeJobList.add(jobLine);
             }
         }
+        readJobFile.close();
         
         return employeeJobList;
     }
@@ -342,6 +372,7 @@ public class BuildingExecutive extends Users{
                 return jobDetails;
             }
         }
+        readJobFile.close();
         
         return null;
     }
@@ -368,31 +399,37 @@ public class BuildingExecutive extends Users{
             
             firstLine = false;
         }
+        readJobList.close();
         
         return jobLists;
     }
     
     public String getNewId(File fileName, int idColumn) throws IOException {
         BufferedReader readFile = fileReader(fileName);
-        String idSubstring = null;
-        int largestId = 0;        
         
+        String jobIdCode = "tsk";
+        int largestId = 114560;        
+        
+        boolean firstLine = true;
         for (String fileLine = readFile.readLine(); fileLine != null; fileLine = readFile.readLine()){
-            String[] lineDetails = fileLine.split(sp);
-            String id = lineDetails[idColumn];
-            idSubstring = id.substring(0, 3);
-            
-            id = id.replace(idSubstring, "");
-            int intId = Integer.valueOf(id);
-            
-            if (intId > largestId) {
-                largestId = intId;
+            if (!firstLine) {
+                String[] lineDetails = fileLine.split(sp);
+                String id = lineDetails[idColumn];
+
+                id = id.replace(jobIdCode, "");
+                int intId = Integer.valueOf(id);
+
+                if (intId > largestId) {
+                    largestId = intId;
+                }
             }
-        }
+            
+            firstLine = false;
+        }readFile.close();
         
         largestId += 1;
         
-        return idSubstring + largestId;
+        return jobIdCode + largestId;
     }
     
     public String getDateTimeNow() {
@@ -400,6 +437,30 @@ public class BuildingExecutive extends Users{
         LocalTime timeNow = formatTime(String.valueOf(LocalTime.now()));
         
         return String.valueOf(dateNow + " " + timeNow);
+    }
+    
+    public LocalDateTime combineStringDateTime(String date, String time) {
+        LocalDate dateLocal = formatDate(date);
+        LocalTime timeLocal = formatTime(time);
+        
+        LocalDateTime combinedLocalDT = LocalDateTime.of(dateLocal, timeLocal);
+        
+        return combinedLocalDT;
+    }
+    
+    public boolean checkOvernight(LocalTime timeEndExpected, String expectedTimeNeeded) {
+        String timePlace = expectedTimeNeeded.substring(expectedTimeNeeded.length()-1);
+        int timeNeeded = Integer.valueOf(expectedTimeNeeded.substring(0, expectedTimeNeeded.length()-1));
+            
+        if (timePlace.equals("h")) {
+            timeNeeded*=60;
+        }
+            
+        LocalDate simplyDate = LocalDate.parse("2000-01-02");
+        LocalDateTime dateTimeCombine = LocalDateTime.of(simplyDate, timeEndExpected);
+        LocalDateTime startDateTime = dateTimeCombine.minusMinutes(timeNeeded);
+        
+        return startDateTime.toLocalDate().isBefore(simplyDate);
     }
     
     public void setTableRow(DefaultTableModel table, ArrayList arrayList) {
@@ -472,5 +533,10 @@ public class BuildingExecutive extends Users{
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+    
+    public void toJobModificationPage(String positionCode) {
+        JobModificationPage page = new JobModificationPage(positionCode);
+        page.setVisible(true);
     }
 }

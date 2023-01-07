@@ -22,7 +22,7 @@ public class Users {
     private Date birthOfDate;
     private String unitNo;
     
-    //Constructor for non-redidents
+    //Constructor for non-residents
     public Users(){}
     
     // Constructor for admin

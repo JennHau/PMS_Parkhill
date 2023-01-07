@@ -1,23 +1,23 @@
-role; task; timeNeeded(mins); startTime; 
-tcn; Block A Electrical Check-Up; 60; 14:00:00
-tcn; Block B Electrical Check-Up; 60; 14:00:00
-tcn; Block A Lift Check-Up; 120; 14:00:00
-tcn; Block B Lift Check-Up; 120; 14:00:00
-tcn; Block A Aircond Check-Up; 90; 14:00:00
-tcn; Block B Aircond Check-Up; 90; 14:00:00
-tcn; Block A Plumbing Check-Up; 60; 14:00:00
-tcn; Block B Plumbing Check-Up; 60; 14:00:00
-tcn; Entrance Machine; 60; 14:00:00
-cln; Cleaning Block A (L1-L5); 120; 14:00:00
-cln; Cleaning Block A (L6-L10); 120; 14:00:00
-cln; Cleaning Block A (L11-L15); 120; 14:00:00
-cln; Cleaning Block A Toilet; 30; 14:00:00
-cln; Cleaning Block B (L1-L5); 120; 14:00:00
-cln; Cleaning Block B (L6-L10); 120; 14:00:00
-cln; Cleaning Block B (L11-L15); 120; 14:00:00
-cln; Cleaning Block B Toilet; 30; 14:00:00
-cln; Cleaning Facilities; 120; 14:00:00
-scg; Morning Shift (8am-8pm); 720; 08:00:00
-scg; Night Shift (8pm-8am); 720; 20:00:00
+role; task; timeNeeded; startTime; 
+tcn; Block A Electrical Check-Up; 1h; 14:00:00
+tcn; Block B Electrical Check-Up; 1h; 14:00:00
+tcn; Block A Lift Check-Up; 2h; 14:00:00
+tcn; Block B Lift Check-Up; 2h; 14:00:00
+tcn; Block A Aircond Check-Up; 2h; 14:00:00
+tcn; Block B Aircond Check-Up; 2h; 14:00:00
+tcn; Block A Plumbing Check-Up; 1h; 14:00:00
+tcn; Block B Plumbing Check-Up; 1h; 14:00:00
+tcn; Entrance Machine; 1h; 14:00:00
+cln; Cleaning Block A (L1-L5); 2h; 14:00:00
+cln; Cleaning Block A (L6-L10); 2h; 14:00:00
+cln; Cleaning Block A (L11-L15); 2h; 14:00:00
+cln; Cleaning Block A Toilet; 30m; 14:00:00
+cln; Cleaning Block B (L1-L5); 2h; 14:00:00
+cln; Cleaning Block B (L6-L10); 2h; 14:00:00
+cln; Cleaning Block B (L11-L15); 2h; 14:00:00
+cln; Cleaning Block B Toilet; 30m; 14:00:00
+cln; Cleaning Facilities; 2h; 14:00:00
+scg; Morning Shift (8am-8pm); 12h; 08:00:00
+scg; Night Shift (8pm-8am); 12h; 20:00:00
 scg; Patrolling; 0; null; 
 cmp; Complaints; 0; null; 

@@ -9,11 +9,13 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -24,10 +26,11 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
     BuildingExecutive BE = new BuildingExecutive();
     
     // Remove unnecessary data
-    private String jobID = "1";
-    private String currentBEid = "bde198234";
-    private String selectedEmployeeId = "scg184573";
-    private String complaintsId = "100001";
+    private String jobID;
+    private String currentBEid;
+    private String selectedEmployeeId;
+    private String selectedEmployeePosCode;
+    private String complaintsId;
     private boolean isSame = true;
     
     private final int deleteItem = 0;    
@@ -67,9 +70,10 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
 
-    private void setSelectedEmployee(String employeeID, String jobId) {
+    private void setSelectedEmployee(String employeeID, String jobId) throws IOException {
         this.selectedEmployeeId = employeeID;
         this.jobID = jobId;
+        this.selectedEmployeePosCode = BE.getEmployeePositionCode(employeeID);
     }
 
     private void setCurrentBE(String beID) {
@@ -90,21 +94,29 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             contNoTF.setText(emplyPhoneNo);
             posTF.setText(emplyPos);
         }
-        
-        updateBTN.setEnabled(false);
     }
     
     private void formAdditionalDetailsSetUp() throws IOException {
         if (jobID != null) {
             String[] jobDetails = BE.getSpecificJobDetails(selectedEmployeeId, jobID);
+            
             String jobToAssign = jobDetails[3];
             int repitition = Integer.valueOf(jobDetails[4]);
             String timeNeeded = jobDetails[5];
-            LocalDate startDate = BE.formatDate(jobDetails[6]);
             LocalTime startTime = BE.formatTime(jobDetails[7]);
             String dayToRepeat = jobDetails[9];
             String remarks = jobDetails[10];
 
+            String timePlace = timeNeeded.substring(timeNeeded.length()-1);
+            timeNeeded = timeNeeded.substring(0, timeNeeded.length()-1);
+            
+            if (timePlace.equals("m")) {
+                hrsMinsComboBox.setSelectedItem("mins");
+            }
+            else {
+                hrsMinsComboBox.setSelectedItem("hrs");
+            }
+            
             jobComboBox.setSelectedItem(jobToAssign);       
             timeNeededSpinner.setValue(Integer.valueOf(timeNeeded));
             dateTimePicker1.timePicker.setTime(startTime);
@@ -119,17 +131,32 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                 repititionCheckBox.setSelected(true);
                 dateTimePicker1.datePicker.clear();
                 dateTimePicker1.datePicker.setEnabled(false);
+                dayCheckBoxAction(true, false);
                 String[] days = dayToRepeat.split(",");
                 dayCheckBox(days);
             }
             else if (repitition == BE.repititionOFF) {
                 repititionCheckBox.setSelected(false);
+                LocalDate startDate = BE.formatDate(jobDetails[6]);
                 dateTimePicker1.datePicker.setDate(startDate);
                 dateTimePicker1.datePicker.setEnabled(true);
-                dayCheckBoxDisabled();
+                dayCheckBoxAction(false, false);
             }
             
-            updateBTN.setEnabled(true);
+            btnAction(false, true, true);
+        }
+        else {
+            jobComboBox.setSelectedIndex(0);
+            repititionCheckBox.setSelected(false);
+            timeNeededSpinner.setValue(0);
+            hrsMinsComboBox.setSelectedIndex(0);
+            dateTimePicker1.datePicker.setDateToToday();
+            dateTimePicker1.datePicker.setEnabled(true);
+            LocalTime timeNow = BE.getTimeCategory(LocalTime.now());
+            dateTimePicker1.timePicker.setTime(timeNow);
+            remarksTA.setText("");
+            dayCheckBoxAction(false, false);
+            btnAction(true, false, false);
         }
     }
     
@@ -194,21 +221,33 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         }
     }
     
-    private void dayCheckBoxDisabled () {
-        mondayCheckBox.setEnabled(false);
-        mondayCheckBox.setSelected(false);
+    private void dayCheckBoxAction (boolean enabled, boolean selected) {
+        mondayCheckBox.setEnabled(enabled);
+        mondayCheckBox.setSelected(selected);
         
-        tuesCheckBox.setEnabled(false);
-        tuesCheckBox.setSelected(false);        
+        tuesCheckBox.setEnabled(enabled);
+        tuesCheckBox.setSelected(selected);        
         
-        wedCheckBox.setEnabled(false);        
-        wedCheckBox.setSelected(false);
+        wedCheckBox.setEnabled(enabled);        
+        wedCheckBox.setSelected(selected);
         
-        thursCheckBox.setEnabled(false);        
-        thursCheckBox.setSelected(false);
+        thursCheckBox.setEnabled(enabled);        
+        thursCheckBox.setSelected(selected);
         
-        friCheckBox.setEnabled(false);
-        friCheckBox.setSelected(false);
+        friCheckBox.setEnabled(enabled);
+        friCheckBox.setSelected(selected);
+        
+        satCheckBox.setEnabled(enabled);
+        satCheckBox.setSelected(selected);
+        
+        sunCheckBox.setEnabled(enabled);
+        sunCheckBox.setSelected(selected);
+    }
+    
+    private void btnAction(boolean addBtn, boolean updtBtn, boolean dltBtn) {
+        addBTN.setEnabled(addBtn);
+        updateBTN.setEnabled(updtBtn);
+        deleteBTN.setEnabled(dltBtn);
     }
 
     /**
@@ -243,7 +282,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         remarksTA = new javax.swing.JTextArea();
         jLabel22 = new javax.swing.JLabel();
-        backBTN = new javax.swing.JButton();
+        clearBTN = new javax.swing.JButton();
         addBTN = new javax.swing.JButton();
         jLabel23 = new javax.swing.JLabel();
         complaintIdTF = new javax.swing.JTextField();
@@ -262,6 +301,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         dateTimePicker1 = new com.github.lgooddatepicker.components.DateTimePicker();
         hrsMinsComboBox = new javax.swing.JComboBox<>();
         deleteBTN = new javax.swing.JButton();
+        editJobBTN = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -404,10 +444,10 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         jLabel22.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(51, 51, 51));
 
-        backBTN.setText("Back");
-        backBTN.addActionListener(new java.awt.event.ActionListener() {
+        clearBTN.setText("Clear");
+        clearBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backBTNActionPerformed(evt);
+                clearBTNActionPerformed(evt);
             }
         });
 
@@ -493,6 +533,11 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         repititionCheckBox.setText("Repeat");
         repititionCheckBox.setFont(new java.awt.Font("Yu Gothic UI", 0, 12)); // NOI18N
         repititionCheckBox.setForeground(new java.awt.Color(51, 51, 51));
+        repititionCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                repititionCheckBoxActionPerformed(evt);
+            }
+        });
 
         jLabel21.setText("Start Date: ");
         jLabel21.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
@@ -508,6 +553,13 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         deleteBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteBTNActionPerformed(evt);
+            }
+        });
+
+        editJobBTN.setText("Edit Job");
+        editJobBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editJobBTNActionPerformed(evt);
             }
         });
 
@@ -543,7 +595,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                             .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(messagesTF, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(backBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(clearBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(deleteBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -580,61 +632,72 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(editJobBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, 0))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(13, 13, 13)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField6)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField6)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(complaintIdTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(employeeIdTF, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(employeeNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(posTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(contNoTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(0, 0, 0)
-                                        .addComponent(jobComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(complaintIdTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(0, 0, 0)
-                                        .addComponent(repititionCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(31, 31, 31)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(timeNeededSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(hrsMinsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(employeeIdTF, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(employeeNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, 0)
+                                        .addComponent(posTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, 0)
+                                        .addComponent(contNoTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(0, 0, 0)
+                                                .addComponent(jobComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(0, 0, 0)
+                                                .addComponent(repititionCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGap(31, 31, 31)
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(timeNeededSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(hrsMinsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, 0)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(13, 13, 13)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(editJobBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1)
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -659,7 +722,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                                 .addComponent(messagesTF, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(backBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(clearBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(updateBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(addBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(deleteBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))))
@@ -734,9 +797,16 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField6ActionPerformed
 
-    private void backBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBTNActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_backBTNActionPerformed
+    private void clearBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBTNActionPerformed
+        try {
+            // TODO add your handling code here:
+            this.jobID = null;
+            setJobFormTable();
+            setJobFormTable();
+        } catch (IOException ex) {
+            Logger.getLogger(EmployeeJobAssignation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_clearBTNActionPerformed
 
     private void addBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBTNActionPerformed
         try {
@@ -771,13 +841,35 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_updateBTNActionPerformed
 
+    private void repititionCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_repititionCheckBoxActionPerformed
+        // TODO add your handling code here:
+        if (repititionCheckBox.isSelected()) {
+            dayCheckBoxAction(true, false);
+            dateTimePicker1.datePicker.setEnabled(false);
+        }
+        else {
+            dayCheckBoxAction(false, false);
+            dateTimePicker1.datePicker.setEnabled(true);
+        }
+    }//GEN-LAST:event_repititionCheckBoxActionPerformed
+
+    private void editJobBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editJobBTNActionPerformed
+        // TODO add your handling code here:
+        BE.toJobModificationPage(selectedEmployeePosCode);
+    }//GEN-LAST:event_editJobBTNActionPerformed
+
     private void updateJobTextFile(String[] jobItems, int action) throws IOException {
+        BufferedWriter writeJobFile;
         BufferedReader readJobFile = BE.fileReader(BE.employeeJobFile);
-        BufferedWriter writeJobFile = BE.fileWriter(BE.employeeJobFile, true);
         ArrayList<String> newItemLists = new ArrayList<>();
         
         String itemID = jobItems[0];
-        String specificItem = Arrays.toString(jobItems);
+        
+        // make the string[] to an array list
+        String specificItem = "";
+        for (String arrayItem : jobItems) {
+            specificItem += arrayItem + BE.sp;
+        }
         
         for (String fileLine = readJobFile.readLine(); fileLine != null; fileLine = readJobFile.readLine()) {
             String[] jobLine = fileLine.split(BE.sp);
@@ -791,18 +883,22 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             else {
                 newItemLists.add(fileLine);
             }
-        }
+        } readJobFile.close();
         
         if (action == this.addItem) {
             newItemLists.add(specificItem);
         }
         
+        writeJobFile = BE.fileWriter(BE.employeeJobFile, false);
+        
         for (String eachJob : newItemLists) {
             writeJobFile.write(eachJob + "\n");
-        }
+        } writeJobFile.close();
     }
     
     private String[] getAllFields(int action) throws IOException {
+        ArrayList<String> latestFields;
+        
         // job Id
         String fieldJobId = this.jobID;
         if (action == this.addItem) {
@@ -831,21 +927,27 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         int timeNeeded = (int) timeNeededSpinner.getValue();
         String hrORmin = hrsMinsComboBox.getSelectedItem().toString();
         if (hrORmin.equals("hrs")) {
-            expectedTimeRequired = String.valueOf(timeNeeded *= 60);
+            expectedTimeRequired =  timeNeeded + "h";
+            timeNeeded = timeNeeded *= 60;
         }
         else {
-            expectedTimeRequired = String.valueOf(timeNeeded);
+            expectedTimeRequired =  timeNeeded + "m";
         }
         
         // start date of the job
-        String startDate = String.valueOf(BE.formatDate(dateTimePicker1.datePicker.getDateStringOrEmptyString()));
+        String startDate = (dateTimePicker1.datePicker.getDate() != null) 
+                            ? (String.valueOf(BE.formatDate(String.valueOf(dateTimePicker1.datePicker.getDate())))) 
+                            : "null";
         // start time of the job
-        LocalTime jobStartTime = BE.formatTime(dateTimePicker1.timePicker.getTimeStringOrEmptyString());
+        LocalTime jobStartTime = BE.formatTime(String.valueOf(dateTimePicker1.timePicker.getTime()));
         String startTime = String.valueOf(jobStartTime);
         // expected end time of the job
-        String expectedEndTime = String.valueOf(jobStartTime.plusMinutes(timeNeeded));
+        LocalDateTime dateTimeEnd = LocalDateTime.of(BE.formatDate(startDate), BE.formatTime(startTime));
+        String expectedEndTime = String.valueOf(dateTimeEnd.plusMinutes(timeNeeded)).replace("T", " ");
+        
+        System.out.println(dateTimeEnd);
         // day to repeat
-        String dayToRepeat = null;
+        String dayToRepeat = "";
         boolean mon = mondayCheckBox.isSelected();
         boolean tues = tuesCheckBox.isSelected();
         boolean wed = wedCheckBox.isSelected();
@@ -869,6 +971,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                     case 7 -> dayToRepeat += "sunday,";
                 }
             }
+            dayCount++;
         }
         
         // get remarks
@@ -901,17 +1004,83 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             }
         }
         
-        jobItemDetails[newItemDetailsLength] = updatedBy;
-        jobItemDetails[newItemDetailsLength + 1] = updatedTime;
+        latestFields = new ArrayList<>(Arrays.asList(jobItemDetails));
+        latestFields.add(updatedBy);
+        latestFields.add(updatedTime);
+        
+        jobItemDetails = latestFields.toArray(jobItemDetails);
         
         return jobItemDetails;
     }
     
     private void performButtonForAddUpdateDelete (int action) throws IOException {
         String[] jobItems = getAllFields(action);
-        updateJobTextFile(jobItems, action);
-        this.jobID = null;
-        setJobFormTable();
+        ArrayList<String> clashList = checkJobClash(jobItems);
+        if (!clashList.isEmpty()) {
+            JOptionPane.showConfirmDialog(this, "This job has clashed with " + clashList.toString(), "Clash Alert", JOptionPane.OK_OPTION);
+        }
+        else {
+            updateJobTextFile(jobItems, action);
+            this.jobID = null;
+            setJobFormTable();
+        }
+    }
+    
+    private ArrayList<String> checkJobClash(String[] jobItems) throws IOException{
+        ArrayList<String> clashJobId = new ArrayList<>();
+        
+        // get the start and end date time from the new job
+        String dateInput = jobItems[6];
+        String timeInput = jobItems[7];
+        ArrayList<String> daySelected = new ArrayList<>(Arrays.asList(jobItems[9].split(",")));
+        
+        // convert the date time to local date time format
+        LocalDateTime newJobEndTime = LocalDateTime.parse(jobItems[8].replace(" ", "T"));
+        LocalDateTime newJobStartTime = BE.combineStringDateTime(dateInput, timeInput);
+        
+        // Get all the job assigned to the specific employee
+        ArrayList<String> employeeJobList = BE.getAssignedJobForSpecificEmployee(this.selectedEmployeeId);
+        
+        // loop for all assigned job
+        for (String eachJob : employeeJobList) {
+            String[] jobDetails = eachJob.split(BE.sp);
+            // get the details of the job
+            int repitition = Integer.valueOf(jobDetails[4]);
+            String jobDate = jobDetails[6];
+            String jobTime = jobDetails[7];
+            String jobID = jobDetails[0];
+            
+            // convert the date time to local date time format
+            LocalDateTime jobEndDateTime = LocalDateTime.parse(jobDetails[8].replace(" ", "T"));
+            LocalDateTime jobStartDateTime = BE.combineStringDateTime(jobDate, jobTime);
+            
+            ArrayList<String> jobDays = new ArrayList<>(Arrays.asList(jobDetails[9].split(",")));
+            
+            if (repitition == BE.repititionON) {
+                for (String eachDay : jobDays) {
+                    if (daySelected.contains(eachDay)){
+                        if (jobDateTimeClash(newJobStartTime, newJobEndTime, jobStartDateTime, jobEndDateTime)) 
+                        {
+                            clashJobId.add(jobID);
+                        }
+                    }
+                }
+            }
+            else {
+                if (jobDateTimeClash(newJobStartTime, newJobEndTime, jobStartDateTime, jobEndDateTime)) {
+                    clashJobId.add(jobID);
+                }
+            }
+        }
+        
+        return clashJobId;
+    }
+    
+    private boolean jobDateTimeClash(LocalDateTime startDateTimeSelected, LocalDateTime endDateTimeSelected, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        return ((startDateTimeSelected.isAfter(startDateTime) || startDateTimeSelected.isEqual(startDateTime)) && 
+                (startDateTimeSelected.isBefore(endDateTime) || startDateTimeSelected.isEqual(endDateTime))) ||
+                (endDateTimeSelected.isAfter(startDateTime) || endDateTimeSelected.isEqual(startDateTime)) &&
+                (endDateTimeSelected.isBefore(endDateTime) || endDateTimeSelected.isEqual(endDateTime));
     }
     
     
@@ -957,11 +1126,12 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBTN;
     private javax.swing.JTable assignedJobTable;
-    private javax.swing.JButton backBTN;
+    private javax.swing.JButton clearBTN;
     private javax.swing.JTextField complaintIdTF;
     private javax.swing.JTextField contNoTF;
     private com.github.lgooddatepicker.components.DateTimePicker dateTimePicker1;
     private javax.swing.JButton deleteBTN;
+    private javax.swing.JButton editJobBTN;
     private javax.swing.JTextField employeeIdTF;
     private javax.swing.JTextField employeeNameTF;
     private javax.swing.JCheckBox friCheckBox;
