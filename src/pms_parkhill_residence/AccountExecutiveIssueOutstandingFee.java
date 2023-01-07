@@ -5,21 +5,26 @@
 package pms_parkhill_residence;
 
 import java.awt.Toolkit;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author wongj
  */
-public class AccountExecutivePayment extends javax.swing.JFrame {
+public class AccountExecutiveIssueOutstandingFee extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
      */
-    public AccountExecutivePayment() {
+    public AccountExecutiveIssueOutstandingFee() {
         initComponents();
         setWindowIcon();
+        setMonthYearCB();
         setTable();
     }
 
@@ -62,9 +67,8 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         clearbt = new javax.swing.JButton();
-        statusCB = new javax.swing.JComboBox<>();
-        jLabel13 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
+        monthNYearCB = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -129,7 +133,7 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel8.setBackground(new java.awt.Color(13, 50, 79));
+        jPanel8.setBackground(new java.awt.Color(13, 24, 42));
 
         jLabel5.setBackground(new java.awt.Color(13, 24, 42));
         jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
@@ -176,11 +180,11 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel10.setBackground(new java.awt.Color(13, 24, 42));
+        jPanel10.setBackground(new java.awt.Color(13, 50, 79));
 
         jLabel8.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("Fourth Module");
+        jLabel8.setText("Outstanding Fee");
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -334,7 +338,7 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 266, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 269, Short.MAX_VALUE)
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -370,7 +374,7 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
         jPanel3Layout.setVerticalGroup(
@@ -388,18 +392,19 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(102, 102, 102));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel14.setText("PAYMENT");
+        jLabel14.setText("OUTSTANDING FEE");
+        jLabel14.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "INVOICE NO.", "ISSUE DATE", "UNIT NO.", "FEE TYPE", "TOTAL PRICE (RM)", "PAYMENT DATE", "ACTION"
+                "NO.", "UNIT NO.", "INVOICE NO.", "ISSUED DATE", "OUTSTANDING FEE (RM)", "ACTION"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -424,20 +429,15 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
             }
         });
 
-        statusCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PENDING", "PAID" }));
-        statusCB.addActionListener(new java.awt.event.ActionListener() {
+        jLabel15.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel15.setText("MONTH/YEAR:");
+
+        monthNYearCB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                statusCBActionPerformed(evt);
+                monthNYearCBActionPerformed(evt);
             }
         });
-
-        jLabel13.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel13.setText("STATUS:");
-
-        jLabel15.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel15.setText("Please select the invoice to make payment.");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -445,52 +445,42 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(statusCB, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(93, 93, 93)
-                                .addComponent(jLabel16)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(clearbt)))
-                        .addContainerGap(25, Short.MAX_VALUE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 960, Short.MAX_VALUE)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(monthNYearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel16)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(clearbt))
+                    .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel6Layout.createSequentialGroup()
+                            .addGap(7, 7, 7)
+                            .addComponent(jLabel16))
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(clearbt)))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel13)
-                        .addGap(0, 1, Short.MAX_VALUE)
-                        .addComponent(statusCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(clearbt))
-                                .addGroup(jPanel6Layout.createSequentialGroup()
-                                    .addGap(7, 7, 7)
-                                    .addComponent(jLabel16)))
-                            .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING))))
+                        .addComponent(jLabel15)
+                        .addGap(0, 0, 0)
+                        .addComponent(monthNYearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -522,8 +512,13 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel2MouseEntered
 
     private void clearbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearbtActionPerformed
-        
+       
     }//GEN-LAST:event_clearbtActionPerformed
+
+    private void monthNYearCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthNYearCBActionPerformed
+        // TODO add your handling code here:
+        setTable();
+    }//GEN-LAST:event_monthNYearCBActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
@@ -531,68 +526,58 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
         int column = jTable1.getSelectedColumn();
         int row = jTable1.getSelectedRow();
         
-        if (column == 6) {
-            String invoiceNo = String.valueOf(tableModel.getValueAt(row, 0));
-            String unitNo = String.valueOf(tableModel.getValueAt(row, 2));
-            AccountExecutiveMakePayment ae = new AccountExecutiveMakePayment(invoiceNo, unitNo);
-            ae.setVisible(true);
-            dispose();
+        if (column == 5) {
+            String invoiceNo = String.valueOf(tableModel.getValueAt(row, 2));
+            new AccountExecutiveLatePaymentFee(invoiceNo).setVisible(true);
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
-    private void statusCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusCBActionPerformed
-        // TODO add your handling code here:
-        setTable();
-    }//GEN-LAST:event_statusCBActionPerformed
-
-    private void setTable() {
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        tableModel.setRowCount(0);
-        String status = String.valueOf(statusCB.getSelectedItem());
-        if (status.equals("PENDING")) {
-            AccountExecutive ae = new AccountExecutive();
-            List<String> pendingPaymentList = ae.extractAllPayment(status);
-            String[] pendingPaymentArray = new String[pendingPaymentList.size()];
-            pendingPaymentList.toArray(pendingPaymentArray);
-
-            for (int i=0; i<pendingPaymentList.size(); i++) {
-                String[] pendingPaymentDetails = pendingPaymentArray[i].split(";");
-                String invoiceNo = pendingPaymentDetails[0];
-                String issueDate = pendingPaymentDetails[1];
-                String unitNo = pendingPaymentDetails[2];
-                String feeType = pendingPaymentDetails[3];
-                String totalPrice = pendingPaymentDetails[4];
-
-                String tbData[] = {invoiceNo, issueDate, unitNo, feeType, totalPrice, 
-                    "-", "MAKE PAYMENT"};
-                tableModel.addRow(tbData);
-            }
-        } else if (status.equals("PAID")) {
-            AccountExecutive ae = new AccountExecutive();
-            List<String> paidPaymentList = ae.extractAllPayment(status);
-            String[] paidPaymentArray = new String[paidPaymentList.size()];
-            paidPaymentList.toArray(paidPaymentArray);
-
-            for (int i=0; i<paidPaymentList.size(); i++) {
-                String[] pendingPaymentDetails = paidPaymentArray[i].split(";");
-                String invoiceNo = pendingPaymentDetails[0];
-                String issueDate = pendingPaymentDetails[1];
-                String unitNo = pendingPaymentDetails[2];
-                String feeType = pendingPaymentDetails[3];
-                String totalPrice = pendingPaymentDetails[4];
-                String paymentDate = pendingPaymentDetails[5];
-
-                String tbData[] = {invoiceNo, issueDate, unitNo, feeType, totalPrice, 
-                    paymentDate, "ISSUE RECEIPT"};
-                tableModel.addRow(tbData);
-            }
-        }
-    }
-    
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
+
+    private void setMonthYearCB() {
+        try {
+            AccountExecutive ae = new AccountExecutive();
+            List<String> monthNYear = ae.getAllMonthYearInvoice();
+            for (int i=0; i<monthNYear.size(); i++) {
+                monthNYearCB.addItem(monthNYear.get(i));
+            } monthNYearCB.setSelectedIndex(monthNYear.size() -1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     
+    private void setTable() {
+        try {
+            DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+            tableModel.setRowCount(0);
+            
+            String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
+            String cMonthYear = monthYear.substring(0, monthYear.indexOf("/")) 
+                    + monthYear.substring(monthYear.indexOf("/") + 1);
+            AccountExecutive ae = new AccountExecutive();
+            List<String> pendingPaymentDetails = ae.calculateTotalOutstanding(cMonthYear);
+            
+            String[] pendingPaymentArray = new String[pendingPaymentDetails.size()];
+            pendingPaymentDetails.toArray(pendingPaymentArray);
+            
+            for (int i=0; i<pendingPaymentDetails.size(); i++) {
+                String[] paymentData = pendingPaymentArray[i].split(";");
+                String unitNo = paymentData[0];
+                String invoiceNo = paymentData[1];
+                String issuedDate = paymentData[2];
+                String totalOutstanding = paymentData[3];
+                
+                String tbData[] = {String.valueOf(i+1), unitNo, invoiceNo,
+                    issuedDate, totalOutstanding, "CHARGE LATE PAYMENT"};
+                tableModel.addRow(tbData);
+            } 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -610,13 +595,13 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutivePayment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AccountExecutiveIssueOutstandingFee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutivePayment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AccountExecutiveIssueOutstandingFee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutivePayment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AccountExecutiveIssueOutstandingFee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutivePayment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AccountExecutiveIssueOutstandingFee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -878,7 +863,7 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutivePayment().setVisible(true);
+                new AccountExecutiveIssueOutstandingFee().setVisible(true);
             }
         });
     }
@@ -889,7 +874,6 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
@@ -916,6 +900,6 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JComboBox<String> statusCB;
+    private javax.swing.JComboBox<String> monthNYearCB;
     // End of variables declaration//GEN-END:variables
 }

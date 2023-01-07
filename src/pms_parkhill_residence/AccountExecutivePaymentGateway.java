@@ -5,6 +5,8 @@
 package pms_parkhill_residence;
 
 import java.awt.Toolkit;
+import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,11 +20,11 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
     public AccountExecutivePaymentGateway(String invoiceNo, String unitNo, String total) {
         initComponents();
         setWindowIcon();
-        setPayerCB();
         this.invoiceNo = invoiceNo;
         this.unitNo = unitNo;
         this.total = total;
         setFixData();
+        setPayerCB();
     }
 
     /**
@@ -48,7 +50,6 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
         cancelBT = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel14 = new javax.swing.JLabel();
-        warningMessage = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
@@ -61,7 +62,8 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
         identificationNOTF = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        userIDTF1 = new javax.swing.JTextField();
+        phoneNoTF = new javax.swing.JTextField();
+        warningLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -165,10 +167,6 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
         jLabel14.setForeground(new java.awt.Color(153, 153, 153));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel14.setText("Payment Details:");
-
-        warningMessage.setForeground(new java.awt.Color(255, 0, 51));
-        warningMessage.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        warningMessage.setPreferredSize(new java.awt.Dimension(138, 17));
 
         jPanel1.setBackground(new java.awt.Color(239, 239, 239));
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -283,12 +281,16 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(102, 102, 102));
         jLabel8.setText("Phone NO:");
 
-        userIDTF1.setEnabled(false);
-        userIDTF1.addActionListener(new java.awt.event.ActionListener() {
+        phoneNoTF.setEnabled(false);
+        phoneNoTF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                userIDTF1ActionPerformed(evt);
+                phoneNoTFActionPerformed(evt);
             }
         });
+
+        warningLabel.setForeground(new java.awt.Color(255, 0, 0));
+        warningLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        warningLabel.setPreferredSize(new java.awt.Dimension(152, 16));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -299,7 +301,7 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(51, 51, 51)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(warningMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(warningLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(jPanel6Layout.createSequentialGroup()
@@ -310,7 +312,7 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
                                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel8)
                                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                                .addComponent(userIDTF1, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                                                .addComponent(phoneNoTF, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                                                 .addGap(33, 33, 33))))
                                     .addGroup(jPanel6Layout.createSequentialGroup()
                                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -332,13 +334,13 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
                         .addComponent(cancelBT, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(payBT, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(warningMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(13, 13, 13)
+                .addComponent(warningLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel14)
@@ -364,7 +366,7 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(userIDTF1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(phoneNoTF, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(30, 30, 30)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -384,8 +386,8 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -414,6 +416,7 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
     private void cancelBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBTActionPerformed
         // TODO add your handling code here:
         dispose();
+        new AccountExecutiveMakePayment(invoiceNo, unitNo).setVisible(true);
     }//GEN-LAST:event_cancelBTActionPerformed
 
     private void emailTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailTFKeyTyped
@@ -421,6 +424,25 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
     }//GEN-LAST:event_emailTFKeyTyped
 
     private void payBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payBTActionPerformed
+        if (!payerCB.getSelectedItem().equals("-Please Select-")) {
+            warningLabel.setText("");
+            int result = JOptionPane.showConfirmDialog(null,"Are you sure to proceed "
+                    + "with this payment?",
+                    "PAYMENT",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
+
+            if(result == JOptionPane.YES_OPTION){
+                AccountExecutive ae = new AccountExecutive();
+                ae.storePayment(invoiceNo, userIDTF.getText());
+                JOptionPane.showMessageDialog (null, "Payment has been made successfully!", 
+                    "PAYMENT", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+                new AccountExecutivePayment().setVisible(true);
+            }   
+        } else {
+            warningLabel.setText("Please select an active payer!");
+        }
         
     }//GEN-LAST:event_payBTActionPerformed
 
@@ -434,12 +456,31 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
 
     private void payerCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payerCBActionPerformed
         // TODO add your handling code here:
+        if (!payerCB.getSelectedItem().equals("-Please Select-")) {
+            AccountExecutive ae = new AccountExecutive();
+            List<String> userFullDetails =ae.extractUnitUsersDetails
+                (String.valueOf(payerCB.getSelectedItem()));
+            String[] userDetails = new String[userFullDetails.size()];
+            userFullDetails.toArray(userDetails);
+            
+            for (int i=0; i<userFullDetails.size(); i++) {
+                String[] user = userDetails[i].split(";");
+                String userID = user[0];
+                String phoneNo = user[1];
+                String email = user[2];
+                String identificationNo = user[3];
+                userIDTF.setText(userID.toUpperCase());
+                phoneNoTF.setText(phoneNo);
+                emailTF.setText(email.toUpperCase());
+                identificationNOTF.setText(identificationNo);
+            }
+        }
         
     }//GEN-LAST:event_payerCBActionPerformed
 
-    private void userIDTF1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userIDTF1ActionPerformed
+    private void phoneNoTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phoneNoTFActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_userIDTF1ActionPerformed
+    }//GEN-LAST:event_phoneNoTFActionPerformed
 
     private void setFixData() {
         invoiceNoLabel.setText(this.invoiceNo);
@@ -447,11 +488,15 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
         String period = this.invoiceNo.substring(this.invoiceNo.length()-6);
         String cPeriod = period.substring(0, 2) +"/"+ period.substring(2);
         periodLabel.setText(cPeriod); totalLabel.setText("Total: RM" + total);
-        
    }
     
     private void setPayerCB() {
-        
+        AccountExecutive ae = new AccountExecutive();
+        List<String> userName = ae.extractUnitUsers(unitNo);
+        payerCB.addItem("-Please Select-");
+        for (String userName1 : userName) {
+            payerCB.addItem(userName1);
+        }
     }
     
     private void setWindowIcon() {
@@ -772,10 +817,10 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
     private javax.swing.JButton payBT;
     private javax.swing.JComboBox<String> payerCB;
     private javax.swing.JLabel periodLabel;
+    private javax.swing.JTextField phoneNoTF;
     private javax.swing.JLabel totalLabel;
     private javax.swing.JLabel unitNoLabel;
     private javax.swing.JTextField userIDTF;
-    private javax.swing.JTextField userIDTF1;
-    private javax.swing.JLabel warningMessage;
+    private javax.swing.JLabel warningLabel;
     // End of variables declaration//GEN-END:variables
 }

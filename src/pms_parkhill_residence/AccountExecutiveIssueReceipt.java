@@ -4,20 +4,27 @@
  */
 package pms_parkhill_residence;
 
+import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author wongj
  */
-public class AccountExecutiveOutstandingFee extends javax.swing.JFrame {
+public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
      */
-    public AccountExecutiveOutstandingFee() {
+    public AccountExecutiveIssueReceipt() {
         initComponents();
         setWindowIcon();
+        setTable();
     }
 
     /**
@@ -59,9 +66,10 @@ public class AccountExecutiveOutstandingFee extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         clearbt = new javax.swing.JButton();
-        jPanel15 = new javax.swing.JPanel();
-        jLabel17 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        statusCB = new javax.swing.JComboBox<>();
+        jLabel13 = new javax.swing.JLabel();
+        issueAllPanel = new javax.swing.JPanel();
+        jLabel20 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -154,7 +162,7 @@ public class AccountExecutiveOutstandingFee extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Outstanding Fee");
+        jLabel6.setText("Issue Receipt");
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -331,7 +339,7 @@ public class AccountExecutiveOutstandingFee extends javax.swing.JFrame {
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 260, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 266, Short.MAX_VALUE)
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -367,7 +375,7 @@ public class AccountExecutiveOutstandingFee extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
         jPanel3Layout.setVerticalGroup(
@@ -385,19 +393,29 @@ public class AccountExecutiveOutstandingFee extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(102, 102, 102));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel14.setText("OUTSTANDING FEE");
+        jLabel14.setText("ISSUE RECEIPT");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "INVOICE NO.", "UNIT NO.", "FEE TYPE", "TOTAL PRICE (RM)", "PAYMENT DATE", "PAID BY", "ACTION"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel16.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
@@ -411,25 +429,50 @@ public class AccountExecutiveOutstandingFee extends javax.swing.JFrame {
             }
         });
 
-        jPanel15.setBackground(new java.awt.Color(13, 50, 79));
-        jPanel15.setToolTipText("");
+        statusCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PENDING", "ISSUED" }));
+        statusCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                statusCBActionPerformed(evt);
+            }
+        });
 
-        jLabel17.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel17.setText("ISSUE STATEMENT TO ALL");
+        jLabel13.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel13.setText("STATUS:");
 
-        javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
-        jPanel15.setLayout(jPanel15Layout);
-        jPanel15Layout.setHorizontalGroup(
-            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+        issueAllPanel.setBackground(new java.awt.Color(13, 50, 79));
+        issueAllPanel.setToolTipText("");
+        issueAllPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                issueAllPanelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                issueAllPanelMouseEntered(evt);
+            }
+        });
+
+        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel20.setText("ISSUE TO ALL");
+        jLabel20.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel20MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel20MouseEntered(evt);
+            }
+        });
+
+        javax.swing.GroupLayout issueAllPanelLayout = new javax.swing.GroupLayout(issueAllPanel);
+        issueAllPanel.setLayout(issueAllPanelLayout);
+        issueAllPanelLayout.setHorizontalGroup(
+            issueAllPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel20, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
         );
-        jPanel15Layout.setVerticalGroup(
-            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+        issueAllPanelLayout.setVerticalGroup(
+            issueAllPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
         );
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -439,45 +482,47 @@ public class AccountExecutiveOutstandingFee extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(200, 200, 200)
+                                .addComponent(statusCB, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(274, 274, 274)
                                 .addComponent(jLabel16)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(clearbt)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(25, Short.MAX_VALUE))))
+                                .addComponent(issueAllPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(25, Short.MAX_VALUE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel6Layout.createSequentialGroup()
-                            .addGap(25, 25, 25)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel13)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(statusCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(clearbt))
                                 .addGroup(jPanel6Layout.createSequentialGroup()
                                     .addGap(7, 7, 7)
-                                    .addComponent(jLabel16)))))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jLabel16)))
+                            .addComponent(issueAllPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(26, Short.MAX_VALUE))
@@ -512,9 +557,142 @@ public class AccountExecutiveOutstandingFee extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel2MouseEntered
 
     private void clearbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearbtActionPerformed
-
+        
     }//GEN-LAST:event_clearbtActionPerformed
 
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        if (statusCB.getSelectedItem() == "PENDING"){
+            
+            int result = JOptionPane.showConfirmDialog(null,"Are you sure to issue this receipt?",
+                        "ISSUE INVOICE",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
+
+            if(result == JOptionPane.YES_OPTION){
+                DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+                int column = jTable1.getSelectedColumn();
+                int row = jTable1.getSelectedRow();
+                List<String> receiptDetails = new ArrayList<>();
+
+                if (column == 6) {
+                    String invoiceNo = String.valueOf(tableModel.getValueAt(row, 0));
+                    String feeType = String.valueOf(tableModel.getValueAt(row, 2));
+                    receiptDetails.add(invoiceNo +";"+ feeType +";");
+                    AccountExecutive ae = new AccountExecutive();
+                    ae.issueReceipt(receiptDetails);
+                    setTable();
+                    JOptionPane.showMessageDialog (null, "Receipt has been issued!", 
+                                    "ISSUE RECEIPT", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void statusCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusCBActionPerformed
+        // TODO add your handling code here:
+        setTable();
+        if (statusCB.getSelectedItem() == "ISSUED") {
+            issueAllPanel.setBackground(Color.GRAY);
+        } else if (statusCB.getSelectedItem() == "PENDING") {
+            issueAllPanel.setBackground(new Color(13,50,79));
+        }
+    }//GEN-LAST:event_statusCBActionPerformed
+
+    private void jLabel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseClicked
+        // TODO add your handling code here:
+        if (statusCB.getSelectedItem() == "PENDING") {
+            issueAllReceipt();
+        }
+    }//GEN-LAST:event_jLabel20MouseClicked
+
+    private void jLabel20MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseEntered
+        // TODO add your handling code here:
+        jLabel20.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jLabel20MouseEntered
+
+    private void issueAllPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueAllPanelMouseClicked
+        // TODO add your handling code here:
+        issueAllReceipt();
+    }//GEN-LAST:event_issueAllPanelMouseClicked
+
+    private void issueAllPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueAllPanelMouseEntered
+        // TODO add your handling code here:
+        issueAllPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_issueAllPanelMouseEntered
+
+    private void setTable() {
+        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        tableModel.setRowCount(0);
+        String status = String.valueOf(statusCB.getSelectedItem());
+        if (status.equals("PENDING")) {
+            AccountExecutive ae = new AccountExecutive();
+            List<String> pendingReceiptList = ae.extractReceipt(status);
+            String[] pendingReceiptArray = new String[pendingReceiptList.size()];
+            pendingReceiptList.toArray(pendingReceiptArray);
+
+            for (int i=0; i<pendingReceiptList.size(); i++) {
+                String[] pendingReceiptDetails = pendingReceiptArray[i].split(";");
+                String invoiceNo = pendingReceiptDetails[0];
+                String unitNo = pendingReceiptDetails[1];
+                String feeType = pendingReceiptDetails[2];
+                String totalPrice = pendingReceiptDetails[3];
+                String paymentDate = pendingReceiptDetails[4];
+                String paidBy = pendingReceiptDetails[5];
+
+                String tbData[] = {invoiceNo, unitNo, feeType, totalPrice, 
+                    paymentDate, paidBy, "ISSUE RECEIPT"};
+                tableModel.addRow(tbData);
+            }
+        } else if (status.equals("ISSUED")) {
+            AccountExecutive ae = new AccountExecutive();
+            List<String> issuedReceiptList = ae.extractReceipt(status);
+            String[] issuedReceiptArray = new String[issuedReceiptList.size()];
+            issuedReceiptList.toArray(issuedReceiptArray);
+
+            for (int i=0; i<issuedReceiptList.size(); i++) {
+                String[] issuedReceiptDetails = issuedReceiptArray[i].split(";");
+                String invoiceNo = issuedReceiptDetails[0];
+                String unitNo = issuedReceiptDetails[1];
+                String feeType = issuedReceiptDetails[2];
+                String totalPrice = issuedReceiptDetails[3];
+                String paymentDate = issuedReceiptDetails[4];
+                String paidBy = issuedReceiptDetails[5];
+
+                String tbData[] = {invoiceNo, unitNo, feeType, totalPrice, 
+                    paymentDate, paidBy, "VIEW RECEIPT"};
+                tableModel.addRow(tbData);
+            }
+        }
+    }
+    
+    private void issueAllReceipt() {
+        if (statusCB.getSelectedItem() == "PENDING"){
+            
+            int result = JOptionPane.showConfirmDialog(null,"Are you sure to issue all receipts?",
+                        "ISSUE INVOICE",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
+
+            if(result == JOptionPane.YES_OPTION){
+                List<String> receiptDetails = new ArrayList<String>();
+                DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+
+                for (int i=0; i<tableModel.getRowCount(); i++) {
+                    String invoiceNo = String.valueOf(tableModel.getValueAt(i, 0));
+                    String feeType = String.valueOf(tableModel.getValueAt(i, 2));
+                    String cDetails = invoiceNo +";"+ feeType +";";
+                    receiptDetails.add(cDetails);
+                } 
+                    AccountExecutive ae = new AccountExecutive();
+                    ae.issueReceipt(receiptDetails);
+                    setTable();
+                    JOptionPane.showMessageDialog (null, "Receipts have been issued!", 
+                                    "ISSUE RECEIPT", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }
+    
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
@@ -536,13 +714,13 @@ public class AccountExecutiveOutstandingFee extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutiveOutstandingFee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AccountExecutiveIssueReceipt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutiveOutstandingFee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AccountExecutiveIssueReceipt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutiveOutstandingFee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AccountExecutiveIssueReceipt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutiveOutstandingFee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AccountExecutiveIssueReceipt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -1060,22 +1238,27 @@ public class AccountExecutiveOutstandingFee extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutiveOutstandingFee().setVisible(true);
+                new AccountExecutiveIssueReceipt().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clearbt;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JPanel issueAllPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1090,8 +1273,11 @@ public class AccountExecutiveOutstandingFee extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
@@ -1099,5 +1285,6 @@ public class AccountExecutiveOutstandingFee extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JComboBox<String> statusCB;
     // End of variables declaration//GEN-END:variables
 }
