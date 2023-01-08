@@ -4,6 +4,7 @@
  */
 package pms_parkhill_residence;
 
+import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -34,24 +35,24 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel7 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        jPanel8 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        jPanel10 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
+        dashboardPanel = new javax.swing.JPanel();
+        dashboardLabel = new javax.swing.JLabel();
+        issueInvoicePanel = new javax.swing.JPanel();
+        issueInvoiceLabel = new javax.swing.JLabel();
+        paymentPanel = new javax.swing.JPanel();
+        paymentLabel = new javax.swing.JLabel();
+        issueReceiptPanel = new javax.swing.JPanel();
+        issueReceiptLabel = new javax.swing.JLabel();
+        outstandingFeePanel = new javax.swing.JPanel();
+        outstandingFeeLabel = new javax.swing.JLabel();
         jPanel11 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        jPanel12 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        jPanel13 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        jPanel14 = new javax.swing.JPanel();
-        jLabel12 = new javax.swing.JLabel();
+        logoutPanel = new javax.swing.JPanel();
+        logoutLabel = new javax.swing.JLabel();
+        viewProfilePanel = new javax.swing.JPanel();
+        viewProfileLabel = new javax.swing.JLabel();
+        issueStatementPanel = new javax.swing.JPanel();
+        issueStatementLabel = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -78,124 +79,204 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/parkhillLogo.png"))); // NOI18N
 
-        jPanel2.setBackground(new java.awt.Color(13, 24, 42));
-        jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
+        dashboardPanel.setBackground(new java.awt.Color(13, 24, 42));
+        dashboardPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dashboardPanelMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jPanel2MouseEntered(evt);
+                dashboardPanelMouseEntered(evt);
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Dashboard");
+        dashboardLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        dashboardLabel.setForeground(new java.awt.Color(255, 255, 255));
+        dashboardLabel.setText("Dashboard");
+        dashboardLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dashboardLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                dashboardLabelMouseEntered(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout dashboardPanelLayout = new javax.swing.GroupLayout(dashboardPanel);
+        dashboardPanel.setLayout(dashboardPanelLayout);
+        dashboardPanelLayout.setHorizontalGroup(
+            dashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dashboardPanelLayout.createSequentialGroup()
                 .addContainerGap(32, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(dashboardLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(122, 122, 122))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        dashboardPanelLayout.setVerticalGroup(
+            dashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dashboardPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(dashboardLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel7.setBackground(new java.awt.Color(13, 24, 42));
+        issueInvoicePanel.setBackground(new java.awt.Color(13, 24, 42));
+        issueInvoicePanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                issueInvoicePanelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                issueInvoicePanelMouseEntered(evt);
+            }
+        });
 
-        jLabel4.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Issue Invoice");
+        issueInvoiceLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        issueInvoiceLabel.setForeground(new java.awt.Color(255, 255, 255));
+        issueInvoiceLabel.setText("Issue Invoice");
+        issueInvoiceLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                issueInvoiceLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                issueInvoiceLabelMouseEntered(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+        javax.swing.GroupLayout issueInvoicePanelLayout = new javax.swing.GroupLayout(issueInvoicePanel);
+        issueInvoicePanel.setLayout(issueInvoicePanelLayout);
+        issueInvoicePanelLayout.setHorizontalGroup(
+            issueInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, issueInvoicePanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(issueInvoiceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(75, 75, 75))
         );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
+        issueInvoicePanelLayout.setVerticalGroup(
+            issueInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(issueInvoicePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel4)
+                .addComponent(issueInvoiceLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel8.setBackground(new java.awt.Color(13, 50, 79));
+        paymentPanel.setBackground(new java.awt.Color(13, 50, 79));
+        paymentPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                paymentPanelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                paymentPanelMouseEntered(evt);
+            }
+        });
 
-        jLabel5.setBackground(new java.awt.Color(13, 24, 42));
-        jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Payment");
+        paymentLabel.setBackground(new java.awt.Color(13, 24, 42));
+        paymentLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        paymentLabel.setForeground(new java.awt.Color(255, 255, 255));
+        paymentLabel.setText("Payment");
+        paymentLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                paymentLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                paymentLabelMouseEntered(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+        javax.swing.GroupLayout paymentPanelLayout = new javax.swing.GroupLayout(paymentPanel);
+        paymentPanel.setLayout(paymentPanelLayout);
+        paymentPanelLayout.setHorizontalGroup(
+            paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, paymentPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(paymentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(75, 75, 75))
         );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
+        paymentPanelLayout.setVerticalGroup(
+            paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(paymentPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel5)
+                .addComponent(paymentLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel9.setBackground(new java.awt.Color(13, 24, 42));
+        issueReceiptPanel.setBackground(new java.awt.Color(13, 24, 42));
+        issueReceiptPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                issueReceiptPanelMouseDragged(evt);
+            }
+        });
+        issueReceiptPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                issueReceiptPanelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                issueReceiptPanelMouseEntered(evt);
+            }
+        });
 
-        jLabel6.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Issue Receipt");
+        issueReceiptLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        issueReceiptLabel.setForeground(new java.awt.Color(255, 255, 255));
+        issueReceiptLabel.setText("Issue Receipt");
+        issueReceiptLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                issueReceiptLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                issueReceiptLabelMouseEntered(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+        javax.swing.GroupLayout issueReceiptPanelLayout = new javax.swing.GroupLayout(issueReceiptPanel);
+        issueReceiptPanel.setLayout(issueReceiptPanelLayout);
+        issueReceiptPanelLayout.setHorizontalGroup(
+            issueReceiptPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, issueReceiptPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(issueReceiptLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(75, 75, 75))
         );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
+        issueReceiptPanelLayout.setVerticalGroup(
+            issueReceiptPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(issueReceiptPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel6)
+                .addComponent(issueReceiptLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel10.setBackground(new java.awt.Color(13, 24, 42));
+        outstandingFeePanel.setBackground(new java.awt.Color(13, 24, 42));
+        outstandingFeePanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                outstandingFeePanelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                outstandingFeePanelMouseEntered(evt);
+            }
+        });
 
-        jLabel8.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("Outstanding Fee");
+        outstandingFeeLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        outstandingFeeLabel.setForeground(new java.awt.Color(255, 255, 255));
+        outstandingFeeLabel.setText("Outstanding Fee");
+        outstandingFeeLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                outstandingFeeLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                outstandingFeeLabelMouseEntered(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+        javax.swing.GroupLayout outstandingFeePanelLayout = new javax.swing.GroupLayout(outstandingFeePanel);
+        outstandingFeePanel.setLayout(outstandingFeePanelLayout);
+        outstandingFeePanelLayout.setHorizontalGroup(
+            outstandingFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, outstandingFeePanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(outstandingFeeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(75, 75, 75))
         );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
+        outstandingFeePanelLayout.setVerticalGroup(
+            outstandingFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(outstandingFeePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel8)
+                .addComponent(outstandingFeeLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -223,75 +304,119 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel12.setBackground(new java.awt.Color(13, 24, 42));
+        logoutPanel.setBackground(new java.awt.Color(13, 24, 42));
+        logoutPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutPanelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logoutPanelMouseEntered(evt);
+            }
+        });
 
-        jLabel10.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
-        jLabel10.setText("LOGOUT");
+        logoutLabel.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        logoutLabel.setForeground(new java.awt.Color(255, 255, 255));
+        logoutLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
+        logoutLabel.setText("LOGOUT");
+        logoutLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logoutLabelMouseEntered(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
-        jPanel12.setLayout(jPanel12Layout);
-        jPanel12Layout.setHorizontalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
+        javax.swing.GroupLayout logoutPanelLayout = new javax.swing.GroupLayout(logoutPanel);
+        logoutPanel.setLayout(logoutPanelLayout);
+        logoutPanelLayout.setHorizontalGroup(
+            logoutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, logoutPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(logoutLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(75, 75, 75))
         );
-        jPanel12Layout.setVerticalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel12Layout.createSequentialGroup()
+        logoutPanelLayout.setVerticalGroup(
+            logoutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(logoutPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel10)
+                .addComponent(logoutLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel13.setBackground(new java.awt.Color(13, 24, 42));
+        viewProfilePanel.setBackground(new java.awt.Color(13, 24, 42));
+        viewProfilePanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                viewProfilePanelMouseEntered(evt);
+            }
+        });
 
-        jLabel11.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
-        jLabel11.setText("VIEW PROFILE");
+        viewProfileLabel.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        viewProfileLabel.setForeground(new java.awt.Color(255, 255, 255));
+        viewProfileLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
+        viewProfileLabel.setText("VIEW PROFILE");
+        viewProfileLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                viewProfileLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                viewProfileLabelMouseEntered(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
-        jPanel13.setLayout(jPanel13Layout);
-        jPanel13Layout.setHorizontalGroup(
-            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
+        javax.swing.GroupLayout viewProfilePanelLayout = new javax.swing.GroupLayout(viewProfilePanel);
+        viewProfilePanel.setLayout(viewProfilePanelLayout);
+        viewProfilePanelLayout.setHorizontalGroup(
+            viewProfilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, viewProfilePanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(viewProfileLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(75, 75, 75))
         );
-        jPanel13Layout.setVerticalGroup(
-            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel13Layout.createSequentialGroup()
+        viewProfilePanelLayout.setVerticalGroup(
+            viewProfilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(viewProfilePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel11)
+                .addComponent(viewProfileLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel14.setBackground(new java.awt.Color(13, 24, 42));
+        issueStatementPanel.setBackground(new java.awt.Color(13, 24, 42));
+        issueStatementPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                issueStatementPanelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                issueStatementPanelMouseEntered(evt);
+            }
+        });
 
-        jLabel12.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
-        jLabel12.setText("LOGOUT");
+        issueStatementLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        issueStatementLabel.setForeground(new java.awt.Color(255, 255, 255));
+        issueStatementLabel.setText("Issue Statement");
+        issueStatementLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                issueStatementLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                issueStatementLabelMouseEntered(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
-        jPanel14.setLayout(jPanel14Layout);
-        jPanel14Layout.setHorizontalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel14Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75))
+        javax.swing.GroupLayout issueStatementPanelLayout = new javax.swing.GroupLayout(issueStatementPanel);
+        issueStatementPanel.setLayout(issueStatementPanelLayout);
+        issueStatementPanelLayout.setHorizontalGroup(
+            issueStatementPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(issueStatementPanelLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(issueStatementLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel14Layout.setVerticalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel14Layout.createSequentialGroup()
+        issueStatementPanelLayout.setVerticalGroup(
+            issueStatementPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(issueStatementPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel12)
+                .addComponent(issueStatementLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -300,24 +425,25 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(80, 80, 80)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(10, 10, 10)
-                    .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addContainerGap()))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(80, 80, 80)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(dashboardPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(issueInvoicePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(paymentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(issueReceiptPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(outstandingFeePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(viewProfilePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(issueStatementPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(logoutPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -325,27 +451,24 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(dashboardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(issueInvoicePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(paymentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(issueReceiptPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 266, Short.MAX_VALUE)
+                .addComponent(outstandingFeePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(issueStatementPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(viewProfilePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(logoutPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(9, 9, 9))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                    .addContainerGap(681, Short.MAX_VALUE)
-                    .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(11, 11, 11)))
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
@@ -370,7 +493,7 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
         jPanel3Layout.setVerticalGroup(
@@ -459,7 +582,7 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
                                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(clearbt)))
-                        .addContainerGap(25, Short.MAX_VALUE))
+                        .addContainerGap(19, Short.MAX_VALUE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -506,20 +629,16 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jPanel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPanel2MouseEntered
 
     private void clearbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearbtActionPerformed
         
@@ -544,6 +663,174 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
         // TODO add your handling code here:
         setTable();
     }//GEN-LAST:event_statusCBActionPerformed
+
+    private void dashboardLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AccountExecutiveDashboard().setVisible(true);
+    }//GEN-LAST:event_dashboardLabelMouseClicked
+
+    private void dashboardLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseEntered
+        // TODO add your handling code here:
+        dashboardLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_dashboardLabelMouseEntered
+
+    private void dashboardPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanelMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AccountExecutiveDashboard().setVisible(true);
+    }//GEN-LAST:event_dashboardPanelMouseClicked
+
+    private void dashboardPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanelMouseEntered
+        // TODO add your handling code here:
+        dashboardPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_dashboardPanelMouseEntered
+
+    private void issueInvoiceLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoiceLabelMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AccountExecutiveIssueInvoice().setVisible(true);
+    }//GEN-LAST:event_issueInvoiceLabelMouseClicked
+
+    private void issueInvoiceLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoiceLabelMouseEntered
+        // TODO add your handling code here:
+        issueInvoiceLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_issueInvoiceLabelMouseEntered
+
+    private void issueInvoicePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoicePanelMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AccountExecutiveIssueInvoice().setVisible(true);
+    }//GEN-LAST:event_issueInvoicePanelMouseClicked
+
+    private void issueInvoicePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoicePanelMouseEntered
+        // TODO add your handling code here:
+        issueInvoicePanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_issueInvoicePanelMouseEntered
+
+    private void paymentLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentLabelMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_paymentLabelMouseClicked
+
+    private void paymentLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentLabelMouseEntered
+        // TODO add your handling code here:
+        paymentLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_paymentLabelMouseEntered
+
+    private void paymentPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentPanelMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_paymentPanelMouseClicked
+
+    private void paymentPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentPanelMouseEntered
+        // TODO add your handling code here:
+        paymentPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_paymentPanelMouseEntered
+
+    private void issueReceiptLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptLabelMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AccountExecutiveIssueReceipt().setVisible(true);
+    }//GEN-LAST:event_issueReceiptLabelMouseClicked
+
+    private void issueReceiptLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptLabelMouseEntered
+        // TODO add your handling code here:
+        issueReceiptLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_issueReceiptLabelMouseEntered
+
+    private void issueReceiptPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptPanelMouseDragged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_issueReceiptPanelMouseDragged
+
+    private void issueReceiptPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptPanelMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AccountExecutiveIssueReceipt().setVisible(true);
+    }//GEN-LAST:event_issueReceiptPanelMouseClicked
+
+    private void issueReceiptPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptPanelMouseEntered
+        // TODO add your handling code here:
+        issueReceiptPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_issueReceiptPanelMouseEntered
+
+    private void outstandingFeeLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeeLabelMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AccountExecutiveIssueOutstandingFee().setVisible(true);
+    }//GEN-LAST:event_outstandingFeeLabelMouseClicked
+
+    private void outstandingFeeLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeeLabelMouseEntered
+        // TODO add your handling code here:
+        outstandingFeeLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_outstandingFeeLabelMouseEntered
+
+    private void outstandingFeePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeePanelMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AccountExecutiveIssueOutstandingFee().setVisible(true);
+    }//GEN-LAST:event_outstandingFeePanelMouseClicked
+
+    private void outstandingFeePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeePanelMouseEntered
+        // TODO add your handling code here:
+        outstandingFeePanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_outstandingFeePanelMouseEntered
+
+    private void logoutLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabelMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new HomePage().setVisible(true);
+    }//GEN-LAST:event_logoutLabelMouseClicked
+
+    private void logoutLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabelMouseEntered
+        // TODO add your handling code here:
+        logoutLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_logoutLabelMouseEntered
+
+    private void logoutPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutPanelMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new HomePage().setVisible(true);
+    }//GEN-LAST:event_logoutPanelMouseClicked
+
+    private void logoutPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutPanelMouseEntered
+        // TODO add your handling code here:
+        logoutPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_logoutPanelMouseEntered
+
+    private void viewProfileLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileLabelMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_viewProfileLabelMouseClicked
+
+    private void viewProfileLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileLabelMouseEntered
+        // TODO add your handling code here:
+        viewProfileLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_viewProfileLabelMouseEntered
+
+    private void viewProfilePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfilePanelMouseEntered
+        // TODO add your handling code here:
+        viewProfilePanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_viewProfilePanelMouseEntered
+
+    private void issueStatementLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementLabelMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AccountExecutiveIssueStatement().setVisible(true);
+    }//GEN-LAST:event_issueStatementLabelMouseClicked
+
+    private void issueStatementLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementLabelMouseEntered
+        // TODO add your handling code here:
+        issueStatementLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_issueStatementLabelMouseEntered
+
+    private void issueStatementPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementPanelMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AccountExecutiveIssueStatement().setVisible(true);
+    }//GEN-LAST:event_issueStatementPanelMouseClicked
+
+    private void issueStatementPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementPanelMouseEntered
+        // TODO add your handling code here:
+        issueStatementPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_issueStatementPanelMouseEntered
 
     private void setTable() {
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
@@ -885,37 +1172,37 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clearbt;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel dashboardLabel;
+    private javax.swing.JPanel dashboardPanel;
+    private javax.swing.JLabel issueInvoiceLabel;
+    private javax.swing.JPanel issueInvoicePanel;
+    private javax.swing.JLabel issueReceiptLabel;
+    private javax.swing.JPanel issueReceiptPanel;
+    private javax.swing.JLabel issueStatementLabel;
+    private javax.swing.JPanel issueStatementPanel;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel14;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel logoutLabel;
+    private javax.swing.JPanel logoutPanel;
+    private javax.swing.JLabel outstandingFeeLabel;
+    private javax.swing.JPanel outstandingFeePanel;
+    private javax.swing.JLabel paymentLabel;
+    private javax.swing.JPanel paymentPanel;
     private javax.swing.JComboBox<String> statusCB;
+    private javax.swing.JLabel viewProfileLabel;
+    private javax.swing.JPanel viewProfilePanel;
     // End of variables declaration//GEN-END:variables
 }

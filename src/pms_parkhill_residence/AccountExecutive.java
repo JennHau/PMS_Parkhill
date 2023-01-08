@@ -611,7 +611,8 @@ public class AccountExecutive extends Users{
             } String cDetials = tUnitNo +";"+ tInvoiceNo +";"+ tIssuedDate +";"+
                     String.valueOf(totalPrice) + ";";
             availablePendingPayment.add(cDetials);
-        } return availablePendingPayment;
+        } 
+        return availablePendingPayment;
     }
     
     public List<String> getAllMonthYearInvoice() {
