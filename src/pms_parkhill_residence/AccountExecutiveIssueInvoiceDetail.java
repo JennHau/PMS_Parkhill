@@ -192,7 +192,7 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("Fourth Module");
+        jLabel8.setText("Oustanding Fee");
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -710,7 +710,7 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                         AccountExecutive ae = new AccountExecutive();
                         ae.issueInvoice(invoiceDetails);
                         setTable();
-                        JOptionPane.showMessageDialog (null, "Invoices have been issued!", 
+                        JOptionPane.showMessageDialog (null, "Invoice haS been issued!", 
                                         "ISSUE INVOICE", JOptionPane.INFORMATION_MESSAGE);
                     }
             }

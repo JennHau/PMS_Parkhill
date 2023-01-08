@@ -634,6 +634,38 @@ public class AccountExecutive extends Users{
         return availableMonthYear;
     }
     
+    public List<String> getAllMonthYearStatement() {
+        List<String> monthNYear = new ArrayList<String>();
+        String todayDate = todayDate();
+        
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd/MM/yyyy") ;
+        LocalDate ld = LocalDate.parse(todayDate, f);
+        int m = ld.getMonthValue();
+        int y = ld.getYear() ;
+        
+        int rm = 11;
+        int ry = 2022;
+        int tempM = rm;
+        for (int i=ry; i<(y+1); i++) {
+            for (int j=1; j<13; j++) {
+                if (i < y) {
+                    if (tempM == j) {
+                        monthNYear.add(tempM +"/"+ i);
+                        tempM++;
+                        if (tempM > 12) {
+                            tempM = 1;
+                        }
+                    }
+                } else {
+                    if (tempM < m) {
+                        monthNYear.add(tempM +"/"+ i);
+                        tempM++;
+                    }
+                }
+            }
+        } return monthNYear;
+    }
+    
     public String getInvoiceLatePayment(String invoiceNo) {
         String latePaymentFee = "";
         try{
@@ -687,7 +719,7 @@ public class AccountExecutive extends Users{
                     String nInvoiceNo = invoiceDetails[0];
                     String nUnitNo = invoiceDetails[1];
                     String nFeeType = invoiceDetails[2];
-                    String nPeriod = invoiceDetails[9];
+                    String nPeriod = invoiceDetails[8];
                     if (nInvoiceNo.equals(invoiceNo) &&
                             nFeeType.equals("Late Payment Charges")) {
                         
@@ -723,6 +755,129 @@ public class AccountExecutive extends Users{
                 fw.flush(); bw.flush(); fw.close(); bw.close();
             } 
             
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public List<String> extractAllStatementUnit(String status, String monthYear) {
+        List<String> availableUnit = new ArrayList<>();
+        List<String> availableStatements = new ArrayList<>();
+        try {
+            if (status.equals("PENDING")) {
+                FileReader fr = new FileReader("invoices.txt");
+                BufferedReader br = new BufferedReader(fr);
+                
+                br.readLine(); 
+                for (String line = br.readLine(); line != null; line = br.readLine()) {
+                    String[] invoiceDetails = line.split(";");
+                    String eInvoiceNo = invoiceDetails[0];
+                    String unitNo = invoiceDetails[1];
+                    String eIssuedDate = invoiceDetails[9];
+                    String issuedDate = eIssuedDate.substring(eIssuedDate.length()-7);
+                    
+                    boolean check = false;
+                    if (issuedDate.equals(monthYear)) {
+                        FileReader fr2 = new FileReader("statements.txt");
+                        BufferedReader br2 = new BufferedReader(fr2);
+                        
+                        br2.readLine(); 
+                        for (String line2 = br2.readLine(); line2 != null; line2 = br2.readLine()) {
+                            String[] statementDetails = line2.split(";");
+                            String sInvoiceNo = statementDetails[0];
+                            if (sInvoiceNo.equals(eInvoiceNo)) {
+                                check = true;
+                            }
+                        } fr2.close(); br2.close();
+                        if (check == false && !availableUnit.contains(unitNo)) {
+                            availableUnit.add(unitNo);
+                        }
+                    }
+                } fr.close(); br.close();
+                availableStatements = extractStatementUnitDetails(availableUnit);
+                
+            } else if (status.equals("ISSUED")) {
+                FileReader fr = new FileReader("statements.txt");
+                BufferedReader br = new BufferedReader(fr);
+                
+                br.readLine(); 
+                for (String line = br.readLine(); line != null; line = br.readLine()) {
+                    String[] statementDetails = line.split(";");
+                    String invoiceNo = statementDetails[0];
+                    String sUnitNo = statementDetails[1];
+                    
+                    String mYear = invoiceNo.substring(invoiceNo.length()-6);
+                    String period = mYear.substring(0, 2) +"/"+ mYear.substring(2);
+                    
+                    if (!availableUnit.contains(sUnitNo) && period.equals(monthYear)) {
+                        availableUnit.add(sUnitNo);
+                    }
+                } fr.close(); br.close();
+                availableStatements = extractStatementUnitDetails(availableUnit);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return availableStatements;
+    }
+    
+    public List<String> extractStatementUnitDetails(List<String> availableUnit) {
+        List<String> availableStatements = new ArrayList<>();
+        
+        try {
+            for (String unitNo : availableUnit) {
+                String owner = "-"; String resident = "-"; String target = "";
+                FileReader fr = new FileReader("invoices.txt");
+                BufferedReader br = new BufferedReader(fr);
+                
+                br.readLine();
+                for (String line = br.readLine(); line != null; line = br.readLine()) {
+                    String[] invoiceDetails = line.split(";");
+                    String iUnitNo = invoiceDetails[1];
+                    
+                    if (iUnitNo.equals(unitNo) && iUnitNo.startsWith("S")) {
+                        target = "Commercial";
+                    } else if (iUnitNo.equals(unitNo)) {
+                        target = "Residential";
+                    }
+                } fr.close(); br.close();
+                
+                FileReader fr2 = new FileReader("userProfile.txt");
+                BufferedReader br2 = new BufferedReader(fr2);
+
+                br2.readLine(); 
+                for (String line2 = br2.readLine(); line2 != null; line2 = br2.readLine()) {
+                    String[] userDetails = line2.split(";");
+                    String userID = userDetails[0];
+                    String firstName = userDetails[3];
+                    String lastName = userDetails[4];
+                    String uUnitNo = userDetails[8];
+                    
+                    if (uUnitNo.equals(unitNo) && userID.startsWith("rsd")) {
+                        resident = firstName +" "+ lastName;
+                    } else if (uUnitNo.equals(unitNo) && userID.startsWith("tnt")) {
+                        owner = firstName +" "+ lastName;
+                    } else if (uUnitNo.equals(unitNo) && userID.startsWith("vdr")) {
+                        owner = firstName +" "+ lastName;
+                    }
+                } fr2.close(); br2.close();
+                availableStatements.add(unitNo +";"+ target +";"+ owner +";"+ resident);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return availableStatements;
+    }
+    
+    public void issueStatement(List<String> availableStatement) {
+        try {
+            FileWriter fw = new FileWriter("statements.txt", true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            String todayDate = todayDate();
+            for (String statements : availableStatement) {
+                bw.write(statements + todayDate +";\n");
+            } fw.flush(); bw.flush(); fw.close(); bw.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
