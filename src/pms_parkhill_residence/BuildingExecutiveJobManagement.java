@@ -808,13 +808,13 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
 
     private void unassignedEmplyTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unassignedEmplyTableMouseClicked
         // TODO add your handling code here:
-        
         int selectedCol = unassignedEmplyTable.getSelectedColumn();
         int selectedRow = unassignedEmplyTable.getSelectedRow();
         
-        boolean isSelected = getSelectedTableRow(unassignedEmployeeTable, selectedCol, selectedRow, 3);
+        String employeeData = BE.validateTableSelectionAndGetValue(unassignedEmployeeTable, selectedCol, selectedRow, 3, 0);
         
-        if (isSelected) {
+        if (employeeData != null) {
+            setSelectedEmployee(employeeData);
             BE.toEmployeeJobAssignation(currentBEid, selectedEmployeeId, jobId);
         }
     }//GEN-LAST:event_unassignedEmplyTableMouseClicked
@@ -836,9 +836,10 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         int selectedCol = assignedEmplyTable.getSelectedColumn();
         int selectedRow = assignedEmplyTable.getSelectedRow();
         
-        boolean isSelected = getSelectedTableRow(assignedEmployeeTable, selectedCol, selectedRow, 6);
+        String employeeData = BE.validateTableSelectionAndGetValue(assignedEmployeeTable, selectedCol, selectedRow, 6, 0);
         
-        if (isSelected) {
+        if (employeeData != null) {
+            setSelectedEmployee(employeeData);
             this.jobId = (String) assignedEmployeeTable.getValueAt(selectedRow, 0);
             this.selectedEmployeeId = (String) assignedEmployeeTable.getValueAt(selectedRow, 1);
             BE.toEmployeeJobAssignation(currentBEid, selectedEmployeeId, jobId);
@@ -870,16 +871,6 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
     
     private void setSearchText (String text) {
         this.searchText = text;
-    }
-    
-    private boolean getSelectedTableRow(DefaultTableModel table, int selectedColumn, int selectedRow, int expectedColumn) {
-        if (selectedColumn == expectedColumn) {
-            String employeeData = (String) table.getValueAt(selectedRow, 0);
-            setSelectedEmployee(employeeData);
-            return true;
-        }
-        
-        return false;
     }
     
     private void setSelectedEmployee (String employeeID) {

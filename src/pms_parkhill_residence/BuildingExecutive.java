@@ -60,32 +60,32 @@ public class BuildingExecutive extends Users{
     File jobListFile = new File("jobList.txt");
     
     // to get employee list only from the user profile text file
-    public void updateEmployeeList() throws IOException{
-            BufferedReader brUserProfile = fileReader(userProfile);
-
-            BufferedWriter bwJobFile = fileWriter(fullEmployeeList, false);
-
-            ArrayList<String> newEmployeeList = new ArrayList<>();
-
-        // add new employee
-            String fileHeader = "userID; email; fullName; phoneNo; position;";
-            newEmployeeList.add(fileHeader);
-            
-            for (String line = brUserProfile.readLine(); line != null; line = brUserProfile.readLine()) {
-                String[] data = line.split(sp);
-                String userId = data[0];
-                String role = userId.substring(0, 3);
-                if (isEmployee(role)){
-                    String position = showEmployeeFullRoleName(role);
-                    newEmployeeList.add(data[0] + sp + data[1] + sp + data[3] + " " + data[4] + sp + data[7] + sp + position + sp);
-                }
-            }
-            brUserProfile.close(); 
-            
-            for (String employeeInfo : newEmployeeList) {
-                bwJobFile.write(employeeInfo + "\n");
-            } bwJobFile.close();
-    }
+//    public void updateEmployeeList() throws IOException{
+//            BufferedReader brUserProfile = fileReader(userProfile);
+//
+//            BufferedWriter bwJobFile = fileWriter(fullEmployeeList, false);
+//
+//            ArrayList<String> newEmployeeList = new ArrayList<>();
+//
+//        // add new employee
+//            String fileHeader = "userID; email; fullName; phoneNo; position;";
+//            newEmployeeList.add(fileHeader);
+//            
+//            for (String line = brUserProfile.readLine(); line != null; line = brUserProfile.readLine()) {
+//                String[] data = line.split(sp);
+//                String userId = data[0];
+//                String role = userId.substring(0, 3);
+//                if (isEmployee(role)){
+//                    String position = showEmployeeFullRoleName(role);
+//                    newEmployeeList.add(data[0] + sp + data[1] + sp + data[3] + " " + data[4] + sp + data[7] + sp + position + sp);
+//                }
+//            }
+//            brUserProfile.close(); 
+//            
+//            for (String employeeInfo : newEmployeeList) {
+//                bwJobFile.write(employeeInfo + "\n");
+//            } bwJobFile.close();
+//    }
     
     private ArrayList getEmployeeJobList(LocalDate localDate, LocalTime localTime) throws IOException {
         BufferedReader readEmployeeList = fileReader(fullEmployeeList);
@@ -118,7 +118,6 @@ public class BuildingExecutive extends Users{
                 if (repitition == repititionON) {
                     boolean isOvernight = checkOvernight(formatTime(workingEndDateTime[1]), timeNeeded);
                     ArrayList<String> dayToRepeat = new ArrayList<>(Arrays.asList(jobLineDetails[9].split(",")));
-                    System.out.println(isOvernight + workingEmplyId);
                     if (isOvernight) {
                         dayOfWeek = localDate.getDayOfWeek().minus(1).toString().toLowerCase();
                         workingTime = LocalTime.parse("00:00:00");
@@ -239,15 +238,32 @@ public class BuildingExecutive extends Users{
         return employeeRole;
     }
     
-    public String getEmployeePositionCode(String employeeId) throws IOException {
-        String[] employeeDetails = getEmployeeDetails(employeeId);
-        String employeePos = employeeDetails[4];
+    public String getEmployeePositionCode(String employeeId, String roleName) throws IOException {
+        String employeePos = null;
+        if (employeeId != null) {
+            String[] employeeDetails = getEmployeeDetails(employeeId);
+            employeePos = employeeDetails[4];
+        }
+        
+        if (roleName != null) {
+            employeePos = roleName;
+        }
+        
         return switch (employeePos) {
             case "Technician" -> technician;
             case "Cleaner" -> cleaner;
             case "Security Guard" -> securityGuard;
             default -> null;
         };
+    }
+    
+    public String validateTableSelectionAndGetValue(DefaultTableModel table, int selectedColumn, int selectedRow, int expectedColumn, int getValueColumn) {
+        if (selectedColumn == expectedColumn) {
+            String employeeData = (String) table.getValueAt(selectedRow, getValueColumn);
+            return employeeData;
+        }
+        
+        return null;
     }
     
     public void recordSelectedEmployee(String employeeID) throws IOException {
@@ -535,7 +551,7 @@ public class BuildingExecutive extends Users{
         }
     }
     
-    public void toJobModificationPage(String positionCode) {
+    public void toJobModificationPage(String positionCode) throws IOException {
         JobModificationPage page = new JobModificationPage(positionCode);
         page.setVisible(true);
     }

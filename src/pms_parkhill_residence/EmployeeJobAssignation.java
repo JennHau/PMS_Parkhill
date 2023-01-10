@@ -73,7 +73,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
     private void setSelectedEmployee(String employeeID, String jobId) throws IOException {
         this.selectedEmployeeId = employeeID;
         this.jobID = jobId;
-        this.selectedEmployeePosCode = BE.getEmployeePositionCode(employeeID);
+        this.selectedEmployeePosCode = BE.getEmployeePositionCode(employeeID, null);
     }
 
     private void setCurrentBE(String beID) {
@@ -854,8 +854,12 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
     }//GEN-LAST:event_repititionCheckBoxActionPerformed
 
     private void editJobBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editJobBTNActionPerformed
-        // TODO add your handling code here:
-        BE.toJobModificationPage(selectedEmployeePosCode);
+        try {
+            // TODO add your handling code here:
+            BE.toJobModificationPage(selectedEmployeePosCode);
+        } catch (IOException ex) {
+            Logger.getLogger(EmployeeJobAssignation.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_editJobBTNActionPerformed
 
     private void updateJobTextFile(String[] jobItems, int action) throws IOException {
