@@ -1,5 +1,5 @@
-userID; email; fullName; phoneNo; position;
-scg184573; qwer; qwer qwer; 0198765432; Security Guard; 
-scg184574; asdw; asdw asdw; 0198765432; Security Guard; 
-scg184576; hi; hi hi; 0198765432; Security Guard; 
-scg184577; bye; hi hi; 0198765432; Security Guard; 
+userID;email;fullName;phoneNo;position;
+scg184573;qwer;qwer qwer;0198765432;Security Guard; 
+scg184574;asdw;asdw asdw;0198765432;Security Guard; 
+scg184576;hi;hi hi;0198765432;Security Guard; 
+scg184577;bye;hi hi;0198765432;Security Guard; 

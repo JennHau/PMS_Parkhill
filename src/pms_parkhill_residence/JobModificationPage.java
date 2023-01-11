@@ -5,10 +5,10 @@
 package pms_parkhill_residence;
 
 import java.awt.Toolkit;
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
@@ -20,14 +20,16 @@ import javax.swing.table.DefaultTableModel;
 public class JobModificationPage extends javax.swing.JFrame {
 
     DefaultTableModel jobTable;
-    File jobListFile = new File("jobList.txt");
+    String jobListFile = "jobList.txt";
     BuildingExecutive BE = new BuildingExecutive();
+    FileHandling fileHandling = new FileHandling();
     
     private String jobId;
     
     /**
      * Creates new form EmployeeJobAssignation
      * @param positionCode employee position code
+     * @throws java.io.IOException
      */
     public JobModificationPage(String positionCode) throws IOException {
         initComponents();
@@ -39,21 +41,24 @@ public class JobModificationPage extends javax.swing.JFrame {
         setWindowIcon();
         comboBoxSetUp(positionCode);
         tableJobSetUp(positionCode);
+        
+        deleteBTN.setEnabled(false);
+        updateBTN.setEnabled(false);
     }
     
     private void tableJobSetUp(String positionCode) throws IOException {
-        BufferedReader readJobLists = BE.fileReader(jobListFile);
+        List<String> readJobLists = fileHandling.fileRead(jobListFile);
         ArrayList<String> jobList = new ArrayList<>();
         
         int numberOfItem = 1;
-        for (String readLine = readJobLists.readLine(); readLine != null; readLine = readJobLists.readLine()) {
+        for (String readLine : readJobLists) {
             String[] jobDetails = readLine.split(BE.sp);
             String roleCode = jobDetails[0];
             if (roleCode.equals(positionCode)) {
                 jobList.add(numberOfItem + BE.sp + jobDetails[2] + BE.sp + jobDetails[3] + BE.sp + jobDetails[4]);
                 numberOfItem++;
             }
-        }readJobLists.close();
+        }
         
         BE.setTableRow(jobTable, jobList);
     }
@@ -91,10 +96,10 @@ public class JobModificationPage extends javax.swing.JFrame {
         timeNeededSpinner = new javax.swing.JSpinner();
         jLabel19 = new javax.swing.JLabel();
         startTimePicker = new com.github.lgooddatepicker.components.TimePicker();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        addBTN = new javax.swing.JButton();
+        updateBTN = new javax.swing.JButton();
+        deleteBTN = new javax.swing.JButton();
+        clearBTN = new javax.swing.JButton();
         timeValueCB = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -163,13 +168,18 @@ public class JobModificationPage extends javax.swing.JFrame {
         jLabel19.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(51, 51, 51));
 
-        jButton1.setText("Add");
+        addBTN.setText("Add");
 
-        jButton2.setText("Update");
+        updateBTN.setText("Update");
 
-        jButton3.setText("Delete");
+        deleteBTN.setText("Delete");
 
-        jButton4.setText("Clear");
+        clearBTN.setText("Clear");
+        clearBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearBTNActionPerformed(evt);
+            }
+        });
 
         timeValueCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "hrs", "mins" }));
 
@@ -204,13 +214,13 @@ public class JobModificationPage extends javax.swing.JFrame {
                             .addComponent(startTimePicker, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
                             .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(clearBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(deleteBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(15, 15, 15)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(updateBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(15, 15, 15)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(addBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -239,10 +249,10 @@ public class JobModificationPage extends javax.swing.JFrame {
                         .addComponent(timeValueCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(15, 15, 15)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(addBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(updateBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(deleteBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(clearBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -317,38 +327,69 @@ public class JobModificationPage extends javax.swing.JFrame {
         
         String jobDesc = BE.validateTableSelectionAndGetValue(jobTable, selectedCol, selectedRow, 4, 1);
         
-        try {
-            BufferedReader readJobList = BE.fileReader(jobListFile);
-            for (String jobLine = readJobList.readLine(); jobLine != null; jobLine = readJobList.readLine()) {
-                String[] jobDetails = jobLine.split(BE.sp);
-                String jobTitle = jobDetails[2];
-                String jobID = jobDetails[1];
+        List<String> readJobList = fileHandling.fileRead(jobListFile);
+        for (String jobLine : readJobList) {
+            String[] jobDetails = jobLine.split(BE.sp);
+            String jobTitle = jobDetails[2];
+            String jobID = jobDetails[1];
+            
+            if (jobTitle.equals(jobDesc)) {
+                this.jobId = jobID;
+                jobTF.setText(jobTitle);
                 
-                if (jobTitle.equals(jobDesc)) {
-                    this.jobId = jobID;
-                    jobTF.setText(jobTitle);
-                    
-                    String timeNeededValue = jobDetails[3];
-                    String timeValue = timeNeededValue.substring(timeNeededValue.length() - 1);
-                    
-                    if (timeValue.equals("hrs")) {
-                        timeValueCB.setSelectedItem("hrs");
-                    }
-                    else {
-                        timeValueCB.setSelectedItem("mins");
-                    }
-                    
-                    String timeNeeded = timeNeededValue.substring(0, timeNeededValue.length() - 1);
-                    timeNeededSpinner.setValue(Integer.valueOf(timeNeeded));
+                String timeNeededValue = jobDetails[3];
+                String timeValue = timeNeededValue.substring(timeNeededValue.length() - 1);
+                
+                if (timeValue.equals("h")) {
+                    timeValueCB.setSelectedItem("hrs");
+                }
+                else {
+                    timeValueCB.setSelectedItem("mins");
+                }
+                
+                String timeNeeded = "0";
+                if (!timeNeededValue.equals("0")) {
+                    timeNeeded = timeNeededValue.substring(0, timeNeededValue.length() - 1);
+                }
+                
+                timeNeededSpinner.setValue(Integer.valueOf(timeNeeded));
+                
+                String startTime = jobDetails[4];
+                if (!startTime.equals("null")) {
+                    LocalTime jobStartTime = BE.getTimeCategory(BE.formatTime(startTime));
+                    startTimePicker.setTime(jobStartTime);
+                    startTimePicker.setEnabled(true);
+                    timeNeededSpinner.setEnabled(true);
+                    timeValueCB.setEnabled(true);
+                }
+                else {
+                    startTimePicker.setTime(null);
+                    startTimePicker.setEnabled(false);
+                    timeNeededSpinner.setEnabled(false);    
+                    timeValueCB.setEnabled(false);
                 }
             }
-            
-            
-        } catch (IOException ex) {
-            Logger.getLogger(JobModificationPage.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        addBTN.setEnabled(false);
+        deleteBTN.setEnabled(true);
+        updateBTN.setEnabled(true);
     }//GEN-LAST:event_jobsTableUIMouseClicked
+
+    private void clearBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBTNActionPerformed
+        // TODO add your handling code here:
+        clearField();
+    }//GEN-LAST:event_clearBTNActionPerformed
     
+    private void clearField() {
+        addBTN.setEnabled(true);
+        deleteBTN.setEnabled(false);
+        updateBTN.setEnabled(false);
+        
+        jobTF.setText("");
+        timeNeededSpinner.setValue(0);
+        startTimePicker.setTime(null);
+    }
     /**
      * @param args the command line arguments
      */
@@ -392,11 +433,10 @@ public class JobModificationPage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addBTN;
+    private javax.swing.JButton clearBTN;
+    private javax.swing.JButton deleteBTN;
     private javax.swing.JComboBox<String> employeeRoleComboBox;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
@@ -412,5 +452,6 @@ public class JobModificationPage extends javax.swing.JFrame {
     private com.github.lgooddatepicker.components.TimePicker startTimePicker;
     private javax.swing.JSpinner timeNeededSpinner;
     private javax.swing.JComboBox<String> timeValueCB;
+    private javax.swing.JButton updateBTN;
     // End of variables declaration//GEN-END:variables
 }

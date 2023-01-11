@@ -5,7 +5,6 @@
 package pms_parkhill_residence;
 
 import java.awt.Toolkit;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -13,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class EmployeeJobAssignation extends javax.swing.JFrame {
     BuildingExecutive BE = new BuildingExecutive();
+    FileHandling fileHandling = new FileHandling();
     
     // Remove unnecessary data
     private String jobID;
@@ -201,7 +202,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         if (jobList!=null) {
             for (String jobs : jobList) {
                 String[] jobDetails = jobs.split(BE.sp);
-                String jobItem = jobDetails[1];
+                String jobItem = jobDetails[2];
                 jobComboBox.addItem(jobItem);
             }
         }
@@ -863,9 +864,8 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
     }//GEN-LAST:event_editJobBTNActionPerformed
 
     private void updateJobTextFile(String[] jobItems, int action) throws IOException {
-        BufferedWriter writeJobFile;
-        BufferedReader readJobFile = BE.fileReader(BE.employeeJobFile);
-        ArrayList<String> newItemLists = new ArrayList<>();
+        List<String> readJobFile = fileHandling.fileRead(BE.employeeJobFile);
+        List<String> newItemLists = new ArrayList<>();
         
         String itemID = jobItems[0];
         
@@ -875,7 +875,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             specificItem += arrayItem + BE.sp;
         }
         
-        for (String fileLine = readJobFile.readLine(); fileLine != null; fileLine = readJobFile.readLine()) {
+        for (String fileLine : readJobFile) {
             String[] jobLine = fileLine.split(BE.sp);
             String jobID = jobLine[0];
 
@@ -887,17 +887,13 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             else {
                 newItemLists.add(fileLine);
             }
-        } readJobFile.close();
+        }
         
         if (action == this.addItem) {
             newItemLists.add(specificItem);
         }
         
-        writeJobFile = BE.fileWriter(BE.employeeJobFile, false);
-        
-        for (String eachJob : newItemLists) {
-            writeJobFile.write(eachJob + "\n");
-        } writeJobFile.close();
+        fileHandling.fileWrite(BE.employeeJobFile, false, newItemLists);
     }
     
     private String[] getAllFields(int action) throws IOException {

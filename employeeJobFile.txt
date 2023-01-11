@@ -1,3 +1,3 @@
-jobId; userId; complaintId; assignedJob; repitition; expectedTimeRequired; startDate; startTime; expectedEndDateTime; dayToRepeat; remarks; updatedBy; updatedTime; 
-tsk114561; scg184573; null; Morning Shift (8am-8pm); 1; 15h; 2023-01-07; 17:00:01; 2023-01-08 08:00:01; monday,wednesday,friday,saturday,sunday,; hihi; null; 2023-01-07 17:17:01; 
-tsk114562; scg184576; null; Night Shift (8pm-8am); 1; 12h; 2023-01-07; 20:00:01; 2023-01-08 08:00:01; monday,tuesday,wednesday,thursday,friday,saturday,sunday,; night night; null; 2023-01-08 01:56:01; 
+jobId;userId;complaintId;assignedJob;repitition;expectedTimeRequired;startDate;startTime;expectedEndDateTime;dayToRepeat;remarks;updatedBy;updatedTime; 
+tsk114561;scg184573;null;Morning Shift (8am-8pm);1;15h;2023-01-07;17:00:01;2023-01-08 08:00:01;monday,wednesday,friday,saturday,sunday,;hihi;null;2023-01-07 17:17:01; 
+tsk114562;scg184576;null;Night Shift (8pm-8am);1;12h;2023-01-07;20:00:01;2023-01-08 08:00:01;monday,tuesday,wednesday,thursday,friday,saturday,sunday,;night night;null;2023-01-08 01:56:01; 

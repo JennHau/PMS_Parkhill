@@ -26,8 +26,10 @@ import javax.swing.table.DefaultTableModel;
  * @author Winson
  */
 public class BuildingExecutive extends Users{
+    FileHandling fileHandling = new FileHandling();
+    
     // text file seperator
-    String sp = "; ";
+    String sp = ";";
     
     // Employee position
     final String technician = "tcn";
@@ -43,22 +45,22 @@ public class BuildingExecutive extends Users{
     final int unassignedEmployee = 0;
     
     // user profile text file link
-    File userProfile = new File("userProfile.txt");
+    String userProfile = "userProfile.txt";
     
     // inactivated account text file link
-    File inactiveAcc = new File("inactiveAcc.txt");
+    String inactiveAcc = "inactiveAcc.txt";
     
     // employee name list link
-    File fullEmployeeList = new File("employeeList.txt");
+    String fullEmployeeList = "employeeList.txt";
     
     // employee job file link
-    File employeeJobFile = new File("employeeJobFile.txt");
+    String employeeJobFile = "employeeJobFile.txt";
     
     // selected Employee record
-    File recordSelectedEmployee = new File("recordSelectedEmployee.txt");
+    String recordSelectedEmployee = "recordSelectedEmployee.txt";
     
     // job list link
-    File jobListFile = new File("jobList.txt");
+    String jobListFile = "jobList.txt";
     
     // to get employee list only from the user profile text file
 //    public void updateEmployeeList() throws IOException{
@@ -89,8 +91,8 @@ public class BuildingExecutive extends Users{
 //    }
     
     private ArrayList getEmployeeJobList(LocalDate localDate, LocalTime localTime) throws IOException {
-        BufferedReader readEmployeeList = fileReader(fullEmployeeList);
-        BufferedReader readJobFile = fileReader(employeeJobFile);
+        List<String> employeeList = fileHandling.fileRead(fullEmployeeList);
+        List<String> jobFile = fileHandling.fileRead(employeeJobFile);
         
         ArrayList<String> workingList = new ArrayList<>();
         ArrayList<String> assEmply = new ArrayList<>();
@@ -101,7 +103,7 @@ public class BuildingExecutive extends Users{
         String dayOfWeek = localDate.getDayOfWeek().toString().toLowerCase();
         
         boolean firstLine = true;
-        for (String jobFileLine = readJobFile.readLine(); jobFileLine != null; jobFileLine = readJobFile.readLine()) {
+        for (String jobFileLine : jobFile) {
             if (!firstLine) {
                 String[] jobLineDetails = jobFileLine.split(sp);
                 int repitition = Integer.valueOf(jobLineDetails[4]);
@@ -155,12 +157,11 @@ public class BuildingExecutive extends Users{
             
             firstLine = false;
         }
-        readJobFile.close();
         
         firstLine = true;
-        for (String employeeList = readEmployeeList.readLine(); employeeList != null; employeeList = readEmployeeList.readLine()) {
+        for (String eachEmployee : employeeList) {
             if (!firstLine) {
-                String[] employeeInfo = employeeList.split(sp);
+                String[] employeeInfo = eachEmployee.split(sp);
                 String emplyId = employeeInfo[0];
                 String emplyName = employeeInfo[2];
                 String emplyPos = employeeInfo[4];
@@ -172,7 +173,6 @@ public class BuildingExecutive extends Users{
             
             firstLine = false;
         }
-        readEmployeeList.close();
         
         assignedANDunassigned.add(unassEmply);
         assignedANDunassigned.add(assEmply);
@@ -268,27 +268,27 @@ public class BuildingExecutive extends Users{
         return null;
     }
     
-    public void recordSelectedEmployee(String employeeID) throws IOException {
-        String fileHeader = "employeeID; \n";
-        
-        BufferedWriter writeRecord = fileWriter(recordSelectedEmployee, false);
-        
-        writeRecord.write(fileHeader + employeeID + sp);
-    }
-    
-    public BufferedReader fileReader(File fileName) throws IOException {
-        FileReader fr = new FileReader(fileName);
-        BufferedReader br = new BufferedReader(fr);
-        
-        return br;
-    }
-    
-    public BufferedWriter fileWriter(File fileName, boolean append)throws IOException{
-        FileWriter fw = new FileWriter(fileName, append);
-        BufferedWriter bw = new BufferedWriter(fw);
-        
-        return bw;
-    }
+//    public void recordSelectedEmployee(String employeeID) throws IOException {
+//        String fileHeader = "employeeID; \n";
+//        
+//        BufferedWriter writeRecord = fileWriter(recordSelectedEmployee, false);
+//        
+//        writeRecord.write(fileHeader + employeeID + sp);
+//    }
+//    
+//    public BufferedReader fileReader(File fileName) throws IOException {
+//        FileReader fr = new FileReader(fileName);
+//        BufferedReader br = new BufferedReader(fr);
+//        
+//        return br;
+//    }
+//    
+//    public BufferedWriter fileWriter(File fileName, boolean append)throws IOException{
+//        FileWriter fw = new FileWriter(fileName, append);
+//        BufferedWriter bw = new BufferedWriter(fw);
+//        
+//        return bw;
+//    }
     
     public LocalDate formatDate(String date) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -319,53 +319,49 @@ public class BuildingExecutive extends Users{
     }
     
     public String[] getEmployeeDetails(String employeeID) throws IOException {
-        BufferedReader readEmployeeList = fileReader(fullEmployeeList);
+        List<String> readEmployeeList = fileHandling.fileRead(fullEmployeeList);
         
         boolean firstLine = true;
-        for (String employeeList = readEmployeeList.readLine(); employeeList != null; employeeList = readEmployeeList.readLine()) {
+        for (String employeeList : readEmployeeList) {
             if (!firstLine) {
                 String[] employeeInfo = employeeList.split(sp);
                 String emplyId = employeeInfo[0];
                 
                 if (emplyId.equals(employeeID)) {
-                    readEmployeeList.close();
                     return employeeInfo;
                 }
             }
             
             firstLine = false;
         }
-        readEmployeeList.close();
         
         return null;
     }
     
     public String[] getCurrentBE(String currentBEid) throws IOException {
-        BufferedReader readUserProfile = fileReader(userProfile);
+        List<String> readUserProfile = fileHandling.fileRead(userProfile);
         
         boolean firstLine = true;
-        for (String userLine = readUserProfile.readLine(); userLine != null; userLine = readUserProfile.readLine()) {
+        for (String userLine : readUserProfile) {
             if (!firstLine) {
                 String[] userDetails = userLine.split(sp);
                 String userID = userDetails[0];
                 if (userID.equals(currentBEid)) {
-                    readUserProfile.close();
                     return userDetails;
                 }
             }
             
             firstLine = false;
         }
-        readUserProfile.close();
         
         return null;
     }
     
     public ArrayList getAssignedJobForSpecificEmployee(String employeeId) throws IOException {
-        BufferedReader readJobFile = fileReader(employeeJobFile);
+        List<String> readJobFile = fileHandling.fileRead(employeeJobFile);
         ArrayList<String> employeeJobList = new ArrayList<>();
         
-        for (String jobLine = readJobFile.readLine(); jobLine != null; jobLine = readJobFile.readLine()) {
+        for (String jobLine : readJobFile) {
             String[] jobDetails = jobLine.split(sp);
             String emplyID = jobDetails[1];
             
@@ -373,15 +369,14 @@ public class BuildingExecutive extends Users{
                 employeeJobList.add(jobLine);
             }
         }
-        readJobFile.close();
         
         return employeeJobList;
     }
     
     public String[] getSpecificJobDetails(String employeeId, String jobId) throws IOException {
-        BufferedReader readJobFile = fileReader(employeeJobFile);
+        List<String> readJobFile = fileHandling.fileRead(employeeJobFile);
         
-        for (String jobLine = readJobFile.readLine(); jobLine != null; jobLine = readJobFile.readLine()) {
+        for (String jobLine : readJobFile) {
             String[] jobDetails = jobLine.split(sp);
             String jobID = jobDetails[0];
             String emplyID = jobDetails[1];
@@ -390,17 +385,16 @@ public class BuildingExecutive extends Users{
                 return jobDetails;
             }
         }
-        readJobFile.close();
         
         return null;
     }
     
     public ArrayList getAvailableJobs(String employeeId, String complaintId) throws IOException {
-        BufferedReader readJobList = fileReader(jobListFile);
+        List<String> readJobList = fileHandling.fileRead(jobListFile);
         ArrayList<String> jobLists = new ArrayList<>();
         
         boolean firstLine = true;
-        for (String jobLine = readJobList.readLine(); jobLine != null; jobLine = readJobList.readLine()) {
+        for (String jobLine : readJobList) {
             if (!firstLine) {
                 String[] jobDetails = jobLine.split(sp);
                 String roleCode = jobDetails[0];
@@ -417,19 +411,18 @@ public class BuildingExecutive extends Users{
             
             firstLine = false;
         }
-        readJobList.close();
         
         return jobLists;
     }
     
-    public String getNewId(File fileName, int idColumn) throws IOException {
-        BufferedReader readFile = fileReader(fileName);
+    public String getNewId(String fileName, int idColumn) throws IOException {
+        List<String> readFile = fileHandling.fileRead(fileName);
         
         String jobIdCode = "tsk";
         int largestId = 114560;        
         
         boolean firstLine = true;
-        for (String fileLine = readFile.readLine(); fileLine != null; fileLine = readFile.readLine()){
+        for (String fileLine : readFile){
             if (!firstLine) {
                 String[] lineDetails = fileLine.split(sp);
                 String id = lineDetails[idColumn];
@@ -443,7 +436,7 @@ public class BuildingExecutive extends Users{
             }
             
             firstLine = false;
-        }readFile.close();
+        }
         
         largestId += 1;
         
