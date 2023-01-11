@@ -22,7 +22,7 @@ import javax.swing.table.TableCellRenderer;
  */
 public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
     BuildingExecutive BE = new BuildingExecutive();
-    
+
     private DefaultTableModel assignedEmployeeTable;
     private DefaultTableModel unassignedEmployeeTable;
 
@@ -44,7 +44,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         initComponents();
         runDefaultSetUp(beID);
     }
-        
+    
     // Method to run all default setting when page is open
     private void runDefaultSetUp(String beID) throws IOException {
         assignedEmployeeTable = (DefaultTableModel) assignedEmplyTable.getModel();

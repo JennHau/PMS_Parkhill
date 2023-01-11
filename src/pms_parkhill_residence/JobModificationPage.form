@@ -63,23 +63,23 @@
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jTextField1" pref="302" max="32767" attributes="0"/>
+                                      <Component id="jobTF" pref="302" max="32767" attributes="0"/>
                                       <Component id="jLabel17" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="jLabel18" min="-2" pref="114" max="-2" attributes="0"/>
                                       <Group type="102" attributes="0">
-                                          <Component id="jSpinner1" min="-2" pref="68" max="-2" attributes="0"/>
+                                          <Component id="timeNeededSpinner" min="-2" pref="68" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jComboBox1" min="-2" pref="60" max="-2" attributes="0"/>
+                                          <Component id="timeValueCB" min="-2" pref="60" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
                           </Group>
                           <EmptySpace pref="32" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="timePicker1" pref="95" max="32767" attributes="0"/>
+                              <Component id="startTimePicker" pref="95" max="32767" attributes="0"/>
                               <Component id="jLabel19" max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -119,11 +119,11 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="timePicker1" max="32767" attributes="0"/>
-                      <Component id="jTextField1" pref="30" max="32767" attributes="0"/>
+                      <Component id="startTimePicker" max="32767" attributes="0"/>
+                      <Component id="jobTF" pref="30" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jSpinner1" alignment="3" pref="30" max="32767" attributes="0"/>
-                          <Component id="jComboBox1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="timeNeededSpinner" alignment="3" pref="30" max="32767" attributes="0"/>
+                          <Component id="timeValueCB" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
@@ -237,7 +237,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField1">
+        <Component class="javax.swing.JTextField" name="jobTF">
           <Properties>
             <Property name="text" type="java.lang.String" value="jTextField1"/>
           </Properties>
@@ -253,7 +253,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JSpinner" name="jSpinner1">
+        <Component class="javax.swing.JSpinner" name="timeNeededSpinner">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel19">
           <Properties>
@@ -266,7 +266,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="com.github.lgooddatepicker.components.TimePicker" name="timePicker1">
+        <Component class="com.github.lgooddatepicker.components.TimePicker" name="startTimePicker">
         </Component>
         <Component class="javax.swing.JButton" name="jButton1">
           <Properties>
@@ -288,7 +288,7 @@
             <Property name="text" type="java.lang.String" value="Clear"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="jComboBox1">
+        <Component class="javax.swing.JComboBox" name="timeValueCB">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="2">

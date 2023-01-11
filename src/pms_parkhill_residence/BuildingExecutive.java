@@ -17,6 +17,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 
@@ -89,12 +90,11 @@ public class BuildingExecutive extends Users{
     
     private ArrayList getEmployeeJobList(LocalDate localDate, LocalTime localTime) throws IOException {
         BufferedReader readEmployeeList = fileReader(fullEmployeeList);
-        
         BufferedReader readJobFile = fileReader(employeeJobFile);
         
         ArrayList<String> workingList = new ArrayList<>();
-        ArrayList<String> assignedEmployee = new ArrayList<>();
-        ArrayList<String> unassignedEmployee = new ArrayList<>();
+        ArrayList<String> assEmply = new ArrayList<>();
+        ArrayList<String> unassEmply = new ArrayList<>();
         ArrayList<ArrayList> assignedANDunassigned = new ArrayList<>();
 
         // Get the day of the date parsed
@@ -145,7 +145,7 @@ public class BuildingExecutive extends Users{
                             String workingEmplyName = employeeDetails[2];
                             String workingEmplyPos = employeeDetails[4];
 
-                            assignedEmployee.add(jobLineDetails[0] + sp + workingEmplyId + sp +
+                            assEmply.add(jobLineDetails[0] + sp + workingEmplyId + sp +
                                     workingEmplyName + sp + workingEmplyPos + sp +
                                     jobAssigned + sp + assignee + sp + "View" + sp);
                         }
@@ -166,7 +166,7 @@ public class BuildingExecutive extends Users{
                 String emplyPos = employeeInfo[4];
                 
                 if (!workingList.contains(emplyId)) {
-                    unassignedEmployee.add(emplyId + sp + emplyName + sp + emplyPos + sp + "Assign" + sp);
+                    unassEmply.add(emplyId + sp + emplyName + sp + emplyPos + sp + "Assign" + sp);
                 }
             }
             
@@ -174,14 +174,15 @@ public class BuildingExecutive extends Users{
         }
         readEmployeeList.close();
         
-        assignedANDunassigned.add(unassignedEmployee);
-        assignedANDunassigned.add(assignedEmployee);
+        assignedANDunassigned.add(unassEmply);
+        assignedANDunassigned.add(assEmply);
         
         return assignedANDunassigned;
     }
     
     public ArrayList getSpecificStatusEmployeeList(LocalDate localDate, LocalTime localTime, String role, String searchText, int employeeStatus) throws IOException {
         ArrayList<ArrayList> employeeJobList = getEmployeeJobList(localDate, localTime);
+        
         ArrayList<String> employeeList = employeeJobList.get(employeeStatus);
         
         if (role != null && !role.equals("All")) {

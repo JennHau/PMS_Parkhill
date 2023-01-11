@@ -16,7 +16,7 @@ import java.util.List;
  * @author wongj
  */
 public class fileHandling {
-    
+
     public List<String> fileRead (String filename) {
         
         List<String> data = new ArrayList<>();
