@@ -97,11 +97,10 @@ public class BuildingExecutive extends Users{
         ArrayList<String> unassignedEmployee = new ArrayList<>();
         ArrayList<ArrayList> assignedANDunassigned = new ArrayList<>();
 
+        // Get the day of the date parsed
         String dayOfWeek = localDate.getDayOfWeek().toString().toLowerCase();
         
-        boolean firstLine;
-        
-        firstLine = true;
+        boolean firstLine = true;
         for (String jobFileLine = readJobFile.readLine(); jobFileLine != null; jobFileLine = readJobFile.readLine()) {
             if (!firstLine) {
                 String[] jobLineDetails = jobFileLine.split(sp);
@@ -131,23 +130,25 @@ public class BuildingExecutive extends Users{
                     workingDate = formatDate(jobLineDetails[6]);
                 }
                 
-                LocalDateTime selectedDateTime = LocalDateTime.of(localDate, localTime);
-                LocalDateTime startDateTime = LocalDateTime.of(workingDate, workingTime);
-                LocalDateTime endDateTime = LocalDateTime.of(formatDate(workingEndDateTime[0]), formatTime(workingEndDateTime[1]));
-                
-                if ((selectedDateTime.equals(startDateTime) || selectedDateTime.isAfter(startDateTime)) 
-                 && (selectedDateTime.equals(endDateTime) || selectedDateTime.isBefore(endDateTime))) {
-                    
-                    if (!workingList.contains(workingEmplyId)) {
-                        workingList.add(workingEmplyId);
+                if (workingDate != null) {
+                    LocalDateTime selectedDateTime = LocalDateTime.of(localDate, localTime);
+                    LocalDateTime startDateTime = LocalDateTime.of(workingDate, workingTime);
+                    LocalDateTime endDateTime = LocalDateTime.of(formatDate(workingEndDateTime[0]), formatTime(workingEndDateTime[1]));
 
-                        String[] employeeDetails = getEmployeeDetails(workingEmplyId);
-                        String workingEmplyName = employeeDetails[2];
-                        String workingEmplyPos = employeeDetails[4];
+                    if ((selectedDateTime.equals(startDateTime) || selectedDateTime.isAfter(startDateTime)) 
+                     && (selectedDateTime.equals(endDateTime) || selectedDateTime.isBefore(endDateTime))) {
 
-                        assignedEmployee.add(jobLineDetails[0] + sp + workingEmplyId + sp +
-                                workingEmplyName + sp + workingEmplyPos + sp +
-                                jobAssigned + sp + assignee + sp + "View" + sp);
+                        if (!workingList.contains(workingEmplyId)) {
+                            workingList.add(workingEmplyId);
+
+                            String[] employeeDetails = getEmployeeDetails(workingEmplyId);
+                            String workingEmplyName = employeeDetails[2];
+                            String workingEmplyPos = employeeDetails[4];
+
+                            assignedEmployee.add(jobLineDetails[0] + sp + workingEmplyId + sp +
+                                    workingEmplyName + sp + workingEmplyPos + sp +
+                                    jobAssigned + sp + assignee + sp + "View" + sp);
+                        }
                     }
                 }
             }

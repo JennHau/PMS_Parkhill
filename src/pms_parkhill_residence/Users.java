@@ -10,7 +10,7 @@ import java.util.Date;
  *
  * @author wongj
  */
-public class Users {
+public class Users{
     private String userID;
     private String firstName;
     private String lastName;
