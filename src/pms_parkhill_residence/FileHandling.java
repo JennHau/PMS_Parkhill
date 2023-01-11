@@ -43,7 +43,7 @@ public class FileHandling {
             BufferedWriter bw = new BufferedWriter(fw);
             
             for (String newDataLine : newData) {
-                bw.write(newDataLine);
+                bw.write(newDataLine + "\n");
             }
             fw.flush(); bw.flush(); fw.close(); bw.close();
             

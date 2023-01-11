@@ -5,6 +5,8 @@
 package pms_parkhill_residence;
 
 import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -429,7 +431,10 @@ public class OwnerMainPage extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         FileHandling fh = new FileHandling();
-        fh.fileRead("userProfile.txt");
+        List<String> data = new ArrayList<>();
+        data.add("Hello;Bye;12345;");
+        data.add("Bello;Hi;945677");
+        fh.fileWrite("currentSession.txt", true, data);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void setWindowIcon() {
