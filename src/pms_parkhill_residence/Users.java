@@ -221,7 +221,7 @@ public class Users {
     }
     
     public boolean login(String email, String password) throws IOException {
-        FileHandling fh = new FileHandling();
+        TestingFileHandling fh = new TestingFileHandling();
         List<String> userProfile = fh.fileRead("userProfile.txt");
         String[] userProfileArray = new String[userProfile.size()];
         userProfile.toArray(userProfileArray);
