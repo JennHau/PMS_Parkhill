@@ -428,7 +428,7 @@ public class OwnerMainPage extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        TestingFileHandling fh = new TestingFileHandling();
+        FileHandling fh = new FileHandling();
         fh.fileRead("userProfile.txt");
     }//GEN-LAST:event_jButton1ActionPerformed
 
