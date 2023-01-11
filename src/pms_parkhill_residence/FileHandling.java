@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author wongj
  */
-public class TestingFileHandling {
+public class FileHandling {
     
     public List<String> fileRead (String filename) {
         
