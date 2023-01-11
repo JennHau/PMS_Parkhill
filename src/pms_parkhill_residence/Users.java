@@ -30,6 +30,7 @@ public class Users {
     private Date birthOfDate;
     private String role;
     private String unitNo;
+    FileHandling fh = new FileHandling();
     
     public Users() {}
     
@@ -221,7 +222,6 @@ public class Users {
     }
     
     public boolean login(String email, String password) throws IOException {
-        FileHandling fh = new FileHandling();
         List<String> userProfile = fh.fileRead("userProfile.txt");
         String[] userProfileArray = new String[userProfile.size()];
         userProfile.toArray(userProfileArray);
@@ -234,7 +234,7 @@ public class Users {
         ArrayList<Integer> repeatedPosition = new ArrayList<Integer>();
             
         // extract data from text file
-        for (int i = 0; i<userProfile.size(); i++){
+        for (int i = 1; i<userProfile.size(); i++){
             String[] userInfo = userProfileArray[i].split(";");
             String email_temp = userInfo[1];
             String password_temp = userInfo[2];
@@ -262,17 +262,19 @@ public class Users {
     }
     
     public void userRole(String email) throws IOException {
-        FileReader fr = new FileReader("userProfile.txt");
-        BufferedReader br = new BufferedReader(fr);
-        br.readLine(); String userID = "";
-        for (String line = br.readLine(); line != null; line = br.readLine()){
-            String[] userInfo = line.split(";");
+        List<String> userProfile = fh.fileRead("userProfile.txt");
+        String[] userProfileArray = new String[userProfile.size()];
+        userProfile.toArray(userProfileArray);
+        
+        String userID = "";
+        for (int i = 1; i<userProfile.size(); i++){
+            String[] userInfo = userProfileArray[i].split(";");
             String userID_temp = userInfo[0];
             String email_temp = userInfo[1];
             if (email.equals(email_temp)) {
                 userID = userID_temp;
             }
-        } br.close(); fr.close();
+        } 
         if(userID.startsWith("bdm")) {
             
         } else if(userID.startsWith("ace")) {
@@ -292,23 +294,24 @@ public class Users {
     
     public void setCurrentSession(String email) {
         try {
-            FileWriter fWriter = new FileWriter("currentSession.txt");
-            BufferedWriter bWriter = new BufferedWriter(fWriter);
-            FileReader fReader = new FileReader("userProfile.txt");
-            BufferedReader bReader = new BufferedReader(fReader);
+            List<String> userProfile = fh.fileRead("userProfile.txt");
+            String[] userProfileArray = new String[userProfile.size()];
+            userProfile.toArray(userProfileArray);
             
-            fWriter.write("userID;email;password;firstName;lastName;"
-                    + "identificationNo;gender;phoneNo;unitNo;" + "\n");
+            List<String> newData = new ArrayList<>();
+            newData.add("userID;email;password;firstName;lastName;"
+                    + "identificationNo;gender;phoneNo;unitNo;");
             
-            for (String line = bReader.readLine(); line != null; line = bReader.readLine()){
-                String[] userInfo = line.split(";");
+            for (int i = 1; i<userProfile.size(); i++){
+                String[] userInfo = userProfileArray[i].split(";");
                 String email_temp = userInfo[1];
                 if(email.equals(email_temp)){
-                    bWriter.write(line + "\n");
+                    newData.add(userProfileArray[i]);
                 }
             } 
-            fWriter.flush(); bWriter.flush(); bReader.close(); fReader.close();
-        } catch (IOException e) {
+            fh.fileWrite("currentSession.txt", false, newData);
+            
+        } catch (Exception e) {
             e.printStackTrace();
         }
         
@@ -316,37 +319,39 @@ public class Users {
     
     public boolean resetPasswordVerify(String email, String phoneNo, String identificationNo)
             throws IOException {
-        FileReader fr = new FileReader("userProfile.txt");
-        BufferedReader br = new BufferedReader(fr);
-        for (String line = br.readLine(); line != null; line = br.readLine()){
-            String[] userInfo = line.split(";");
+        List<String> userProfile = fh.fileRead("userProfile.txt");
+        String[] userProfileArray = new String[userProfile.size()];
+        userProfile.toArray(userProfileArray);
+        
+        for (int i = 1; i<userProfile.size(); i++){
+            String[] userInfo = userProfileArray[i].split(";");
             String email_temp = userInfo[1];
             String iden_temp = userInfo[5];
             String phoneNo_temp = userInfo[7];
             if(email.equals(email_temp) && phoneNo.equals(phoneNo_temp)
                     && identificationNo.equals(iden_temp)) {
-                setCurrentSession(email); br.close(); fr.close();
+                setCurrentSession(email);
                 return true;
             } 
         } return false;
     }
     
     public void resetPassword(String password) throws IOException {
-        FileReader fr = new FileReader("currentSession.txt");
-        BufferedReader br = new BufferedReader(fr);
-        br.readLine(); String line = br.readLine();
-        String[] userInfo = line.split(";");
+        List<String> currentUser = fh.fileRead("currentSession.txt");
+        String[] currentUserArray = new String[currentUser.size()];
+        currentUser.toArray(currentUserArray);
+        
+        String[] userInfo = currentUserArray[1].split(";");
         String email = userInfo[1];
-        fr.close(); br.close();
         
-        FileReader fr2 = new FileReader("userProfile.txt");
-        BufferedReader br2 = new BufferedReader(fr2);
+        List<String> userProfile = fh.fileRead("userProfile.txt");
+        String[] userProfileArray = new String[userProfile.size()];
+        userProfile.toArray(userProfileArray);
         
-        FileWriter fw = new FileWriter("temp.txt");
-        BufferedWriter bw = new BufferedWriter(fw);
+        List<String> newData = new ArrayList<>();
         
-        for (String line2 = br2.readLine(); line2 != null; line2 = br2.readLine()) {
-            String[] userInfo2 = line2.split(";");
+        for (int i = 0; i<userProfile.size(); i++) {
+            String[] userInfo2 = userProfileArray[i].split(";");
             String userID_temp = userInfo2[0];
             String email_temp = userInfo2[1];
             String firstName_temp = userInfo2[3];
@@ -356,23 +361,14 @@ public class Users {
             String phoneNo_temp = userInfo2[7];
             String unitNo_temp = userInfo2[8];
             if(!email_temp.equals(email)) {
-                bw.write(line2 + "\n");
+                newData.add(userProfileArray[i]);
             } else {
-                    bw.write(userID_temp +";"+ email_temp +";"+ password +";"+
+                    newData.add(userID_temp +";"+ email_temp +";"+ password +";"+
                             firstName_temp +";"+ lastName_temp +";"+
                             identificationNo_temp +";"+ gender_temp +";"+
-                            phoneNo_temp +";"+ unitNo_temp +";"+ "\n");
+                            phoneNo_temp +";"+ unitNo_temp +";");
             }
         } 
-        fw.flush(); bw.flush(); fw.close(); bw.close(); 
-        br.close(); fr.close(); 
-        br2.close(); fr2.close();
-        
-        File oldFile = new File("userProfile.txt");
-        oldFile.delete();
-        
-        File tempFile = new File("temp.txt");
-        File rename = new File("userProfile.txt");
-        tempFile.renameTo(rename);
+        fh.fileWrite("userProfile.txt", false, newData);
     }
 }
