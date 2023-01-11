@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -220,8 +221,11 @@ public class Users {
     }
     
     public boolean login(String email, String password) throws IOException {
-        FileReader fr = new FileReader("userProfile.txt");
-        BufferedReader br = new BufferedReader(fr);
+        TestingFileHandling fh = new TestingFileHandling();
+        List<String> userProfile = fh.fileRead("userProfile.txt");
+        String[] userProfileArray = new String[userProfile.size()];
+        userProfile.toArray(userProfileArray);
+        
         // declare username_lst arrayList to store username in text file
         ArrayList<String> email_lst = new ArrayList<String>();
         // declare password_lst arrayList to store password in text file
@@ -230,13 +234,13 @@ public class Users {
         ArrayList<Integer> repeatedPosition = new ArrayList<Integer>();
             
         // extract data from text file
-        for (String line = br.readLine(); line != null; line = br.readLine()){
-            String[] userInfo = line.split(";");
+        for (int i = 0; i<userProfile.size(); i++){
+            String[] userInfo = userProfileArray[i].split(";");
             String email_temp = userInfo[1];
             String password_temp = userInfo[2];
             email_lst.add(email_temp);
             password_lst.add(password_temp);
-        } br.close(); fr.close();
+        } 
 
         // scan for repeated password
         for (int i = 0; i < password_lst.size(); i++) {
