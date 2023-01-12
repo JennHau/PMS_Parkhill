@@ -266,6 +266,9 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
 
         jPanel16.setBackground(new java.awt.Color(13, 24, 42));
         jPanel16.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel16MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jPanel16MouseEntered(evt);
             }
@@ -274,6 +277,14 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
         jLabel20.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(255, 255, 255));
         jLabel20.setText("Dashboard");
+        jLabel20.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel20MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel20MouseEntered(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
         jPanel16.setLayout(jPanel16Layout);
@@ -733,6 +744,7 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
 
     private void jPanel16MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel16MouseEntered
         // TODO add your handling code here:
+        jPanel16.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_jPanel16MouseEntered
 
     private void issueInvoiceLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoiceLabelMouseClicked
@@ -909,6 +921,23 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
             setTable();
         }
     }//GEN-LAST:event_searchTextFieldKeyReleased
+
+    private void jLabel20MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseEntered
+        // TODO add your handling code here:
+        jLabel20.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jLabel20MouseEntered
+
+    private void jLabel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AccountExecutiveDashboard().setVisible(true);
+    }//GEN-LAST:event_jLabel20MouseClicked
+
+    private void jPanel16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel16MouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AccountExecutiveDashboard().setVisible(true);
+    }//GEN-LAST:event_jPanel16MouseClicked
 
     public void setTable() {
         try{

@@ -25,97 +25,84 @@ import java.util.Random;
  */
 public class AccountExecutive extends Users{
     
-    public List<String> extractFeeTypes(String fileName) throws IOException {
+    FileHandling fh = new FileHandling();
+    
+    public List<String> extractFeeTypes(String fileName) {
         List<String> feeTypes = new ArrayList<String>();
-        FileReader fr = new FileReader(fileName);
-        BufferedReader br = new BufferedReader(fr);
-        br.readLine();
-        for (String line = br.readLine(); line != null; line = br.readLine()){
-            feeTypes.add(line);
-        } br.close(); fr.close(); 
+        
+        List<String> feeTypesList = fh.fileRead(fileName);
+        String[] feeTypesArray = new String[feeTypesList.size()];
+        feeTypesList.toArray(feeTypesArray);
+        
+        for (int i = 1; i<feeTypesList.size(); i++){
+            feeTypes.add(feeTypesArray[i]);
+        } 
         return feeTypes;    
     }
     
     public boolean storeNewFeeTypes(String feeTypesName, String target, String unit,
-            String unitPrice) throws IOException {
-        FileReader fr = new FileReader("feeTypes.txt");
-        BufferedReader br = new BufferedReader(fr);
-        br.readLine();
-        for (String line = br.readLine(); line != null; line = br.readLine()){
-            String[] existingFee = line.split(";");
-            String existingFeeName = existingFee[0].toLowerCase();
-            String existingTarget = existingFee[1];
+            String unitPrice) {
+        List<String> feeTypesList = fh.fileRead("feeTypes.txt");
+        String[] feeTypesArray = new String[feeTypesList.size()];
+        feeTypesList.toArray(feeTypesArray);
+        
+        for (int i = 1; i<feeTypesList.size(); i++){
+            String[] feeDetails = feeTypesArray[i].split(";");
+            String existingFeeName = feeDetails[0].toLowerCase();
+            String existingTarget = feeDetails[1];
             if (existingFeeName.equals(feeTypesName.toLowerCase()) &&
                     existingTarget.equals(target)) {
                 return false;
             }
-        } br.close(); fr.close();
-        
-        FileWriter fw = new FileWriter("feeTypes.txt", true);
-        BufferedWriter bw = new BufferedWriter(fw);
-        
+        } 
+        List<String> newData = new ArrayList<>();
         String date = todayDate();
-        bw.write(feeTypesName+";"+target+";"+unit+";"+unitPrice+";"+date+";"+"\n");
-        fw.flush(); bw.flush(); fw.close(); bw.close(); return true;
+        newData.add(feeTypesName+";"+target+";"+unit+";"+unitPrice+";"+date+";");
+        fh.fileWrite("feeTypes.txt", true, newData);
+        return true;
     }
     
     public void modifyFeeTypes(String feeTypesName, String target, String unit,
-            String unitPrice) throws IOException {
-        FileReader fr = new FileReader("feeTypes.txt");
-        BufferedReader br = new BufferedReader(fr);
+            String unitPrice) {
+        List<String> feeTypesList = fh.fileRead("feeTypes.txt");
+        String[] feeTypesArray = new String[feeTypesList.size()];
+        feeTypesList.toArray(feeTypesArray);
         
-        FileWriter fw = new FileWriter("temp.txt");
-        BufferedWriter bw = new BufferedWriter(fw);
+        List<String> newData = new ArrayList<>();
         
-        for (String line = br.readLine(); line != null; line = br.readLine()) {
-            String[] feeTypes = line.split(";");
+        for (int i = 0; i<feeTypesList.size(); i++) {
+            String[] feeTypes = feeTypesArray[i].split(";");
             String eFeeTypesName = feeTypes[0];
             String eTarget = feeTypes[1];
             String createdDate = feeTypes[4];
             if(eFeeTypesName.equals(feeTypesName) && eTarget.equals(target)) {
-                bw.write(eFeeTypesName +";"+ eTarget +";"+ unit +";"+
-                        unitPrice +";"+ createdDate +";"+"\n");
+                newData.add(eFeeTypesName +";"+ eTarget +";"+ unit +";"+
+                        unitPrice +";"+ createdDate +";");
             } else {
-                    bw.write(line + "\n");
+                    newData.add(feeTypesArray[i]);
             }
         } 
-        fw.flush(); bw.flush(); fw.close(); bw.close();
-        br.close(); fr.close();
-        
-        File oldFile = new File("feeTypes.txt");
-        oldFile.delete();
-        
-        File tempFile = new File("temp.txt");
-        File rename = new File("feeTypes.txt");
-        tempFile.renameTo(rename);
+        fh.fileWrite("feeTypes.txt", false, newData);
     }
     
-    public void deleteFeeTypes(String feeTypesName, String target) throws IOException {
-        FileReader fr = new FileReader("feeTypes.txt");
-        BufferedReader br = new BufferedReader(fr);
+    public void deleteFeeTypes(String feeTypesName, String target) {
+        List<String> feeTypesList = fh.fileRead("feeTypes.txt");
+        String[] feeTypesArray = new String[feeTypesList.size()];
+        feeTypesList.toArray(feeTypesArray);
         
-        FileWriter fw = new FileWriter("temp.txt");
-        BufferedWriter bw = new BufferedWriter(fw);
+        List<String> newData = new ArrayList<>();
         
-        for (String line = br.readLine(); line != null; line = br.readLine()) {
-            String[] feeTypes = line.split(";");
+        for (int i = 0; i<feeTypesList.size(); i++) {
+            String[] feeTypes = feeTypesArray[i].split(";");
             String eFeeTypesName = feeTypes[0];
             String eTarget = feeTypes[1];
             if(eFeeTypesName.equals(feeTypesName) && eTarget.equals(target)) {
                 
             } else {
-                    bw.write(line + "\n");
+                    newData.add(feeTypesArray[i]);
             }
         } 
-        fw.flush(); bw.flush(); fw.close(); bw.close();
-        br.close(); fr.close();
-        
-        File oldFile = new File("feeTypes.txt");
-        oldFile.delete();
-        
-        File tempFile = new File("temp.txt");
-        File rename = new File("feeTypes.txt");
-        tempFile.renameTo(rename);
+        fh.fileWrite("feeTypes.txt", false, newData);
     }
     
     public String todayDate() {
@@ -125,8 +112,7 @@ public class AccountExecutive extends Users{
         return str;
     }
     
-    public List<String> rangeOfMonthNYear(String feeTypeName, String target)
-            throws IOException {
+    public List<String> rangeOfMonthNYear(String feeTypeName, String target) {
         List<String> monthNYear = new ArrayList<String>();
         String todayDate = todayDate();
         
@@ -136,17 +122,19 @@ public class AccountExecutive extends Users{
         int y = ld.getYear() ;
         
         String referenceDate = "";
-        FileReader fr = new FileReader("feeTypes.txt");
-        BufferedReader br = new BufferedReader(fr);
-        for (String line = br.readLine(); line != null; line = br.readLine()) {
-            String[] feeTypes = line.split(";");
+        List<String> feeTypesList = fh.fileRead("feeTypes.txt");
+        String[] feeTypesArray = new String[feeTypesList.size()];
+        feeTypesList.toArray(feeTypesArray);
+        
+        for (int i = 1; i<feeTypesList.size(); i++) {
+            String[] feeTypes = feeTypesArray[i].split(";");
             String eFeeTypesName = feeTypes[0];
             String eTarget = feeTypes[1];
             String createdDate = feeTypes[4];
             if(eFeeTypesName.equals(feeTypeName) && eTarget.equals(target)) {
                 referenceDate = createdDate;
             } 
-        } br.close(); fr.close();
+        }
         
         LocalDate ld2 = LocalDate.parse(referenceDate, f);
         int rm = ld2.getMonthValue() ;
@@ -173,13 +161,16 @@ public class AccountExecutive extends Users{
     }
     
     public List<String> extractInvoiceDetails(String feeTypeName, String target,
-            String status, String monthYear) throws IOException {
-        FileReader fr0 = new FileReader("feeTypes.txt");
-        BufferedReader br0 = new BufferedReader(fr0);
-        br0.readLine(); String cUnit = ""; String cUnitPrice = "";
-        for (String line0 = br0.readLine(); line0 != null; line0 = br0.readLine()) {
+            String status, String monthYear) {
+        
+        List<String> feeTypesList = fh.fileRead("feeTypes.txt");
+        String[] feeTypesArray = new String[feeTypesList.size()];
+        feeTypesList.toArray(feeTypesArray);
+        
+        String cUnit = ""; String cUnitPrice = "";
+        for (int i = 1; i<feeTypesList.size(); i++) {
             
-            String[] feeTypesDetails = line0.split(";");
+            String[] feeTypesDetails = feeTypesArray[i].split(";");
             String feeType = feeTypesDetails[0];
             String eTarget = feeTypesDetails[1];
             String unit = feeTypesDetails[2];
@@ -192,32 +183,33 @@ public class AccountExecutive extends Users{
         
         List<String> availableInvoices = new ArrayList<String>();
         if (status.equals("PENDING")) {
-            FileReader fr = new FileReader("propertyDetails.txt");
-            BufferedReader br = new BufferedReader(fr);
+            List<String> propertyDetailsList = fh.fileRead("propertyDetails.txt");
+            String[] propertyDetailsArray = new String[propertyDetailsList.size()];
+            propertyDetailsList.toArray(propertyDetailsArray);
             
             String cMonthYear = monthYear.substring(0, monthYear.indexOf("/")) 
                     + monthYear.substring(monthYear.indexOf("/") + 1);
-            br.readLine(); 
-            for (String line = br.readLine(); line != null; line = br.readLine()) {
+            
+            for (int i = 1; i<propertyDetailsList.size(); i++) {
                 boolean check = false;
-                String[] propertyDetails = line.split(";");
+                String[] propertyDetails = propertyDetailsArray[i].split(";");
                 String eUnitNo = propertyDetails[0];
                 String eTarget = propertyDetails[1];
                 String squareFeet = propertyDetails[2];
                 
-                FileReader fr2 = new FileReader("invoices.txt");
-                BufferedReader br2 = new BufferedReader(fr2);
-                br2.readLine();
+                List<String> invoicesList = fh.fileRead("invoices.txt");
+                String[] invoicesArray = new String[invoicesList.size()];
+                invoicesList.toArray(invoicesArray);
                 
-                for (String line2 = br2.readLine(); line2 != null; line2 = br2.readLine()) {
-                    String[] invoiceDetails = line2.split(";");
+                for (int j = 1; j<invoicesList.size(); j++) {
+                    String[] invoiceDetails = invoicesArray[j].split(";");
                     String eInvoiceNo = invoiceDetails[0];
                     String eFeeType = invoiceDetails[2];
                     if (eInvoiceNo.equals(eUnitNo + cMonthYear) 
                          && eFeeType.equals(feeTypeName)) {
                         check = true;
                     } 
-                } fr2.close(); br2.close();
+                } 
                 if (check == false && eTarget.equals(target)) {
                     if (cUnit.equals("Square Feet")) {
                         DecimalFormat df = new DecimalFormat("0.00");
@@ -238,23 +230,27 @@ public class AccountExecutive extends Users{
                     }
                     
                 }
-            } fr.close(); br.close(); 
+            } 
         } else if (status.equals("ISSUED")) {
-            FileReader fr = new FileReader("propertyDetails.txt");
-            BufferedReader br = new BufferedReader(fr);
+            List<String> propertyDetailsList = fh.fileRead("propertyDetails.txt");
+            String[] propertyDetailsArray = new String[propertyDetailsList.size()];
+            propertyDetailsList.toArray(propertyDetailsArray);
+            
             String cMonthYear = monthYear.substring(0, monthYear.indexOf("/")) 
                     + monthYear.substring(monthYear.indexOf("/") + 1);
-            br.readLine(); 
-            for (String line = br.readLine(); line != null; line = br.readLine()) {
-                String[] propertyDetails = line.split(";");
+            
+            for (int i = 1; i<propertyDetailsList.size(); i++) {
+                String[] propertyDetails = propertyDetailsArray[i].split(";");
                 String eUnitNo = propertyDetails[0];
                 String eTarget = propertyDetails[1];
                 
-                FileReader fr2 = new FileReader("invoices.txt");
-                BufferedReader br2 = new BufferedReader(fr2);
-                br2.readLine();
-                for (String line2 = br2.readLine(); line2 != null; line2 = br2.readLine()) {
-                    String[] invoiceDetails = line2.split(";");
+                List<String> invoicesList = fh.fileRead("invoices.txt");
+                String[] invoicesArray = new String[invoicesList.size()];
+                invoicesList.toArray(invoicesArray);
+                
+                
+                for (int j = 1; j<invoicesList.size(); j++) {
+                    String[] invoiceDetails = invoicesArray[j].split(";");
                     String eInvoiceNo = invoiceDetails[0];
                     String unitNo = invoiceDetails[1];
                     String eFeeType = invoiceDetails[2];
@@ -269,8 +265,8 @@ public class AccountExecutive extends Users{
                                 unit +";"+ unitPrice +";"+ totalPrice;
                         availableInvoices.add(invoiceLine);
                     }
-                } fr2.close(); br2.close();
-            } fr.close(); br.close(); 
+                } 
+            } 
         } return availableInvoices;
     }
     
@@ -278,61 +274,58 @@ public class AccountExecutive extends Users{
         String[] invoiceDetailsArray = new String[invoiceDetails.size()];
         invoiceDetails.toArray(invoiceDetailsArray);
         
-        try {
-            FileWriter fw = new FileWriter("invoices.txt", true);
-            BufferedWriter bw = new BufferedWriter(fw);
+        List<String> newData = new ArrayList<>();
 
-            for (int i=0; i<invoiceDetails.size(); i++) {
-                bw.write(invoiceDetailsArray[i] + "\n");
-            } 
-            fw.flush(); bw.flush(); fw.close(); bw.close(); 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        for (int i=0; i<invoiceDetails.size(); i++) {
+            newData.add(invoiceDetailsArray[i]);
+        } 
+        fh.fileWrite("invoices.txt", true, newData);
     }
     
     public List<String> extractAllPayment(String status) {
         List<String> pendingPaymentList = new ArrayList<String>();
         try {
             if (status.equals("PENDING")) {
-                FileReader fr = new FileReader("invoices.txt");
-                BufferedReader br = new BufferedReader(fr);
+                List<String> invoicesList = fh.fileRead("invoices.txt");
+                String[] invoicesArray = new String[invoicesList.size()];
+                invoicesList.toArray(invoicesArray);
 
-                br.readLine(); 
-                for (String line = br.readLine(); line != null; line = br.readLine()) {
+                for (int i=1; i<invoicesList.size(); i++) {
                     boolean check = true;
-                    String[] invoiceDetails = line.split(";");
+                    String[] invoiceDetails = invoicesArray[i].split(";");
                     String iInvoiceNo = invoiceDetails[0];
                     String iUnitNo = invoiceDetails[1];
                     String iFeeType = invoiceDetails[2];
                     String iTotalPrice = invoiceDetails[7];
                     String iGeneratedDate = invoiceDetails[9];
-
-                    FileReader fr2 = new FileReader("payment.txt");
-                    BufferedReader br2 = new BufferedReader(fr2);
-                    br2.readLine();
-                    for (String line2 = br2.readLine(); line2 != null; line2 = br2.readLine()) {
-                        String[] paymentDetails = line2.split(";");
+                    
+                    List<String> paymentList = fh.fileRead("payment.txt");
+                    String[] paymentArray = new String[paymentList.size()];
+                    paymentList.toArray(paymentArray);
+                    
+                    
+                    for (int j=1; j<paymentList.size(); j++) {
+                        String[] paymentDetails = paymentArray[j].split(";");
                         String pInvoiceNo = paymentDetails[0];
                         String pFeeType = paymentDetails[2];
                         if (iInvoiceNo.equals(pInvoiceNo) && iFeeType.equals(pFeeType)) {
                             check = false;
                         }
-                    } fr2.close(); br2.close();
+                    } 
                     if (check == true) {
                         String cPaymentDetails = iInvoiceNo +";"+ iGeneratedDate +";"+ 
                                 iUnitNo +";"+ iFeeType +";"+ iTotalPrice +";";
                         pendingPaymentList.add(cPaymentDetails);
                     }
-                } fr.close(); br.close();
+                } 
                 
             } else if (status.equals("PAID")) {
-                FileReader fr = new FileReader("payment.txt");
-                BufferedReader br = new BufferedReader(fr);
+                List<String> paymentList = fh.fileRead("payment.txt");
+                String[] paymentArray = new String[paymentList.size()];
+                paymentList.toArray(paymentArray);
 
-                br.readLine(); 
-                for (String line = br.readLine(); line != null; line = br.readLine()) {
-                    String[] paymentDetails = line.split(";");
+                for (int i=1; i<paymentList.size(); i++) {
+                    String[] paymentDetails = paymentArray[i].split(";");
                     String invoiceNo = paymentDetails[0];
                     String unitNo = paymentDetails[1];
                     String feeType = paymentDetails[2];
@@ -343,7 +336,7 @@ public class AccountExecutive extends Users{
                             unitNo +";"+ feeType +";"+ totalPrice +";"+ 
                             paymentDate +";";
                     pendingPaymentList.add(cPaymentDetails);
-                } fr.close(); br.close();
+                } 
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -354,11 +347,12 @@ public class AccountExecutive extends Users{
     public List<String> extractPaymentFees(String invoiceNo) {
         List<String> paymentFees = new ArrayList<String>();
         try {
-            FileReader fr = new FileReader("invoices.txt");
-            BufferedReader br = new BufferedReader(fr);
-            br.readLine();
-            for (String line = br.readLine(); line != null; line = br.readLine()) {
-                String[] feesDetails = line.split(";");
+            List<String> invoicesList = fh.fileRead("invoices.txt");
+            String[] invoicesArray = new String[invoicesList.size()];
+            invoicesList.toArray(invoicesArray);
+            
+            for (int i=1; i<invoicesList.size(); i++) {
+                String[] feesDetails = invoicesArray[i].split(";");
                 String einvoiceNo = feesDetails[0];
                 String feeType = feesDetails[2];
                 String issueDate = feesDetails[9];
@@ -381,11 +375,12 @@ public class AccountExecutive extends Users{
     public List<String> extractUnitUsers(String unitNo) {
         List<String> userName = new ArrayList<String>();
         try {
-            FileReader fr = new FileReader("userProfile.txt");
-            BufferedReader br = new BufferedReader(fr);
-            br.readLine();
-            for (String line = br.readLine(); line != null; line = br.readLine()) {
-                String[] userDetails = line.split(";");
+            List<String> usersList = fh.fileRead("userProfile.txt");
+            String[] usersArray = new String[usersList.size()];
+            usersList.toArray(usersArray);
+            
+            for (int i=1; i<usersList.size(); i++) {
+                String[] userDetails = usersArray[i].split(";");
                 String firstName = userDetails[3];
                 String lastName = userDetails[4];
                 String eunitNo = userDetails[8];
@@ -393,7 +388,7 @@ public class AccountExecutive extends Users{
                 if(eunitNo.equals(unitNo)) {
                     userName.add(firstName +" "+ lastName);
                 }
-            } fr.close(); br.close();
+            } 
         } catch (Exception e) {
             e.printStackTrace();
         } return userName;
@@ -402,11 +397,12 @@ public class AccountExecutive extends Users{
     public List<String> extractUnitUsersDetails(String userName) {
         List<String> userFullDetails = new ArrayList<String>();
         try {
-            FileReader fr = new FileReader("userProfile.txt");
-            BufferedReader br = new BufferedReader(fr);
-            br.readLine();
-            for (String line = br.readLine(); line != null; line = br.readLine()) {
-                String[] userDetails = line.split(";");
+            List<String> usersList = fh.fileRead("userProfile.txt");
+            String[] usersArray = new String[usersList.size()];
+            usersList.toArray(usersArray);
+            
+            for (int i=1; i<usersList.size(); i++) {
+                String[] userDetails = usersArray[i].split(";");
                 String eUserName = userDetails[3] +" "+ userDetails[4];
                 String userID = userDetails[0];
                 String phoneNo = userDetails[7];
@@ -416,7 +412,7 @@ public class AccountExecutive extends Users{
                     userFullDetails.add(userID +";"+ phoneNo +";"+ email +";"+
                             identificationNo+";");
                 }
-            } fr.close(); br.close();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } return userFullDetails;
@@ -424,15 +420,14 @@ public class AccountExecutive extends Users{
     
     public void storePayment(String invoiceNo, String userID) {
         try {
-            FileReader fr = new FileReader("invoices.txt");
-            BufferedReader br = new BufferedReader(fr);
+            List<String> invoicesList = fh.fileRead("invoices.txt");
+            String[] invoicesArray = new String[invoicesList.size()];
+            invoicesList.toArray(invoicesArray);
             
-            FileWriter fw = new FileWriter("payment.txt", true);
-            BufferedWriter bw = new BufferedWriter(fw);
+            List<String> newData = new ArrayList<>();
             
-            br.readLine();
-            for (String line = br.readLine(); line != null; line = br.readLine()) {
-                String[] invoiceDetails = line.split(";");
+            for (int i=1; i<invoicesList.size(); i++) {
+                String[] invoiceDetails = invoicesArray[i].split(";");
                 String einvoiceNo = invoiceDetails[0];
                 String unitNo = invoiceDetails[1];
                 String feeType = invoiceDetails[2];
@@ -446,12 +441,11 @@ public class AccountExecutive extends Users{
                 
                 if (einvoiceNo.equals(invoiceNo)) {
                     String todayDate = todayDate();
-                    bw.write(einvoiceNo +";"+ unitNo +";"+ feeType +";"+ target +";"+
+                    newData.add(einvoiceNo +";"+ unitNo +";"+ feeType +";"+ target +";"+
                             consump +";"+ unit +";"+ unitPrice +";"+ totalPrice +";"+
-                            period +";"+ userID +";"+ todayDate +";"+ generatedDate
-                            +";"+ "\n");
+                            period +";"+ userID +";"+ todayDate +";"+ generatedDate +";");
                 }
-            } fw.flush(); bw.flush(); fw.close(); bw.close(); fr.close(); br.close();
+            } fh.fileWrite("payment.txt", true, newData);
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -461,58 +455,57 @@ public class AccountExecutive extends Users{
     public List<String> extractReceipt(String status) {
         List<String> receiptList = new ArrayList<String>();
         try {
+            List<String> eReceiptList = fh.fileRead("receipt.txt");
+            String[] receiptArray = new String[eReceiptList.size()];
+            eReceiptList.toArray(receiptArray);
+            
+            List<String> usersList = fh.fileRead("userProfile.txt");
+            String[] usersArray = new String[usersList.size()];
+            usersList.toArray(usersArray);
+            
             if (status.equals("PENDING")) {
-                FileReader fr = new FileReader("payment.txt");
-                BufferedReader br = new BufferedReader(fr);
-
-                br.readLine(); 
-                for (String line = br.readLine(); line != null; line = br.readLine()) {
+                List<String> paymentList = fh.fileRead("payment.txt");
+                String[] paymentArray = new String[paymentList.size()];
+                paymentList.toArray(paymentArray);
+                
+                for (int i=1; i<paymentList.size(); i++) {
                     boolean check = true;
-                    String[] invoiceDetails = line.split(";");
+                    String[] invoiceDetails = paymentArray[i].split(";");
                     String iInvoiceNo = invoiceDetails[0];
                     String iUnitNo = invoiceDetails[1];
                     String iFeeType = invoiceDetails[2];
                     String iTotalPrice = invoiceDetails[7];
                     String paidBy = invoiceDetails[9];
                     String paymentDate = invoiceDetails[10];
-
-                    FileReader fr2 = new FileReader("receipt.txt");
-                    BufferedReader br2 = new BufferedReader(fr2);
-                    br2.readLine();
-                    for (String line2 = br2.readLine(); line2 != null; line2 = br2.readLine()) {
-                        String[] paymentDetails = line2.split(";");
+                    
+                    for (int j=1; j<eReceiptList.size(); j++) {
+                        String[] paymentDetails = receiptArray[j].split(";");
                         String pInvoiceNo = paymentDetails[0];
                         String pFeeType = paymentDetails[2];
                         if (iInvoiceNo.equals(pInvoiceNo) && iFeeType.equals(pFeeType)) {
                             check = false;
                         }
-                    } fr2.close(); br2.close();
+                    } 
                     if (check == true) {
-                        FileReader fr3 = new FileReader("userProfile.txt");
-                        BufferedReader br3 = new BufferedReader(fr3);
-                        br3.readLine(); String paidByName = null;
-                        for (String line3 = br3.readLine(); line3 != null; line3 = br3.readLine()) {
-                            String[] userDetails = line3.split(";");
+                        String paidByName = null;
+                        for (int j=1; j<usersList.size(); j++) {
+                            String[] userDetails = usersArray[j].split(";");
                             String userID = userDetails[0].toUpperCase();
                             String userName = userDetails[3] +" "+ userDetails[4];
                             if(userID.equals(paidBy)) {
                                 paidByName = userName;
                             }
-                        } fr3.close(); br3.close();
+                        } 
                         String cReceiptDetails = iInvoiceNo +";"+ iUnitNo +";"+ 
                                 iFeeType +";"+ iTotalPrice +";"+ paymentDate +";"+ 
                                 paidByName +";";
                         receiptList.add(cReceiptDetails);
                     }
-                } fr.close(); br.close();
+                } 
                 
             } else if (status.equals("ISSUED")) {
-                FileReader fr = new FileReader("receipt.txt");
-                BufferedReader br = new BufferedReader(fr);
-
-                br.readLine(); 
-                for (String line = br.readLine(); line != null; line = br.readLine()) {
-                    String[] receiptDetails = line.split(";");
+                for (int i=1; i<eReceiptList.size(); i++) {
+                    String[] receiptDetails = receiptArray[i].split(";");
                     String invoiceNo = receiptDetails[0];
                     String unitNo = receiptDetails[1];
                     String feeType = receiptDetails[2];
@@ -520,23 +513,20 @@ public class AccountExecutive extends Users{
                     String paidBy = receiptDetails[9];
                     String paymentDate = receiptDetails[10];
                     
-                    FileReader fr3 = new FileReader("userProfile.txt");
-                        BufferedReader br3 = new BufferedReader(fr3);
-                        br3.readLine(); String paidByName = null;
-                        for (String line3 = br3.readLine(); line3 != null; line3 = br3.readLine()) {
-                            String[] userDetails = line3.split(";");
-                            String userID = userDetails[0].toUpperCase();
-                            String userName = userDetails[3] +" "+ userDetails[4];
-                            if(userID.equals(paidBy)) {
-                                paidByName = userName;
-                            }
-                        } fr3.close(); br3.close();
-                        
+                    String paidByName = null;
+                    for (int j=1; j<usersList.size(); j++) {
+                        String[] userDetails = usersArray[j].split(";");
+                        String userID = userDetails[0].toUpperCase();
+                        String userName = userDetails[3] +" "+ userDetails[4];
+                        if(userID.equals(paidBy)) {
+                            paidByName = userName;
+                        }
+                    } 
                     String cReceiptDetails = invoiceNo +";"+ unitNo +";"+ 
                             feeType +";"+ totalPrice +";"+ paymentDate +";"+ 
                             paidByName +";";
                         receiptList.add(cReceiptDetails);
-                } fr.close(); br.close();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -549,26 +539,27 @@ public class AccountExecutive extends Users{
         receiptDetails.toArray(receiptDetailsArray);
         
         try {
-            FileWriter fw = new FileWriter("receipt.txt", true);
-            BufferedWriter bw = new BufferedWriter(fw);
+            List<String> newData = new ArrayList<>();
 
             for (int i=0; i <receiptDetails.size(); i++) {
                 String[] receiptFullDetails = receiptDetailsArray[i].split(";");
                 String invoiceNo = receiptFullDetails[0];
                 String feeType = receiptFullDetails[1];
                 
-                FileReader fr = new FileReader("payment.txt");
-                BufferedReader br = new BufferedReader(fr);
-                for (String line = br.readLine(); line != null; line = br.readLine()) {
-                    String[] paymentFullDetails = line.split(";");
+                List<String> paymentList = fh.fileRead("payment.txt");
+                String[] paymentArray = new String[paymentList.size()];
+                paymentList.toArray(paymentArray);
+                
+                for (int j=1; j<paymentList.size(); j++) {
+                    String[] paymentFullDetails = paymentArray[j].split(";");
                     String pInvoiceNo = paymentFullDetails[0];
                     String pFeeType = paymentFullDetails[2];
                     
                     if (pInvoiceNo.equals(invoiceNo) && pFeeType.equals(feeType)) {
-                        bw.write(line + "\n");
+                        newData.add(paymentArray[j]);
                     }
-                } fr.close(); br.close();
-            } fw.flush(); bw.flush(); fw.close(); bw.close();
+                } 
+            } fh.fileWrite("receipt.txt", true, newData);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -618,17 +609,17 @@ public class AccountExecutive extends Users{
     public List<String> getAllMonthYearInvoice() {
         List<String> availableMonthYear = new ArrayList<>();
         try {
-            FileReader fr = new FileReader("invoices.txt");
-            BufferedReader br = new BufferedReader(fr);
+            List<String> invoicesList = fh.fileRead("invoices.txt");
+            String[] invoicesArray = new String[invoicesList.size()];
+            invoicesList.toArray(invoicesArray);
 
-            br.readLine(); 
-            for (String line = br.readLine(); line != null; line = br.readLine()) {
-                String[] invoiceDetails = line.split(";");
+            for (int i=1; i< invoicesList.size(); i++) {
+                String[] invoiceDetails = invoicesArray[i].split(";");
                 String period = invoiceDetails[8];
                 if (!availableMonthYear.contains(period)) {
                     availableMonthYear.add(period);
                 }
-            } fr.close(); br.close();
+            } 
         } catch (Exception e) {
             e.printStackTrace();
         } 
@@ -670,12 +661,12 @@ public class AccountExecutive extends Users{
     public String getInvoiceLatePayment(String invoiceNo) {
         String latePaymentFee = "";
         try{
-            FileReader fr = new FileReader("invoices.txt");
-            BufferedReader br = new BufferedReader(fr);
+            List<String> invoicesList = fh.fileRead("invoices.txt");
+            String[] invoicesArray = new String[invoicesList.size()];
+            invoicesList.toArray(invoicesArray);
 
-            br.readLine(); 
-            for (String line = br.readLine(); line != null; line = br.readLine()) {
-                String[] invoiceDetails = line.split(";");
+            for (int i=1; i< invoicesList.size(); i++) {
+                String[] invoiceDetails = invoicesArray[i].split(";");
                 String eInvoiceNo = invoiceDetails[0];
                 String feeType = invoiceDetails[2];
                 String totalPrice = invoiceDetails[7];
@@ -683,7 +674,7 @@ public class AccountExecutive extends Users{
                 if (eInvoiceNo.equals(invoiceNo) && feeType.equals("Late Payment Charges")) {
                     latePaymentFee = totalPrice;
                 }
-            } fr.close(); br.close();
+            }
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -693,30 +684,26 @@ public class AccountExecutive extends Users{
     
     public void chargeLatePaymentFee(String invoiceNo, String latePaymentFee) {
         try{
-            FileReader fr = new FileReader("invoices.txt");
-            BufferedReader br = new BufferedReader(fr);
+            List<String> invoicesList = fh.fileRead("invoices.txt");
+            String[] invoicesArray = new String[invoicesList.size()];
+            invoicesList.toArray(invoicesArray);
             boolean check = false;
             
-            br.readLine(); 
-            for (String line = br.readLine(); line != null; line = br.readLine()) {
-                String[] invoiceDetails = line.split(";");
+            for (int i=1; i< invoicesList.size(); i++) {
+                String[] invoiceDetails = invoicesArray[i].split(";");
                 String eInvoiceNo = invoiceDetails[0];
                 String feeType = invoiceDetails[2];
                 
                 if (eInvoiceNo.equals(invoiceNo) && feeType.equals("Late Payment Charges")) {
                     check = true;
                 }
-            } fr.close(); br.close();
+            } 
+            
+            List<String> newData = new ArrayList<>();
             
             if (check == true) {
-                FileReader fr2 = new FileReader("invoices.txt");
-                BufferedReader br2 = new BufferedReader(fr2);
-
-                FileWriter fw = new FileWriter("temp.txt");
-                BufferedWriter bw = new BufferedWriter(fw);
-
-                for (String line2 = br2.readLine(); line2 != null; line2 = br2.readLine()) {
-                    String[] invoiceDetails = line2.split(";");
+                for (int i=1; i< invoicesList.size(); i++) {
+                    String[] invoiceDetails = invoicesArray[i].split(";");
                     String nInvoiceNo = invoiceDetails[0];
                     String nUnitNo = invoiceDetails[1];
                     String nFeeType = invoiceDetails[2];
@@ -725,35 +712,25 @@ public class AccountExecutive extends Users{
                             nFeeType.equals("Late Payment Charges")) {
                         
                         String generatedDate = new AccountExecutive().todayDate();
-                        bw.write(invoiceNo +";"+ nUnitNo +";"+ nFeeType +";"+ "-" +";"+
+                        newData.add(invoiceNo +";"+ nUnitNo +";"+ nFeeType +";"+ "-" +";"+
                                 "-" +";"+ "-" +";"+ "-" +";"+ latePaymentFee +";"+
                                 nPeriod +";"+ generatedDate+";");
                     } else {
-                        bw.write(line2 + "\n");
+                        newData.add(invoicesArray[i]);
                     }
-                } fw.flush(); bw.flush(); fw.close(); bw.close();
-                fr2.close(); br2.close();
-                File oldFile = new File("invoices.txt");
-                oldFile.delete();
-
-                File tempFile = new File("temp.txt");
-                File rename = new File("invoices.txt");
-                tempFile.renameTo(rename);
+                } fh.fileWrite("temp.txt", true, newData);
                 
             } else if (check == false) {
-                FileWriter fw = new FileWriter("invoices.txt", true);
-                BufferedWriter bw = new BufferedWriter(fw);
-                
                 String nPeriod = invoiceNo.substring(invoiceNo.length()-6);
                 String period = nPeriod.substring(0, 2) + "/" + nPeriod.substring(2);
                 String nUnitNo = invoiceNo.substring(0, invoiceNo.length()-6);
                 
                 String generatedDate = new AccountExecutive().todayDate();
-                bw.write(invoiceNo +";"+ nUnitNo +";"+ "Late Payment Charges" +";"+ "-" 
+                newData.add(invoiceNo +";"+ nUnitNo +";"+ "Late Payment Charges" +";"+ "-" 
                         +";"+ "-" +";"+ "-" +";"+ "-" +";"+ latePaymentFee +";"+
                         period +";"+ generatedDate+";");
                 
-                fw.flush(); bw.flush(); fw.close(); bw.close();
+                fh.fileWrite("invoices.txt", true, newData);
             } 
             
         } catch (Exception e) {
@@ -765,13 +742,13 @@ public class AccountExecutive extends Users{
         List<String> availableUnit = new ArrayList<>();
         List<String> availableStatements = new ArrayList<>();
         try {
+            List<String> invoicesList = fh.fileRead("invoices.txt");
+            String[] invoicesArray = new String[invoicesList.size()];
+            invoicesList.toArray(invoicesArray);
+            
             if (status.equals("PENDING")) {
-                FileReader fr = new FileReader("invoices.txt");
-                BufferedReader br = new BufferedReader(fr);
-                
-                br.readLine(); 
-                for (String line = br.readLine(); line != null; line = br.readLine()) {
-                    String[] invoiceDetails = line.split(";");
+                for (int i=1; i< invoicesList.size(); i++) {
+                    String[] invoiceDetails = invoicesArray[i].split(";");
                     String eInvoiceNo = invoiceDetails[0];
                     String unitNo = invoiceDetails[1];
                     String eIssuedDate = invoiceDetails[9];
@@ -779,31 +756,27 @@ public class AccountExecutive extends Users{
                     
                     boolean check = false;
                     if (issuedDate.equals(monthYear)) {
-                        FileReader fr2 = new FileReader("statements.txt");
-                        BufferedReader br2 = new BufferedReader(fr2);
+                        List<String> statementsList = fh.fileRead("invoices.txt");
+                        String[] statementsArray = new String[statementsList.size()];
+                        statementsList.toArray(statementsArray);
                         
-                        br2.readLine(); 
-                        for (String line2 = br2.readLine(); line2 != null; line2 = br2.readLine()) {
-                            String[] statementDetails = line2.split(";");
+                        for (int j=1; j< statementsList.size(); j++) {
+                            String[] statementDetails = statementsArray[j].split(";");
                             String sInvoiceNo = statementDetails[0];
                             if (sInvoiceNo.equals(eInvoiceNo)) {
                                 check = true;
                             }
-                        } fr2.close(); br2.close();
+                        } 
                         if (check == false && !availableUnit.contains(unitNo)) {
                             availableUnit.add(unitNo);
                         }
                     }
-                } fr.close(); br.close();
+                } 
                 availableStatements = extractStatementUnitDetails(availableUnit);
                 
             } else if (status.equals("ISSUED")) {
-                FileReader fr = new FileReader("statements.txt");
-                BufferedReader br = new BufferedReader(fr);
-                
-                br.readLine(); 
-                for (String line = br.readLine(); line != null; line = br.readLine()) {
-                    String[] statementDetails = line.split(";");
+                for (int i=1; i< invoicesList.size(); i++) {
+                    String[] statementDetails = invoicesArray[i].split(";");
                     String invoiceNo = statementDetails[0];
                     String sUnitNo = statementDetails[1];
                     
@@ -813,7 +786,7 @@ public class AccountExecutive extends Users{
                     if (!availableUnit.contains(sUnitNo) && period.equals(monthYear)) {
                         availableUnit.add(sUnitNo);
                     }
-                } fr.close(); br.close();
+                } 
                 availableStatements = extractStatementUnitDetails(availableUnit);
             }
         } catch (Exception e) {
@@ -828,12 +801,12 @@ public class AccountExecutive extends Users{
         try {
             for (String unitNo : availableUnit) {
                 String owner = "-"; String resident = "-"; String target = "";
-                FileReader fr = new FileReader("invoices.txt");
-                BufferedReader br = new BufferedReader(fr);
+                List<String> invoicesList = fh.fileRead("invoices.txt");
+                String[] invoicesArray = new String[invoicesList.size()];
+                invoicesList.toArray(invoicesArray);
                 
-                br.readLine();
-                for (String line = br.readLine(); line != null; line = br.readLine()) {
-                    String[] invoiceDetails = line.split(";");
+                for (int i=1; i< invoicesList.size(); i++) {
+                    String[] invoiceDetails = invoicesArray[i].split(";");
                     String iUnitNo = invoiceDetails[1];
                     
                     if (iUnitNo.equals(unitNo) && iUnitNo.startsWith("S")) {
@@ -841,14 +814,14 @@ public class AccountExecutive extends Users{
                     } else if (iUnitNo.equals(unitNo)) {
                         target = "Residential";
                     }
-                } fr.close(); br.close();
+                } 
                 
-                FileReader fr2 = new FileReader("userProfile.txt");
-                BufferedReader br2 = new BufferedReader(fr2);
+                List<String> usersList = fh.fileRead("userProfile.txt");
+                String[] usersArray = new String[usersList.size()];
+                usersList.toArray(usersArray);
 
-                br2.readLine(); 
-                for (String line2 = br2.readLine(); line2 != null; line2 = br2.readLine()) {
-                    String[] userDetails = line2.split(";");
+                for (int i=1; i< usersList.size(); i++) {
+                    String[] userDetails = usersArray[i].split(";");
                     String userID = userDetails[0];
                     String firstName = userDetails[3];
                     String lastName = userDetails[4];
@@ -861,7 +834,7 @@ public class AccountExecutive extends Users{
                     } else if (uUnitNo.equals(unitNo) && userID.startsWith("vdr")) {
                         owner = firstName +" "+ lastName;
                     }
-                } fr2.close(); br2.close();
+                } 
                 availableStatements.add(unitNo +";"+ target +";"+ owner +";"+ resident);
             }
 
@@ -873,12 +846,11 @@ public class AccountExecutive extends Users{
     
     public void issueStatement(List<String> availableStatement) {
         try {
-            FileWriter fw = new FileWriter("statements.txt", true);
-            BufferedWriter bw = new BufferedWriter(fw);
+            List<String> newData = new ArrayList<>();
             String todayDate = todayDate();
             for (String statements : availableStatement) {
-                bw.write(statements + todayDate +";\n");
-            } fw.flush(); bw.flush(); fw.close(); bw.close();
+                newData.add(statements + todayDate);
+            } fh.fileWrite("statements.txt", true, newData);
         } catch (Exception e) {
             e.printStackTrace();
         }

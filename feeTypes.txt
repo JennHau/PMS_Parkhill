@@ -1,9 +1,9 @@
-feeType;target;unit;unitPrice;createdDate;
-Gas;Residential;kWh;0.12;01/11/2022;
-Gas;Commercial;kWh;0.13;01/11/2022;
-Electricity;Residential;W;0.22;01/11/2022;
-Electricity;Commercial;W;0.44;01/11/2022;
-Water;Residential;Cubic Metres;0.57;01/11/2022;
-Water;Commercial;Cubic Metres;2.07;01/11/2022;
-Management Fee;Residential;Square Feet;0.30;01/11/2022;
-Management Fee;Commercial;Square Feet;0.33;01/11/2022;
+feeType;target;unit;unitPrice;createdDate;category;
+Gas;Residential;kWh;0.12;01/11/2022;Utility;
+Gas;Commercial;kWh;0.13;01/11/2022;Utility;
+Electricity;Residential;W;0.22;01/11/2022;Utility;
+Electricity;Commercial;W;0.44;01/11/2022;Utility;
+Water;Residential;Cubic Metres;0.57;01/11/2022;Utility;
+Water;Commercial;Cubic Metres;2.07;01/11/2022;Utility;
+Management Fee;Residential;Square Feet;0.30;01/11/2022;Pay In Advance;
+Management Fee;Commercial;Square Feet;0.33;01/11/2022;Pay In Advance;
