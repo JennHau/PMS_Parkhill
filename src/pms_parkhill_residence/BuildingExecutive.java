@@ -4,11 +4,7 @@
  */
 package pms_parkhill_residence;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
@@ -61,6 +57,10 @@ public class BuildingExecutive extends Users{
     
     // job list link
     String jobListFile = "jobList.txt";
+    
+    // complaint files link
+    String complaintFiles = "complaintFiles.txt";
+    
     
     // to get employee list only from the user profile text file
 //    public void updateEmployeeList() throws IOException{
@@ -268,28 +268,6 @@ public class BuildingExecutive extends Users{
         return null;
     }
     
-//    public void recordSelectedEmployee(String employeeID) throws IOException {
-//        String fileHeader = "employeeID; \n";
-//        
-//        BufferedWriter writeRecord = fileWriter(recordSelectedEmployee, false);
-//        
-//        writeRecord.write(fileHeader + employeeID + sp);
-//    }
-//    
-//    public BufferedReader fileReader(File fileName) throws IOException {
-//        FileReader fr = new FileReader(fileName);
-//        BufferedReader br = new BufferedReader(fr);
-//        
-//        return br;
-//    }
-//    
-//    public BufferedWriter fileWriter(File fileName, boolean append)throws IOException{
-//        FileWriter fw = new FileWriter(fileName, append);
-//        BufferedWriter bw = new BufferedWriter(fw);
-//        
-//        return bw;
-//    }
-    
     public LocalDate formatDate(String date) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         
@@ -338,7 +316,7 @@ public class BuildingExecutive extends Users{
         return null;
     }
     
-    public String[] getCurrentBE(String currentBEid) throws IOException {
+    public String[] getUserDetails(String userId) throws IOException {
         List<String> readUserProfile = fileHandling.fileRead(userProfile);
         
         boolean firstLine = true;
@@ -346,7 +324,7 @@ public class BuildingExecutive extends Users{
             if (!firstLine) {
                 String[] userDetails = userLine.split(sp);
                 String userID = userDetails[0];
-                if (userID.equals(currentBEid)) {
+                if (userID.equals(userId)) {
                     return userDetails;
                 }
             }
@@ -483,6 +461,25 @@ public class BuildingExecutive extends Users{
         }
     }
     
+    public String getComplaintDetails(String complaintId) {
+        List<String> complaintData = fh.fileRead(complaintFiles);
+        
+        boolean firstLine = true;
+        for (String eachData : complaintData) {
+            if (!firstLine) {
+                String cmpId = (eachData.split(sp))[0];
+            
+                if (cmpId.equals(complaintId)) {
+                    return eachData;
+                }
+            }
+            
+            firstLine = false;
+        }
+        
+        return null;
+    }
+    
     public void fileCleaner(File fileName) throws IOException {
         PrintWriter pw = new PrintWriter(fileName);
         pw.flush();
@@ -550,4 +547,15 @@ public class BuildingExecutive extends Users{
         JobModificationPage page = new JobModificationPage(positionCode);
         page.setVisible(true);
     }
+    
+    public void toComplaintDetailsPage(String complaintId) throws IOException {
+        ComplaintsDetails page = new ComplaintsDetails(complaintId);
+        page.setVisible(true);
+    }
+}
+
+enum cptStatus{
+    Pending,
+    Progressing,
+    Completed,
 }

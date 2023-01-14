@@ -79,8 +79,6 @@ public class JobModificationPage extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     
-    
-    
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -173,6 +171,11 @@ public class JobModificationPage extends javax.swing.JFrame {
         updateBTN.setText("Update");
 
         deleteBTN.setText("Delete");
+        deleteBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteBTNActionPerformed(evt);
+            }
+        });
 
         clearBTN.setText("Clear");
         clearBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -380,6 +383,10 @@ public class JobModificationPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         clearField();
     }//GEN-LAST:event_clearBTNActionPerformed
+
+    private void deleteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBTNActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteBTNActionPerformed
     
     private void clearField() {
         addBTN.setEnabled(true);

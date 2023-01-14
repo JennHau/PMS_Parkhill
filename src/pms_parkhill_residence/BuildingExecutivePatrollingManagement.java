@@ -474,9 +474,9 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
         maangeScheduleBTN.setText("Manage Schedule");
 
+        jLabel33.setText("Level: ");
         jLabel33.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel33.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel33.setText("Level: ");
 
         updateBTN.setText("Update");
 
@@ -486,35 +486,35 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
         levelTF.setText("jTextField1");
 
+        jLabel31.setText("Security Name: ");
         jLabel31.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel31.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel31.setText("Security Name: ");
 
         securityNameTF.setText("jTextField1");
 
         securityIdComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jLabel34.setText("Checkpoints: ");
         jLabel34.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel34.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel34.setText("Checkpoints: ");
 
         checkpointsTF.setText("jTextField1");
 
+        jLabel36.setText("Status: ");
         jLabel36.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel36.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel36.setText("Status: ");
 
         statusTF.setText("jTextField1");
 
+        jLabel35.setText("Checkpoints Records: ");
         jLabel35.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel35.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel35.setText("Checkpoints Records: ");
 
         checkpointRecordBTN.setText("jButton2");
 
+        jLabel37.setText("Remarks: ");
         jLabel37.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel37.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel37.setText("Remarks: ");
 
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
@@ -570,17 +570,17 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                                         .addComponent(securityIdComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(80, 80, 80))
                                     .addGroup(jPanel6Layout.createSequentialGroup()
-                                        .addComponent(jLabel31)
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel31))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(securityNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel6Layout.createSequentialGroup()
-                                        .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(contactNoTF, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(securityNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(contactNoTF, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGap(32, 32, 32)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel37, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jScrollPane2)))
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)))
                             .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
                                 .addComponent(jLabel30)
@@ -641,9 +641,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(contactNoTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(0, 0, 0)
-                                .addComponent(jScrollPane2))))
+                            .addComponent(jScrollPane2)))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(slotTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)

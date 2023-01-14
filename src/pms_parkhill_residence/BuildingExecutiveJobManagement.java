@@ -75,7 +75,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
     // Method to set current user (Business Executive) profile
     private void setUserProfile(String beID) throws IOException {
         // get current user details
-        String[] beDetails = BE.getCurrentBE(beID);
+        String[] beDetails = BE.getUserDetails(beID);
         
         // Set text field
         if (beDetails != null) {
@@ -573,14 +573,14 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Job ID", "Employee ID", "Employee Name", "Position", "Job Assigned", "Last Assignee", "View"
+                "Job ID", "Employee ID", "Employee Name", "Position", "Job Assigned", "View"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -604,7 +604,6 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
             assignedEmplyTable.getColumnModel().getColumn(3).setResizable(false);
             assignedEmplyTable.getColumnModel().getColumn(4).setResizable(false);
             assignedEmplyTable.getColumnModel().getColumn(5).setResizable(false);
-            assignedEmplyTable.getColumnModel().getColumn(6).setResizable(false);
         }
 
         jTextField2.setEditable(false);
@@ -848,11 +847,15 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
 
     private void updateTable() throws IOException {
         // Red Error from here
-        ArrayList<String> assignedEmplyList = BE.getSpecificStatusEmployeeList(localDate, localTime, selectedRole, searchText, BE.assignedEmployee);
-        ArrayList<String> unassignedEmplyList = BE.getSpecificStatusEmployeeList(localDate, localTime, selectedRole, searchText, BE.unassignedEmployee);
+        ArrayList<String> unassignedEmplyList = getAssignORunassignList(BE.unassignedEmployee);
+        ArrayList<String> assignedEmplyList = getAssignORunassignList(BE.assignedEmployee);
         
         BE.setTableRow(unassignedEmployeeTable, unassignedEmplyList);
         BE.setTableRow(assignedEmployeeTable, assignedEmplyList);
+    }
+    
+    private ArrayList getAssignORunassignList(int assignStatus) throws IOException {
+        return BE.getSpecificStatusEmployeeList(localDate, localTime, selectedRole, searchText, assignStatus);
     }
     
     public void setCurrentDateTime() {
