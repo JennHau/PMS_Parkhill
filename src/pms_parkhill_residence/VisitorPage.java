@@ -6,20 +6,17 @@ package pms_parkhill_residence;
 
 import java.awt.Cursor;
 import java.awt.Toolkit;
-import java.io.File;
-import javax.swing.JOptionPane;
-
 
 /**
  *
  * @author wongj
  */
-public class SignInPage extends javax.swing.JFrame {
+public class VisitorPage extends javax.swing.JFrame {
 
     /**
      * Creates new form HomePage
      */
-    public SignInPage() {
+    public VisitorPage() {
         initComponents();
         setWindowIcon();
     }
@@ -42,12 +39,8 @@ public class SignInPage extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        Email_Address = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        Password = new javax.swing.JTextField();
-        Sign_in_button = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        VisitorCode = new javax.swing.JTextField();
+        Visitor_signin_button = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -90,62 +83,47 @@ public class SignInPage extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Leelawadee", 0, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(102, 102, 102));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("SIGN IN");
+        jLabel4.setText("Visitor Login");
 
         jLabel5.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel5.setText("EMAIL ADDRESS");
+        jLabel5.setText("VISITOR REGISTRATION CODE ");
 
-        Email_Address.setToolTipText("");
-        Email_Address.setSelectionColor(new java.awt.Color(102, 102, 102));
-
-        jLabel6.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel6.setText("PASSWORD");
-
-        Password.setToolTipText("");
-        Password.setSelectionColor(new java.awt.Color(102, 102, 102));
-
-        Sign_in_button.setBackground(new java.awt.Color(13, 24, 42));
-        Sign_in_button.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
-        Sign_in_button.setForeground(new java.awt.Color(255, 255, 255));
-        Sign_in_button.setText("SIGN IN");
-        Sign_in_button.addActionListener(new java.awt.event.ActionListener() {
+        VisitorCode.setToolTipText("");
+        VisitorCode.setSelectionColor(new java.awt.Color(102, 102, 102));
+        VisitorCode.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Sign_in_buttonActionPerformed(evt);
+                VisitorCodeActionPerformed(evt);
             }
         });
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel7.setText("Forgot password? Please click here");
-
-        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("Visitors? Please click here");
+        Visitor_signin_button.setBackground(new java.awt.Color(13, 24, 42));
+        Visitor_signin_button.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
+        Visitor_signin_button.setForeground(new java.awt.Color(255, 255, 255));
+        Visitor_signin_button.setText("SIGN IN");
+        Visitor_signin_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Visitor_signin_buttonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(Visitor_signin_button, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(133, 133, 133))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(125, 125, 125)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(39, 39, 39)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(Email_Address, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Password, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7)))
+                            .addComponent(VisitorCode, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(137, 137, 137)
-                        .addComponent(Sign_in_button, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(106, 106, 106)
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(125, 125, 125)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(37, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -156,18 +134,10 @@ public class SignInPage extends javax.swing.JFrame {
                 .addGap(45, 45, 45)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Email_Address, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Password, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7)
-                .addGap(37, 37, 37)
-                .addComponent(Sign_in_button, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(16, 16, 16))
+                .addComponent(VisitorCode, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42)
+                .addComponent(Visitor_signin_button, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(129, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -222,12 +192,14 @@ public class SignInPage extends javax.swing.JFrame {
         new HomePage().setVisible(true);
     }//GEN-LAST:event_jLabel9MouseClicked
 
-    private void Sign_in_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Sign_in_buttonActionPerformed
+    private void VisitorCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VisitorCodeActionPerformed
         // TODO add your handling code here:
-    new SecurityGuard_DashBoard().setVisible(true);
-        
-        
-    }//GEN-LAST:event_Sign_in_buttonActionPerformed
+    }//GEN-LAST:event_VisitorCodeActionPerformed
+
+    private void Visitor_signin_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Visitor_signin_buttonActionPerformed
+        // TODO add your handling code here:
+        System.out.println("sign in");
+    }//GEN-LAST:event_Visitor_signin_buttonActionPerformed
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
@@ -250,14 +222,22 @@ public class SignInPage extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SignInPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VisitorPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SignInPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VisitorPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SignInPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VisitorPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SignInPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VisitorPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -270,23 +250,19 @@ public class SignInPage extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SignInPage().setVisible(true);
+                new VisitorPage().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField Email_Address;
-    private javax.swing.JTextField Password;
-    private javax.swing.JButton Sign_in_button;
+    private javax.swing.JTextField VisitorCode;
+    private javax.swing.JButton Visitor_signin_button;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

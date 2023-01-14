@@ -11,6 +11,8 @@ import java.util.Date;
  * @author wongj
  */
 public class Users {
+
+    
     private String userID;
     private String firstName;
     private String lastName;
@@ -38,6 +40,7 @@ public class Users {
     }
     
     //Constructor for redidents
+    public Users(){};
     public Users(String userID, String firstName, String lastName, String email,
                  String password, String phoneNo, String identificationNo,
                  String gender, Date birthOfDate, String unitNo) { 
@@ -53,6 +56,8 @@ public class Users {
         this.unitNo = unitNo;
         System.out.println("helo");
     }
+
+    
 
     /**
      * @return the userID
@@ -193,4 +198,6 @@ public class Users {
     public void setUnitNo(String unitNo) {
         this.unitNo = unitNo;
     }
+    
+   
 }

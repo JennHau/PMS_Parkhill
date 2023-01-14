@@ -1,0 +1,9 @@
+checkpoint;SC_ID;Checkindate;checkintimedue;
+checkpoint1;scg000001;14 January 2023;2:30pm;
+checkpoint2;scg000002;14 January 2023;2:30pm;
+checkpoint3;scg000003;14 January 2023;2:30pm;
+checkpoint4;scg000001;14 January 2023;2:30pm;
+checkpoint5;scg000001;14 January 2023;2:30pm;
+checkpoint6;scg000001;14 January 2023;2:30pm;
+checkpoint7;scg000001;13 January 2023;2:30pm;
+checkpoint8;scg000001;13 January 2023;2:30pm;

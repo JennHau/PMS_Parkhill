@@ -1,0 +1,10 @@
+IncidentId;UnitNo;Report by ;Incident;Date;Time;
+1;A-01-01;scg000001;The parking slot is damage ;12 January 2022;2:30pm;
+2;A-01-02;scg000002;The parking slot is damage ;14 January 2022;4:30pm;
+3;A-01-03;scg000003;The parking slot is damage ;16 January 2022;6:30pm;
+4;A-01-03;scg000004;The parking slot is damage ;16 January 2022;6:30pm;
+5;A-01-03;scg000005;The parking slot is damage ;16 January 2022;6:30pm;
+6;ced;dcsc;sdcsd;14 January 2023;1:30am;
+7; ;n;h;28 January 2023;2:30am;
+8;s;s;the rooftop is leak;7 January 2023;1:30am;
+9;sqasx;SCG0000004;door borken;21 January 2023;2:30am;

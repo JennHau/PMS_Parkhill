@@ -1,0 +1,6 @@
+userID;email;password;firstName;lastName;identificationNo;gender;phoneNo;unitNo;status
+001;tp061862@gmail.com;123;andrew;siah;001;Male;018999999;B12;expired;
+002;tp061862@gmail.com;123;bob;siah;001;Male;018999999;B12;checked;
+003;tp061862@gmail.com;123;jason;siah;001;Male;018999999;B12;unchecked;
+004;tp061862@gmail.com;123;katty;siah;001;female;018999999;B12;checked;
+005;tp061862@gmail.com;123;eric;siah;001;Male;018999999;B12;expired;
