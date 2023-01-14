@@ -5,12 +5,6 @@
 package pms_parkhill_residence;
 
 import java.util.List;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -228,7 +222,6 @@ public class AccountExecutive extends Users{
                                 cUnit +";"+ cUnitPrice +";"+ String.valueOf(totalPrice2);
                         availableInvoices.add(invoiceLine);
                     }
-                    
                 }
             } 
         } else if (status.equals("ISSUED")) {

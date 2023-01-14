@@ -1,0 +1,1 @@
+unitNo;Target;squareFeet;status;dateOfSold;deletedDate;

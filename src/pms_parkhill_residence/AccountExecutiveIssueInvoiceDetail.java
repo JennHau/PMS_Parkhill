@@ -805,42 +805,7 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
         int row = jTable1.getSelectedRow();
         
         if (column == 6) {
-            if (statusCB.getSelectedItem() == "PENDING"){
             
-                int result = JOptionPane.showConfirmDialog(null,"Are you sure to issue this invoice?",
-                            "ISSUE INVOICE",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE);
-
-                    if(result == JOptionPane.YES_OPTION){
-                        List<String> invoiceDetails = new ArrayList<String>();
-                        
-                        String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
-                        String cMonthYear = monthYear.substring(0, monthYear.indexOf("/")) 
-                                + monthYear.substring(monthYear.indexOf("/") + 1);
-                        String invoiceNo = String.valueOf(tableModel.getValueAt(row, 1)) + cMonthYear;
-                        String unitNo = String.valueOf(tableModel.getValueAt(row, 1));
-                        String feeTypeNTarget = feeTypeNameLabel.getText();
-                        String feeType = feeTypeNTarget.substring(0, feeTypeNTarget.indexOf(", "));
-                        String target = feeTypeNTarget.substring(feeTypeNTarget.indexOf(",") + 2);
-                        String consumption = String.valueOf(tableModel.getValueAt(row, 2));
-                        String unit = String.valueOf(tableModel.getValueAt(row, 3));
-                        String unitPrice = String.valueOf(tableModel.getValueAt(row, 4));
-                        String totalPrice = String.valueOf(tableModel.getValueAt(row, 5));
-                        String period = monthYear;
-                        String generatedDate = new AccountExecutive().todayDate();
-                        String cDetails = invoiceNo +";"+ unitNo +";"+ feeType +";"+ target +";"+
-                                consumption +";"+ unit +";"+ unitPrice +";"+ totalPrice +";"+
-                                period +";"+ generatedDate+";";
-                        invoiceDetails.add(cDetails);
-                        
-                        AccountExecutive ae = new AccountExecutive();
-                        ae.issueInvoice(invoiceDetails);
-                        setTable();
-                        JOptionPane.showMessageDialog (null, "Invoice haS been issued!", 
-                                        "ISSUE INVOICE", JOptionPane.INFORMATION_MESSAGE);
-                    }
-            }
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
