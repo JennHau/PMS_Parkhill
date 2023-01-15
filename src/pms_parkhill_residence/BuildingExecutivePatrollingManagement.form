@@ -638,17 +638,18 @@
                                       <Group type="102" attributes="0">
                                           <Component id="jLabel36" min="-2" pref="95" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="statusTF" max="32767" attributes="0"/>
+                                          <Component id="statusTF" pref="118" max="32767" attributes="0"/>
                                       </Group>
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <Component id="jLabel34" min="-2" pref="95" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Group type="103" groupAlignment="1" attributes="0">
+                                              <Component id="jLabel35" min="-2" pref="95" max="-2" attributes="0"/>
+                                              <Component id="jLabel34" min="-2" pref="95" max="-2" attributes="0"/>
+                                          </Group>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="checkpointsTF" max="32767" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <Component id="jLabel35" min="-2" pref="138" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="checkpointRecordBTN" min="-2" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="checkpointsTF" max="32767" attributes="0"/>
+                                              <Component id="timePicker1" max="32767" attributes="0"/>
+                                          </Group>
                                       </Group>
                                   </Group>
                                   <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
@@ -779,9 +780,9 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="jLabel35" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                                      <Component id="checkpointRecordBTN" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                                      <Component id="timePicker1" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="jLabel36" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                                       <Component id="statusTF" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
@@ -791,7 +792,7 @@
                       </Group>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jSeparator2" max="32767" attributes="0"/>
+                  <Component id="jSeparator2" pref="2" max="32767" attributes="0"/>
                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="backBTN" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
@@ -1103,18 +1104,13 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel35">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Checkpoints Records: "/>
+            <Property name="text" type="java.lang.String" value="Time Checked: "/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Yu Gothic UI" size="14" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="33" green="33" red="33" type="rgb"/>
             </Property>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="checkpointRecordBTN">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="jButton2"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel37">
@@ -1149,6 +1145,8 @@
           </SubComponents>
         </Container>
         <Component class="javax.swing.JSeparator" name="jSeparator2">
+        </Component>
+        <Component class="com.github.lgooddatepicker.components.TimePicker" name="timePicker1">
         </Component>
       </SubComponents>
     </Container>

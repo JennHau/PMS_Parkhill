@@ -83,11 +83,11 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         jLabel36 = new javax.swing.JLabel();
         statusTF = new javax.swing.JTextField();
         jLabel35 = new javax.swing.JLabel();
-        checkpointRecordBTN = new javax.swing.JButton();
         jLabel37 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         remarksTA = new javax.swing.JTextArea();
         jSeparator2 = new javax.swing.JSeparator();
+        timePicker1 = new com.github.lgooddatepicker.components.TimePicker();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -506,11 +506,9 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
         statusTF.setText("jTextField1");
 
-        jLabel35.setText("Checkpoints Records: ");
+        jLabel35.setText("Time Checked: ");
         jLabel35.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel35.setForeground(new java.awt.Color(51, 51, 51));
-
-        checkpointRecordBTN.setText("jButton2");
 
         jLabel37.setText("Remarks: ");
         jLabel37.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
@@ -553,15 +551,15 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                                     .addGroup(jPanel6Layout.createSequentialGroup()
                                         .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(statusTF))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                                        .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(statusTF, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(checkpointsTF))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                                        .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(checkpointRecordBTN)))
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(checkpointsTF)
+                                            .addComponent(timePicker1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                                 .addGap(32, 32, 32)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
@@ -662,13 +660,13 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(checkpointRecordBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
+                                    .addComponent(timePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(19, 19, 19)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(statusTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addGap(18, 18, 18)
-                .addComponent(jSeparator2)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.DEFAULT_SIZE, 2, Short.MAX_VALUE)
                 .addGap(5, 5, 5)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(backBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -814,7 +812,6 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backBTN;
     private javax.swing.JTextField blockTF;
-    private javax.swing.JButton checkpointRecordBTN;
     private javax.swing.JTextField checkpointsTF;
     private javax.swing.JTextField contactNoTF;
     private com.github.lgooddatepicker.components.DatePicker datePicker;
@@ -870,6 +867,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     private javax.swing.JTextField securityNameTF;
     private javax.swing.JTextField slotTF;
     private javax.swing.JTextField statusTF;
+    private com.github.lgooddatepicker.components.TimePicker timePicker1;
     private javax.swing.JButton updateBTN;
     // End of variables declaration//GEN-END:variables
 }

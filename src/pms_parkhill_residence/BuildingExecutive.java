@@ -61,7 +61,6 @@ public class BuildingExecutive extends Users{
     // complaint files link
     String complaintFiles = "complaintFiles.txt";
     
-    
     // to get employee list only from the user profile text file
 //    public void updateEmployeeList() throws IOException{
 //            BufferedReader brUserProfile = fileReader(userProfile);
@@ -109,23 +108,51 @@ public class BuildingExecutive extends Users{
                 int repitition = Integer.valueOf(jobLineDetails[4]);
                 String workingEmplyId = jobLineDetails[1];
                 String jobAssigned = jobLineDetails[3];
-                String assignee = jobLineDetails[11];
                 
                 String timeNeeded = jobLineDetails[5];
                 LocalDate workingDate = null;
                 LocalTime workingTime = formatTime(jobLineDetails[7]);
                 String[] workingEndDateTime = jobLineDetails[8].split(" ");
                 
+                LocalTime workingStartTime2 = null;
+                LocalTime workingEndTime2 = null;
+                
                 if (repitition == repititionON) {
-                    boolean isOvernight = checkOvernight(formatTime(workingEndDateTime[1]), timeNeeded);
+                    int overnightDay = checkOvernight(formatTime(workingEndDateTime[1]), timeNeeded);
+                    boolean isOvernight = (overnightDay != 0);
                     ArrayList<String> dayToRepeat = new ArrayList<>(Arrays.asList(jobLineDetails[9].split(",")));
-                    if (isOvernight) {
-                        dayOfWeek = localDate.getDayOfWeek().minus(1).toString().toLowerCase();
-                        workingTime = LocalTime.parse("00:00:00");
+                    
+                    boolean foundToday = false;
+                    if (dayToRepeat.contains(dayOfWeek)) {
+                        foundToday = true;
                     }
                     
-                    if (dayToRepeat.contains(dayOfWeek)) {
+                    boolean foundYesterday = false;
+                    if (isOvernight) {
+                        if (dayToRepeat.contains(localDate.getDayOfWeek().plus(overnightDay).toString().toLowerCase())) {
+                            foundYesterday = true;
+                        }
+                    }
+                    
+                    if (isOvernight && foundYesterday || 
+                        isOvernight && foundToday || 
+                        isOvernight && foundYesterday ||
+                        !isOvernight && foundToday && !foundYesterday) 
+                    {
                         workingDate = localDate;
+                        workingEndDateTime[0] = localDate.toString();
+                    }
+                    
+                    if (isOvernight && foundToday && foundYesterday) {
+                        workingStartTime2 = workingTime;
+                        workingTime = LocalTime.parse("00:00:00");
+                        workingEndTime2 = LocalTime.parse("00:00:00");
+                    }
+                    else if (isOvernight && foundToday && !foundYesterday) {
+                        workingEndDateTime[1] = "00:00:00";
+                    }
+                    else if (isOvernight && !foundToday && foundYesterday) {
+                        workingTime = LocalTime.parse("00:00:00");
                     }
                 }
                 else {
@@ -136,20 +163,34 @@ public class BuildingExecutive extends Users{
                     LocalDateTime selectedDateTime = LocalDateTime.of(localDate, localTime);
                     LocalDateTime startDateTime = LocalDateTime.of(workingDate, workingTime);
                     LocalDateTime endDateTime = LocalDateTime.of(formatDate(workingEndDateTime[0]), formatTime(workingEndDateTime[1]));
+                    
+                    boolean addToList = false;
+                    if ((selectedDateTime.equals(startDateTime) || selectedDateTime.isAfter(startDateTime)) && 
+                        (selectedDateTime.equals(endDateTime) || selectedDateTime.isBefore(endDateTime))) {
+                        addToList = true;
+                    }
+                    else if (workingStartTime2 != null && workingEndTime2 != null) {
+                        LocalDateTime startDateTime2 = LocalDateTime.of(workingDate, workingStartTime2);
+                        LocalDateTime endDateTime2 = LocalDateTime.of(workingDate, workingEndTime2);
 
-                    if ((selectedDateTime.equals(startDateTime) || selectedDateTime.isAfter(startDateTime)) 
-                     && (selectedDateTime.equals(endDateTime) || selectedDateTime.isBefore(endDateTime))) {
+                        if ((selectedDateTime.equals(startDateTime2) || selectedDateTime.isAfter(startDateTime2)) &&
+                            (selectedDateTime.equals(endDateTime2) || selectedDateTime.isBefore(endDateTime2))) {
+                            addToList = true;
+                        }
+                    }
 
+                    if (addToList) {
                         if (!workingList.contains(workingEmplyId)) {
                             workingList.add(workingEmplyId);
 
                             String[] employeeDetails = getEmployeeDetails(workingEmplyId);
                             String workingEmplyName = employeeDetails[2];
                             String workingEmplyPos = employeeDetails[4];
+                            String jobId = jobLineDetails[0];
 
-                            assEmply.add(jobLineDetails[0] + sp + workingEmplyId + sp +
-                                    workingEmplyName + sp + workingEmplyPos + sp +
-                                    jobAssigned + sp + assignee + sp + "View" + sp);
+                            assEmply.add(workingEmplyId + sp + workingEmplyName + sp + 
+                                         workingEmplyPos + sp + jobId + sp + 
+                                         jobAssigned + sp + "View" + sp);
                         }
                     }
                 }
@@ -437,7 +478,7 @@ public class BuildingExecutive extends Users{
         return combinedLocalDT;
     }
     
-    public boolean checkOvernight(LocalTime timeEndExpected, String expectedTimeNeeded) {
+    public int checkOvernight(LocalTime timeEndExpected, String expectedTimeNeeded) {
         String timePlace = expectedTimeNeeded.substring(expectedTimeNeeded.length()-1);
         int timeNeeded = Integer.valueOf(expectedTimeNeeded.substring(0, expectedTimeNeeded.length()-1));
             
@@ -449,7 +490,7 @@ public class BuildingExecutive extends Users{
         LocalDateTime dateTimeCombine = LocalDateTime.of(simplyDate, timeEndExpected);
         LocalDateTime startDateTime = dateTimeCombine.minusMinutes(timeNeeded);
         
-        return startDateTime.toLocalDate().isBefore(simplyDate);
+        return startDateTime.toLocalDate().compareTo(simplyDate);
     }
     
     public void setTableRow(DefaultTableModel table, ArrayList arrayList) {
@@ -485,6 +526,21 @@ public class BuildingExecutive extends Users{
         pw.flush();
     }
     
+    public void updateComplaintStatusFile(String complaintId, String status) throws IOException {
+        String complaint = "";
+        
+        String[] complaintDetails = getComplaintDetails(complaintId).split(sp);
+        complaintDetails[5] = status;
+        
+        for (String eachData : complaintDetails) {
+            complaint += eachData + sp;
+        }
+        System.out.println(complaint);
+        
+        CRUD crud = new CRUD();
+        crud.update(complaintFiles, complaintId, complaint);
+    }
+    
     // Change Page Method
     public void toDashboard(JFrame frame) {
         try {
@@ -497,10 +553,10 @@ public class BuildingExecutive extends Users{
         }
     }
     
-    public void toJobManagement(JFrame frame) {
+    public void toJobManagement(JFrame frame, String complaintId, boolean fromComplaintPage) {
         try {
             BuildingExecutiveJobManagement page;
-            page = new BuildingExecutiveJobManagement(this.getUserID());
+            page = new BuildingExecutiveJobManagement(this.getUserID(), complaintId, fromComplaintPage);
             page.setVisible(true);
             frame.dispose();
         } catch (IOException ex) {
@@ -533,10 +589,10 @@ public class BuildingExecutive extends Users{
         frame.dispose();
     }
     
-    public void toEmployeeJobAssignation(String beID, String employeeID, String jobID) {
+    public void toEmployeeJobAssignation(String beID, String employeeID, String jobID, String complaintID, boolean fromComplaintPage) {
         EmployeeJobAssignation EJA;
         try {
-            EJA = new EmployeeJobAssignation(beID, employeeID, jobID);
+            EJA = new EmployeeJobAssignation(beID, employeeID, jobID, complaintID, fromComplaintPage);
             EJA.setVisible(true);
         } catch (IOException ex) {
             ex.printStackTrace();

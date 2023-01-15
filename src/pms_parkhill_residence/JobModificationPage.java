@@ -54,6 +54,7 @@ public class JobModificationPage extends javax.swing.JFrame {
         for (String readLine : readJobLists) {
             String[] jobDetails = readLine.split(BE.sp);
             String roleCode = jobDetails[0];
+            
             if (roleCode.equals(positionCode)) {
                 jobList.add(numberOfItem + BE.sp + jobDetails[2] + BE.sp + jobDetails[3] + BE.sp + jobDetails[4]);
                 numberOfItem++;
@@ -169,6 +170,11 @@ public class JobModificationPage extends javax.swing.JFrame {
         addBTN.setText("Add");
 
         updateBTN.setText("Update");
+        updateBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateBTNActionPerformed(evt);
+            }
+        });
 
         deleteBTN.setText("Delete");
         deleteBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -387,6 +393,10 @@ public class JobModificationPage extends javax.swing.JFrame {
     private void deleteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBTNActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_deleteBTNActionPerformed
+
+    private void updateBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBTNActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_updateBTNActionPerformed
     
     private void clearField() {
         addBTN.setEnabled(true);

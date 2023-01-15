@@ -22,10 +22,10 @@ import javax.swing.table.TableCellRenderer;
  */
 public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
     BuildingExecutive BE = new BuildingExecutive();
-
+    
     private DefaultTableModel assignedEmployeeTable;
     private DefaultTableModel unassignedEmployeeTable;
-
+    
     private String currentBEid;
     private LocalDate localDate;
     private LocalTime localTime;
@@ -33,26 +33,32 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
     private String searchText;
     private String selectedEmployeeId;
     private String jobId;
+    private String complaintId;
+    private boolean fromComplaintPage;
     
     /**
      * Creates new form homePage
      * @param beID current building executive ID
+     * @param complaintID
+     * @param fromComplaintsPage
      * @throws java.io.IOException
      */
-    public BuildingExecutiveJobManagement(String beID) throws IOException 
+    public BuildingExecutiveJobManagement(String beID, String complaintID, boolean fromComplaintsPage) throws IOException 
     {
         initComponents();
-        runDefaultSetUp(beID);
+        runDefaultSetUp(beID, complaintID, fromComplaintsPage);
     }
     
     // Method to run all default setting when page is open
-    private void runDefaultSetUp(String beID) throws IOException {
+    private void runDefaultSetUp(String beID, String complaintID, boolean fromComplaintsPage) throws IOException {
         assignedEmployeeTable = (DefaultTableModel) assignedEmplyTable.getModel();
         unassignedEmployeeTable = (DefaultTableModel) unassignedEmplyTable.getModel();
         
         setWindowIcon();
         employeeJobTableSetup();
         setUserProfile(beID);
+        setFromComplaintPage(fromComplaintsPage);
+        setComplaintId(complaintID);
     }
     
     // To set the window Icon
@@ -573,11 +579,11 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Job ID", "Employee ID", "Employee Name", "Position", "Job Assigned", "View"
+                "Employee ID", "Employee Name", "Position", "Job ID", "Job Assigned", "View"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false
@@ -655,11 +661,11 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
                         .addComponent(employeeIdTF, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(clearBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35)
+                        .addGap(40, 40, 40)
                         .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(roleComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35)
+                        .addGap(40, 40, 40)
                         .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dateTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -782,12 +788,12 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
 
     private void jobAssignationInnerPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationInnerPanelMouseClicked
         // TODO add your handling code here:
-        BE.toJobManagement(this);
+        BE.toJobManagement(this, this.complaintId, fromComplaintPage);
     }//GEN-LAST:event_jobAssignationInnerPanelMouseClicked
 
     private void jobAssignationOuterPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationOuterPanelMouseClicked
         // TODO add your handling code here:
-        BE.toJobManagement(this);
+        BE.toJobManagement(this, this.complaintId, fromComplaintPage);
     }//GEN-LAST:event_jobAssignationOuterPanelMouseClicked
 
     private void BEdashboardInnerPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BEdashboardInnerPanelMouseClicked
@@ -814,7 +820,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         
         if (employeeData != null) {
             setSelectedEmployee(employeeData);
-            BE.toEmployeeJobAssignation(currentBEid, selectedEmployeeId, jobId);
+            BE.toEmployeeJobAssignation(currentBEid, selectedEmployeeId, jobId, complaintId, fromComplaintPage);
         }
     }//GEN-LAST:event_unassignedEmplyTableMouseClicked
 
@@ -835,13 +841,13 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         int selectedCol = assignedEmplyTable.getSelectedColumn();
         int selectedRow = assignedEmplyTable.getSelectedRow();
         
-        String employeeData = BE.validateTableSelectionAndGetValue(assignedEmployeeTable, selectedCol, selectedRow, 6, 0);
+        String employeeData = BE.validateTableSelectionAndGetValue(assignedEmployeeTable, selectedCol, selectedRow, 5, 0);
         
         if (employeeData != null) {
             setSelectedEmployee(employeeData);
-            this.jobId = (String) assignedEmployeeTable.getValueAt(selectedRow, 0);
-            this.selectedEmployeeId = (String) assignedEmployeeTable.getValueAt(selectedRow, 1);
-            BE.toEmployeeJobAssignation(currentBEid, selectedEmployeeId, jobId);
+            this.jobId = (String) assignedEmployeeTable.getValueAt(selectedRow, 3);
+            this.selectedEmployeeId = (String) assignedEmployeeTable.getValueAt(selectedRow, 0);
+            BE.toEmployeeJobAssignation(currentBEid, selectedEmployeeId, jobId, complaintId, fromComplaintPage);
         }
     }//GEN-LAST:event_assignedEmplyTableMouseClicked
 
@@ -908,7 +914,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
             @Override
             public void run() {
                 try {
-                    new BuildingExecutiveJobManagement(null).setVisible(true);
+                    new BuildingExecutiveJobManagement(null, null, false).setVisible(true);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -985,5 +991,33 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
      */
     public void setTime(LocalTime time) {
         this.localTime = time;
+    }
+
+    /**
+     * @return the complaintId
+     */
+    public String getComplaintId() {
+        return complaintId;
+    }
+
+    /**
+     * @param complaintID
+     */
+    public void setComplaintId(String complaintID) {
+        this.complaintId = complaintID;
+    }
+
+    /**
+     * @return the fromComplaintPage
+     */
+    public boolean isFromComplaintPage() {
+        return fromComplaintPage;
+    }
+
+    /**
+     * @param fromComplaintPage the fromComplaintPage to set
+     */
+    public void setFromComplaintPage(boolean fromComplaintPage) {
+        this.fromComplaintPage = fromComplaintPage;
     }
 }

@@ -623,11 +623,11 @@
                           <Component id="employeeIdTF" min="-2" pref="170" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="clearBTN" min="-2" pref="62" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                           <Component id="jLabel16" min="-2" pref="40" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="roleComboBox" min="-2" pref="142" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                           <Component id="jLabel18" min="-2" pref="90" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="dateTimePicker" min="-2" max="-2" attributes="0"/>
@@ -819,10 +819,10 @@
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="6" rowCount="0">
-                    <Column editable="false" title="Job ID" type="java.lang.Object"/>
                     <Column editable="false" title="Employee ID" type="java.lang.String"/>
                     <Column editable="false" title="Employee Name" type="java.lang.String"/>
                     <Column editable="false" title="Position" type="java.lang.String"/>
+                    <Column editable="false" title="Job ID" type="java.lang.Object"/>
                     <Column editable="false" title="Job Assigned" type="java.lang.Object"/>
                     <Column editable="false" title="View" type="java.lang.Object"/>
                   </Table>

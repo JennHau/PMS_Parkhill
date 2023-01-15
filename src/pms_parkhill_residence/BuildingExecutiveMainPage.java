@@ -431,12 +431,12 @@ public class BuildingExecutiveMainPage extends javax.swing.JFrame {
 
     private void jobAssignationTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationTabMouseClicked
         // TODO add your handling code here:
-        BE.toJobManagement(this);
+        BE.toJobManagement(this, null, false);
     }//GEN-LAST:event_jobAssignationTabMouseClicked
 
     private void jobAssignationInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationInnerTabMouseClicked
         // TODO add your handling code here:
-        BE.toJobManagement(this);
+        BE.toJobManagement(this, null, false);
     }//GEN-LAST:event_jobAssignationInnerTabMouseClicked
 
     private void setWindowIcon() {
