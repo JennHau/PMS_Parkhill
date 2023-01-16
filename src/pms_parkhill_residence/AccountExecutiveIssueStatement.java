@@ -712,11 +712,6 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
     private void statusCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusCBActionPerformed
         // TODO add your handling code here:
         setTable();
-        if (statusCB.getSelectedItem() == "ISSUED") {
-            issueAllPanel.setBackground(Color.GRAY);
-        } else if (statusCB.getSelectedItem() == "PENDING") {
-            issueAllPanel.setBackground(new Color(13,50,79));
-        }
     }//GEN-LAST:event_statusCBActionPerformed
 
     private void issueAllLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueAllLabelMouseEntered
@@ -731,16 +726,17 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
 
     private void issueAllPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueAllPanelMouseClicked
         // TODO add your handling code here:
-        issueAllInvoice();
+        issueAllStatement();
     }//GEN-LAST:event_issueAllPanelMouseClicked
 
     private void issueAllLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueAllLabelMouseClicked
         // TODO add your handling code here:
-        issueAllInvoice();
+        issueAllStatement();
     }//GEN-LAST:event_issueAllLabelMouseClicked
 
-    private void issueAllInvoice() {
-        if (statusCB.getSelectedItem() == "PENDING"){
+    private void issueAllStatement() {
+        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        if (statusCB.getSelectedItem() == "PENDING" && tableModel.getRowCount() >0){
             
             int result = JOptionPane.showConfirmDialog(null,"Are you sure to issue all statements?",
                         "ISSUE STATEMENTS",
@@ -749,7 +745,6 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
             
                 if(result == JOptionPane.YES_OPTION){
                     List<String> statementDetails = new ArrayList<String>();
-                    DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
 
                     for (int i=0; i<tableModel.getRowCount(); i++) {
                         String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
@@ -1002,6 +997,11 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
             tableModel.setRowCount(0);
             setTable();
         }
+        if (tableModel.getRowCount() == 0) {
+            issueAllPanel.setBackground(Color.GRAY);
+        } else {
+            issueAllPanel.setBackground(new Color(13,50,79));
+        }
     }//GEN-LAST:event_searchTextFieldKeyReleased
     
     private void setWindowIcon() {
@@ -1049,6 +1049,11 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
                 owner, resident, "VIEW STATEMENT"};
                 tableModel.addRow(tbData);
             }
+        }
+        if (tableModel.getRowCount() == 0) {
+            issueAllPanel.setBackground(Color.GRAY);
+        } else {
+            issueAllPanel.setBackground(new Color(13,50,79));
         }
     }
 

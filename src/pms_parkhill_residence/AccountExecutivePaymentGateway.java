@@ -474,6 +474,11 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
                 emailTF.setText(email.toUpperCase());
                 identificationNOTF.setText(identificationNo);
             }
+        } else {
+            userIDTF.setText("");
+            phoneNoTF.setText("");
+            emailTF.setText("");
+            identificationNOTF.setText("");
         }
         
     }//GEN-LAST:event_payerCBActionPerformed

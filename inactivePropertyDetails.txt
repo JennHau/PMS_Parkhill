@@ -1,1 +1,1 @@
-unitNo;Target;squareFeet;status;dateOfSold;deletedDate;
+deleteID;unitNo;Target;squareFeet;status;dateOfSold;deletedDateTime;

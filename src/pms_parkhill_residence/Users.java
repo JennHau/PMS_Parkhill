@@ -6,7 +6,6 @@ package pms_parkhill_residence;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,17 +21,15 @@ public class Users {
     private String phoneNo;
     private String identificationNo;
     private String gender;
-    private Date birthOfDate;
-    private String role;
     private String unitNo;
     FileHandling fh = new FileHandling();
     
     public Users() {}
     
     //Constructor for non-redidents
-    public Users(String userID, String firstName, String lastName, String email,
-                 String password, String phoneNo, String identificationNo,
-                 String gender, Date birthOfDate, String role) { 
+    public Users(String userID, String email, String password, String firstName,
+                 String lastName, String identificationNo, String gender,
+                 String phoneNo) { 
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -41,14 +38,13 @@ public class Users {
         this.phoneNo = phoneNo;
         this.identificationNo = identificationNo;
         this.gender = gender;
-        this.birthOfDate = birthOfDate;
-        this.role = role;
+        this.unitNo = "-";
     }
-    
-    //Constructor for redidents
-    public Users(String userID, String firstName, String lastName, String email,
-                 String password, String phoneNo, String identificationNo,
-                 String gender, Date birthOfDate, String role, String unitNo) { 
+
+    //Constructor for redidents/tenants/vendors
+    public Users(String userID, String email, String password, String firstName,
+                 String lastName, String identificationNo, String gender, String phoneNo, 
+                 String unitNo) { 
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -57,9 +53,7 @@ public class Users {
         this.phoneNo = phoneNo;
         this.identificationNo = identificationNo;
         this.gender = gender;
-        this.birthOfDate = birthOfDate;
         this.unitNo = unitNo;
-        System.out.println("helo");
     }
 
     /**
@@ -175,20 +169,6 @@ public class Users {
     }
 
     /**
-     * @return the birthOfDate
-     */
-    public Date getBirthOfDate() {
-        return birthOfDate;
-    }
-
-    /**
-     * @param birthOfDate the birthOfDate to set
-     */
-    public void setBirthOfDate(Date birthOfDate) {
-        this.birthOfDate = birthOfDate;
-    }
-
-    /**
      * @return the unitNo
      */
     public String getUnitNo() {
@@ -200,20 +180,6 @@ public class Users {
      */
     public void setUnitNo(String unitNo) {
         this.unitNo = unitNo;
-    }
-    
-    /**
-     * @return the role
-     */
-    public String getRole() {
-        return role;
-    }
-
-    /**
-     * @param role the role to set
-     */
-    public void setRole(String role) {
-        this.role = role;
     }
     
     public boolean login(String email, String password) throws IOException {
@@ -365,5 +331,23 @@ public class Users {
             }
         } 
         fh.fileWrite("userProfile.txt", false, newData);
+    }
+    
+    public void userRegistration() {
+        String userID = this.getUserID().toLowerCase();
+        String email = this.getEmail();
+        String password = this.getPassword();
+        String firstName = this.getFirstName();
+        String lastName = this.getLastName();
+        String identificationNo = this.getIdentificationNo();
+        String gender = this.getGender();
+        String phoneNo = this.getPhoneNo();
+        String unitNo = this.getUnitNo();
+        
+        List<String> newData = new ArrayList<>();
+        newData.add(userID +";"+ email +";"+password +";"+ firstName +";"+ lastName
+                +";"+ identificationNo +";"+ gender +";"+ phoneNo +";"+ unitNo +";");
+        
+        fh.fileWrite("userProfile.txt", true, newData);
     }
 }

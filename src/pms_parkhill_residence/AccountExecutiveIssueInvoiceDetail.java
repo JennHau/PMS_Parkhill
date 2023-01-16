@@ -155,6 +155,11 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
         jLabel16.setForeground(new java.awt.Color(153, 153, 153));
         jLabel16.setText("UNIT NO:");
 
+        searchTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchTextFieldActionPerformed(evt);
+            }
+        });
         searchTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 searchTextFieldKeyReleased(evt);
@@ -758,7 +763,8 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
     }//GEN-LAST:event_issueAllLabelMouseClicked
 
     private void issueAllInvoice() {
-        if (statusCB.getSelectedItem() == "PENDING"){
+        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        if (statusCB.getSelectedItem() == "PENDING" && tableModel.getRowCount() >0){
             
             int result = JOptionPane.showConfirmDialog(null,"Are you sure to issue all invoices?",
                         "ISSUE INVOICE",
@@ -767,8 +773,9 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
             
                 if(result == JOptionPane.YES_OPTION){
                     List<String> invoiceDetails = new ArrayList<String>();
-                    DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-
+                    
+                    AccountExecutive ae = new AccountExecutive();
+                    
                     for (int i=0; i<tableModel.getRowCount(); i++) {
                         String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
                         String cMonthYear = monthYear.substring(0, monthYear.indexOf("/")) 
@@ -788,8 +795,9 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                                 consumption +";"+ unit +";"+ unitPrice +";"+ totalPrice +";"+
                                 period +";"+ generatedDate+";";
                         invoiceDetails.add(cDetails);
+                        ae.createUserTransactionLink(invoiceNo, unitNo);
                     }
-                        AccountExecutive ae = new AccountExecutive();
+                        
                         ae.issueInvoice(invoiceDetails);
                         setTable();
                         JOptionPane.showMessageDialog (null, "Invoices have been issued!", 
@@ -805,7 +813,41 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
         int row = jTable1.getSelectedRow();
         
         if (column == 6) {
-            
+            if (statusCB.getSelectedItem() == "PENDING"){
+                int result = JOptionPane.showConfirmDialog(null,"Are you sure to issue this invoice?",
+                            "ISSUE INVOICE",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+                if(result == JOptionPane.YES_OPTION){
+                    List<String> invoiceDetails = new ArrayList<String>();
+                    AccountExecutive ae = new AccountExecutive();
+                    String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
+                    String cMonthYear = monthYear.substring(0, monthYear.indexOf("/")) 
+                            + monthYear.substring(monthYear.indexOf("/") + 1);
+                    String invoiceNo = String.valueOf(tableModel.getValueAt(row, 1)) + cMonthYear;
+                    String unitNo = String.valueOf(tableModel.getValueAt(row, 1));
+                    String feeTypeNTarget = feeTypeNameLabel.getText();
+                    String feeType = feeTypeNTarget.substring(0, feeTypeNTarget.indexOf(", "));
+                    String target = feeTypeNTarget.substring(feeTypeNTarget.indexOf(",") + 2);
+                    String consumption = String.valueOf(tableModel.getValueAt(row, 2));
+                    String unit = String.valueOf(tableModel.getValueAt(row, 3));
+                    String unitPrice = String.valueOf(tableModel.getValueAt(row, 4));
+                    String totalPrice = String.valueOf(tableModel.getValueAt(row, 5));
+                    String period = monthYear;
+                    String generatedDate = new AccountExecutive().todayDate();
+                    String cDetails = invoiceNo +";"+ unitNo +";"+ feeType +";"+ target +";"+
+                            consumption +";"+ unit +";"+ unitPrice +";"+ totalPrice +";"+
+                            period +";"+ generatedDate+";";
+                    invoiceDetails.add(cDetails);
+                    ae.createUserTransactionLink(invoiceNo, unitNo);
+
+                    ae.issueInvoice(invoiceDetails);
+                    setTable();
+                    JOptionPane.showMessageDialog (null, "Invoice has been issued!", 
+                                    "ISSUE INVOICE", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -831,6 +873,11 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
         else {
             tableModel.setRowCount(0);
             setTable();
+        }
+        if (tableModel.getRowCount() == 0) {
+            issueAllPanel.setBackground(Color.GRAY);
+        } else {
+            issueAllPanel.setBackground(new Color(13,50,79));
         }
     }//GEN-LAST:event_searchTextFieldKeyReleased
 
@@ -1005,6 +1052,10 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
         // TODO add your handling code here:
         issueStatementPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_issueStatementPanelMouseEntered
+
+    private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchTextFieldActionPerformed
  
     private void setFeeTypeNameLabel() {
         try {
@@ -1042,42 +1093,43 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
     }
     
     private void setTable() {
-        try {
-            String feeTypeNTarget = feeTypeNameLabel.getText();
-            String feeTypeName = feeTypeNTarget.substring(0, feeTypeNTarget.indexOf(", "));
-            String target = feeTypeNTarget.substring(feeTypeNTarget.indexOf(",") + 2);
-            String status = String.valueOf(statusCB.getSelectedItem());
-            String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
-            AccountExecutive ae = new AccountExecutive();
-            List<String> invoiceDetails = ae.extractInvoiceDetails(feeTypeName,
-                    target, status, monthYear);
-            
-            DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-            tableModel.setRowCount(0);
-            
-            String[] invoiceDetailsArray = new String[invoiceDetails.size()];
-            invoiceDetails.toArray(invoiceDetailsArray);
-            for (int i=0; i<invoiceDetails.size(); i++) {
-                String[] invoiceData = invoiceDetailsArray[i].split(";");
-                String unitNo = invoiceData[0];
-                String consumption = invoiceData[1];
-                String unit = invoiceData[2];
-                String unitPrice = invoiceData[3];
-                String totalPrice = invoiceData[4];
-                if (status.equals("PENDING")) {
-                    String tbData[] = {String.valueOf(i+1), unitNo, consumption, unit,
-                        unitPrice, totalPrice, "ISSUE INVOICE"};
-                    tableModel.addRow(tbData);
-                } else if (status.equals("ISSUED")) {
-                    String tbData[] = {String.valueOf(i+1), unitNo, consumption, unit,
-                        unitPrice, totalPrice, "VIEW"};
-                    tableModel.addRow(tbData);
-                }
-                    
+        String feeTypeNTarget = feeTypeNameLabel.getText();
+        String feeTypeName = feeTypeNTarget.substring(0, feeTypeNTarget.indexOf(", "));
+        String target = feeTypeNTarget.substring(feeTypeNTarget.indexOf(",") + 2);
+        String status = String.valueOf(statusCB.getSelectedItem());
+        String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
+        AccountExecutive ae = new AccountExecutive();
+        List<String> invoiceDetails = ae.extractInvoiceDetails(feeTypeName,
+                target, status, monthYear);
+
+        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        tableModel.setRowCount(0);
+
+        String[] invoiceDetailsArray = new String[invoiceDetails.size()];
+        invoiceDetails.toArray(invoiceDetailsArray);
+        for (int i=0; i<invoiceDetails.size(); i++) {
+            String[] invoiceData = invoiceDetailsArray[i].split(";");
+            String unitNo = invoiceData[0];
+            String consumption = invoiceData[1];
+            String unit = invoiceData[2];
+            String unitPrice = invoiceData[3];
+            String totalPrice = invoiceData[4];
+            if (status.equals("PENDING")) {
+                String tbData[] = {String.valueOf(i+1), unitNo, consumption, unit,
+                    unitPrice, totalPrice, "ISSUE INVOICE"};
+                tableModel.addRow(tbData);
+            } else if (status.equals("ISSUED")) {
+                String tbData[] = {String.valueOf(i+1), unitNo, consumption, unit,
+                    unitPrice, totalPrice, "VIEW"};
+                tableModel.addRow(tbData);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+        if (tableModel.getRowCount() == 0) {
+            issueAllPanel.setBackground(Color.GRAY);
+        } else {
+            issueAllPanel.setBackground(new Color(13,50,79));
+        }
+        
     }
 
     /**

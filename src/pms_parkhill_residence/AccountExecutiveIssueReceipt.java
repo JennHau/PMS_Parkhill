@@ -689,6 +689,7 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
+        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
         if (statusCB.getSelectedItem() == "PENDING"){
             
             int result = JOptionPane.showConfirmDialog(null,"Are you sure to issue this receipt?",
@@ -697,7 +698,6 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
             JOptionPane.QUESTION_MESSAGE);
 
             if(result == JOptionPane.YES_OPTION){
-                DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
                 int column = jTable1.getSelectedColumn();
                 int row = jTable1.getSelectedRow();
                 List<String> receiptDetails = new ArrayList<>();
@@ -719,16 +719,12 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
     private void statusCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusCBActionPerformed
         // TODO add your handling code here:
         setTable();
-        if (statusCB.getSelectedItem() == "ISSUED") {
-            issueAllPanel.setBackground(Color.GRAY);
-        } else if (statusCB.getSelectedItem() == "PENDING") {
-            issueAllPanel.setBackground(new Color(13,50,79));
-        }
     }//GEN-LAST:event_statusCBActionPerformed
 
     private void jLabel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseClicked
         // TODO add your handling code here:
-        if (statusCB.getSelectedItem() == "PENDING") {
+        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        if (statusCB.getSelectedItem() == "PENDING" && tableModel.getRowCount() >0) {
             issueAllReceipt();
         }
     }//GEN-LAST:event_jLabel20MouseClicked
@@ -939,6 +935,11 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
             tableModel.setRowCount(0);
             setTable();
         }
+        if (tableModel.getRowCount() == 0) {
+            issueAllPanel.setBackground(Color.GRAY);
+        } else {
+            issueAllPanel.setBackground(new Color(13,50,79));
+        }
     }//GEN-LAST:event_searchTextFieldKeyReleased
 
     private void setTable() {
@@ -983,6 +984,12 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
                     paymentDate, paidBy, "VIEW RECEIPT"};
                 tableModel.addRow(tbData);
             }
+        }
+        System.out.println(tableModel.getRowCount());
+        if (tableModel.getRowCount() == 0) {
+            issueAllPanel.setBackground(Color.GRAY);
+        } else {
+            issueAllPanel.setBackground(new Color(13,50,79));
         }
     }
     
