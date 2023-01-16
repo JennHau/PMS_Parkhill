@@ -1,0 +1,7 @@
+id;slot;block;level;checkpoints;checkBefore;securityID;securityName;status;remarks;updatedBy;lastUpdate;checkedAt;
+1;08:00:00;A;Level 1-5;Level 5;09:00:00;scg184573;asdw;Upcoming;;null;02:11:17.137344500;null;
+2;08:00:00;A;Level 6-10;Level 10;09:00:00;null;null;null;null;null;null;null;
+3;08:00:00;A;Level 11-15;Level 15;09:00:00;null;null;null;null;null;null;null;
+4;10:00:00;A;Level 1-5;Level 5;11:00:00;null;null;null;null;null;null;null;
+5;10:00:00;A;Level 6-10;Level 10;11:00:00;null;null;null;null;null;null;null;
+6;10:00:00;A;Level 11-15;Level 15;11:00:00;null;null;null;null;null;null;null;

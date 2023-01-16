@@ -375,6 +375,11 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         jLabel19.setForeground(new java.awt.Color(51, 51, 51));
 
         jobComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hi", "Electrical checkup" }));
+        jobComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jobComboBoxActionPerformed(evt);
+            }
+        });
 
         jLabel20.setText("Repitition:");
         jLabel20.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
@@ -916,6 +921,10 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_assignedJobTableMouseClicked
 
+    private void jobComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jobComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jobComboBoxActionPerformed
+
     private void updateJobTextFile(String[] jobItems, int action) throws IOException {
         List<String> readJobFile = fileHandling.fileRead(BE.employeeJobFile);
         List<String> newItemLists = new ArrayList<>();
@@ -964,6 +973,8 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         this.complaintsId = this.getComplaintsId();
         // job assigned
         String assignedJob = jobComboBox.getSelectedItem().toString();
+        String jobDet = BE.findJobDescriptionORid(null, assignedJob);
+        String jobId = jobDet.split(BE.sp)[1];
         
         // repitition on or off
         String repitition;
@@ -1038,7 +1049,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         String remarks = remarksTA.getText();
         
         String[] jobItemDetails = {fieldJobId, employeeId, complaintsId, 
-            assignedJob, repitition, expectedTimeRequired, 
+            jobId, repitition, expectedTimeRequired, 
             startDate, startTime, expectedEndTime, 
             dayToRepeat, remarks};
         
@@ -1067,6 +1078,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         latestFields = new ArrayList<>(Arrays.asList(jobItemDetails));
         latestFields.add(updatedBy);
         latestFields.add(updatedTime);
+        latestFields.add("null");
         
         jobItemDetails = latestFields.toArray(jobItemDetails);
         
@@ -1131,70 +1143,82 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             if (!ignore) {
                 String[] jobEndDateTime = jobDetails[8].split(" ");
                 
-                LocalTime workingStartTime2 = null;
-                LocalTime workingEndTime2 = null;
+                LocalTime workingStartTime2;
+                LocalTime workingEndTime2;
                 
-                if (repitition == BE.repititionON) {
-                    int overnightDay = BE.checkOvernight(BE.formatTime(jobEndDateTime[1]), timeNeeded);
-                    boolean isOvernight = (overnightDay != 0);
-                    ArrayList<String> dayToRepeat = new ArrayList<>(Arrays.asList(jobDetails[9].split(",")));
-                    
-                    boolean foundToday = false;
-                    if (dayToRepeat.contains(dayOfWeek)) {
-                        foundToday = true;
-                    }
-                    
-                    boolean foundYesterday = false;
-                    if (isOvernight) {
-                        if (dayToRepeat.contains(dateInput.getDayOfWeek().plus(overnightDay).toString().toLowerCase())) {
-                            foundYesterday = true;
-                        }
-                    }
-                    
-                    if (isOvernight && foundYesterday || 
-                        isOvernight && foundToday || 
-                        isOvernight && foundYesterday ||
-                        !isOvernight && foundToday && !foundYesterday) 
-                    {
-                        jobStartDate = dateInput;
-                        jobEndDateTime[0] = dateInput.toString();
-                    }
-                    
-                    if (isOvernight && foundToday && foundYesterday) {
-                        workingStartTime2 = timeInput;
-                        timeInput = LocalTime.parse("00:00:00");
-                        workingEndTime2 = LocalTime.parse("00:00:00");
-                    }
-                    else if (isOvernight && foundToday && !foundYesterday) {
-                        jobEndDateTime[1] = "00:00:00";
-                    }
-                    else if (isOvernight && !foundToday && foundYesterday) {
-                        timeInput =  LocalTime.parse("00:00:00");
-                    }
-                }
-                else {
-                    jobStartDate = BE.formatDate(jobDetails[6]);
-                }
+                ArrayList<String> dateData = BE.compareJobDate(repitition, jobEndDateTime, jobDetails, timeNeeded, dayOfWeek, dateInput, jobStartTime, jobStartDate);
+                
+                jobStartDate = BE.formatDate(dateData.get(0));
+                jobStartTime = BE.formatTime(dateData.get(1));
+                
+                workingStartTime2 = (!dateData.get(2).equals("null")) ? BE.formatTime(dateData.get(2)) : null;
+                workingEndTime2 = (!dateData.get(3).equals("null")) ? BE.formatTime(dateData.get(3)) : null;
+                
+                jobEndDateTime = dateData.get(4).split(" ");
+                
+//                if (repitition == BE.repititionON) {
+//                    int overnightDay = BE.checkOvernight(BE.formatTime(jobEndDateTime[1]), timeNeeded);
+//                    boolean isOvernight = (overnightDay != 0);
+//                    ArrayList<String> dayToRepeat = new ArrayList<>(Arrays.asList(jobDetails[9].split(",")));
+//                    
+//                    boolean foundToday = false;
+//                    if (dayToRepeat.contains(dayOfWeek)) {
+//                        foundToday = true;
+//                    }
+//                    
+//                    boolean foundYesterday = false;
+//                    if (isOvernight) {
+//                        if (dayToRepeat.contains(dateInput.getDayOfWeek().plus(overnightDay).toString().toLowerCase())) {
+//                            foundYesterday = true;
+//                        }
+//                    }
+//                    
+//                    if (isOvernight && foundYesterday || 
+//                        isOvernight && foundToday || 
+//                        isOvernight && foundYesterday ||
+//                        !isOvernight && foundToday && !foundYesterday) 
+//                    {
+//                        jobStartDate = dateInput;
+//                        jobEndDateTime[0] = dateInput.toString();
+//                    }
+//                    
+//                    if (isOvernight && foundToday && foundYesterday) {
+//                        workingStartTime2 = timeInput;
+//                        timeInput = LocalTime.parse("00:00:00");
+//                        workingEndTime2 = LocalTime.parse("00:00:00");
+//                    }
+//                    else if (isOvernight && foundToday && !foundYesterday) {
+//                        jobEndDateTime[1] = "00:00:00";
+//                    }
+//                    else if (isOvernight && !foundToday && foundYesterday) {
+//                        timeInput =  LocalTime.parse("00:00:00");
+//                    }
+//                }
+//                else {
+//                    jobStartDate = BE.formatDate(jobDetails[6]);
+//                }
                 
                 if (jobStartDate != null) {
-                    LocalDateTime selectedDateTime = LocalDateTime.of(dateInput, timeInput);
-                    LocalDateTime startDateTime = LocalDateTime.of(jobStartDate, jobStartTime);
-                    LocalDateTime endDateTime = LocalDateTime.of(BE.formatDate(jobEndDateTime[0]), BE.formatTime(jobEndDateTime[1]));
                     
-                    boolean clash = false;
-                    if ((selectedDateTime.equals(startDateTime) || selectedDateTime.isAfter(startDateTime)) && 
-                        (selectedDateTime.equals(endDateTime) || selectedDateTime.isBefore(endDateTime))) {
-                        clash = true;
-                    }
-                    else if (workingStartTime2 != null && workingEndTime2 != null) {
-                        LocalDateTime startDateTime2 = LocalDateTime.of(jobStartDate, workingStartTime2);
-                        LocalDateTime endDateTime2 = LocalDateTime.of(jobStartDate, workingEndTime2);
-
-                        if ((selectedDateTime.equals(startDateTime2) || selectedDateTime.isAfter(startDateTime2)) &&
-                            (selectedDateTime.equals(endDateTime2) || selectedDateTime.isBefore(endDateTime2))) {
-                            clash = true;
-                        }
-                    }
+                    boolean clash = BE.compareDateTime(dateInput, timeInput, jobStartDate, jobStartTime, jobEndDateTime, workingStartTime2, workingEndTime2);
+//                    LocalDateTime selectedDateTime = LocalDateTime.of(dateInput, timeInput);
+//                    LocalDateTime startDateTime = LocalDateTime.of(jobStartDate, jobStartTime);
+//                    LocalDateTime endDateTime = LocalDateTime.of(BE.formatDate(jobEndDateTime[0]), BE.formatTime(jobEndDateTime[1]));
+//                    
+//                    boolean clash = false;
+//                    if ((selectedDateTime.equals(startDateTime) || selectedDateTime.isAfter(startDateTime)) && 
+//                        (selectedDateTime.equals(endDateTime) || selectedDateTime.isBefore(endDateTime))) {
+//                        clash = true;
+//                    }
+//                    else if (workingStartTime2 != null && workingEndTime2 != null) {
+//                        LocalDateTime startDateTime2 = LocalDateTime.of(jobStartDate, workingStartTime2);
+//                        LocalDateTime endDateTime2 = LocalDateTime.of(jobStartDate, workingEndTime2);
+//
+//                        if ((selectedDateTime.equals(startDateTime2) || selectedDateTime.isAfter(startDateTime2)) &&
+//                            (selectedDateTime.equals(endDateTime2) || selectedDateTime.isBefore(endDateTime2))) {
+//                            clash = true;
+//                        }
+//                    }
 
                     if (clash) {
                         clashJobId.add(jobId);
@@ -1204,13 +1228,6 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         }
         
         return clashJobId;
-    }
-    
-    private boolean jobDateTimeClash(LocalDateTime startDateTimeSelected, LocalDateTime endDateTimeSelected, LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        return ((startDateTimeSelected.isAfter(startDateTime) || startDateTimeSelected.isEqual(startDateTime)) && 
-                (startDateTimeSelected.isBefore(endDateTime) || startDateTimeSelected.isEqual(endDateTime))) ||
-                (endDateTimeSelected.isAfter(startDateTime) || endDateTimeSelected.isEqual(startDateTime)) &&
-                (endDateTimeSelected.isBefore(endDateTime) || endDateTimeSelected.isEqual(endDateTime));
     }
     
     

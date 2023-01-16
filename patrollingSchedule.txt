@@ -1,0 +1,7 @@
+slot;block;level;checkpoints;checkBefore;securityID;securityName;status;updatedBy;lastUpdate;
+08:00:00;A;Level 1-5;Level 5;09:00:00;scg184574;asdw;Upcoming;null;null;
+08:00:00;A;Level 6-10;Level 10;09:00:00;null;null;null;null;null;
+08:00:00;A;Level 11-15;Level 15;09:00:00;null;null;null;null;null;
+10:00:00;A;Level 1-5;Level 5;11:00:00;null;null;null;null;null;
+10:00:00;A;Level 6-10;Level 10;11:00:00;null;null;null;null;null;
+10:00:00;A;Level 11-15;Level 15;11:00:00;null;null;null;null;null;
