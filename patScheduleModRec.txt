@@ -1,0 +1,3 @@
+id;date;timeGap;levelInterval;updatedBy;lastUpdate;
+1;2023-01-18;8;5; ;01:41:01;
+2;2023-01-19;8;5; ;02:28:01;

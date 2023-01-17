@@ -5,11 +5,11 @@
 package pms_parkhill_residence;
 
 import java.awt.Toolkit;
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,19 +23,20 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     FileHandling fh = new FileHandling();
     BuildingExecutive BE = new BuildingExecutive();
     String patrollingScheduleFile;
+    String patrollingScheduleFileFormat = "patrollingScheduleFiles/patrollingFile_";
     DefaultTableModel scheduleTable;
     
+    private String currentBEid = " ";
     private LocalDate todayDate;
     private LocalDate inputDate;
     private LocalTime inputTime;
-    private String inputDay;
     
     private String dayOfToday;
-    private int dayValue;
-    private String tableId;
+    private String patID;
     
     /**
      * Creates new form homePage
+     * @throws java.io.IOException
      */
     public BuildingExecutivePatrollingManagement() throws IOException {
         initComponents();
@@ -46,25 +47,27 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         scheduleTable = (DefaultTableModel) patrollingScheduleTable.getModel();
         setWindowIcon();
         getTodayDay();
-        patrollingScheduleTableSetUp(this.dayOfToday);
+        patrollingScheduleTableSetUp();
         fieldAction(false);
-        
-        comboBoxSetUp();
+        deleteBTN.setEnabled(false);
+        updateBTN.setEnabled(false);
+        securityIdComboBox.removeAllItems();
+        disableManageButton();
     }
     
     private void getTodayDay() {
         todayDate = LocalDate.now();
         inputDate = todayDate;
         inputTime = LocalTime.now();
+        dateLabel.setText(todayDate.toString());
         datePicker.setDate(todayDate);
         this.dayOfToday =  todayDate.getDayOfWeek().toString();
-        this.dayValue = todayDate.getDayOfWeek().getValue();
     }
     
-    private void patrollingScheduleTableSetUp(String dayOfWeek) {
+    private void patrollingScheduleTableSetUp() {
         ArrayList<String> forTableSetup = new ArrayList<>();
         
-        getTodayDayFile(dayOfWeek);
+        setSelectedDateFile();
         
         List<String> patrollingSchedule = fh.fileRead(patrollingScheduleFile);
         
@@ -93,48 +96,43 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         }
         
         BE.setTableRow(scheduleTable, forTableSetup);
-        daysComboBox.setSelectedItem(dayOfWeek);
     }
     
-    private void getTodayDayFile(String dayOfWeek) {
-        switch(dayOfWeek) {
-            case "MONDAY" -> {
-                patrollingScheduleFile = "patrollingScheduleFiles/monPAT.txt"; 
-                dayValue = 1;
-            }
-            case "TUESDAY" -> {
-                patrollingScheduleFile = "patrollingScheduleFiles/tuesPAT.txt";
-                dayValue = 2;
-            }
-            case "WEDNESDAY" -> {
-                patrollingScheduleFile = "patrollingScheduleFiles/wedPAT.txt";
-                dayValue = 3;
-            }
-            case "THURSDAY" -> {
-                patrollingScheduleFile = "patrollingScheduleFiles/thursPAT.txt";
-                dayValue = 4;
-            }
-            case "FRIDAY" -> {
-                patrollingScheduleFile = "patrollingScheduleFiles/friPAT.txt";
-                dayValue = 5;
-            }
-            case "SATURDAY" -> {
-                patrollingScheduleFile = "patrollingScheduleFiles/satPAT.txt";
-                dayValue = 6;
-            }
-            case "SUNDAY" -> {
-                patrollingScheduleFile = "patrollingScheduleFiles/sunPAT.txt";
-                dayValue = 7;
-            }
-
+    private void setSelectedDateFile() {
+        patrollingScheduleFile = patrollingScheduleFileFormat+inputDate+".txt";
+        List<String> addNewRec = new ArrayList<>();
+        
+        File file = new File(patrollingScheduleFile);
+        if (!file.exists()) {
+            List<String> defaultSchedule = fh.fileRead(BE.fixFile);
+            fh.fileWrite(patrollingScheduleFile, false, defaultSchedule);
+            
+            addNewRec.add(getNewId() + BE.sp + inputDate + BE.sp + "8" + BE.sp + 5 + BE.sp + currentBEid + BE.sp + BE.formatTime(LocalTime.now().toString()) + BE.sp);
+            fh.fileWrite(BE.patScheduleModRec, true, addNewRec);
         }
+    }
+    
+    private String getNewId() {
+        List<String> scheRec = fh.fileRead(BE.patScheduleModRec);
+        
+        int largestId = 0;
+        
+        boolean firstLine = true;
+        for (String eachRec : scheRec) {
+            if (!firstLine) {
+                int id = Integer.valueOf(eachRec.split(BE.sp)[0]);
+                largestId = (id > largestId) ? id : largestId;
+            }
+            
+            firstLine = false;
+        }
+        
+        return String.valueOf(largestId + 1);
     }
     
     private void fieldAction(boolean enable) {
         securityIdComboBox.setEnabled(enable);
         remarksTA.setEnabled(enable);
-        deleteBTN.setEnabled(enable);
-        updateBTN.setEnabled(enable);
     }
     
     /**
@@ -173,10 +171,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         jLabel24 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         patrollingScheduleTable = new javax.swing.JTable();
-        jLabel25 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
-        jLabel29 = new javax.swing.JLabel();
-        searchIdTF = new javax.swing.JTextField();
         backBTN = new javax.swing.JButton();
         deleteBTN = new javax.swing.JButton();
         jLabel30 = new javax.swing.JLabel();
@@ -184,7 +179,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         jLabel28 = new javax.swing.JLabel();
         contactNoTF = new javax.swing.JTextField();
         jLabel32 = new javax.swing.JLabel();
-        maangeScheduleBTN = new javax.swing.JButton();
+        manageScheduleBTN = new javax.swing.JButton();
         jLabel33 = new javax.swing.JLabel();
         updateBTN = new javax.swing.JButton();
         blockTF = new javax.swing.JTextField();
@@ -203,10 +198,12 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         remarksTA = new javax.swing.JTextArea();
         jSeparator2 = new javax.swing.JSeparator();
         timeCheckedPicker = new com.github.lgooddatepicker.components.TimePicker();
-        daysComboBox = new javax.swing.JComboBox<>();
         jLabel38 = new javax.swing.JLabel();
-        datePicker = new com.github.lgooddatepicker.components.DatePicker();
         jLabel39 = new javax.swing.JLabel();
+        jLabel40 = new javax.swing.JLabel();
+        datePicker = new com.github.lgooddatepicker.components.DatePicker();
+        dateLabel = new javax.swing.JLabel();
+        selectDateBTN = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -480,7 +477,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                 .addComponent(jPanel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 308, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 312, Short.MAX_VALUE)
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -573,19 +570,9 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             patrollingScheduleTable.getColumnModel().getColumn(9).setResizable(false);
         }
 
-        jLabel25.setText("Day: ");
-        jLabel25.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel25.setForeground(new java.awt.Color(51, 51, 51));
-
         jLabel26.setText("Slot: ");
         jLabel26.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel26.setForeground(new java.awt.Color(51, 51, 51));
-
-        jLabel29.setText("Security ID: ");
-        jLabel29.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel29.setForeground(new java.awt.Color(51, 51, 51));
-
-        searchIdTF.setText("jTextField4");
 
         backBTN.setText("Back");
         backBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -595,6 +582,11 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         });
 
         deleteBTN.setText("Delete");
+        deleteBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteBTNActionPerformed(evt);
+            }
+        });
 
         jLabel30.setText("Management: ");
         jLabel30.setFont(new java.awt.Font("Yu Gothic UI", 1, 16)); // NOI18N
@@ -611,7 +603,12 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         jLabel32.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel32.setForeground(new java.awt.Color(51, 51, 51));
 
-        maangeScheduleBTN.setText("Manage Schedule");
+        manageScheduleBTN.setText("Manage Schedule");
+        manageScheduleBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                manageScheduleBTNActionPerformed(evt);
+            }
+        });
 
         jLabel33.setText("Level: ");
         jLabel33.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
@@ -641,6 +638,11 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         securityNameTF.setEnabled(false);
 
         securityIdComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        securityIdComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                securityIdComboBoxActionPerformed(evt);
+            }
+        });
 
         jLabel34.setText("Checkpoints: ");
         jLabel34.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
@@ -674,22 +676,28 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
         timeCheckedPicker.setEnabled(false);
 
-        daysComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY" }));
-        daysComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                daysComboBoxActionPerformed(evt);
-            }
-        });
-
+        jLabel38.setText("Today: ");
         jLabel38.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel38.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel38.setText("Today: ");
 
-        datePicker.setEnabled(false);
-
+        jLabel39.setText("Security ID: ");
         jLabel39.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel39.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel39.setText("Security ID: ");
+
+        jLabel40.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        jLabel40.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel40.setText("Date: ");
+
+        dateLabel.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        dateLabel.setForeground(new java.awt.Color(51, 51, 51));
+        dateLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+
+        selectDateBTN.setText("Select");
+        selectDateBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectDateBTNActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -697,78 +705,73 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel33, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(slotTF, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(levelTF, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(blockTF, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(32, 32, 32)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLabel33, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))
+                                .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(statusTF, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(slotTF, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(levelTF, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(blockTF, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(32, 32, 32)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(jPanel6Layout.createSequentialGroup()
-                                        .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(statusTF, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
-                                    .addGroup(jPanel6Layout.createSequentialGroup()
-                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(checkpointsTF)
-                                            .addComponent(timeCheckedPicker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                                .addGap(32, 32, 32)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(jPanel6Layout.createSequentialGroup()
-                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel31))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(securityNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(contactNoTF, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(jPanel6Layout.createSequentialGroup()
-                                        .addComponent(jLabel39, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(securityIdComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(80, 80, 80)))
-                                .addGap(32, 32, 32)
+                                    .addComponent(checkpointsTF)
+                                    .addComponent(timeCheckedPicker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(32, 32, 32)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel37, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jScrollPane2)))
-                            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel31))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(securityNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(contactNoTF, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel39, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(securityIdComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(80, 80, 80)))
+                        .addGap(32, 32, 32)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel37, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2)))
+                    .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel30, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(jLabel25)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(daysComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(35, 35, 35)
-                                        .addComponent(jLabel29)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(searchIdTF, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(35, 35, 35)
-                                        .addComponent(jLabel38, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(datePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(172, 172, 172)
-                                        .addComponent(maangeScheduleBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(10, 10, 10))))
+                                .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel38, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel30, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
+                                    .addComponent(jLabel40)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(datePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(selectDateBTN)
+                                    .addGap(645, 645, 645)
+                                    .addComponent(manageScheduleBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 8, Short.MAX_VALUE)))
+                .addGap(10, 10, 10))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(backBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -782,16 +785,16 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
-                    .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(searchIdTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(maangeScheduleBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(daysComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel38, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(2, 2, 2)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(manageScheduleBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel40, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(datePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel38, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(selectDateBTN))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -842,7 +845,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                                     .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(statusTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addGap(18, 18, 18)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.DEFAULT_SIZE, 2, Short.MAX_VALUE)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.DEFAULT_SIZE, 5, Short.MAX_VALUE)
                 .addGap(5, 5, 5)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(backBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -874,39 +877,29 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void jPanel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_jPanel2MouseEntered
-
+    
     private void backBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBTNActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_backBTNActionPerformed
-
+    
     private void patrollingScheduleTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_patrollingScheduleTableMouseClicked
         // TODO add your handling code here:
-        int dayDiff = dayValue - todayDate.getDayOfWeek().getValue();
-        if (dayDiff < 0) {
-            inputDate = todayDate.plusDays(7 + dayDiff);
-        }
-        else if (dayDiff > 0) {
-            inputDate = todayDate.plusDays(dayDiff);
-        }
-        else {
-            inputDate = todayDate;
-        }
-        
         int selectedCol = patrollingScheduleTable.getSelectedColumn();
         int selectedRow = patrollingScheduleTable.getSelectedRow();
         
         boolean correctSel = (selectedCol == 9);
         
-        String securityID = patrollingScheduleTable.getValueAt(selectedRow, 5).toString();
+        String securityID = (!patrollingScheduleTable.getValueAt(selectedRow, 5).equals(" ")) ? (patrollingScheduleTable.getValueAt(selectedRow, 5)).toString() : null;
         
         Object[] rowData = new Object[scheduleTable.getColumnCount()];
         
         if (correctSel) {
-            tableId = String.valueOf(selectedRow + 1);
+            List<String> scheduleFile = fh.fileRead(patrollingScheduleFile);
+            patID = scheduleFile.get(selectedRow+1).split(BE.sp)[0];
             
             for (int data = 0; data < scheduleTable.getColumnCount(); data++) {
                 rowData[data] = scheduleTable.getValueAt(selectedRow, data);
@@ -926,7 +919,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                 Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            if (!securityID.equals("null")) {
+            if (securityID != null) {
                 try {
                     String[] empDet = BE.getEmployeeDetails(securityID);
 
@@ -936,8 +929,10 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                 } catch (IOException ex) {
                     Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                deleteBTN.setEnabled(true);
             }
             else {
+                deleteBTN.setEnabled(false);
                 securityIdComboBox.setSelectedIndex(0);
                 securityNameTF.setText("");
                 contactNoTF.setText("");
@@ -946,16 +941,10 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             }
             
             fieldAction(true);
+            updateBTN.setEnabled(false);
         }
     }//GEN-LAST:event_patrollingScheduleTableMouseClicked
-
-    private void daysComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_daysComboBoxActionPerformed
-        // TODO add your handling code here:
-        String selectedItem = daysComboBox.getSelectedItem().toString();
-        inputDay = selectedItem;
-        patrollingScheduleTableSetUp(inputDay);
-    }//GEN-LAST:event_daysComboBoxActionPerformed
-
+    
     private void updateBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBTNActionPerformed
         // TODO add your handling code here:
         ArrayList<String> toUpdateList = new ArrayList<>();
@@ -965,7 +954,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         String checkpoint = checkpointsTF.getText();
         String securityId = securityIdComboBox.getSelectedItem().toString();
         String securityName = securityNameTF.getText();
-        String remarks = remarksTA.getText();
+        String remarks = (!remarksTA.getText().equals("")) ? remarksTA.getText() : " ";
         
         List<String> scheduleList = fh.fileRead(patrollingScheduleFile);
         
@@ -973,10 +962,10 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             String[] schedules = eachSched.split(BE.sp);
             String id = schedules[0];
             
-            if (id.equals(tableId)) {
+            if (id.equals(patID)) {
                 toUpdateList.add(id + BE.sp + schedules[1] + BE.sp + schedules[2] + BE.sp + schedules[3] + BE.sp +
                         checkpoint + BE.sp + schedules[5] + BE.sp + securityId + BE.sp + securityName + BE.sp + 
-                        schedules[8] + BE.sp + remarks + BE.sp + null + BE.sp + LocalTime.now() + BE.sp);
+                        remarks + BE.sp + schedules[8] + BE.sp + " " + BE.sp + this.currentBEid + BE.sp + BE.formatTime(LocalTime.now().toString()) + BE.sp);
             }
             else {
                 toUpdateList.add(eachSched);
@@ -985,22 +974,113 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         
         fh.fileWrite(patrollingScheduleFile, false, toUpdateList);
         
-        patrollingScheduleTableSetUp(inputDay);
+        patrollingScheduleTableSetUp();
         fieldAction(false);
         
         try {
             List<String> addJob = new ArrayList<>();
             
             addJob.add(BE.getNewId(BE.employeeJobFile, 0) + BE.sp + securityId + BE.sp + "null" + BE.sp + 
-                        "PT" + BE.sp + 1 + BE.sp + "1h" + BE.sp + "null" + BE.sp + slot + BE.sp + checkBef + 
-                        BE.sp + inputDay + "," + BE.sp + remarks + BE.sp + "null" + BE.sp + LocalTime.now() + 
-                        BE.sp + inputDay.substring(0, 3) + tableId + BE.sp);
+                        "PT" + BE.sp + 0 + BE.sp + "1h" + BE.sp + this.inputDate + BE.sp + slot + BE.sp + this.inputDate + " " + checkBef + 
+                        BE.sp + "null" + BE.sp + remarks + BE.sp + "null" + BE.sp + BE.formatTime(LocalTime.now().toString()) + 
+                        BE.sp + inputDate + " " + patID + BE.sp);
             
+            deletePatScheduleFromJobFile();
             fh.fileWrite(BE.employeeJobFile, true, addJob);
         } catch (IOException ex) {
             Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        try {
+            comboBoxSetUp();
+            updateBTN.setEnabled(false);
+        } catch (IOException ex) {
+            Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_updateBTNActionPerformed
+    
+    private void deleteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBTNActionPerformed
+        // TODO add your handling code here:
+        ArrayList<String> toRemove = new ArrayList<>();
+        List<String> oldSchedule = fh.fileRead(patrollingScheduleFile);
+        
+        for (String eachSche : oldSchedule) {
+            String[] scheDet = eachSche.split(BE.sp);
+            String slotId = scheDet[0];
+            if (slotId.equals(patID)) {
+                toRemove.add(scheDet[0] + BE.sp + scheDet[1] + BE.sp + scheDet[2] + BE.sp + 
+                             scheDet[3] + BE.sp + scheDet[4] + BE.sp + scheDet[5] + BE.sp + 
+                             " " + BE.sp + " " + BE.sp + " " + BE.sp + " " + BE.sp + " " + BE.sp + 
+                             BE.formatTime(LocalTime.now().toString()) + BE.sp + " ");
+            }
+            else {
+                toRemove.add(eachSche);
+            }
+        }
+        
+        fh.fileWrite(patrollingScheduleFile, false, toRemove);
+        
+        patrollingScheduleTableSetUp();
+        
+        deletePatScheduleFromJobFile();
+    }//GEN-LAST:event_deleteBTNActionPerformed
+    
+    private void securityIdComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_securityIdComboBoxActionPerformed
+        // TODO add your handling code here:
+        String securityId = (String) securityIdComboBox.getSelectedItem();
+        try {
+            String[] securityDet = BE.getEmployeeDetails(securityId);
+            if (securityDet != null) {
+                String securityName = securityDet[2];
+                String contact = securityDet[3];
+                securityNameTF.setText(securityName);
+                contactNoTF.setText(contact);
+                updateBTN.setEnabled(true);
+            }
+            else {
+                securityNameTF.setText("");
+                contactNoTF.setText("");
+                updateBTN.setEnabled(false);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_securityIdComboBoxActionPerformed
+    
+    private void selectDateBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectDateBTNActionPerformed
+        // TODO add your handling code here:
+        inputDate = datePicker.getDate();
+        
+        disableManageButton();
+        patrollingScheduleTableSetUp();
+    }//GEN-LAST:event_selectDateBTNActionPerformed
+
+    private void manageScheduleBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageScheduleBTNActionPerformed
+        // TODO add your handling code here:
+        BE.toScheduleModification(patrollingScheduleFile, inputDate);
+    }//GEN-LAST:event_manageScheduleBTNActionPerformed
+    
+    private void deletePatScheduleFromJobFile() {
+        ArrayList<String> removeFromJobFile = new ArrayList<>();
+        
+        String dayCode  = inputDate + " " + patID;
+        
+        List<String> getEmployeeList = fh.fileRead(BE.employeeJobFile);
+        for (String eachJob : getEmployeeList) {
+            String[] jobDet = eachJob.split(BE.sp);
+            String patCode = jobDet[jobDet.length - 1];
+            
+            if (!patCode.equals(dayCode)) {
+                removeFromJobFile.add(eachJob);
+            }
+        }
+        
+        fh.fileWrite(BE.employeeJobFile, false, removeFromJobFile);
+        
+        deleteBTN.setEnabled(false);
+        updateBTN.setEnabled(false);
+        fieldAction(false);
+    }
     
     private void comboBoxSetUp() throws IOException {
         ArrayList<String> assignedEmployee = BE.getSpecificStatusEmployeeList(inputDate, inputTime, "Security Guard", null, BE.assignedEmployee);
@@ -1015,39 +1095,42 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             String empId = allEmp.split(BE.sp)[0];
             
             ArrayList<String> jobList = BE.getAssignedJobForSpecificEmployee(empId);
+            
             boolean cannotPatroll = false;
-            for (String eachJob : jobList) {
-                String[] jobDetails = eachJob.split(BE.sp);
-                String assignedJobCode = jobDetails[3];
-                if (assignedJobCode.equals("NS") || assignedJobCode.equals("MS") || assignedJobCode.equals("PT")) {
-                    int repitition = Integer.valueOf(jobDetails[4]);
-                    
-                    String timeNeeded = jobDetails[5];
-                    LocalDate workingDate = null;
-                    LocalTime workingTime = BE.formatTime(jobDetails[7]);
-                    String[] workingEndDateTime = jobDetails[8].split(" ");
-                    
-                    LocalTime workingStartTime2;
-                    LocalTime workingEndTime2;
-                    
-                    ArrayList<String> dateData = BE.compareJobDate(repitition, workingEndDateTime, jobDetails, timeNeeded, dayOfToday, inputDate, workingTime, workingDate);
-                    
-                    if (!dateData.isEmpty()) {
-                        workingDate = BE.formatDate(dateData.get(0));
-                        workingTime = BE.formatTime(dateData.get(1));
+            if (!jobList.isEmpty()) {
+                for (String eachJob : jobList) {
+                    String[] jobDetails = eachJob.split(BE.sp);
+                    String assignedJobCode = jobDetails[3];
+                    if (assignedJobCode.equals("NS") || assignedJobCode.equals("MS") || assignedJobCode.equals("PT")) {
+                        int repitition = Integer.valueOf(jobDetails[4]);
 
-                        workingStartTime2 = (!dateData.get(2).equals("null")) ? BE.formatTime(dateData.get(2)) : null;
-                        workingEndTime2 = (!dateData.get(3).equals("null")) ? BE.formatTime(dateData.get(3)) : null;
+                        String timeNeeded = jobDetails[5];
+                        LocalDate workingDate = null;
+                        LocalTime workingTime = BE.formatTime(jobDetails[7]);
+                        String[] workingEndDateTime = jobDetails[8].split(" ");
 
-                        workingEndDateTime = dateData.get(4).split(" ");
+                        LocalTime workingStartTime2;
+                        LocalTime workingEndTime2;
 
-                        if (workingDate != null) {
-                            cannotPatroll = BE.compareDateTime(inputDate, inputTime, workingDate, workingTime, workingEndDateTime, workingStartTime2, workingEndTime2);
+                        ArrayList<String> dateData = BE.compareJobDate(repitition, workingEndDateTime, jobDetails, timeNeeded, dayOfToday, inputDate, workingTime, workingDate);
+
+                        if (!dateData.isEmpty()) {
+                            workingDate = BE.formatDate(dateData.get(0));
+                            workingTime = BE.formatTime(dateData.get(1));
+
+                            workingStartTime2 = (!dateData.get(2).equals("null")) ? BE.formatTime(dateData.get(2)) : null;
+                            workingEndTime2 = (!dateData.get(3).equals("null")) ? BE.formatTime(dateData.get(3)) : null;
+
+                            workingEndDateTime = dateData.get(4).split(" ");
+
+                            if (workingDate != null) {
+                                cannotPatroll = BE.compareDateTime(inputDate, inputTime, workingDate, workingTime, workingEndDateTime, workingStartTime2, workingEndTime2);
+                            }
                         }
-                    }
-                    
-                    if (cannotPatroll) {
-                        break;
+
+                        if (cannotPatroll) {
+                            break;
+                        }
                     }
                 }
             }
@@ -1058,10 +1141,16 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         }
         
         securityIdComboBox.removeAllItems();
+        securityIdComboBox.addItem("Not Selected");
         
         for (String eachId : canPatrollId) {
             securityIdComboBox.addItem(eachId);
         }
+    }
+    
+    private void disableManageButton() {
+        boolean setAction = (!todayDate.isEqual(inputDate) && !inputDate.isBefore(todayDate));
+        manageScheduleBTN.setEnabled(setAction);
     }
     
     private void setWindowIcon() {
@@ -1175,8 +1264,8 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     private javax.swing.JTextField blockTF;
     private javax.swing.JTextField checkpointsTF;
     private javax.swing.JTextField contactNoTF;
+    private javax.swing.JLabel dateLabel;
     private com.github.lgooddatepicker.components.DatePicker datePicker;
-    private javax.swing.JComboBox<String> daysComboBox;
     private javax.swing.JButton deleteBTN;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
@@ -1185,10 +1274,8 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
@@ -1201,6 +1288,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -1222,12 +1310,12 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTextField levelTF;
-    private javax.swing.JButton maangeScheduleBTN;
+    private javax.swing.JButton manageScheduleBTN;
     private javax.swing.JTable patrollingScheduleTable;
     private javax.swing.JTextArea remarksTA;
-    private javax.swing.JTextField searchIdTF;
     private javax.swing.JComboBox<String> securityIdComboBox;
     private javax.swing.JTextField securityNameTF;
+    private javax.swing.JButton selectDateBTN;
     private javax.swing.JTextField slotTF;
     private javax.swing.JTextField statusTF;
     private com.github.lgooddatepicker.components.TimePicker timeCheckedPicker;

@@ -64,6 +64,14 @@ public class BuildingExecutive extends Users{
     // patrolling shcedule file
     String patrollingScheduleFile = "patrollingSchedule.txt";
     
+    // File schedule patrolling default time table
+    String fixFile = "patrollingDefaultSchedule.txt";
+    
+    // File each date schedule setting file
+    String patScheduleModRec = "patScheduleModRec.txt";
+
+
+    
     private ArrayList getEmployeeJobList(LocalDate localDate, LocalTime localTime) throws IOException {
         List<String> employeeList = fileHandling.fileRead(fullEmployeeList);
         List<String> jobFile = fileHandling.fileRead(employeeJobFile);
@@ -701,6 +709,11 @@ public class BuildingExecutive extends Users{
     
     public void toComplaintDetailsPage(String complaintId) throws IOException {
         ComplaintsDetails page = new ComplaintsDetails(complaintId);
+        page.setVisible(true);
+    }
+    
+    public void toScheduleModification(String file, LocalDate inputDate) {
+        PatrollingScheduleModification page = new PatrollingScheduleModification(file, inputDate);
         page.setVisible(true);
     }
 }
