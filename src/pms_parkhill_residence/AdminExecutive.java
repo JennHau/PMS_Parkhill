@@ -4,8 +4,10 @@
  */
 package pms_parkhill_residence;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,6 +17,13 @@ import java.util.List;
 public class AdminExecutive {
     
     FileHandling fh = new FileHandling();
+    
+    public String todayDate() {
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String str = formatter.format(date);
+        return str;
+    }
     
     public List<String> extractAllProperties(String type) {
         List<String> propertiesList = fh.fileRead("propertyDetails.txt");
@@ -116,7 +125,7 @@ public class AdminExecutive {
         } 
         fh.fileWrite("propertyDetails.txt", false, newData1);
         fh.fileWrite("inactivePropertyDetails.txt", true, newData2);
-        deleteResident(unitNo);
+        deleteTenantResident(unitNo);
     }
     
     public String getLatestDeleteID() {
@@ -166,6 +175,52 @@ public class AdminExecutive {
         return currentUsableID;
     }
     
+    public void deleteTenantResident(String unitNo) {
+        String currentDeleteID = getLatestDeleteID();
+        
+        List<String> propertiesList = fh.fileRead("propertyDetails.txt");
+        String[] propertiesArray = new String[propertiesList.size()];
+        propertiesList.toArray(propertiesArray);
+        
+        List<String> availableList = new ArrayList<>();
+        
+        for (int i = 1; i < propertiesList.size(); i++) {
+            String[] propertyDetails = propertiesArray[i].split(";");
+            String uniNo = propertyDetails[0];
+            availableList.add(uniNo);
+        }
+        
+        List<String> userList =  fh.fileRead("userProfile.txt");
+        String[] userArray = new String[userList.size()];
+        userList.toArray(userArray);
+        
+        List<String> newData1 = new ArrayList<>();
+        List<String> newData2 = new ArrayList<>();
+        
+        for (int i = 0; i < userList.size(); i++) {
+            String[] userDetails = userArray[i].split(";");
+            String userID = userDetails[0];
+            String eUnitNo = userDetails[8];
+            
+            if(eUnitNo.equals(unitNo)) {
+                newData2.add(currentDeleteID +";"+ userArray[i]
+                        + LocalDateTime.now() +";");
+            } else {
+                newData1.add(userArray[i]);
+            }
+            
+            if((userID.startsWith("tnt") && eUnitNo.equals(unitNo) 
+                    && availableList.contains(eUnitNo)) || (userID.startsWith("vdr")
+                    && eUnitNo.equals(unitNo) && availableList.contains(eUnitNo))) {
+                newData1.add("Parkhill;parkhill@gmail.com;Parkhill@123;Parkill;"
+                            + "Residence;-;-;-;" + eUnitNo.toUpperCase() + ";");
+            }
+        } 
+        fh.fileWrite("userProfile.txt", false, newData1);
+        fh.fileWrite("inactiveUserProfile.txt", true, newData2);
+        updatePropertySoldStatus(unitNo, "unsold");
+    }
+    
     public void deleteResident(String unitNo) {
         String currentDeleteID = getLatestDeleteID();
         
@@ -178,9 +233,12 @@ public class AdminExecutive {
         
         for (int i = 0; i < userList.size(); i++) {
             String[] userDetails = userArray[i].split(";");
+            String userID = userDetails[0];
             String eUnitNo = userDetails[8];
             
-            if(eUnitNo.equals(unitNo)) {
+            
+            if(eUnitNo.equals(unitNo) && userID.startsWith("rsd")) {
+                System.out.println(userID);
                 newData2.add(currentDeleteID +";"+ userArray[i]
                         + LocalDateTime.now() +";");
             } else {
@@ -189,123 +247,6 @@ public class AdminExecutive {
         } 
         fh.fileWrite("userProfile.txt", false, newData1);
         fh.fileWrite("inactiveUserProfile.txt", true, newData2);
-        
-        
-//        List<String> invoiceList =  fh.fileRead("invoices.txt");
-//        String[] invoiceArray = new String[invoiceList.size()];
-//        invoiceList.toArray(invoiceArray);
-//        
-//        newData1.clear();
-//        for (int i = 0; i < invoiceList.size(); i++) {
-//            String[] invoiceDetails = invoiceArray[i].split(";");
-//            
-//            String invoiceNo = invoiceDetails[0];
-//            String eUnitNo = invoiceDetails[1];
-//            String feeType = invoiceDetails[2];
-//            String target = invoiceDetails[3];
-//            String consumption = invoiceDetails[4];
-//            String unit = invoiceDetails[5];
-//            String unitPrice = invoiceDetails[6];
-//            String totalPrice = invoiceDetails[7];
-//            String period = invoiceDetails[8];
-//            String generatedDate = invoiceDetails[9];
-//            
-//            if(eUnitNo.equals(unitNo)) {
-//                newData1.add(invoiceNo +";"+ eUnitNo +";"+feeType +";"+ target+";"+ consumption
-//                        +";"+ unit +";"+ unitPrice +";"+ totalPrice +";"+ period +";"+
-//                        generatedDate +";"+ currentDeleteID + ";");
-//            } else {
-//                newData1.add(invoiceArray[i]);
-//            }
-//        } 
-//        fh.fileWrite("invoices.txt", false, newData1);
-//        
-//        
-//        List<String> paymentList =  fh.fileRead("payment.txt");
-//        String[] paymentArray = new String[paymentList.size()];
-//        paymentList.toArray(paymentArray);
-//        
-//        newData1.clear();
-//        for (int i = 0; i < paymentList.size(); i++) {
-//            String[] paymentDetails = paymentArray[i].split(";");
-//            
-//            String invoiceNo = paymentDetails[0];
-//            String eUnitNo = paymentDetails[1];
-//            String feeType = paymentDetails[2];
-//            String target = paymentDetails[3];
-//            String consumption = paymentDetails[4];
-//            String unit = paymentDetails[5];
-//            String unitPrice = paymentDetails[6];
-//            String totalPrice = paymentDetails[7];
-//            String period = paymentDetails[8];
-//            String paymentBy = paymentDetails[9];
-//            String paymentDate = paymentDetails[10];
-//            String generatedDate = paymentDetails[11];
-//            
-//            if(eUnitNo.equals(unitNo)) {
-//                newData1.add(invoiceNo +";"+ eUnitNo +";"+ feeType +";"+ target 
-//                        +";"+ consumption +";"+ unit +";"+ unitPrice +";"+
-//                        totalPrice +";"+ period +";"+ paymentBy +";"+ paymentDate
-//                        +";"+ generatedDate +";"+ currentDeleteID + ";");
-//            } else {
-//                newData1.add(paymentArray[i]);
-//            }
-//        } 
-//        fh.fileWrite("payment.txt", false, newData1);
-//        
-//        
-//        List<String> receiptList =  fh.fileRead("receipt.txt");
-//        String[] receiptArray = new String[receiptList.size()];
-//        receiptList.toArray(receiptArray);
-//        
-//        newData1.clear();
-//        for (int i = 0; i < receiptList.size(); i++) {
-//            String[] receiptDetails = receiptArray[i].split(";");
-//            
-//            String invoiceNo = receiptDetails[0];
-//            String eUnitNo = receiptDetails[1];
-//            String feeType = receiptDetails[2];
-//            String target = receiptDetails[3];
-//            String consumption = receiptDetails[4];
-//            String unit = receiptDetails[5];
-//            String unitPrice = receiptDetails[6];
-//            String totalPrice = receiptDetails[7];
-//            String period = receiptDetails[8];
-//            String paymentBy = receiptDetails[9];
-//            String paymentDate = receiptDetails[10];
-//            String generatedDate = receiptDetails[11];
-//            
-//            if(eUnitNo.equals(unitNo)) {
-//                newData1.add(invoiceNo +";"+ eUnitNo +";"+ feeType +";"+ target 
-//                        +";"+ consumption +";"+ unit +";"+ unitPrice +";"+
-//                        totalPrice +";"+ period +";"+ paymentBy +";"+ paymentDate
-//                        +";"+ generatedDate +";"+ currentDeleteID + ";");
-//            } else {
-//                newData1.add(receiptArray[i]);
-//            }
-//        } 
-//        fh.fileWrite("receipt.txt", false, newData1);
-//        
-//        
-//        List<String> statementList =  fh.fileRead("statements.txt");
-//        String[] statementArray = new String[statementList.size()];
-//        statementList.toArray(statementArray);
-//        
-//        newData1.clear();
-//        for (int i = 0; i < statementList.size(); i++) {
-//            String[] statementDetails = statementArray[i].split(";");
-//            String invoiceNo = statementDetails[0];
-//            String eUnitNo = statementDetails[1];
-//            String generatedDate = statementDetails[2];
-//            
-//            if(eUnitNo.equals(unitNo)) {
-//                newData1.add(invoiceNo +";"+ eUnitNo +";"+ generatedDate +";"+
-//                        currentDeleteID + ";");
-//            } else {
-//                newData1.add(statementArray[i]);
-//            }
-//        } 
-//        fh.fileWrite("statements.txt", false, newData1);
     }
     
     public List<String> extractAllPropertiesHistory(String type) {
@@ -371,10 +312,10 @@ public class AdminExecutive {
             }
         } fh.fileWrite("propertyDetails.txt", true, newData1);
         fh.fileWrite("inactivePropertyDetails.txt", false, newData2);
-        restoreResidentTenant(deletionID, "ALL");
+        restoreResidentTenant(deletionID);
     }
     
-    public void restoreResidentTenant(String deletionID, String status) {
+    public void restoreResidentTenant(String deletionID) {
         List<String> userList = fh.fileRead("inactiveUserProfile.txt");
         String[] userArray = new String[userList.size()];
         userList.toArray(userArray);
@@ -382,30 +323,107 @@ public class AdminExecutive {
         List<String> newData1 = new ArrayList<>();
         List<String> newData2 = new ArrayList<>();
         
-        if (status.equals("ALL")) {
-            for (int i = 0; i < userList.size(); i++) {
-                String[] userDetails = userArray[i].split(";");
-                String deleteID = userDetails[0];
-                String userID = userDetails[1];
-                String email = userDetails[2];
-                String password = userDetails[3];
-                String firstName = userDetails[4];
-                String lastName = userDetails[5];
-                String identificationNo = userDetails[6];
-                String gender = userDetails[7];
-                String phoneNo = userDetails[8];
-                String unitNo = userDetails[9];
-                
+        for (int i = 0; i < userList.size(); i++) {
+            String[] userDetails = userArray[i].split(";");
+            String deleteID = userDetails[0];
+            String userID = userDetails[1];
+            String email = userDetails[2];
+            String password = userDetails[3];
+            String firstName = userDetails[4];
+            String lastName = userDetails[5];
+            String identificationNo = userDetails[6];
+            String gender = userDetails[7];
+            String phoneNo = userDetails[8];
+            String eUnitNo = userDetails[9];
+
+            if (!userID.equals("Parkhill")) {
                 if (deletionID.equals(deleteID)) {
+                    removeDefaultUserAccount(userID);
                     newData1.add(userID +";"+ email +";"+ password +";"+ firstName +";"+
                             lastName +";"+ identificationNo +";"+ gender +";"
-                            + phoneNo +";"+ unitNo +";");
+                            + phoneNo +";"+ eUnitNo +";");
+                    updatePropertySoldStatus(eUnitNo, "sold");
                 } else {
                     newData2.add(userArray[i]);
                 }
-            } fh.fileWrite("userProfile.txt", true, newData1);
-            fh.fileWrite("inactiveUserProfile.txt", false, newData2);
-        }
+            }
+        } 
+            
+        fh.fileWrite("userProfile.txt", true, newData1);
+        fh.fileWrite("inactiveUserProfile.txt", false, newData2);
+    }
+    
+    public void removeDefaultUserAccount(String unitNo) {
+        List<String> userList = fh.fileRead("userProfile.txt");
+        String[] userArray = new String[userList.size()];
+        userList.toArray(userArray);
+        
+        List<String> newData = new ArrayList<>();
+        
+        for (int i = 0; i < userList.size(); i++) {
+            String[] userDetails = userArray[i].split(";");
+            String userID = userDetails[0];
+            String eUnitNo = userDetails[8];
+            
+            if (!userID.equals("Parkhill") && !eUnitNo.equals(unitNo)) {
+                newData.add(userArray[i]);
+            }
+        } fh.fileWrite("userProfile.txt", false, newData);
+    }
+    
+    public List<String> extractAllUserHistory(String type) {
+        List<String> userList = fh.fileRead("inactiveUserProfile.txt");
+        String[] userArray = new String[userList.size()];
+        userList.toArray(userArray);
+        
+        List<String> availableList = new ArrayList<>();
+
+        for (int i = 1; i < userList.size(); i++) {
+            String[] userDetails = userArray[i].split(";");
+            String deleteID = userDetails[0];
+            String userID = userDetails[1].toUpperCase();
+            String unitNo = userDetails[9];
+            String name = userDetails[4] +" "+ userDetails[5];
+            String deleteDT = userDetails[10];
+            
+            if(type.equals("Residential") && (userID.startsWith("RSD") 
+                    || userID.startsWith("TNT"))) {
+                availableList.add(deleteID +";"+ userID +";"+ unitNo +";"+
+                                name +";"+ deleteDT +";");
+            } else if (type.equals("Commercial") && userID.startsWith("VDR")) {
+                availableList.add(deleteID +";"+ userID +";"+ unitNo +";"+
+                                name +";"+ deleteDT +";");
+            }
+        } return availableList;
+    }
+    
+    public int restoreUserValidation(String unitNo) {
+        List<String> propertiesList = fh.fileRead("propertyDetails.txt");
+        String[] propertiesArray = new String[propertiesList.size()];
+        propertiesList.toArray(propertiesArray);
+        
+        int check = -1;
+        for (int i = 1; i < propertiesList.size(); i++) {
+            String[] propertyDetails = propertiesArray[i].split(";");
+            String eUnitNo = propertyDetails[0];
+            
+            if(eUnitNo.equals(unitNo)) {
+                check ++;
+                List<String> userList =  fh.fileRead("userProfile.txt");
+                String[] userArray = new String[userList.size()];
+                userList.toArray(userArray);
+
+                for (int j = 0; j < userList.size(); j++) {
+                    
+                    String[] userDetails = userArray[j].split(";");
+                    String userID = userDetails[0];
+                    String uUnitNo = userDetails[8];
+                    if (uUnitNo.equals(unitNo) && !userID.equals("Parkhill")) {
+                        check ++;
+                    }
+                }
+            }
+        } return check;
     }
     
     public List<String> extractAllTenantResident(String type) {
@@ -563,4 +581,30 @@ public class AdminExecutive {
             } 
         } return availableList;
     }   
+    
+    public void updatePropertySoldStatus(String unitNo, String status) {
+        List<String> propertyList = fh.fileRead("propertyDetails.txt");
+        String[] propertyArray = new String[propertyList.size()];
+        propertyList.toArray(propertyArray);
+        
+        List<String> newData = new ArrayList<>();
+        
+        for (int i = 0; i < propertyList.size(); i++) {
+            String[] propertyDetails = propertyArray[i].split(";");
+            String eUnitNo = propertyDetails[0];
+            String eTarget = propertyDetails[1];
+            String eSquareF = propertyDetails[2];
+            
+            if (unitNo.equals(eUnitNo) && status.equals("sold")) {
+                newData.add(eUnitNo +";"+ eTarget +";"+ eSquareF +";"+ "sold"
+                        +";"+ todayDate() +";");
+            } else if (unitNo.equals(eUnitNo) && status.equals("unsold")) {
+                newData.add(eUnitNo +";"+ eTarget +";"+ eSquareF +";"+ "unsold"
+                        +";"+ "-" +";");
+            } else {
+                newData.add(propertyArray[i]);
+            }
+            
+        } fh.fileWrite("propertyDetails.txt", false, newData);
+    }
 }

@@ -333,6 +333,35 @@ public class Users {
         fh.fileWrite("userProfile.txt", false, newData);
     }
     
+    public void resetPassword(String password, String userID) {
+        List<String> userProfile = fh.fileRead("userProfile.txt");
+        String[] userProfileArray = new String[userProfile.size()];
+        userProfile.toArray(userProfileArray);
+        
+        List<String> newData = new ArrayList<>();
+        
+        for (int i = 0; i<userProfile.size(); i++) {
+            String[] userInfo2 = userProfileArray[i].split(";");
+            String userID_temp = userInfo2[0];
+            String email_temp = userInfo2[1];
+            String firstName_temp = userInfo2[3];
+            String lastName_temp = userInfo2[4];
+            String identificationNo_temp = userInfo2[5];
+            String gender_temp = userInfo2[6];
+            String phoneNo_temp = userInfo2[7];
+            String unitNo_temp = userInfo2[8];
+            if(!userID.equals(userID_temp)) {
+                newData.add(userProfileArray[i]);
+            } else {
+                    newData.add(userID_temp +";"+ email_temp +";"+ password +";"+
+                            firstName_temp +";"+ lastName_temp +";"+
+                            identificationNo_temp +";"+ gender_temp +";"+
+                            phoneNo_temp +";"+ unitNo_temp +";");
+            }
+        } 
+        fh.fileWrite("userProfile.txt", false, newData);
+    }
+    
     public void userRegistration() {
         String userID = this.getUserID().toLowerCase();
         String email = this.getEmail();
@@ -349,5 +378,65 @@ public class Users {
                 +";"+ identificationNo +";"+ gender +";"+ phoneNo +";"+ unitNo +";");
         
         fh.fileWrite("userProfile.txt", true, newData);
+    }
+    
+    public void setAllUserData(String userID) {
+        List<String> userProfile = fh.fileRead("userProfile.txt");
+        String[] userProfileArray = new String[userProfile.size()];
+        userProfile.toArray(userProfileArray);
+        
+        for (int i = 0; i<userProfile.size(); i++) {
+            String[] userInfo2 = userProfileArray[i].split(";");
+            String userID_temp = userInfo2[0];
+            String email = userInfo2[1];
+            String firstName = userInfo2[3];
+            String lastName = userInfo2[4];
+            String identificationNo = userInfo2[5];
+            String gender = userInfo2[6];
+            String phoneNo = userInfo2[7];
+            String unitNo = userInfo2[8];
+            
+            if (userID_temp.equals(userID.toLowerCase())) {
+                this.userID = userID;
+                this.firstName = firstName;
+                this.lastName = lastName;
+                this.email = email;
+                this.phoneNo = phoneNo;
+                this.identificationNo = identificationNo;
+                this.gender = gender;
+                this.unitNo = unitNo;
+            }
+        }
+    }
+    
+    public void modifyUserAccount() {
+        String userID = this.getUserID().toLowerCase();
+        String email = this.getEmail();
+        String firstName = this.getFirstName();
+        String lastName = this.getLastName();
+        String identificationNo = this.getIdentificationNo();
+        String gender = this.getGender();
+        String phoneNo = this.getPhoneNo();
+        String unitNo = this.getUnitNo();
+        
+        List<String> userProfile = fh.fileRead("userProfile.txt");
+        String[] userProfileArray = new String[userProfile.size()];
+        userProfile.toArray(userProfileArray);
+        
+        List<String> newData = new ArrayList<>();
+        
+        for (int i = 0; i<userProfile.size(); i++) {
+            String[] userInfo = userProfileArray[i].split(";");
+            String userID_temp = userInfo[0];
+            String password_temp = userInfo[2];
+            
+            if (userID_temp.equals(userID)) {
+                newData.add(userID +";"+ email +";"+ password_temp +";"+ firstName
+                        +";"+ lastName +";"+ identificationNo +";"+ gender
+                        +";"+ phoneNo +";"+ unitNo +";");
+            } else {
+                newData.add(userProfileArray[i]);
+            }
+        } fh.fileWrite("userProfile.txt", false, newData);
     }
 }

@@ -5,9 +5,6 @@
 package pms_parkhill_residence;
 
 import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
