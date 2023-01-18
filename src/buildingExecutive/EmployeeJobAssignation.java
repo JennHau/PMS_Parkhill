@@ -966,7 +966,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         // job Id
         String fieldJobId = this.jobID;
         if (action == this.addItem) {
-            fieldJobId = BE.getNewId(BE.employeeJobFile, 0);
+            fieldJobId = BE.getNewTaskId(BE.employeeJobFile, 0);
         }
         
         // employeeId

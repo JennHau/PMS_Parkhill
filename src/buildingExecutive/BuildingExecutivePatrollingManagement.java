@@ -21,6 +21,8 @@ import pms_parkhill_residence.FileHandling;
  * @author wongj
  */
 public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
+    public static BuildingExecutivePatrollingManagement BEpatrollingManagement;
+    
     FileHandling fh = new FileHandling();
     BuildingExecutive BE = new BuildingExecutive();
     String patrollingScheduleFile;
@@ -42,6 +44,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     public BuildingExecutivePatrollingManagement() throws IOException {
         initComponents();
         runDefaultSetUp();
+        BEpatrollingManagement = this;
     }
     
     private void runDefaultSetUp() throws IOException {
@@ -108,27 +111,9 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             List<String> defaultSchedule = fh.fileRead(BE.fixFile);
             fh.fileWrite(patrollingScheduleFile, false, defaultSchedule);
             
-            addNewRec.add(getNewId() + BE.sp + inputDate + BE.sp + "8" + BE.sp + 5 + BE.sp + currentBEid + BE.sp + BE.formatTime(LocalTime.now().toString()) + BE.sp);
+            addNewRec.add(BE.getNewId(BE.patScheduleModRec, 0) + BE.sp + inputDate + BE.sp + "8" + BE.sp + 5 + BE.sp + currentBEid + BE.sp + BE.formatTime(LocalTime.now().toString()) + BE.sp);
             fh.fileWrite(BE.patScheduleModRec, true, addNewRec);
         }
-    }
-    
-    private String getNewId() {
-        List<String> scheRec = fh.fileRead(BE.patScheduleModRec);
-        
-        int largestId = 0;
-        
-        boolean firstLine = true;
-        for (String eachRec : scheRec) {
-            if (!firstLine) {
-                int id = Integer.valueOf(eachRec.split(BE.sp)[0]);
-                largestId = (id > largestId) ? id : largestId;
-            }
-            
-            firstLine = false;
-        }
-        
-        return String.valueOf(largestId + 1);
     }
     
     private void fieldAction(boolean enable) {
@@ -966,7 +951,8 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             if (id.equals(patID)) {
                 toUpdateList.add(id + BE.sp + schedules[1] + BE.sp + schedules[2] + BE.sp + schedules[3] + BE.sp +
                         checkpoint + BE.sp + schedules[5] + BE.sp + securityId + BE.sp + securityName + BE.sp + 
-                        remarks + BE.sp + schedules[8] + BE.sp + " " + BE.sp + this.currentBEid + BE.sp + BE.formatTime(LocalTime.now().toString()) + BE.sp);
+                        remarks + BE.sp + schedules[8] + BE.sp + " " + BE.sp + this.currentBEid + BE.sp + 
+                        BE.combineStringDateTime(LocalDate.now().toString(), LocalTime.now().toString()) + BE.sp);
             }
             else {
                 toUpdateList.add(eachSched);
@@ -981,9 +967,10 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         try {
             List<String> addJob = new ArrayList<>();
             
-            addJob.add(BE.getNewId(BE.employeeJobFile, 0) + BE.sp + securityId + BE.sp + "null" + BE.sp + 
+            addJob.add(BE.getNewTaskId(BE.employeeJobFile, 0) + BE.sp + securityId + BE.sp + "null" + BE.sp + 
                         "PT" + BE.sp + 0 + BE.sp + "1h" + BE.sp + this.inputDate + BE.sp + slot + BE.sp + this.inputDate + " " + checkBef + 
-                        BE.sp + "null" + BE.sp + remarks + BE.sp + "null" + BE.sp + BE.formatTime(LocalTime.now().toString()) + 
+                        BE.sp + "null" + BE.sp + remarks + BE.sp + "null" + BE.sp + 
+                        BE.combineStringDateTime(LocalDate.now().toString(), LocalTime.now().toString()) + 
                         BE.sp + inputDate + " " + patID + BE.sp);
             
             deletePatScheduleFromJobFile();
@@ -1012,7 +999,8 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                 toRemove.add(scheDet[0] + BE.sp + scheDet[1] + BE.sp + scheDet[2] + BE.sp + 
                              scheDet[3] + BE.sp + scheDet[4] + BE.sp + scheDet[5] + BE.sp + 
                              " " + BE.sp + " " + BE.sp + " " + BE.sp + " " + BE.sp + " " + BE.sp + 
-                             BE.formatTime(LocalTime.now().toString()) + BE.sp + " ");
+                             BE.combineStringDateTime(LocalDate.now().toString(), LocalTime.now().toString()) + 
+                             BE.sp + " ");
             }
             else {
                 toRemove.add(eachSche);

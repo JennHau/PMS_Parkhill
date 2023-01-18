@@ -74,7 +74,9 @@ public class BuildingExecutive extends Users{
     
     // File to store history file
     String jobFileHistory = "jobFileHistory.txt";
-
+    
+    // temporary usage file
+    String tempFile = "tempPatFile.txt";
 
     
     private ArrayList getEmployeeJobList(LocalDate localDate, LocalTime localTime) throws IOException {
@@ -91,19 +93,35 @@ public class BuildingExecutive extends Users{
         ArrayList<String> historyList = new ArrayList<>();
         ArrayList<String> updateJobList = new ArrayList<>();
         List<String> oldVer = fileHandling.fileRead(employeeJobFile);
+        boolean firstLine = true;
         for (String eachLine : oldVer) {
-            String[] eachData = eachLine.split(sp);
-            String[] endDateTime = eachData[8].split(" ");
-            if (combineStringDateTime(endDateTime[0], endDateTime[1]).isBefore(LocalDateTime.now())){
-                String emplyId = eachData[1];
-                String emplyName = getEmployeeDetails(emplyId)[2];
-                historyList.add(eachData[0] + sp + eachData[1] + sp  + emplyName + sp + eachData[2] + sp + eachData[3] + sp + eachData[4] + sp + eachData[5] + sp + eachData[6]
-                                + sp + eachData[7] + sp + eachData[8] + sp + eachData[9] + sp + eachData[10] + sp + eachData[11] + sp + eachData[12] + sp + eachData[13] + sp);
+            if (firstLine) {
+                updateJobList.add(eachLine);
             }
+            else {
+                String[] eachData = eachLine.split(sp);
+                String[] endDateTime = eachData[8].split(" ");
+                if (!endDateTime[0].equals("null")) {
+                    if (combineStringDateTime(endDateTime[0], endDateTime[1]).isBefore(LocalDateTime.now())){
+                        String emplyId = eachData[1];
+                        String emplyName = getEmployeeDetails(emplyId)[2];
+                        historyList.add(eachData[0] + sp + eachData[1] + sp  + emplyName + sp + eachData[2] + sp + eachData[3] + sp + eachData[4] + sp + eachData[5] + sp + eachData[6]
+                                        + sp + eachData[7] + sp + eachData[8] + sp + eachData[9] + sp + eachData[10] + sp + eachData[11] + sp + eachData[12] + sp + eachData[13] + sp);
+                    }
+                }
+                else {
+                    updateJobList.add(eachLine);
+                } 
+            }
+            
+            firstLine = false;
         }
         
+        fileHandling.fileWrite(jobFileHistory, true, historyList);
+        fileHandling.fileWrite(employeeJobFile, false, updateJobList);
+        
         List<String> jobFile = fileHandling.fileRead(employeeJobFile);
-        boolean firstLine = true;
+        firstLine = true;
         for (String jobFileLine : jobFile) {
             if (!firstLine) {
                 String[] jobLineDetails = jobFileLine.split(sp);
@@ -557,7 +575,7 @@ public class BuildingExecutive extends Users{
         return jobLists;
     }
     
-    public String getNewId(String fileName, int idColumn) throws IOException {
+    public String getNewTaskId(String fileName, int idColumn) throws IOException {
         List<String> readFile = fileHandling.fileRead(fileName);
         
         String jobIdCode = "tsk";
@@ -583,6 +601,24 @@ public class BuildingExecutive extends Users{
         largestId += 1;
         
         return jobIdCode + largestId;
+    }
+    
+    public String getNewId(String fileName, int idColumn) {
+        List<String> scheRec = fileHandling.fileRead(fileName);
+        
+        int largestId = 0;
+        
+        boolean firstLine = true;
+        for (String eachRec : scheRec) {
+            if (!firstLine) {
+                int id = Integer.valueOf(eachRec.split(sp)[idColumn]);
+                largestId = (id > largestId) ? id : largestId;
+            }
+            
+            firstLine = false;
+        }
+        
+        return String.valueOf(largestId + 1);
     }
     
     public String getDateTimeNow() {
@@ -661,6 +697,99 @@ public class BuildingExecutive extends Users{
         
         CRUD crud = new CRUD();
         crud.update(complaintFiles, complaintId, complaint);
+    }
+    
+    public ArrayList getAvailableBlock() {
+        ArrayList<String> blockList = new ArrayList<>();
+        List<String> getBlock = fileHandling.fileRead("propertyDetails.txt");
+        
+        boolean firstLine = true;
+        for (String eachLine : getBlock) {
+            if (!firstLine) {
+                String unitCode = eachLine.split(sp)[0];
+                unitCode = unitCode.substring(0, 1);
+                if (!blockList.contains(unitCode)) {
+                    blockList.add(unitCode);
+                }
+            }
+            
+            firstLine = false;
+        }
+        
+        return blockList;
+    }
+    
+    public void tableSettingUpdate(String timeIntervalSet, String levelIntervalSet, boolean resetDefault) {
+        ArrayList<String> blockList = getAvailableBlock();
+        
+        if (blockList.contains("S")) {
+            blockList.remove("S");
+        }
+        
+        ArrayList<String> newSched = new ArrayList<>();
+        LocalTime tempTime = LocalTime.of(0, 0, 0);
+        
+        int timeSequence = (24%Integer.valueOf(timeIntervalSet)!=0) ? (24/Integer.valueOf(timeIntervalSet) + 1) : (24/Integer.valueOf(timeIntervalSet));
+    
+        ArrayList<String> levelSequence = getLevelSequence(Integer.valueOf(levelIntervalSet));
+        
+        List<String> toGetHeader = fileHandling.fileRead(fixFile);
+        newSched.add(toGetHeader.get(0));
+        
+        int newNo = 1;
+        for (int time = 0; time < timeSequence; time++ ) {
+            String thisTime = tempTime.toString();
+            for (int block = 0; block < blockList.size(); block++) {
+                String currentBlock = blockList.get(block);
+                for (String eachSeq : levelSequence) {
+                    String[] levelANDcheck = eachSeq.split(sp);
+                    newSched.add(newNo + sp + thisTime + sp + currentBlock + sp +
+                                 levelANDcheck[0] + sp + levelANDcheck[1] + sp + 
+                                 formatTime(thisTime).plusHours(1).toString() + sp +
+                                 " " + sp + " " + sp + " " + sp + " " + sp + " " +
+                                 sp + " " + sp);
+                    newNo++;
+                }
+            }
+            
+            newSched.add(newNo++ + sp + thisTime + sp + "S" + sp +
+                                 "Level 1-2" + sp + "Level 2" + sp + 
+                                 formatTime(thisTime).plusHours(1).toString() + sp +
+                                 " " + sp + " " + sp + " " + sp + " " + sp + " " +
+                                 sp + " " + sp);
+            
+            tempTime = tempTime.plusHours(Integer.valueOf(timeIntervalSet));
+        }
+        
+        fileHandling.fileWrite(tempFile, false, newSched);
+        
+        if (resetDefault) {
+            File rename = new File(tempFile);
+            if (new File(fixFile).exists()) {
+                new File(fixFile).delete();
+            }
+            rename.renameTo(new File(fixFile));
+        }
+    }
+    
+    private ArrayList getLevelSequence(int selectedLevel) {
+        ArrayList<String> levelValue = new ArrayList<>();
+        switch (selectedLevel) {
+            case 5 -> {
+                levelValue.add("Level 1-5;Level 5");
+                levelValue.add("Level 6-10;Level 10");
+                levelValue.add("Level 11-15;Level 15");
+            }
+            case 10 -> {
+                levelValue.add("Level 1-10;Level 10");
+                levelValue.add("Level 10-15;Level 15");
+            }
+            case 15 -> {
+                levelValue.add("Level 1-15;Level 15");
+            }
+        }
+        
+        return levelValue;
     }
     
     // Change Page Method

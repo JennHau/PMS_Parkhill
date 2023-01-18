@@ -270,7 +270,7 @@ public class JobModificationPage extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(13, 24, 42));
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("COMPLAINT DETAILS");
+        jLabel2.setText("JOB MODIFICATION");
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
 

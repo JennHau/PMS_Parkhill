@@ -4,11 +4,14 @@
  */
 package buildingExecutive;
 
-import buildingExecutive.BuildingExecutive;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
@@ -18,6 +21,10 @@ import pms_parkhill_residence.FileHandling;
  * @author Winson
  */
 public class PatrollingScheduleModification extends javax.swing.JFrame {
+    public static PatrollingScheduleModification patrollingSchedule;
+    ArrayList<String> blockList;
+
+    
     FileHandling fh = new FileHandling();
     BuildingExecutive BE = new BuildingExecutive();
     DefaultTableModel scheduleTable;
@@ -25,11 +32,12 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
     private String currentBEid;
     
     private String patrollingScheduleFile;
-    private final String tempFile = "tempPatFile.txt";
     private LocalDate inputDate;
     
     private String timeIntervalSet;
     private String levelIntervalSet;
+    
+    private String scheduleID;
     
     /**
      * Creates new form EmployeeJobAssignation
@@ -49,18 +57,21 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         tableSetUp();
         getIntervalSet();
         setEachComboBox();
+        patrollingSchedule = this;
     }
     
     private void fileSetUp(String file) {
         this.patrollingScheduleFile = file;
-        List<String> currentFile = fh.fileRead(patrollingScheduleFile);
+        List<String> currentFile = fh.fileRead(this.patrollingScheduleFile);
         
-        fh.fileWrite(tempFile, false, currentFile);
+        if (!new File(BE.tempFile).exists()) {
+            fh.fileWrite(BE.tempFile, false, currentFile);
+        }
     }
     
     private void tableSetUp() {
         ArrayList<String> toTable = new ArrayList<>();
-        List<String> fileDet = fh.fileRead(tempFile);
+        List<String> fileDet = fh.fileRead(BE.tempFile);
         boolean firstLine = true;
         for (String eachSche : fileDet) {
             if (!firstLine) {
@@ -89,60 +100,83 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         levelIntervalComboBox.setSelectedItem(levelIntervalSet);
     }
     
-    private void tableSettingUpdate() {
-        String[] blockList = {"A", "B"};
-        ArrayList<String> newSched = new ArrayList<>();
-        LocalTime tempTime = LocalTime.of(0, 0, 0);
+    private void blockComboBoxSetUp() {
+        blockTF.removeAllItems();
+        blockList = BE.getAvailableBlock();
         
-        int timeSequence = (24%Integer.valueOf(timeIntervalSet)!=0) ? (24/Integer.valueOf(timeIntervalSet) + 1) : (24/Integer.valueOf(timeIntervalSet));
-        System.out.println(timeSequence);
-        
-        ArrayList<String> levelSequence = getLevelSequence(Integer.valueOf(levelIntervalSet));
-        
-        List<String> toGetHeader = fh.fileRead(tempFile);
-        newSched.add(toGetHeader.get(0));
-        
-        int newNo = 1;
-        for (int time = 0; time < timeSequence; time++ ) {
-            String thisTime = tempTime.toString();
-            for (int block = 0; block < 2; block++) {
-                String currentBlock = blockList[block];
-                for (String eachSeq : levelSequence) {
-                    String[] levelANDcheck = eachSeq.split(BE.sp);
-                    newSched.add(newNo + BE.sp + thisTime + BE.sp + currentBlock + BE.sp +
-                                 levelANDcheck[0] + BE.sp + levelANDcheck[1] + BE.sp + 
-                                 BE.formatTime(thisTime).plusHours(1).toString() + BE.sp +
-                                 " " + BE.sp + " " + BE.sp + " " + BE.sp + " " + BE.sp + " " +
-                                 BE.sp + " " + BE.sp);
-                    newNo++;
-                }
-            }
-            
-            tempTime = tempTime.plusHours(Integer.valueOf(timeIntervalSet));
+        for (String eachBlock : blockList) {
+            blockTF.addItem(eachBlock);
         }
-        
-        fh.fileWrite(tempFile, false, newSched);
-        tableSetUp();
     }
     
-    private ArrayList getLevelSequence(int selectedLevel) {
-        ArrayList<String> levelValue = new ArrayList<>();
-        switch (selectedLevel) {
-            case 5 -> {
-                levelValue.add("Level 1-5;5");
-                levelValue.add("Level 6-10;10");
-                levelValue.add("Level 11-15;15");
-            }
-            case 10 -> {
-                levelValue.add("Level 1-10;10");
-                levelValue.add("Level 10-15;15");
-            }
-            case 15 -> {
-                levelValue.add("Level 1-15;15");
+    private void levelComboBoxSetUp(String blockSelected) {
+        levelTF.removeAllItems();
+        String[] lvS = {"Level 1", "Level 2", "Level 1-2"};
+        String[] resLv = {"Level 1", "Level 2", "Level 3", "Level 4", 
+                         "Level 5", "Level 6", "Level 7", "Level 8", 
+                         "Level 9", "Level 10", "Level 11", "Level 12", 
+                         "Level 13", "Level 14", "Level 15", "Level 1-5", 
+                         "Level 6-10", "Level 11-15", "Level 1-10", "Level 1-15"};
+        if (blockSelected.equals("S")) {
+            for (String eachLv : lvS) {
+                levelTF.addItem(eachLv);
             }
         }
+        else {
+            for (String eachLv : resLv) {
+                levelTF.addItem(eachLv);
+            }
+        }
+    }
+    
+    private void checkPointSetUp(String lvSelected) {
+        checkPTF.removeAllItems();
+        String[] splitLv = lvSelected.split(" ");
+        String[] lvData = (splitLv[1].length()>1) ? splitLv[1].split("-") : null;
         
-        return levelValue;
+        if (lvData != null) {
+            int firstLv = Integer.valueOf(lvData[0]);
+            int secLv = Integer.valueOf(lvData[1]);
+            
+            int lvDiff = secLv - firstLv + 1;
+            
+            for (int loop = 1; loop < lvDiff + 1; loop++) {
+                checkPTF.addItem("Level " + String.valueOf(firstLv));
+                firstLv++;
+            }
+        }
+        else {
+            checkPTF.addItem(lvSelected);
+        }
+    }
+    
+    private void formSetUp() {
+        List<String> getRec = fh.fileRead(BE.tempFile);
+        for (String eachRec : getRec) {
+            String[] recDet = eachRec.split(BE.sp);
+            String recID = recDet[0];
+            if (recID.equals(scheduleID)) {
+                String slot = recDet[1];
+                String block = recDet[2];
+                String level = recDet[3];
+                String checkpoints = recDet[4];
+                String checkBef = recDet[5];
+                int timeDiff = BE.formatTime(checkBef).compareTo(BE.formatTime(slot));
+                
+                slotTimePicker.setTime(BE.formatTime(slot));
+                endTimeTF.setText(checkBef);
+                timeSpinner.setSelectedItem(timeDiff);
+                blockTF.setSelectedItem(block);
+                levelTF.setSelectedItem(level);
+                checkPTF.setSelectedItem(checkpoints);
+            }
+        }
+    }
+    
+    private void fieldEnabled(boolean enabled) {
+        slotTimePicker.setEnabled(enabled);
+        blockTF.setEnabled(enabled);
+        timeSpinner.setEnabled(enabled);
     }
     
     private void setWindowIcon() {
@@ -160,24 +194,40 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
 
         jPanel2 = new javax.swing.JPanel();
         jLabel24 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        addRowBTN = new javax.swing.JButton();
         jLabel26 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         scheduleJT = new javax.swing.JTable();
-        jSeparator1 = new javax.swing.JSeparator();
         jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
         defaultBTN = new javax.swing.JButton();
-        jLabel30 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel25 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         hourComboBox = new javax.swing.JComboBox<>();
         levelIntervalComboBox = new javax.swing.JComboBox<>();
-        checkpointComboBox = new javax.swing.JComboBox<>();
+        jSpinner1 = new javax.swing.JSpinner();
+        jLabel32 = new javax.swing.JLabel();
+        jLabel33 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        blockTF = new javax.swing.JComboBox<>();
+        jLabel18 = new javax.swing.JLabel();
+        levelTF = new javax.swing.JComboBox<>();
+        jLabel19 = new javax.swing.JLabel();
+        endTimeTF = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        checkPTF = new javax.swing.JComboBox<>();
+        deleteBTN = new javax.swing.JButton();
+        jSeparator3 = new javax.swing.JSeparator();
+        jLabel30 = new javax.swing.JLabel();
+        updateBTN = new javax.swing.JButton();
         jLabel31 = new javax.swing.JLabel();
+        slotTimePicker = new com.github.lgooddatepicker.components.TimePicker();
+        timeSpinner = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -187,40 +237,50 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
+        jLabel24.setText(" Schedule: ");
         jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel24.setText(" Schedule: ");
 
-        jButton1.setText("Add Row");
+        addRowBTN.setText("Add Row");
+        addRowBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addRowBTNActionPerformed(evt);
+            }
+        });
 
+        jLabel26.setText(" Slot Gap By: ");
         jLabel26.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel26.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel26.setText(" Slot Gap By: ");
 
         scheduleJT.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Slot", "Block", "Level", "Checkpoints", "Action"
+                "Slot", "Block", "Level", "Checkpoints", "Check Before", "Action"
             }
         ));
+        scheduleJT.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                scheduleJTMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(scheduleJT);
 
+        jLabel27.setText("Hour(s) ");
         jLabel27.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel27.setText("Hour(s) ");
 
+        jLabel28.setText(" Level Interval By: ");
         jLabel28.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel28.setText(" Level Interval By: ");
 
+        jLabel29.setText("Level(s)");
         jLabel29.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel29.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel29.setText("Level(s)");
 
         defaultBTN.setText("Reset to Default");
         defaultBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -228,10 +288,6 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
                 defaultBTNActionPerformed(evt);
             }
         });
-
-        jLabel30.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel30.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel30.setText("Checkpoint Level: ");
 
         jButton3.setText("Back");
 
@@ -242,9 +298,9 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
             }
         });
 
+        jLabel25.setText(" Schedule Modification: ");
         jLabel25.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel25.setText(" Modification: ");
 
         hourComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2", "4", "6", "8", "10", "12" }));
         hourComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -260,11 +316,83 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
             }
         });
 
-        checkpointComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "5", "10", "15" }));
+        jLabel32.setText("Time Needed: ");
+        jLabel32.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        jLabel32.setForeground(new java.awt.Color(51, 51, 51));
 
-        jLabel31.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        jLabel33.setText("Hour(s) ");
+        jLabel33.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        jLabel33.setForeground(new java.awt.Color(51, 51, 51));
+
+        jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        jLabel23.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel23.setText("Slot:");
+
+        jLabel16.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel16.setText("Block: ");
+
+        blockTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                blockTFActionPerformed(evt);
+            }
+        });
+
+        jLabel18.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel18.setText("Level: ");
+
+        levelTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                levelTFActionPerformed(evt);
+            }
+        });
+
+        jLabel19.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel19.setText("Check Before: ");
+
+        endTimeTF.setEditable(false);
+        endTimeTF.setEnabled(false);
+
+        jLabel17.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel17.setText("Time Needed: ");
+
+        jLabel14.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel14.setText("Checkpoint: ");
+
+        deleteBTN.setText("Delete");
+        deleteBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteBTNActionPerformed(evt);
+            }
+        });
+
+        jLabel30.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        jLabel30.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel30.setText("Hour(s) ");
+
+        updateBTN.setText("Update");
+        updateBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateBTNActionPerformed(evt);
+            }
+        });
+
+        jLabel31.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel31.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel31.setText("Level(s)");
+        jLabel31.setText(" Slot Modification: ");
+
+        slotTimePicker.setEnabled(false);
+
+        timeSpinner.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3" }));
+        timeSpinner.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                timeSpinnerActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -273,18 +401,12 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator2)
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(addRowBTN)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(defaultBTN))
-                    .addComponent(jSeparator1)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jSeparator2)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel26)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -298,18 +420,61 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel30)
+                        .addComponent(jLabel32)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(checkpointComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jSpinner1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel31)))
+                        .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSeparator3)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(133, 133, 133)
+                                .addComponent(deleteBTN))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(slotTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(blockTF, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(36, 36, 36)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(levelTF, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(36, 36, 36)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(checkPTF, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(timeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel30))
+                                    .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(26, 26, 26)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(endTimeTF)
+                                    .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(updateBTN)
+                                .addGap(0, 0, 0))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(300, 300, 300)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -320,40 +485,72 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(addRowBTN)
                     .addComponent(defaultBTN))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel25)
-                .addGap(4, 4, 4)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(checkpointComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(hourComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(levelIntervalComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(hourComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(levelIntervalComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(8, 8, 8)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addGap(3, 3, 3)
+                .addComponent(jLabel31)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                            .addGap(1, 1, 1)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(blockTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(levelTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(checkPTF, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(timeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(slotTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(31, 31, 31))))
+                            .addGap(1, 1, 1)))
+                    .addComponent(jLabel30, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(endTimeTF, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(deleteBTN)
+                    .addComponent(updateBTN))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6))
+                .addContainerGap())
         );
 
         jPanel1.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("PATROLLING SCHEDULE MANAGEMENT");
+        jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/parkhillLogo.png"))); // NOI18N
@@ -407,21 +604,112 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
     private void hourComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hourComboBoxActionPerformed
         // TODO add your handling code here:
         timeIntervalSet = hourComboBox.getSelectedItem().toString();
-        tableSettingUpdate();
+        BE.tableSettingUpdate(this.timeIntervalSet, this.levelIntervalSet, false);
+        tableSetUp();
     }//GEN-LAST:event_hourComboBoxActionPerformed
 
     private void defaultBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultBTNActionPerformed
         // TODO add your handling code here:
         List<String> defaultSetting = fh.fileRead(BE.fixFile);
-        fh.fileWrite(tempFile, false, defaultSetting);
+        fh.fileWrite(BE.tempFile, false, defaultSetting);
         tableSetUp();
     }//GEN-LAST:event_defaultBTNActionPerformed
 
     private void levelIntervalComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_levelIntervalComboBoxActionPerformed
         // TODO add your handling code here:
         levelIntervalSet = levelIntervalComboBox.getSelectedItem().toString();
-        tableSettingUpdate();
+        BE.tableSettingUpdate(this.timeIntervalSet, this.levelIntervalSet, false);
+        tableSetUp();
     }//GEN-LAST:event_levelIntervalComboBoxActionPerformed
+    
+    private void scheduleJTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scheduleJTMouseClicked
+        // TODO add your handling code here:
+        int selectedRow = scheduleJT.getSelectedRow();
+        int selectedCol = scheduleJT.getSelectedColumn();
+        
+        if (selectedCol == 5) {
+            slotTimePicker.setEnabled(false);
+            deleteBTN.setEnabled(true);
+            updateBTN.setEnabled(true);
+            checkPTF.setEnabled(true);
+            timeSpinner.setEnabled(true);
+            
+            List<String> getSchedule = fh.fileRead(BE.tempFile);
+            scheduleID = getSchedule.get(selectedRow+1).split(BE.sp)[0];
+            
+            blockComboBoxSetUp();
+            formSetUp();
+            
+            blockTF.setEnabled(false);
+            levelTF.setEnabled(false);
+        }
+    }//GEN-LAST:event_scheduleJTMouseClicked
+
+    private void addRowBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRowBTNActionPerformed
+        // TODO add your handling code here:
+        scheduleID = BE.getNewId(BE.tempFile, 0);
+        deleteBTN.setEnabled(false);
+        updateBTN.setEnabled(true);
+        
+        slotTimePicker.setEnabled(true);
+        timeSpinner.setEnabled(true);
+        
+        fieldEnabled(true);
+        levelTF.setEnabled(false);
+        checkPTF.setEnabled(false);
+    }//GEN-LAST:event_addRowBTNActionPerformed
+
+    private void blockTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blockTFActionPerformed
+        // TODO add your handling code here:
+        String item = (blockTF.getSelectedItem() != null) ? (blockTF.getSelectedItem().toString()) : null;
+        if (item!=null) {
+            levelComboBoxSetUp(blockTF.getSelectedItem().toString());
+        }
+        
+        levelTF.setEnabled(true);
+    }//GEN-LAST:event_blockTFActionPerformed
+
+    private void levelTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_levelTFActionPerformed
+        // TODO add your handling code here:
+        if (levelTF.getSelectedItem()!=null) {
+            checkPointSetUp(levelTF.getSelectedItem().toString());
+            checkPTF.setEnabled(true);
+        }
+        else {
+            levelTF.setEnabled(false);
+            checkPTF.setEnabled(false);
+        }
+    }//GEN-LAST:event_levelTFActionPerformed
+
+    private void deleteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBTNActionPerformed
+        // TODO add your handling code here:
+        ArrayList<String> updatedList = new ArrayList<>();
+
+        List<String> scheduleFile = fh.fileRead(BE.tempFile);
+        for (String eachLine : scheduleFile) {
+            String id = eachLine.split(BE.sp)[0];
+            if (!id.equals(scheduleID)) {
+                updatedList.add(eachLine);
+            }
+        }
+        
+        fh.fileWrite(BE.tempFile, false, updatedList);
+        
+        tableSetUp();
+    }//GEN-LAST:event_deleteBTNActionPerformed
+
+    private void updateBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBTNActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_updateBTNActionPerformed
+
+    private void timeSpinnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeSpinnerActionPerformed
+        // TODO add your handling code here:
+        int selHour = Integer.valueOf(timeSpinner.getSelectedItem().toString());
+        
+        if (slotTimePicker.getTime()!= null) {
+            endTimeTF.setText(slotTimePicker.getTime().plusHours(selHour).toString());
+        }
+    }//GEN-LAST:event_timeSpinnerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -460,13 +748,22 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> checkpointComboBox;
+    private javax.swing.JButton addRowBTN;
+    private javax.swing.JComboBox<String> blockTF;
+    private javax.swing.JComboBox<String> checkPTF;
     private javax.swing.JButton defaultBTN;
+    private javax.swing.JButton deleteBTN;
+    private javax.swing.JTextField endTimeTF;
     private javax.swing.JComboBox<String> hourComboBox;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
@@ -476,13 +773,20 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JComboBox<String> levelIntervalComboBox;
+    private javax.swing.JComboBox<String> levelTF;
     private javax.swing.JTable scheduleJT;
+    private com.github.lgooddatepicker.components.TimePicker slotTimePicker;
+    private javax.swing.JComboBox<String> timeSpinner;
+    private javax.swing.JButton updateBTN;
     // End of variables declaration//GEN-END:variables
 
     /**
