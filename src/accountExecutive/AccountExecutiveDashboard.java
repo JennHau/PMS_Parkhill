@@ -2,30 +2,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package pms_parkhill_residence;
+package accountExecutive;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Toolkit;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
+import pms_parkhill_residence.HomePage;
 
 /**
  *
  * @author wongj
  */
-public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
+public class AccountExecutiveDashboard extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
      */
-    public AccountExecutiveIssueStatement() {
+    public AccountExecutiveDashboard() {
         initComponents();
         setWindowIcon();
-        setMonthYearCB();
-        setTable();
     }
 
     /**
@@ -37,22 +31,6 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel3 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jPanel6 = new javax.swing.JPanel();
-        jLabel14 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jLabel16 = new javax.swing.JLabel();
-        searchTextField = new javax.swing.JTextField();
-        clearbt = new javax.swing.JButton();
-        issueAllPanel = new javax.swing.JPanel();
-        issueAllLabel = new javax.swing.JLabel();
-        statusCB = new javax.swing.JComboBox<>();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        monthNYearCB = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         dashboardPanel = new javax.swing.JPanel();
@@ -73,6 +51,10 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
         viewProfileLabel = new javax.swing.JLabel();
         issueStatementPanel = new javax.swing.JPanel();
         issueStatementLabel = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -81,207 +63,12 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
         setResizable(false);
         setSize(new java.awt.Dimension(1280, 720));
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(153, 153, 153), null, null));
-
-        jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(13, 24, 42));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("ACCOUNT EXECUTIVE");
-
-        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
-        jLabel7.setText("USERNAME");
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(19, 19, 19))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
-                .addContainerGap(9, Short.MAX_VALUE))
-        );
-
-        jPanel6.setBackground(new java.awt.Color(226, 226, 226));
-
-        jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel14.setText("ISSUE STATEMENT");
-        jLabel14.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "NO.", "UNIT NO.", "PROPERTY TYPE", "TENANT/ OWNER", "RESIDENT", "ACTION"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(jTable1);
-
-        jLabel16.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
-        jLabel16.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel16.setText("UNIT NO:");
-
-        searchTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                searchTextFieldKeyReleased(evt);
-            }
-        });
-
-        clearbt.setText("CLEAR");
-        clearbt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clearbtActionPerformed(evt);
-            }
-        });
-
-        issueAllPanel.setBackground(new java.awt.Color(13, 50, 79));
-        issueAllPanel.setToolTipText("");
-        issueAllPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                issueAllPanelMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                issueAllPanelMouseEntered(evt);
-            }
-        });
-
-        issueAllLabel.setForeground(new java.awt.Color(255, 255, 255));
-        issueAllLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        issueAllLabel.setText("ISSUE TO ALL");
-        issueAllLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                issueAllLabelMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                issueAllLabelMouseEntered(evt);
-            }
-        });
-
-        javax.swing.GroupLayout issueAllPanelLayout = new javax.swing.GroupLayout(issueAllPanel);
-        issueAllPanel.setLayout(issueAllPanelLayout);
-        issueAllPanelLayout.setHorizontalGroup(
-            issueAllPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(issueAllLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
-        );
-        issueAllPanelLayout.setVerticalGroup(
-            issueAllPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(issueAllLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
-        );
-
-        statusCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PENDING", "ISSUED" }));
-        statusCB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                statusCBActionPerformed(evt);
-            }
-        });
-
-        jLabel13.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel13.setText("STATUS:");
-
-        jLabel15.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel15.setText("MONTH/YEAR:");
-
-        monthNYearCB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                monthNYearCBActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 960, Short.MAX_VALUE)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(statusCB, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(monthNYearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel16)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(clearbt)
-                        .addGap(242, 242, 242)
-                        .addComponent(issueAllPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(25, Short.MAX_VALUE))
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(issueAllPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel13)
-                                .addGap(0, 0, 0)
-                                .addComponent(statusCB, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(jPanel6Layout.createSequentialGroup()
-                            .addComponent(jLabel15)
-                            .addGap(0, 0, 0)
-                            .addComponent(monthNYearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel6Layout.createSequentialGroup()
-                            .addGap(7, 7, 7)
-                            .addComponent(jLabel16))
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(clearbt))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
-        );
-
         jPanel1.setBackground(new java.awt.Color(13, 24, 42));
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/parkhillLogo.png"))); // NOI18N
 
-        dashboardPanel.setBackground(new java.awt.Color(13, 24, 42));
+        dashboardPanel.setBackground(new java.awt.Color(13, 50, 79));
         dashboardPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 dashboardPanelMouseClicked(evt);
@@ -583,7 +370,7 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        issueStatementPanel.setBackground(new java.awt.Color(13, 50, 79));
+        issueStatementPanel.setBackground(new java.awt.Color(13, 24, 42));
         issueStatementPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 issueStatementPanelMouseClicked(evt);
@@ -673,6 +460,54 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
                 .addGap(9, 9, 9))
         );
 
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(153, 153, 153), null, null));
+
+        jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(13, 24, 42));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel2.setText("ACCOUNT EXECUTIVE");
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
+        jLabel7.setText("USERNAME");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(19, 19, 19))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addContainerGap(9, Short.MAX_VALUE))
+        );
+
+        jPanel6.setBackground(new java.awt.Color(226, 226, 226));
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -686,163 +521,21 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void clearbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearbtActionPerformed
-        searchTextField.setText("");
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        tableModel.setRowCount(0);
-        setTable();
-    }//GEN-LAST:event_clearbtActionPerformed
-
-    private void monthNYearCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthNYearCBActionPerformed
+    private void issueInvoicePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoicePanelMouseEntered
         // TODO add your handling code here:
-        setTable();
-    }//GEN-LAST:event_monthNYearCBActionPerformed
-
-    private void statusCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusCBActionPerformed
-        // TODO add your handling code here:
-        setTable();
-        if (statusCB.getSelectedItem() == "ISSUED") {
-            issueAllPanel.setBackground(Color.GRAY);
-        } else if (statusCB.getSelectedItem() == "PENDING") {
-            issueAllPanel.setBackground(new Color(13,50,79));
-        }
-    }//GEN-LAST:event_statusCBActionPerformed
-
-    private void issueAllLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueAllLabelMouseEntered
-        // TODO add your handling code here:
-            issueAllLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_issueAllLabelMouseEntered
-
-    private void issueAllPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueAllPanelMouseEntered
-        // TODO add your handling code here:
-        issueAllPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_issueAllPanelMouseEntered
-
-    private void issueAllPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueAllPanelMouseClicked
-        // TODO add your handling code here:
-        issueAllInvoice();
-    }//GEN-LAST:event_issueAllPanelMouseClicked
-
-    private void issueAllLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueAllLabelMouseClicked
-        // TODO add your handling code here:
-        issueAllInvoice();
-    }//GEN-LAST:event_issueAllLabelMouseClicked
-
-    private void issueAllInvoice() {
-        if (statusCB.getSelectedItem() == "PENDING"){
-            
-            int result = JOptionPane.showConfirmDialog(null,"Are you sure to issue all statements?",
-                        "ISSUE STATEMENTS",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE);
-            
-                if(result == JOptionPane.YES_OPTION){
-                    List<String> statementDetails = new ArrayList<String>();
-                    DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-
-                    for (int i=0; i<tableModel.getRowCount(); i++) {
-                        String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
-                        String cMonthYear = monthYear.substring(0, monthYear.indexOf("/")) 
-                                + monthYear.substring(monthYear.indexOf("/") + 1);
-                        String invoiceNo = String.valueOf(tableModel.getValueAt(i, 1)) + cMonthYear;
-                        String unitNo = String.valueOf(tableModel.getValueAt(i, 1));
-                        
-                        String cDetails = invoiceNo +";"+ unitNo +";";
-                        statementDetails.add(cDetails);
-                    }
-                        AccountExecutive ae = new AccountExecutive();
-                        ae.issueStatement(statementDetails);
-                        setTable();
-                        JOptionPane.showMessageDialog (null, "Statements have been issued!", 
-                                        "ISSUE STATEMENT", JOptionPane.INFORMATION_MESSAGE);
-                        setTable();
-                }
-        }
-    }
-    
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        // TODO add your handling code here:
-        if (statusCB.getSelectedItem() == "PENDING"){
-            List<String> statementDetails = new ArrayList<String>();
-            
-            DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-            int column = jTable1.getSelectedColumn();
-            int row = jTable1.getSelectedRow();
-
-            if (column == 5) {
-                if (statusCB.getSelectedItem() == "PENDING"){
-
-                    int result = JOptionPane.showConfirmDialog(null,"Are you sure to issue this statement?",
-                                "ISSUE STATEMENT",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE);
-
-                    if(result == JOptionPane.YES_OPTION){
-                        String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
-                        String cMonthYear = monthYear.substring(0, monthYear.indexOf("/")) 
-                                + monthYear.substring(monthYear.indexOf("/") + 1);
-                        String invoiceNo = String.valueOf(tableModel.getValueAt(row, 1)) + cMonthYear;
-                        String unitNo = String.valueOf(tableModel.getValueAt(row, 1));
-
-                        String cDetails = invoiceNo +";"+ unitNo +";";
-                        statementDetails.add(cDetails);
-
-                        AccountExecutive ae = new AccountExecutive();
-                        ae.issueStatement(statementDetails);
-                        setTable();
-                        JOptionPane.showMessageDialog (null, "Statement has been issued!", 
-                                        "ISSUE STATEMENT", JOptionPane.INFORMATION_MESSAGE);
-                        setTable();
-                    }
-                }
-            }
-        }
-        
-    }//GEN-LAST:event_jTable1MouseClicked
-
-    private void dashboardLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseClicked
-        // TODO add your handling code here:
-        dispose();
-        new AccountExecutiveDashboard().setVisible(true);
-    }//GEN-LAST:event_dashboardLabelMouseClicked
-
-    private void dashboardLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseEntered
-        // TODO add your handling code here:
-        dashboardLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_dashboardLabelMouseEntered
-
-    private void dashboardPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanelMouseClicked
-        // TODO add your handling code here:
-        dispose();
-        new AccountExecutiveDashboard().setVisible(true);
-    }//GEN-LAST:event_dashboardPanelMouseClicked
-
-    private void dashboardPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanelMouseEntered
-        // TODO add your handling code here:
-        dashboardPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_dashboardPanelMouseEntered
-
-    private void issueInvoiceLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoiceLabelMouseClicked
-        // TODO add your handling code here:
-        dispose();
-        new AccountExecutiveIssueInvoice().setVisible(true);
-    }//GEN-LAST:event_issueInvoiceLabelMouseClicked
-
-    private void issueInvoiceLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoiceLabelMouseEntered
-        // TODO add your handling code here:
-        issueInvoiceLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_issueInvoiceLabelMouseEntered
+        issueInvoicePanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_issueInvoicePanelMouseEntered
 
     private void issueInvoicePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoicePanelMouseClicked
         // TODO add your handling code here:
@@ -850,91 +543,46 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
         new AccountExecutiveIssueInvoice().setVisible(true);
     }//GEN-LAST:event_issueInvoicePanelMouseClicked
 
-    private void issueInvoicePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoicePanelMouseEntered
+    private void issueInvoiceLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoiceLabelMouseEntered
         // TODO add your handling code here:
-        issueInvoicePanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_issueInvoicePanelMouseEntered
+        issueInvoiceLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_issueInvoiceLabelMouseEntered
 
-    private void paymentLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentLabelMouseClicked
+    private void issueInvoiceLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoiceLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutivePayment().setVisible(true);
-    }//GEN-LAST:event_paymentLabelMouseClicked
+        new AccountExecutiveIssueInvoice().setVisible(true);
+    }//GEN-LAST:event_issueInvoiceLabelMouseClicked
 
-    private void paymentLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentLabelMouseEntered
+    private void dashboardPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanelMouseEntered
         // TODO add your handling code here:
-        paymentLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_paymentLabelMouseEntered
+        dashboardPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_dashboardPanelMouseEntered
 
-    private void paymentPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentPanelMouseClicked
+    private void viewProfileLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileLabelMouseEntered
         // TODO add your handling code here:
-        dispose();
-        new AccountExecutivePayment().setVisible(true);
-    }//GEN-LAST:event_paymentPanelMouseClicked
+        viewProfileLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_viewProfileLabelMouseEntered
 
-    private void paymentPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentPanelMouseEntered
+    private void viewProfilePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfilePanelMouseEntered
         // TODO add your handling code here:
-        paymentPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_paymentPanelMouseEntered
+        viewProfilePanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_viewProfilePanelMouseEntered
 
-    private void issueReceiptLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptLabelMouseClicked
+    private void viewProfileLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileLabelMouseClicked
         // TODO add your handling code here:
-        dispose();
-        new AccountExecutiveIssueReceipt().setVisible(true);
-    }//GEN-LAST:event_issueReceiptLabelMouseClicked
+    }//GEN-LAST:event_viewProfileLabelMouseClicked
 
-    private void issueReceiptLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptLabelMouseEntered
+    private void logoutLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabelMouseEntered
         // TODO add your handling code here:
-        issueReceiptLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_issueReceiptLabelMouseEntered
-
-    private void issueReceiptPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptPanelMouseDragged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_issueReceiptPanelMouseDragged
-
-    private void issueReceiptPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptPanelMouseClicked
-        // TODO add your handling code here:
-        dispose();
-        new AccountExecutiveIssueReceipt().setVisible(true);
-    }//GEN-LAST:event_issueReceiptPanelMouseClicked
-
-    private void issueReceiptPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptPanelMouseEntered
-        // TODO add your handling code here:
-        issueReceiptPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_issueReceiptPanelMouseEntered
-
-    private void outstandingFeeLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeeLabelMouseClicked
-        // TODO add your handling code here:
-        dispose();
-        new AccountExecutiveIssueOutstandingFee().setVisible(true);
-    }//GEN-LAST:event_outstandingFeeLabelMouseClicked
-
-    private void outstandingFeeLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeeLabelMouseEntered
-        // TODO add your handling code here:
-        outstandingFeeLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_outstandingFeeLabelMouseEntered
-
-    private void outstandingFeePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeePanelMouseClicked
-        // TODO add your handling code here:
-        dispose();
-        new AccountExecutiveIssueOutstandingFee().setVisible(true);
-    }//GEN-LAST:event_outstandingFeePanelMouseClicked
-
-    private void outstandingFeePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeePanelMouseEntered
-        // TODO add your handling code here:
-        outstandingFeePanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_outstandingFeePanelMouseEntered
+        logoutLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_logoutLabelMouseEntered
 
     private void logoutLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabelMouseClicked
         // TODO add your handling code here:
         dispose();
         new HomePage().setVisible(true);
     }//GEN-LAST:event_logoutLabelMouseClicked
-
-    private void logoutLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabelMouseEntered
-        // TODO add your handling code here:
-        logoutLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_logoutLabelMouseEntered
 
     private void logoutPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutPanelMouseClicked
         // TODO add your handling code here:
@@ -947,31 +595,91 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
         logoutPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_logoutPanelMouseEntered
 
-    private void viewProfileLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileLabelMouseClicked
+    private void paymentLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentLabelMouseEntered
         // TODO add your handling code here:
-    }//GEN-LAST:event_viewProfileLabelMouseClicked
+        paymentLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_paymentLabelMouseEntered
 
-    private void viewProfileLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileLabelMouseEntered
+    private void paymentLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentLabelMouseClicked
         // TODO add your handling code here:
-        viewProfileLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_viewProfileLabelMouseEntered
+        dispose();
+        new AccountExecutivePayment().setVisible(true);
+    }//GEN-LAST:event_paymentLabelMouseClicked
 
-    private void viewProfilePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfilePanelMouseEntered
+    private void paymentPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentPanelMouseEntered
         // TODO add your handling code here:
-        viewProfilePanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_viewProfilePanelMouseEntered
+        paymentPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_paymentPanelMouseEntered
 
-    private void issueStatementLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementLabelMouseClicked
+    private void paymentPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentPanelMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_issueStatementLabelMouseClicked
+        dispose();
+        new AccountExecutivePayment().setVisible(true);
+    }//GEN-LAST:event_paymentPanelMouseClicked
+
+    private void issueReceiptLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptLabelMouseEntered
+        // TODO add your handling code here:
+        issueReceiptLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_issueReceiptLabelMouseEntered
+
+    private void issueReceiptLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptLabelMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AccountExecutiveIssueReceipt().setVisible(true);
+    }//GEN-LAST:event_issueReceiptLabelMouseClicked
+
+    private void issueReceiptPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptPanelMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AccountExecutiveIssueReceipt().setVisible(true);
+    }//GEN-LAST:event_issueReceiptPanelMouseClicked
+
+    private void issueReceiptPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptPanelMouseDragged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_issueReceiptPanelMouseDragged
+
+    private void issueReceiptPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptPanelMouseEntered
+        // TODO add your handling code here:
+        issueReceiptPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_issueReceiptPanelMouseEntered
+
+    private void outstandingFeeLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeeLabelMouseEntered
+        // TODO add your handling code here:
+        outstandingFeeLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_outstandingFeeLabelMouseEntered
+
+    private void outstandingFeeLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeeLabelMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AccountExecutiveIssueOutstandingFee().setVisible(true);
+    }//GEN-LAST:event_outstandingFeeLabelMouseClicked
+
+    private void outstandingFeePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeePanelMouseEntered
+        // TODO add your handling code here:
+        outstandingFeePanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_outstandingFeePanelMouseEntered
+
+    private void outstandingFeePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeePanelMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AccountExecutiveIssueOutstandingFee().setVisible(true);
+    }//GEN-LAST:event_outstandingFeePanelMouseClicked
 
     private void issueStatementLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementLabelMouseEntered
         // TODO add your handling code here:
         issueStatementLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_issueStatementLabelMouseEntered
 
+    private void issueStatementLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementLabelMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AccountExecutiveIssueStatement().setVisible(true);
+    }//GEN-LAST:event_issueStatementLabelMouseClicked
+
     private void issueStatementPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementPanelMouseClicked
         // TODO add your handling code here:
+        dispose();
+        new AccountExecutiveIssueStatement().setVisible(true);
     }//GEN-LAST:event_issueStatementPanelMouseClicked
 
     private void issueStatementPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementPanelMouseEntered
@@ -979,79 +687,23 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
         issueStatementPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_issueStatementPanelMouseEntered
 
-    private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
+    private void dashboardLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseEntered
         // TODO add your handling code here:
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        // reset table
-        tableModel.setRowCount(0);
-        setTable();
-        if (!"".equals(searchTextField.getText().toUpperCase())) {
-            String module_code = searchTextField.getText().toUpperCase();
-            for (int i=0; i<tableModel.getRowCount(); i++) {
-                // get module code from table
-                String tmodule_code = String.valueOf(jTable1.getValueAt(i, 1)).toUpperCase();
-                // if module code not contain in search bar
-                if (!tmodule_code.contains(module_code)) {
-                    // remove module from table
-                    tableModel.removeRow(i);
-                    i--;
-                }
-            }
-        } 
-        else {
-            tableModel.setRowCount(0);
-            setTable();
-        }
-    }//GEN-LAST:event_searchTextFieldKeyReleased
-    
+        dashboardLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_dashboardLabelMouseEntered
+
+    private void dashboardLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dashboardLabelMouseClicked
+
+    private void dashboardPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanelMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dashboardPanelMouseClicked
+
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
-
-    private void setMonthYearCB() {
-        try {
-            AccountExecutive ae = new AccountExecutive();
-            List<String> monthNYear = ae.getAllMonthYearStatement();
-            for (int i=0; i<monthNYear.size(); i++) {
-                monthNYearCB.addItem(monthNYear.get(i));
-            } 
-            monthNYearCB.setSelectedIndex(monthNYear.size()-1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
     
-    private void setTable() {
-        String status = String.valueOf(statusCB.getSelectedItem());
-        String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
-        
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        tableModel.setRowCount(0);
-        
-        AccountExecutive ae = new AccountExecutive();
-        List<String> availableStatements = ae.extractAllStatementUnit(status, monthYear);
-        String[] availableStatementsArray = new String[availableStatements.size()];
-        availableStatements.toArray(availableStatementsArray);
-        
-        for (int i=0; i < availableStatements.size(); i++) {
-            String[] statementDetails = availableStatementsArray[i].split(";");
-            String unitNo = statementDetails[0];
-            String propertyType = statementDetails[1];
-            String owner = statementDetails[2];
-            String resident = statementDetails[3];
-            
-            if (status.equals("PENDING")) {
-                String[] tbData = {String.valueOf(i+1), unitNo, propertyType,
-                owner, resident, "ISSUE STATEMENT"};
-                tableModel.addRow(tbData);
-            } else if (status.equals("ISSUED")) {
-                String[] tbData = {String.valueOf(i+1), unitNo, propertyType,
-                owner, resident, "VIEW STATEMENT"};
-                tableModel.addRow(tbData);
-            }
-        }
-    }
-
     /**
      * @param args the command line arguments
      */
@@ -1069,238 +721,14 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutiveIssueStatement.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AccountExecutiveDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutiveIssueStatement.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AccountExecutiveDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutiveIssueStatement.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AccountExecutiveDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutiveIssueStatement.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AccountExecutiveDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -1337,27 +765,20 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutiveIssueStatement().setVisible(true);
+                new AccountExecutiveDashboard().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton clearbt;
     private javax.swing.JLabel dashboardLabel;
     private javax.swing.JPanel dashboardPanel;
-    private javax.swing.JLabel issueAllLabel;
-    private javax.swing.JPanel issueAllPanel;
     private javax.swing.JLabel issueInvoiceLabel;
     private javax.swing.JPanel issueInvoicePanel;
     private javax.swing.JLabel issueReceiptLabel;
     private javax.swing.JPanel issueReceiptPanel;
     private javax.swing.JLabel issueStatementLabel;
     private javax.swing.JPanel issueStatementPanel;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;
@@ -1366,17 +787,12 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel logoutLabel;
     private javax.swing.JPanel logoutPanel;
-    private javax.swing.JComboBox<String> monthNYearCB;
     private javax.swing.JLabel outstandingFeeLabel;
     private javax.swing.JPanel outstandingFeePanel;
     private javax.swing.JLabel paymentLabel;
     private javax.swing.JPanel paymentPanel;
-    private javax.swing.JTextField searchTextField;
-    private javax.swing.JComboBox<String> statusCB;
     private javax.swing.JLabel viewProfileLabel;
     private javax.swing.JPanel viewProfilePanel;
     // End of variables declaration//GEN-END:variables

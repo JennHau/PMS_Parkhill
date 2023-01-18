@@ -1,1 +1,1 @@
-Gas;Residential;
+Gas;Commercial;

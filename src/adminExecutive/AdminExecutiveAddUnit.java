@@ -2,27 +2,31 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package pms_parkhill_residence;
+package adminExecutive;
 
-import java.awt.Color;
 import java.awt.Toolkit;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import pms_parkhill_residence.FileHandling;
 
 /**
  *
  * @author wongj
  */
-public class AccountExecutiveLatePaymentFee extends javax.swing.JFrame {
+public class AdminExecutiveAddUnit extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param propertyType
      */
-    public AccountExecutiveLatePaymentFee(String invoiceNo) {
+    public AdminExecutiveAddUnit(String propertyType) {
         initComponents();
         setWindowIcon();
-        this.invoiceNo = invoiceNo;
-        setFixData();
+        this.type = propertyType;
+        setTable();
     }
 
     /**
@@ -38,18 +42,22 @@ public class AccountExecutiveLatePaymentFee extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
+        unitNoTF = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        typeCB = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        lateChargeTF = new javax.swing.JTextField();
-        chargeBt = new javax.swing.JButton();
-        cancelBT = new javax.swing.JButton();
-        warningLabel = new javax.swing.JLabel();
-        invoiceNoLabel = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        currentLateLabel = new javax.swing.JLabel();
+        squareFootTF = new javax.swing.JTextField();
+        addBt = new javax.swing.JButton();
+        cancelBt = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel14 = new javax.swing.JLabel();
+        warningMessage = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
         setBackground(new java.awt.Color(13, 24, 42));
         setResizable(false);
@@ -61,8 +69,8 @@ public class AccountExecutiveLatePaymentFee extends javax.swing.JFrame {
         jLabel2.setBackground(new java.awt.Color(13, 24, 42));
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("LATE PAYMENT CHARGE");
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("ADD PROPERTYUNIT");
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/parkhillLogo.png"))); // NOI18N
@@ -71,12 +79,12 @@ public class AccountExecutiveLatePaymentFee extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(102, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(341, 341, 341)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(97, 97, 97))
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -90,230 +98,255 @@ public class AccountExecutiveLatePaymentFee extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
+        unitNoTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                unitNoTFActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel1.setText("UNIT NO:");
+
         jLabel4.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel4.setText("INVOICE NUMBER:");
+        jLabel4.setText("Property Type:");
+
+        typeCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-PLEASE SELECT-", "Residential", "Commercial" }));
 
         jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel5.setText("LATE PAYMENT CHARGES (RM):");
+        jLabel5.setText("SQUARE FOOT:");
 
-        lateChargeTF.addActionListener(new java.awt.event.ActionListener() {
+        squareFootTF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lateChargeTFActionPerformed(evt);
-            }
-        });
-        lateChargeTF.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                lateChargeTFKeyTyped(evt);
+                squareFootTFActionPerformed(evt);
             }
         });
 
-        chargeBt.setBackground(new java.awt.Color(13, 50, 79));
-        chargeBt.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        chargeBt.setForeground(new java.awt.Color(255, 255, 255));
-        chargeBt.setText("CHARGE");
-        chargeBt.addActionListener(new java.awt.event.ActionListener() {
+        addBt.setBackground(new java.awt.Color(0, 204, 0));
+        addBt.setText("ADD");
+        addBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chargeBtActionPerformed(evt);
+                addBtActionPerformed(evt);
             }
         });
 
-        cancelBT.setText("CANCEL");
-        cancelBT.addActionListener(new java.awt.event.ActionListener() {
+        cancelBt.setText("BACK");
+        cancelBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelBTActionPerformed(evt);
+                cancelBtActionPerformed(evt);
             }
         });
 
-        warningLabel.setForeground(new java.awt.Color(153, 153, 153));
-        warningLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        warningLabel.setText("Please enter the latest late payment charges amount.");
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        invoiceNoLabel.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        invoiceNoLabel.setForeground(new java.awt.Color(102, 102, 102));
-        invoiceNoLabel.setText("INVOICE NUMBER");
+            },
+            new String [] {
+                "NO", "UNIT NO.", "SQUARE FOOT", "STATUS", "DATE OF SOLD"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
 
-        jPanel4.setBackground(new java.awt.Color(26, 58, 119));
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
 
-        jLabel10.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel10.setText("CURRENT LATE PAYMENT CHARGES (RM):");
+        jSeparator1.setForeground(new java.awt.Color(153, 153, 153));
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jSeparator1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
-        currentLateLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
-        currentLateLabel.setForeground(new java.awt.Color(255, 255, 255));
-        currentLateLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        currentLateLabel.setText("RM 0.00");
-        currentLateLabel.setPreferredSize(new java.awt.Dimension(50, 17));
+        jLabel14.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel14.setText("Existing Unit Details:");
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
-                    .addComponent(currentLateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel10)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(currentLateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        warningMessage.setForeground(new java.awt.Color(255, 0, 51));
+        warningMessage.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        warningMessage.setPreferredSize(new java.awt.Dimension(138, 17));
+
+        jLabel15.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel15.setText("e.g. A-01-04 | S-04-09");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(51, 51, 51)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel4)
+                                .addComponent(typeCB, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel5)
+                                .addComponent(jLabel1)
+                                .addComponent(unitNoTF, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
+                                .addComponent(squareFootTF)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                    .addComponent(cancelBt, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(addBt, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(63, 63, 63)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(warningMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(132, 132, 132)
-                        .addComponent(warningLabel))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(149, 149, 149)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(invoiceNoLabel))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(169, 169, 169)
-                        .addComponent(jLabel5))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(187, 187, 187)
-                        .addComponent(cancelBT, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chargeBt, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(215, 215, 215)
-                        .addComponent(lateChargeTF, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(111, 111, 111)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 604, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(invoiceNoLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(warningLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lateChargeTF, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(chargeBt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cancelBT, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14))
+                .addGap(34, 34, 34)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(warningMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(typeCB, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28, 28, 28)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(unitNoTF, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(1, 1, 1)
+                                .addComponent(jLabel15)
+                                .addGap(27, 27, 27)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(squareFootTF, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(addBt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cancelBt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addGap(0, 0, 0)
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private final String invoiceNo;
+    public String type;
+    FileHandling fh = new FileHandling();
     
-    private void lateChargeTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lateChargeTFActionPerformed
+    private void unitNoTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unitNoTFActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_lateChargeTFActionPerformed
+    }//GEN-LAST:event_unitNoTFActionPerformed
 
-    private void cancelBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBTActionPerformed
+    private void squareFootTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_squareFootTFActionPerformed
         // TODO add your handling code here:
-        dispose();
-    }//GEN-LAST:event_cancelBTActionPerformed
+    }//GEN-LAST:event_squareFootTFActionPerformed
 
-    private void chargeBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chargeBtActionPerformed
-        if (!lateChargeTF.getText().equals("")) {
-            warningLabel.setForeground(new Color(60,63,65));
+    private void addBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtActionPerformed
+        // TODO add your handling code here:
+        String newType = String.valueOf(typeCB.getSelectedItem());
+        String newUnitNo = unitNoTF.getText();
+        String squareFoot = squareFootTF.getText();
+        
+        if (typeCB.getSelectedIndex()!=0 && !newUnitNo.equals("") &&
+                !squareFoot.equals("")) {
+            warningMessage.setText("");
+            AdminExecutive ae = new AdminExecutive();
+            boolean check = ae.checkUnitAvailability(newUnitNo.toLowerCase());
             
-            int result = JOptionPane.showConfirmDialog(null,"Are you sure to charge "
-                + "late payment fee to this account?",
-                    "LATE PAYMENT CHARGES",
-            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (check) {
+                int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
+                        + "add this property unit?",
+                        "ADD PROPERTY UNIT",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+            
+                if(result == JOptionPane.YES_OPTION){
+                    warningMessage.setText("");
+                
+                    List<String> newData1 = new ArrayList<>();
+                    newData1.add(newUnitNo.toUpperCase() +";"+ newType +";"+ 
+                            squareFoot +";"+ "Unsold" +";"+ "-" +";");
+                    fh.fileWrite("propertyDetails.txt", true, newData1);
 
-            if(result == JOptionPane.YES_OPTION){
-                AccountExecutive ae = new AccountExecutive();
+                    List<String> newData2 = new ArrayList<>();
+                    newData2.add("Parkhill;parkhill@gmail.com;Parkhill@123;Parkill;"
+                            + "Residence;-;-;-;" + newUnitNo.toUpperCase() + ";");             
+                    fh.fileWrite("userProfile.txt", check, newData2);
+
+                    JOptionPane.showMessageDialog (null, "New unit has been added!", 
+                                    "ADD PROPERTY UNIT", JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
+                    new AdminExecutiveUnitManagement().setVisible(true);
+                }
                 
-                DecimalFormat df = new DecimalFormat("0.00");
-                float latePaymentFee = Float.valueOf(lateChargeTF.getText());
-                String lateCharges = df.format(latePaymentFee);
-                
-                ae.chargeLatePaymentFee(invoiceNo, lateCharges);
-                JOptionPane.showMessageDialog (null, "Late payment fee has been charged!", 
-                                "LATE PAYMENT CHARGES", JOptionPane.INFORMATION_MESSAGE);
-                dispose();
+            } else {
+                warningMessage.setText("This unit is existed!");
             }
         } else {
-            warningLabel.setForeground(Color.red);
-        } 
-    }//GEN-LAST:event_chargeBtActionPerformed
+            warningMessage.setText("Please complete the form!");
+        }
+    }//GEN-LAST:event_addBtActionPerformed
 
-    private void lateChargeTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lateChargeTFKeyTyped
+    private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
-        // get value from text field
-        String enteredAmt = lateChargeTF.getText();
-        //declare decimalPlace variable to store the index of "."
-        int decimalPlace = enteredAmt.indexOf(".");
-        //declare nDecimalPlace to 0
-        int nDecimalPlace=0;
-        // if value from text field contains "."
+        dispose();
+        AdminExecutiveUnitManagement aei = new AdminExecutiveUnitManagement();
+        aei.setVisible(true);
+    }//GEN-LAST:event_cancelBtActionPerformed
 
-        if (enteredAmt.contains(".")) {
-            // count number of decimal place that allowed
-            nDecimalPlace = decimalPlace - enteredAmt.length();
-        }
-        // not allowed for letter and value with 3 decimal places
-        if (Character.isLetter(evt.getKeyChar()) || nDecimalPlace == -3)
-            evt.consume();
-        // try to convert string to double
-        try {
-            Double.parseDouble(lateChargeTF.getText()+evt.getKeyChar());
-        } catch (NumberFormatException e) {
-            // to prevent any action on text field
-            evt.consume();
-        }
-    }//GEN-LAST:event_lateChargeTFKeyTyped
-
-    private void setFixData() {
-        invoiceNoLabel.setText(invoiceNo);
+    private void setTable() {
+        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        tableModel.setRowCount(0);
+            
+        AdminExecutive ae = new AdminExecutive();
+        List<String> availableList = 
+                ae.extractAllProperties(type);
         
-        AccountExecutive ae = new AccountExecutive();
-        String cLatePaymentFee = ae.getInvoiceLatePayment(invoiceNo);
-        if (cLatePaymentFee.equals("")) {
-            currentLateLabel.setText("RM 0.00");
-        } else {
-            currentLateLabel.setText("RM " + cLatePaymentFee);
+        String[] propertiesArray = new String[availableList.size()];
+        availableList.toArray(propertiesArray);
+        
+        for (int i = 0; i < availableList.size(); i++) {
+            String[] propertyDetails = propertiesArray[i].split(";");
+            String unitNo = propertyDetails[0];
+            String squareFoot = propertyDetails[1];
+            String status = propertyDetails[2];
+            String dateOfSold = propertyDetails[3];
+            
+            String[] tbData = {String.valueOf(i+1), unitNo, squareFoot, status,
+                dateOfSold};
+            tableModel.addRow(tbData);
         }
-   }
+    }
     
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
@@ -336,13 +369,13 @@ public class AccountExecutiveLatePaymentFee extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutiveLatePaymentFee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutiveAddUnit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutiveLatePaymentFee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutiveAddUnit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutiveLatePaymentFee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutiveAddUnit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutiveLatePaymentFee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutiveAddUnit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -860,25 +893,29 @@ public class AccountExecutiveLatePaymentFee extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutiveLatePaymentFee(null).setVisible(true);
+                new AdminExecutiveAddUnit(null).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cancelBT;
-    private javax.swing.JButton chargeBt;
-    private javax.swing.JLabel currentLateLabel;
-    private javax.swing.JLabel invoiceNoLabel;
-    private javax.swing.JLabel jLabel10;
+    private javax.swing.JButton addBt;
+    private javax.swing.JButton cancelBt;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JTextField lateChargeTF;
-    private javax.swing.JLabel warningLabel;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField squareFootTF;
+    private javax.swing.JComboBox<String> typeCB;
+    private javax.swing.JTextField unitNoTF;
+    private javax.swing.JLabel warningMessage;
     // End of variables declaration//GEN-END:variables
 }

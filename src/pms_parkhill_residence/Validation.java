@@ -12,8 +12,6 @@ import java.util.regex.Pattern;
  * @author wongj
  */
 public class Validation {
-    private String email;
-    private String password;
     
     public Validation() {};
     
@@ -22,6 +20,14 @@ public class Validation {
                 "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
         Pattern pattern = Pattern.compile(passwordPattern);
         Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
+    
+    public boolean emailValid(String email) {
+        String emailPattern = 
+                "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailPattern);
+        Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
 }

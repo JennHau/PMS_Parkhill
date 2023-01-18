@@ -2,30 +2,33 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package pms_parkhill_residence;
+package adminExecutive;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import accountExecutive.AccountExecutiveIssueInvoice;
+import accountExecutive.AccountExecutiveIssueOutstandingFee;
+import accountExecutive.AccountExecutiveIssueReceipt;
+import accountExecutive.AccountExecutiveIssueStatement;
+import accountExecutive.AccountExecutivePayment;
+import pms_parkhill_residence.HomePage;
 
 /**
  *
  * @author wongj
  */
-public class AccountExecutiveMakePayment extends javax.swing.JFrame {
+public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
-     * @param invoiceNo
-     * @param unitNo
      */
-    public AccountExecutiveMakePayment(String invoiceNo, String unitNo) {
+    public AdminExecutiveUnitManagementHistory() {
         initComponents();
         setWindowIcon();
-        this.invoiceNo = invoiceNo;
-        this.unitNo = unitNo;
-        setFixData();
         setTable();
     }
 
@@ -46,33 +49,33 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel16 = new javax.swing.JLabel();
-        invoiceNoLabel = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
-        unitNoLabel = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        totalLabel = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
-        jLabel18 = new javax.swing.JLabel();
+        searchTextField = new javax.swing.JTextField();
+        clearbt = new javax.swing.JButton();
+        typeCB = new javax.swing.JComboBox<>();
+        jLabel13 = new javax.swing.JLabel();
+        warningMessage = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         dashboardPanel = new javax.swing.JPanel();
         dashboardLabel = new javax.swing.JLabel();
-        issueInvoicePanel = new javax.swing.JPanel();
-        issueInvoiceLabel = new javax.swing.JLabel();
-        paymentPanel = new javax.swing.JPanel();
-        paymentLabel = new javax.swing.JLabel();
-        issueReceiptPanel = new javax.swing.JPanel();
-        issueReceiptLabel = new javax.swing.JLabel();
-        outstandingFeePanel = new javax.swing.JPanel();
-        outstandingFeeLabel = new javax.swing.JLabel();
+        unitManagePanel = new javax.swing.JPanel();
+        unitManageLabel = new javax.swing.JLabel();
+        rTMangePanel = new javax.swing.JPanel();
+        rTManageLabel = new javax.swing.JLabel();
+        complaintManagementPanel = new javax.swing.JPanel();
+        complaintManagement = new javax.swing.JLabel();
+        employeeManagePanel = new javax.swing.JPanel();
+        employeeManageLabel = new javax.swing.JLabel();
         jPanel11 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         logoutPanel = new javax.swing.JPanel();
         logoutLabel = new javax.swing.JLabel();
         viewProfilePanel = new javax.swing.JPanel();
         viewProfileLabel = new javax.swing.JLabel();
-        issueStatementPanel = new javax.swing.JPanel();
-        issueStatementLabel = new javax.swing.JLabel();
+        facilityManagePanel = new javax.swing.JPanel();
+        facilityManageLabel = new javax.swing.JLabel();
+        facBookManagePanel = new javax.swing.JPanel();
+        facBookManageLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -87,7 +90,7 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(13, 24, 42));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("ACCOUNT EXECUTIVE");
+        jLabel2.setText("ADMIN EXECUTIVE");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(102, 102, 102));
@@ -103,7 +106,7 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
         jPanel3Layout.setVerticalGroup(
@@ -121,100 +124,63 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(102, 102, 102));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel14.setText("MAKE PAYMENT");
+        jLabel14.setText("UNIT MANAGEMENT [HISTORY]");
+        jLabel14.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "FEE TYPE", "ISSUE DATE", "CONSUMPTION", "UNIT", "UNIT PRICE (RM)", "TOTAL PRICE (RM)"
+                "NO.", "DELETION ID", "UNIT NO.", "SQUARE FOOT", "STATUS", "DATE OF SOLD", "DELETED DATETIME", "ACTION"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel16.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel16.setText("INVOICE NO:");
+        jLabel16.setText("UNIT NO:");
 
-        invoiceNoLabel.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
-        invoiceNoLabel.setForeground(new java.awt.Color(153, 153, 153));
-        invoiceNoLabel.setText("INVOICE NO");
-
-        jLabel17.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
-        jLabel17.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel17.setText("UNIT NO:");
-
-        unitNoLabel.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
-        unitNoLabel.setForeground(new java.awt.Color(153, 153, 153));
-        unitNoLabel.setText("UNIT NO");
-
-        jPanel4.setBackground(new java.awt.Color(0, 130, 165));
-
-        totalLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
-        totalLabel.setForeground(new java.awt.Color(255, 255, 255));
-        totalLabel.setText("TOTAL: RM0.00");
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(totalLabel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(totalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        jPanel5.setBackground(new java.awt.Color(13, 50, 79));
-        jPanel5.setToolTipText("");
-        jPanel5.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel5MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jPanel5MouseEntered(evt);
+        searchTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchTextFieldKeyReleased(evt);
             }
         });
 
-        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel18.setText("PROCEED TO PAYMENT");
-        jLabel18.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel18MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel18MouseEntered(evt);
+        clearbt.setText("CLEAR");
+        clearbt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearbtActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        typeCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Residential", "Commercial" }));
+        typeCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                typeCBActionPerformed(evt);
+            }
+        });
+
+        jLabel13.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel13.setText("TYPE:");
+
+        warningMessage.setForeground(new java.awt.Color(255, 0, 51));
+        warningMessage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        warningMessage.setPreferredSize(new java.awt.Dimension(138, 17));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -222,47 +188,42 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 960, Short.MAX_VALUE)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(363, 363, 363))
+                    .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel6Layout.createSequentialGroup()
-                                    .addComponent(jLabel16)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(invoiceNoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(189, 189, 189)
-                                    .addComponent(jLabel17)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(unitNoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(424, 424, 424)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(typeCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(warningMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(46, 46, 46)
+                        .addComponent(jLabel16)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(clearbt)))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel16)
-                    .addComponent(invoiceNoLabel)
-                    .addComponent(jLabel17)
-                    .addComponent(unitNoLabel))
+                .addContainerGap()
+                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel13)
+                .addGap(0, 0, 0)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(warningMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(typeCB, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(clearbt)
+                        .addComponent(jLabel16)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         jPanel1.setBackground(new java.awt.Color(13, 24, 42));
@@ -296,178 +257,180 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
         dashboardPanel.setLayout(dashboardPanelLayout);
         dashboardPanelLayout.setHorizontalGroup(
             dashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dashboardPanelLayout.createSequentialGroup()
-                .addContainerGap(32, Short.MAX_VALUE)
+            .addGroup(dashboardPanelLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
                 .addComponent(dashboardLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(122, 122, 122))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         dashboardPanelLayout.setVerticalGroup(
             dashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(dashboardPanelLayout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dashboardPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(dashboardLabel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
-        issueInvoicePanel.setBackground(new java.awt.Color(13, 24, 42));
-        issueInvoicePanel.addMouseListener(new java.awt.event.MouseAdapter() {
+        unitManagePanel.setBackground(new java.awt.Color(13, 50, 79));
+        unitManagePanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                issueInvoicePanelMouseClicked(evt);
+                unitManagePanelMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                issueInvoicePanelMouseEntered(evt);
+                unitManagePanelMouseEntered(evt);
             }
         });
 
-        issueInvoiceLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        issueInvoiceLabel.setForeground(new java.awt.Color(255, 255, 255));
-        issueInvoiceLabel.setText("Issue Invoice");
-        issueInvoiceLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        unitManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        unitManageLabel.setForeground(new java.awt.Color(255, 255, 255));
+        unitManageLabel.setText("Unit Management");
+        unitManageLabel.setPreferredSize(new java.awt.Dimension(150, 25));
+        unitManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                issueInvoiceLabelMouseClicked(evt);
+                unitManageLabelMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                issueInvoiceLabelMouseEntered(evt);
+                unitManageLabelMouseEntered(evt);
             }
         });
 
-        javax.swing.GroupLayout issueInvoicePanelLayout = new javax.swing.GroupLayout(issueInvoicePanel);
-        issueInvoicePanel.setLayout(issueInvoicePanelLayout);
-        issueInvoicePanelLayout.setHorizontalGroup(
-            issueInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, issueInvoicePanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout unitManagePanelLayout = new javax.swing.GroupLayout(unitManagePanel);
+        unitManagePanel.setLayout(unitManagePanelLayout);
+        unitManagePanelLayout.setHorizontalGroup(
+            unitManagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(unitManagePanelLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(unitManageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        unitManagePanelLayout.setVerticalGroup(
+            unitManagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, unitManagePanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(issueInvoiceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75))
-        );
-        issueInvoicePanelLayout.setVerticalGroup(
-            issueInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(issueInvoicePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(issueInvoiceLabel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(unitManageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        paymentPanel.setBackground(new java.awt.Color(13, 50, 79));
-        paymentPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+        rTMangePanel.setBackground(new java.awt.Color(13, 24, 42));
+        rTMangePanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                paymentPanelMouseClicked(evt);
+                rTMangePanelMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                paymentPanelMouseEntered(evt);
+                rTMangePanelMouseEntered(evt);
             }
         });
 
-        paymentLabel.setBackground(new java.awt.Color(13, 24, 42));
-        paymentLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        paymentLabel.setForeground(new java.awt.Color(255, 255, 255));
-        paymentLabel.setText("Payment");
-        paymentLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        rTManageLabel.setBackground(new java.awt.Color(13, 24, 42));
+        rTManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        rTManageLabel.setForeground(new java.awt.Color(255, 255, 255));
+        rTManageLabel.setText("Resident/ Tenant Management");
+        rTManageLabel.setPreferredSize(new java.awt.Dimension(250, 25));
+        rTManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                paymentLabelMouseClicked(evt);
+                rTManageLabelMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                paymentLabelMouseEntered(evt);
+                rTManageLabelMouseEntered(evt);
             }
         });
 
-        javax.swing.GroupLayout paymentPanelLayout = new javax.swing.GroupLayout(paymentPanel);
-        paymentPanel.setLayout(paymentPanelLayout);
-        paymentPanelLayout.setHorizontalGroup(
-            paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, paymentPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(paymentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75))
+        javax.swing.GroupLayout rTMangePanelLayout = new javax.swing.GroupLayout(rTMangePanel);
+        rTMangePanel.setLayout(rTMangePanelLayout);
+        rTMangePanelLayout.setHorizontalGroup(
+            rTMangePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, rTMangePanelLayout.createSequentialGroup()
+                .addContainerGap(13, Short.MAX_VALUE)
+                .addComponent(rTManageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
-        paymentPanelLayout.setVerticalGroup(
-            paymentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(paymentPanelLayout.createSequentialGroup()
+        rTMangePanelLayout.setVerticalGroup(
+            rTMangePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(rTMangePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(paymentLabel)
+                .addComponent(rTManageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        issueReceiptPanel.setBackground(new java.awt.Color(13, 24, 42));
-        issueReceiptPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+        complaintManagementPanel.setBackground(new java.awt.Color(13, 24, 42));
+        complaintManagementPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
-                issueReceiptPanelMouseDragged(evt);
+                complaintManagementPanelMouseDragged(evt);
             }
         });
-        issueReceiptPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+        complaintManagementPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                issueReceiptPanelMouseClicked(evt);
+                complaintManagementPanelMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                issueReceiptPanelMouseEntered(evt);
+                complaintManagementPanelMouseEntered(evt);
             }
         });
 
-        issueReceiptLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        issueReceiptLabel.setForeground(new java.awt.Color(255, 255, 255));
-        issueReceiptLabel.setText("Issue Receipt");
-        issueReceiptLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        complaintManagement.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        complaintManagement.setForeground(new java.awt.Color(255, 255, 255));
+        complaintManagement.setText("Complaint Management");
+        complaintManagement.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                issueReceiptLabelMouseClicked(evt);
+                complaintManagementMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                issueReceiptLabelMouseEntered(evt);
+                complaintManagementMouseEntered(evt);
             }
         });
 
-        javax.swing.GroupLayout issueReceiptPanelLayout = new javax.swing.GroupLayout(issueReceiptPanel);
-        issueReceiptPanel.setLayout(issueReceiptPanelLayout);
-        issueReceiptPanelLayout.setHorizontalGroup(
-            issueReceiptPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, issueReceiptPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(issueReceiptLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75))
+        javax.swing.GroupLayout complaintManagementPanelLayout = new javax.swing.GroupLayout(complaintManagementPanel);
+        complaintManagementPanel.setLayout(complaintManagementPanelLayout);
+        complaintManagementPanelLayout.setHorizontalGroup(
+            complaintManagementPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(complaintManagementPanelLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(complaintManagement, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        issueReceiptPanelLayout.setVerticalGroup(
-            issueReceiptPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(issueReceiptPanelLayout.createSequentialGroup()
+        complaintManagementPanelLayout.setVerticalGroup(
+            complaintManagementPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(complaintManagementPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(issueReceiptLabel)
+                .addComponent(complaintManagement)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        outstandingFeePanel.setBackground(new java.awt.Color(13, 24, 42));
-        outstandingFeePanel.addMouseListener(new java.awt.event.MouseAdapter() {
+        employeeManagePanel.setBackground(new java.awt.Color(13, 24, 42));
+        employeeManagePanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                outstandingFeePanelMouseClicked(evt);
+                employeeManagePanelMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                outstandingFeePanelMouseEntered(evt);
+                employeeManagePanelMouseEntered(evt);
             }
         });
 
-        outstandingFeeLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        outstandingFeeLabel.setForeground(new java.awt.Color(255, 255, 255));
-        outstandingFeeLabel.setText("Outstanding Fee");
-        outstandingFeeLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        employeeManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        employeeManageLabel.setForeground(new java.awt.Color(255, 255, 255));
+        employeeManageLabel.setText("Employee Management");
+        employeeManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                outstandingFeeLabelMouseClicked(evt);
+                employeeManageLabelMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                outstandingFeeLabelMouseEntered(evt);
+                employeeManageLabelMouseEntered(evt);
             }
         });
 
-        javax.swing.GroupLayout outstandingFeePanelLayout = new javax.swing.GroupLayout(outstandingFeePanel);
-        outstandingFeePanel.setLayout(outstandingFeePanelLayout);
-        outstandingFeePanelLayout.setHorizontalGroup(
-            outstandingFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, outstandingFeePanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(outstandingFeeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75))
+        javax.swing.GroupLayout employeeManagePanelLayout = new javax.swing.GroupLayout(employeeManagePanel);
+        employeeManagePanel.setLayout(employeeManagePanelLayout);
+        employeeManagePanelLayout.setHorizontalGroup(
+            employeeManagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(employeeManagePanelLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(employeeManageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        outstandingFeePanelLayout.setVerticalGroup(
-            outstandingFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(outstandingFeePanelLayout.createSequentialGroup()
+        employeeManagePanelLayout.setVerticalGroup(
+            employeeManagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(employeeManagePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(outstandingFeeLabel)
+                .addComponent(employeeManageLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -572,42 +535,81 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        issueStatementPanel.setBackground(new java.awt.Color(13, 24, 42));
-        issueStatementPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+        facilityManagePanel.setBackground(new java.awt.Color(13, 24, 42));
+        facilityManagePanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                issueStatementPanelMouseClicked(evt);
+                facilityManagePanelMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                issueStatementPanelMouseEntered(evt);
+                facilityManagePanelMouseEntered(evt);
             }
         });
 
-        issueStatementLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        issueStatementLabel.setForeground(new java.awt.Color(255, 255, 255));
-        issueStatementLabel.setText("Issue Statement");
-        issueStatementLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        facilityManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        facilityManageLabel.setForeground(new java.awt.Color(255, 255, 255));
+        facilityManageLabel.setText("Facility Management");
+        facilityManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                issueStatementLabelMouseClicked(evt);
+                facilityManageLabelMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                issueStatementLabelMouseEntered(evt);
+                facilityManageLabelMouseEntered(evt);
             }
         });
 
-        javax.swing.GroupLayout issueStatementPanelLayout = new javax.swing.GroupLayout(issueStatementPanel);
-        issueStatementPanel.setLayout(issueStatementPanelLayout);
-        issueStatementPanelLayout.setHorizontalGroup(
-            issueStatementPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(issueStatementPanelLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(issueStatementLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+        javax.swing.GroupLayout facilityManagePanelLayout = new javax.swing.GroupLayout(facilityManagePanel);
+        facilityManagePanel.setLayout(facilityManagePanelLayout);
+        facilityManagePanelLayout.setHorizontalGroup(
+            facilityManagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(facilityManagePanelLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(facilityManageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        issueStatementPanelLayout.setVerticalGroup(
-            issueStatementPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(issueStatementPanelLayout.createSequentialGroup()
+        facilityManagePanelLayout.setVerticalGroup(
+            facilityManagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(facilityManagePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(issueStatementLabel)
+                .addComponent(facilityManageLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        facBookManagePanel.setBackground(new java.awt.Color(13, 24, 42));
+        facBookManagePanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                facBookManagePanelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                facBookManagePanelMouseEntered(evt);
+            }
+        });
+
+        facBookManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        facBookManageLabel.setForeground(new java.awt.Color(255, 255, 255));
+        facBookManageLabel.setText("Facility Booking Management");
+        facBookManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                facBookManageLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                facBookManageLabelMouseEntered(evt);
+            }
+        });
+
+        javax.swing.GroupLayout facBookManagePanelLayout = new javax.swing.GroupLayout(facBookManagePanel);
+        facBookManagePanel.setLayout(facBookManagePanelLayout);
+        facBookManagePanelLayout.setHorizontalGroup(
+            facBookManagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, facBookManagePanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(facBookManageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        facBookManagePanelLayout.setVerticalGroup(
+            facBookManagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(facBookManagePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(facBookManageLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -623,17 +625,18 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
                                 .addGap(80, 80, 80)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(dashboardPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(issueInvoicePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(paymentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(issueReceiptPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(outstandingFeePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(unitManagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(rTMangePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(complaintManagementPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(employeeManagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(viewProfilePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(issueStatementPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(facilityManagePanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(logoutPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(logoutPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(facBookManagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -644,16 +647,18 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
                 .addGap(38, 38, 38)
                 .addComponent(dashboardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(issueInvoicePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(unitManagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(paymentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(rTMangePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(issueReceiptPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(complaintManagementPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(outstandingFeePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(employeeManagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(issueStatementPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(facilityManagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(facBookManagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 174, Short.MAX_VALUE)
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(viewProfilePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -686,36 +691,82 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private final String invoiceNo;
-    private final String unitNo;
-    private String total;
+    private void clearbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearbtActionPerformed
+       searchTextField.setText("");
+       DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+       tableModel.setRowCount(0);
+       setTable();
+    }//GEN-LAST:event_clearbtActionPerformed
+
+    private void typeCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeCBActionPerformed
+        // TODO add your handling code here:
+        setTable();
+    }//GEN-LAST:event_typeCBActionPerformed
+
     
-    private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
+    
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
-        new AccountExecutivePaymentGateway(invoiceNo, unitNo, total).setVisible(true);
-        dispose();
-    }//GEN-LAST:event_jLabel18MouseClicked
+        AdminExecutive ae = new AdminExecutive();
+        
+        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        int column = jTable1.getSelectedColumn();
+        int row = jTable1.getSelectedRow();
+        
+        if (column == 7) {
+            String unitNo = String.valueOf(tableModel.getValueAt(row, 2));
+            boolean check = ae.restoreUnitValidation(unitNo);
+            
+            if (check) {
+                int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
+                        + "restore this property unit?\n Its previous tenant and "
+                        + "resident accounts will be restored as well.",
+                        "RESTORE PROPERTY UNIT",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
 
-    private void jLabel18MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseEntered
-        // TODO add your handling code here:
-        jLabel18.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_jLabel18MouseEntered
+                if(result == JOptionPane.YES_OPTION){
+                    warningMessage.setText("");
+                    String deletionID = String.valueOf(tableModel.getValueAt(row, 1));
+                    ae.restoreUnit(deletionID);
+                    setTable();
+                    JOptionPane.showMessageDialog (null, "Property unit has been restored!", 
+                         "RESTORE PROPERTY UNIT", JOptionPane.INFORMATION_MESSAGE);
+                }
+                
+            } else {
+                warningMessage.setText("Restore failed! Same property unit found in existing system.");
+            }
+       }
+    }//GEN-LAST:event_jTable1MouseClicked
 
-    private void jPanel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseClicked
+    private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
         // TODO add your handling code here:
-        new AccountExecutivePaymentGateway(invoiceNo, unitNo, total).setVisible(true);
-        dispose();
-    }//GEN-LAST:event_jPanel5MouseClicked
-
-    private void jPanel5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseEntered
-        // TODO add your handling code here:
-        jPanel5.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_jPanel5MouseEntered
+        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        // reset table
+        tableModel.setRowCount(0);
+        setTable();
+        if (!"".equals(searchTextField.getText().toUpperCase())) {
+            String module_code = searchTextField.getText().toUpperCase();
+            for (int i=0; i<tableModel.getRowCount(); i++) {
+                // get module code from table
+                String tmodule_code = String.valueOf(jTable1.getValueAt(i, 1)).toUpperCase();
+                // if module code not contain in search bar
+                if (!tmodule_code.contains(module_code)) {
+                    // remove module from table
+                    tableModel.removeRow(i);
+                    i--;
+                }
+            }
+        } 
+        else {
+            tableModel.setRowCount(0);
+            setTable();
+        }
+    }//GEN-LAST:event_searchTextFieldKeyReleased
 
     private void dashboardLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseClicked
         // TODO add your handling code here:
-        dispose();
-        new AccountExecutiveDashboard().setVisible(true);
     }//GEN-LAST:event_dashboardLabelMouseClicked
 
     private void dashboardLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseEntered
@@ -725,8 +776,6 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
 
     private void dashboardPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanelMouseClicked
         // TODO add your handling code here:
-        dispose();
-        new AccountExecutiveDashboard().setVisible(true);
     }//GEN-LAST:event_dashboardPanelMouseClicked
 
     private void dashboardPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanelMouseEntered
@@ -734,97 +783,97 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
         dashboardPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_dashboardPanelMouseEntered
 
-    private void issueInvoiceLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoiceLabelMouseClicked
+    private void unitManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unitManageLabelMouseClicked
         // TODO add your handling code here:
         dispose();
         new AccountExecutiveIssueInvoice().setVisible(true);
-    }//GEN-LAST:event_issueInvoiceLabelMouseClicked
+    }//GEN-LAST:event_unitManageLabelMouseClicked
 
-    private void issueInvoiceLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoiceLabelMouseEntered
+    private void unitManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unitManageLabelMouseEntered
         // TODO add your handling code here:
-        issueInvoiceLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_issueInvoiceLabelMouseEntered
+        unitManageLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_unitManageLabelMouseEntered
 
-    private void issueInvoicePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoicePanelMouseClicked
+    private void unitManagePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unitManagePanelMouseClicked
         // TODO add your handling code here:
         dispose();
         new AccountExecutiveIssueInvoice().setVisible(true);
-    }//GEN-LAST:event_issueInvoicePanelMouseClicked
+    }//GEN-LAST:event_unitManagePanelMouseClicked
 
-    private void issueInvoicePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoicePanelMouseEntered
+    private void unitManagePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unitManagePanelMouseEntered
         // TODO add your handling code here:
-        issueInvoicePanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_issueInvoicePanelMouseEntered
+        unitManagePanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_unitManagePanelMouseEntered
 
-    private void paymentLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentLabelMouseClicked
-        // TODO add your handling code here:
-        dispose();
-        new AccountExecutivePayment().setVisible(true);
-    }//GEN-LAST:event_paymentLabelMouseClicked
-
-    private void paymentLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentLabelMouseEntered
-        // TODO add your handling code here:
-        paymentLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_paymentLabelMouseEntered
-
-    private void paymentPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentPanelMouseClicked
+    private void rTManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rTManageLabelMouseClicked
         // TODO add your handling code here:
         dispose();
         new AccountExecutivePayment().setVisible(true);
-    }//GEN-LAST:event_paymentPanelMouseClicked
+    }//GEN-LAST:event_rTManageLabelMouseClicked
 
-    private void paymentPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentPanelMouseEntered
+    private void rTManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rTManageLabelMouseEntered
         // TODO add your handling code here:
-        paymentPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_paymentPanelMouseEntered
+        rTManageLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_rTManageLabelMouseEntered
 
-    private void issueReceiptLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptLabelMouseClicked
+    private void rTMangePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rTMangePanelMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AccountExecutivePayment().setVisible(true);
+    }//GEN-LAST:event_rTMangePanelMouseClicked
+
+    private void rTMangePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rTMangePanelMouseEntered
+        // TODO add your handling code here:
+        rTMangePanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_rTMangePanelMouseEntered
+
+    private void complaintManagementMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintManagementMouseClicked
         // TODO add your handling code here:
         dispose();
         new AccountExecutiveIssueReceipt().setVisible(true);
-    }//GEN-LAST:event_issueReceiptLabelMouseClicked
+    }//GEN-LAST:event_complaintManagementMouseClicked
 
-    private void issueReceiptLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptLabelMouseEntered
+    private void complaintManagementMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintManagementMouseEntered
         // TODO add your handling code here:
-        issueReceiptLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_issueReceiptLabelMouseEntered
+        complaintManagement.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_complaintManagementMouseEntered
 
-    private void issueReceiptPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptPanelMouseDragged
+    private void complaintManagementPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintManagementPanelMouseDragged
         // TODO add your handling code here:
-    }//GEN-LAST:event_issueReceiptPanelMouseDragged
+    }//GEN-LAST:event_complaintManagementPanelMouseDragged
 
-    private void issueReceiptPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptPanelMouseClicked
+    private void complaintManagementPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintManagementPanelMouseClicked
         // TODO add your handling code here:
         dispose();
         new AccountExecutiveIssueReceipt().setVisible(true);
-    }//GEN-LAST:event_issueReceiptPanelMouseClicked
+    }//GEN-LAST:event_complaintManagementPanelMouseClicked
 
-    private void issueReceiptPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptPanelMouseEntered
+    private void complaintManagementPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintManagementPanelMouseEntered
         // TODO add your handling code here:
-        issueReceiptPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_issueReceiptPanelMouseEntered
+        complaintManagementPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_complaintManagementPanelMouseEntered
 
-    private void outstandingFeeLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeeLabelMouseClicked
-        // TODO add your handling code here:
-        dispose();
-        new AccountExecutiveIssueOutstandingFee().setVisible(true);
-    }//GEN-LAST:event_outstandingFeeLabelMouseClicked
-
-    private void outstandingFeeLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeeLabelMouseEntered
-        // TODO add your handling code here:
-        outstandingFeeLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_outstandingFeeLabelMouseEntered
-
-    private void outstandingFeePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeePanelMouseClicked
+    private void employeeManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeManageLabelMouseClicked
         // TODO add your handling code here:
         dispose();
         new AccountExecutiveIssueOutstandingFee().setVisible(true);
-    }//GEN-LAST:event_outstandingFeePanelMouseClicked
+    }//GEN-LAST:event_employeeManageLabelMouseClicked
 
-    private void outstandingFeePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeePanelMouseEntered
+    private void employeeManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeManageLabelMouseEntered
         // TODO add your handling code here:
-        outstandingFeePanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_outstandingFeePanelMouseEntered
+        employeeManageLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_employeeManageLabelMouseEntered
+
+    private void employeeManagePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeManagePanelMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AccountExecutiveIssueOutstandingFee().setVisible(true);
+    }//GEN-LAST:event_employeeManagePanelMouseClicked
+
+    private void employeeManagePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeManagePanelMouseEntered
+        // TODO add your handling code here:
+        employeeManagePanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_employeeManagePanelMouseEntered
 
     private void logoutLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabelMouseClicked
         // TODO add your handling code here:
@@ -862,63 +911,75 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
         viewProfilePanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_viewProfilePanelMouseEntered
 
-    private void issueStatementLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementLabelMouseClicked
+    private void facilityManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityManageLabelMouseClicked
         // TODO add your handling code here:
         dispose();
         new AccountExecutiveIssueStatement().setVisible(true);
-    }//GEN-LAST:event_issueStatementLabelMouseClicked
+    }//GEN-LAST:event_facilityManageLabelMouseClicked
 
-    private void issueStatementLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementLabelMouseEntered
+    private void facilityManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityManageLabelMouseEntered
         // TODO add your handling code here:
-        issueStatementLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_issueStatementLabelMouseEntered
+        facilityManageLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_facilityManageLabelMouseEntered
 
-    private void issueStatementPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementPanelMouseClicked
+    private void facilityManagePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityManagePanelMouseClicked
         // TODO add your handling code here:
         dispose();
         new AccountExecutiveIssueStatement().setVisible(true);
-    }//GEN-LAST:event_issueStatementPanelMouseClicked
+    }//GEN-LAST:event_facilityManagePanelMouseClicked
 
-    private void issueStatementPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementPanelMouseEntered
+    private void facilityManagePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityManagePanelMouseEntered
         // TODO add your handling code here:
-        issueStatementPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_issueStatementPanelMouseEntered
+        facilityManagePanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_facilityManagePanelMouseEntered
 
-    private void setFixData() {
-        invoiceNoLabel.setText(invoiceNo);
-        unitNoLabel.setText(unitNo);
-    }
-    
-    private void setTable() {
-        AccountExecutive ae = new AccountExecutive();
-        List<String> paymentFeesDetails = ae.extractPaymentFees(invoiceNo);
-        String[] feesDetailsArray = new String[paymentFeesDetails.size()];
-        paymentFeesDetails.toArray(feesDetailsArray);
-        float subTotal = 0.00f;
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        
-        for (int i=0; i<paymentFeesDetails.size(); i++) {
-            String[] paymentDetails = feesDetailsArray[i].split(";");
-            String feeType = paymentDetails[0];
-            String issueDate = paymentDetails[1];
-            String consump = paymentDetails[2];
-            String unit = paymentDetails[3];
-            String unitPrice = paymentDetails[4];
-            String totalPrice = paymentDetails[5];
+    private void facBookManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facBookManageLabelMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_facBookManageLabelMouseClicked
 
-            subTotal += Float.valueOf(totalPrice);
-            String tbData[] = {feeType, issueDate, consump, unit, unitPrice, 
-                totalPrice};
-            tableModel.addRow(tbData);
-        } 
-        totalLabel.setText("Total: RM" + subTotal);
-        total = String.valueOf(subTotal);
-    }
+    private void facBookManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facBookManageLabelMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_facBookManageLabelMouseEntered
+
+    private void facBookManagePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facBookManagePanelMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_facBookManagePanelMouseClicked
+
+    private void facBookManagePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facBookManagePanelMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_facBookManagePanelMouseEntered
     
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
     
+    private void setTable() {
+        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        tableModel.setRowCount(0);
+            
+        AdminExecutive ae = new AdminExecutive();
+        List<String> availableList = 
+                ae.extractAllPropertiesHistory(String.valueOf
+                                (typeCB.getSelectedItem()).toLowerCase());
+        
+        String[] propertiesArray = new String[availableList.size()];
+        availableList.toArray(propertiesArray);
+        
+        for (int i = 0; i < availableList.size(); i++) {
+            String[] propertyDetails = propertiesArray[i].split(";");
+            String deletionID = propertyDetails[0];
+            String unitNo = propertyDetails[1];
+            String squareFoot = propertyDetails[2];
+            String status = propertyDetails[3];
+            String dateOfSold = propertyDetails[4];
+            String deletedDateTime = propertyDetails[5];
+            
+            String[] tbData = {String.valueOf(i+1), deletionID, unitNo, squareFoot,
+                status, dateOfSold, deletedDateTime, "RESTORE"};
+            tableModel.addRow(tbData);
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -936,13 +997,13 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutiveMakePayment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutiveUnitManagementHistory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutiveMakePayment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutiveUnitManagementHistory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutiveMakePayment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutiveUnitManagementHistory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutiveMakePayment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutiveUnitManagementHistory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -1460,25 +1521,26 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutiveMakePayment(null, null).setVisible(true);
+                new AdminExecutiveUnitManagementHistory().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton clearbt;
+    private javax.swing.JLabel complaintManagement;
+    private javax.swing.JPanel complaintManagementPanel;
     private javax.swing.JLabel dashboardLabel;
     private javax.swing.JPanel dashboardPanel;
-    private javax.swing.JLabel invoiceNoLabel;
-    private javax.swing.JLabel issueInvoiceLabel;
-    private javax.swing.JPanel issueInvoicePanel;
-    private javax.swing.JLabel issueReceiptLabel;
-    private javax.swing.JPanel issueReceiptPanel;
-    private javax.swing.JLabel issueStatementLabel;
-    private javax.swing.JPanel issueStatementPanel;
+    private javax.swing.JLabel employeeManageLabel;
+    private javax.swing.JPanel employeeManagePanel;
+    private javax.swing.JLabel facBookManageLabel;
+    private javax.swing.JPanel facBookManagePanel;
+    private javax.swing.JLabel facilityManageLabel;
+    private javax.swing.JPanel facilityManagePanel;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;
@@ -1486,20 +1548,19 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel logoutLabel;
     private javax.swing.JPanel logoutPanel;
-    private javax.swing.JLabel outstandingFeeLabel;
-    private javax.swing.JPanel outstandingFeePanel;
-    private javax.swing.JLabel paymentLabel;
-    private javax.swing.JPanel paymentPanel;
-    private javax.swing.JLabel totalLabel;
-    private javax.swing.JLabel unitNoLabel;
+    private javax.swing.JLabel rTManageLabel;
+    private javax.swing.JPanel rTMangePanel;
+    private javax.swing.JTextField searchTextField;
+    private javax.swing.JComboBox<String> typeCB;
+    private javax.swing.JLabel unitManageLabel;
+    private javax.swing.JPanel unitManagePanel;
     private javax.swing.JLabel viewProfileLabel;
     private javax.swing.JPanel viewProfilePanel;
+    private javax.swing.JLabel warningMessage;
     // End of variables declaration//GEN-END:variables
 }

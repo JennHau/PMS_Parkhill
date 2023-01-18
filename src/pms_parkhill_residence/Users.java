@@ -4,14 +4,8 @@
  */
 package pms_parkhill_residence;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,18 +21,16 @@ public class Users{
     private String phoneNo;
     private String identificationNo;
     private String gender;
-    private Date birthOfDate;
-    private String role;
     private String unitNo;
     FileHandling fh = new FileHandling();
     
     //Constructor for non-residents
     public Users(){}
     
-    // Constructor for admin
-    public Users(String userID, String firstName, String lastName, String email,
-                 String password, String phoneNo, String identificationNo,
-                 String gender, Date birthOfDate, String role) { 
+    //Constructor for non-redidents
+    public Users(String userID, String email, String password, String firstName,
+                 String lastName, String identificationNo, String gender,
+                 String phoneNo) { 
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -46,14 +38,13 @@ public class Users{
         this.phoneNo = phoneNo;
         this.identificationNo = identificationNo;
         this.gender = gender;
-        this.birthOfDate = birthOfDate;
-        this.role = role;
+        this.unitNo = "-";
     }
-    
-    //Constructor for residents
-    public Users(String userID, String firstName, String lastName, String email,
-                 String password, String phoneNo, String identificationNo,
-                 String gender, Date birthOfDate, String role, String unitNo) { 
+
+    //Constructor for redidents/tenants/vendors
+    public Users(String userID, String email, String password, String firstName,
+                 String lastName, String identificationNo, String gender, String phoneNo, 
+                 String unitNo) { 
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -62,7 +53,6 @@ public class Users{
         this.phoneNo = phoneNo;
         this.identificationNo = identificationNo;
         this.gender = gender;
-        this.birthOfDate = birthOfDate;
         this.unitNo = unitNo;
     }
 
@@ -179,20 +169,6 @@ public class Users{
     }
 
     /**
-     * @return the birthOfDate
-     */
-    public Date getBirthOfDate() {
-        return birthOfDate;
-    }
-
-    /**
-     * @param birthOfDate the birthOfDate to set
-     */
-    public void setBirthOfDate(Date birthOfDate) {
-        this.birthOfDate = birthOfDate;
-    }
-
-    /**
      * @return the unitNo
      */
     public String getUnitNo() {
@@ -204,20 +180,6 @@ public class Users{
      */
     public void setUnitNo(String unitNo) {
         this.unitNo = unitNo;
-    }
-    
-    /**
-     * @return the role
-     */
-    public String getRole() {
-        return role;
-    }
-
-    /**
-     * @param role the role to set
-     */
-    public void setRole(String role) {
-        this.role = role;
     }
     
     public boolean login(String email, String password) throws IOException {
@@ -369,5 +331,112 @@ public class Users{
             }
         } 
         fh.fileWrite("userProfile.txt", false, newData);
+    }
+    
+    public void resetPassword(String password, String userID) {
+        List<String> userProfile = fh.fileRead("userProfile.txt");
+        String[] userProfileArray = new String[userProfile.size()];
+        userProfile.toArray(userProfileArray);
+        
+        List<String> newData = new ArrayList<>();
+        
+        for (int i = 0; i<userProfile.size(); i++) {
+            String[] userInfo2 = userProfileArray[i].split(";");
+            String userID_temp = userInfo2[0];
+            String email_temp = userInfo2[1];
+            String firstName_temp = userInfo2[3];
+            String lastName_temp = userInfo2[4];
+            String identificationNo_temp = userInfo2[5];
+            String gender_temp = userInfo2[6];
+            String phoneNo_temp = userInfo2[7];
+            String unitNo_temp = userInfo2[8];
+            if(!userID.equals(userID_temp)) {
+                newData.add(userProfileArray[i]);
+            } else {
+                    newData.add(userID_temp +";"+ email_temp +";"+ password +";"+
+                            firstName_temp +";"+ lastName_temp +";"+
+                            identificationNo_temp +";"+ gender_temp +";"+
+                            phoneNo_temp +";"+ unitNo_temp +";");
+            }
+        } 
+        fh.fileWrite("userProfile.txt", false, newData);
+    }
+    
+    public void userRegistration() {
+        String userID = this.getUserID().toLowerCase();
+        String email = this.getEmail();
+        String password = this.getPassword();
+        String firstName = this.getFirstName();
+        String lastName = this.getLastName();
+        String identificationNo = this.getIdentificationNo();
+        String gender = this.getGender();
+        String phoneNo = this.getPhoneNo();
+        String unitNo = this.getUnitNo();
+        
+        List<String> newData = new ArrayList<>();
+        newData.add(userID +";"+ email +";"+password +";"+ firstName +";"+ lastName
+                +";"+ identificationNo +";"+ gender +";"+ phoneNo +";"+ unitNo +";");
+        
+        fh.fileWrite("userProfile.txt", true, newData);
+    }
+    
+    public void setAllUserData(String userID) {
+        List<String> userProfile = fh.fileRead("userProfile.txt");
+        String[] userProfileArray = new String[userProfile.size()];
+        userProfile.toArray(userProfileArray);
+        
+        for (int i = 0; i<userProfile.size(); i++) {
+            String[] userInfo2 = userProfileArray[i].split(";");
+            String userID_temp = userInfo2[0];
+            String email = userInfo2[1];
+            String firstName = userInfo2[3];
+            String lastName = userInfo2[4];
+            String identificationNo = userInfo2[5];
+            String gender = userInfo2[6];
+            String phoneNo = userInfo2[7];
+            String unitNo = userInfo2[8];
+            
+            if (userID_temp.equals(userID.toLowerCase())) {
+                this.userID = userID;
+                this.firstName = firstName;
+                this.lastName = lastName;
+                this.email = email;
+                this.phoneNo = phoneNo;
+                this.identificationNo = identificationNo;
+                this.gender = gender;
+                this.unitNo = unitNo;
+            }
+        }
+    }
+    
+    public void modifyUserAccount() {
+        String userID = this.getUserID().toLowerCase();
+        String email = this.getEmail();
+        String firstName = this.getFirstName();
+        String lastName = this.getLastName();
+        String identificationNo = this.getIdentificationNo();
+        String gender = this.getGender();
+        String phoneNo = this.getPhoneNo();
+        String unitNo = this.getUnitNo();
+        
+        List<String> userProfile = fh.fileRead("userProfile.txt");
+        String[] userProfileArray = new String[userProfile.size()];
+        userProfile.toArray(userProfileArray);
+        
+        List<String> newData = new ArrayList<>();
+        
+        for (int i = 0; i<userProfile.size(); i++) {
+            String[] userInfo = userProfileArray[i].split(";");
+            String userID_temp = userInfo[0];
+            String password_temp = userInfo[2];
+            
+            if (userID_temp.equals(userID)) {
+                newData.add(userID +";"+ email +";"+ password_temp +";"+ firstName
+                        +";"+ lastName +";"+ identificationNo +";"+ gender
+                        +";"+ phoneNo +";"+ unitNo +";");
+            } else {
+                newData.add(userProfileArray[i]);
+            }
+        } fh.fileWrite("userProfile.txt", false, newData);
     }
 }
