@@ -2,31 +2,26 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package pms_parkhill_residence;
+package accountExecutive;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Toolkit;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import pms_parkhill_residence.HomePage;
 
 /**
  *
  * @author wongj
  */
-public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
+public class AccountExecutiveIssueOutstandingFee extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
      */
-    public AccountExecutiveIssueInvoiceDetail() {
+    public AccountExecutiveIssueOutstandingFee() {
         initComponents();
         setWindowIcon();
-        setFeeTypeNameLabel();
         setMonthYearCB();
         setTable();
     }
@@ -50,17 +45,12 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         searchTextField = new javax.swing.JTextField();
         clearbt = new javax.swing.JButton();
-        issueAllPanel = new javax.swing.JPanel();
-        issueAllLabel = new javax.swing.JLabel();
-        statusCB = new javax.swing.JComboBox<>();
-        jLabel13 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         monthNYearCB = new javax.swing.JComboBox<>();
-        feeTypeNameLabel = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel19 = new javax.swing.JLabel();
-        jPanel16 = new javax.swing.JPanel();
-        jLabel20 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        dashboardPanel = new javax.swing.JPanel();
+        dashboardLabel = new javax.swing.JLabel();
         issueInvoicePanel = new javax.swing.JPanel();
         issueInvoiceLabel = new javax.swing.JLabel();
         paymentPanel = new javax.swing.JPanel();
@@ -125,7 +115,7 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(102, 102, 102));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel14.setText("ISSUE INVOICE");
+        jLabel14.setText("OUTSTANDING FEE");
         jLabel14.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -133,11 +123,11 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
 
             },
             new String [] {
-                "NO.", "UNIT NO.", "CONSUMPTION", "UNIT", "UNIT PRICE (RM)", "TOTAL PRICE (RM)", "ACTION"
+                "NO.", "UNIT NO.", "INVOICE NO.", "ISSUED DATE", "OUTSTANDING FEE (RM)", "ACTION"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -155,11 +145,6 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
         jLabel16.setForeground(new java.awt.Color(153, 153, 153));
         jLabel16.setText("UNIT NO:");
 
-        searchTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchTextFieldActionPerformed(evt);
-            }
-        });
         searchTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 searchTextFieldKeyReleased(evt);
@@ -173,51 +158,6 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
             }
         });
 
-        issueAllPanel.setBackground(new java.awt.Color(13, 50, 79));
-        issueAllPanel.setToolTipText("");
-        issueAllPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                issueAllPanelMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                issueAllPanelMouseEntered(evt);
-            }
-        });
-
-        issueAllLabel.setForeground(new java.awt.Color(255, 255, 255));
-        issueAllLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        issueAllLabel.setText("ISSUE TO ALL");
-        issueAllLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                issueAllLabelMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                issueAllLabelMouseEntered(evt);
-            }
-        });
-
-        javax.swing.GroupLayout issueAllPanelLayout = new javax.swing.GroupLayout(issueAllPanel);
-        issueAllPanel.setLayout(issueAllPanelLayout);
-        issueAllPanelLayout.setHorizontalGroup(
-            issueAllPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(issueAllLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
-        );
-        issueAllPanelLayout.setVerticalGroup(
-            issueAllPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(issueAllLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
-        );
-
-        statusCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PENDING", "ISSUED" }));
-        statusCB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                statusCBActionPerformed(evt);
-            }
-        });
-
-        jLabel13.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel13.setText("STATUS:");
-
         jLabel15.setForeground(new java.awt.Color(153, 153, 153));
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel15.setText("MONTH/YEAR:");
@@ -228,43 +168,25 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
             }
         });
 
-        feeTypeNameLabel.setFont(new java.awt.Font("Yu Gothic UI", 1, 12)); // NOI18N
-        feeTypeNameLabel.setForeground(new java.awt.Color(102, 102, 102));
-        feeTypeNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        feeTypeNameLabel.setPreferredSize(new java.awt.Dimension(18, 16));
-
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(28, 28, 28)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 960, Short.MAX_VALUE)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(statusCB, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(monthNYearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel16)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(clearbt)
-                                .addGap(242, 242, 242)
-                                .addComponent(issueAllPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(336, 336, 336)
-                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(94, 94, 94)
-                        .addComponent(feeTypeNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 823, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(monthNYearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel16)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(clearbt))
+                    .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
@@ -272,78 +194,69 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(feeTypeNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
+                .addGap(21, 21, 21)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(issueAllPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel13)
-                                .addGap(0, 0, 0)
-                                .addComponent(statusCB, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(jPanel6Layout.createSequentialGroup()
-                            .addComponent(jLabel15)
-                            .addGap(0, 0, 0)
-                            .addComponent(monthNYearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel6Layout.createSequentialGroup()
                             .addGap(7, 7, 7)
                             .addComponent(jLabel16))
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(clearbt))))
+                            .addComponent(clearbt)))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel15)
+                        .addGap(0, 0, 0)
+                        .addComponent(monthNYearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
-        );
-
-        jPanel4.setBackground(new java.awt.Color(13, 24, 42));
-
-        jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/parkhillLogo.png"))); // NOI18N
-
-        jPanel16.setBackground(new java.awt.Color(13, 24, 42));
-        jPanel16.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel16MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jPanel16MouseEntered(evt);
-            }
-        });
-
-        jLabel20.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel20.setText("Dashboard");
-        jLabel20.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel20MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel20MouseEntered(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
-        jPanel16.setLayout(jPanel16Layout);
-        jPanel16Layout.setHorizontalGroup(
-            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel16Layout.createSequentialGroup()
-                .addContainerGap(32, Short.MAX_VALUE)
-                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(122, 122, 122))
-        );
-        jPanel16Layout.setVerticalGroup(
-            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel16Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel20)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        issueInvoicePanel.setBackground(new java.awt.Color(13, 50, 79));
+        jPanel1.setBackground(new java.awt.Color(13, 24, 42));
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/parkhillLogo.png"))); // NOI18N
+
+        dashboardPanel.setBackground(new java.awt.Color(13, 24, 42));
+        dashboardPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dashboardPanelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                dashboardPanelMouseEntered(evt);
+            }
+        });
+
+        dashboardLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        dashboardLabel.setForeground(new java.awt.Color(255, 255, 255));
+        dashboardLabel.setText("Dashboard");
+        dashboardLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dashboardLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                dashboardLabelMouseEntered(evt);
+            }
+        });
+
+        javax.swing.GroupLayout dashboardPanelLayout = new javax.swing.GroupLayout(dashboardPanel);
+        dashboardPanel.setLayout(dashboardPanelLayout);
+        dashboardPanelLayout.setHorizontalGroup(
+            dashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dashboardPanelLayout.createSequentialGroup()
+                .addContainerGap(32, Short.MAX_VALUE)
+                .addComponent(dashboardLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(122, 122, 122))
+        );
+        dashboardPanelLayout.setVerticalGroup(
+            dashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dashboardPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(dashboardLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        issueInvoicePanel.setBackground(new java.awt.Color(13, 24, 42));
         issueInvoicePanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 issueInvoicePanelMouseClicked(evt);
@@ -466,7 +379,7 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        outstandingFeePanel.setBackground(new java.awt.Color(13, 24, 42));
+        outstandingFeePanel.setBackground(new java.awt.Color(13, 50, 79));
         outstandingFeePanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 outstandingFeePanelMouseClicked(evt);
@@ -645,18 +558,18 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(80, 80, 80)
-                                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(dashboardPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(issueInvoicePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(paymentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(issueReceiptPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -665,18 +578,18 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                             .addComponent(viewProfilePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(issueStatementPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(logoutPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38)
-                .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(dashboardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(issueInvoicePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -687,7 +600,7 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                 .addComponent(outstandingFeePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(issueStatementPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 226, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 217, Short.MAX_VALUE)
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(viewProfilePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -701,7 +614,7 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -713,7 +626,7 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -732,176 +645,39 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
         setTable();
     }//GEN-LAST:event_monthNYearCBActionPerformed
 
-    private void statusCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusCBActionPerformed
-        // TODO add your handling code here:
-        setTable();
-        if (statusCB.getSelectedItem() == "ISSUED") {
-            issueAllPanel.setBackground(Color.GRAY);
-        } else if (statusCB.getSelectedItem() == "PENDING") {
-            issueAllPanel.setBackground(new Color(13,50,79));
-        }
-    }//GEN-LAST:event_statusCBActionPerformed
-
-    private void issueAllLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueAllLabelMouseEntered
-        // TODO add your handling code here:
-            issueAllLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_issueAllLabelMouseEntered
-
-    private void issueAllPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueAllPanelMouseEntered
-        // TODO add your handling code here:
-        issueAllPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_issueAllPanelMouseEntered
-
-    private void issueAllPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueAllPanelMouseClicked
-        // TODO add your handling code here:
-        issueAllInvoice();
-    }//GEN-LAST:event_issueAllPanelMouseClicked
-
-    private void issueAllLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueAllLabelMouseClicked
-        // TODO add your handling code here:
-        issueAllInvoice();
-    }//GEN-LAST:event_issueAllLabelMouseClicked
-
-    private void issueAllInvoice() {
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        if (statusCB.getSelectedItem() == "PENDING" && tableModel.getRowCount() >0){
-            
-            int result = JOptionPane.showConfirmDialog(null,"Are you sure to issue all invoices?",
-                        "ISSUE INVOICE",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE);
-            
-                if(result == JOptionPane.YES_OPTION){
-                    List<String> invoiceDetails = new ArrayList<String>();
-                    
-                    AccountExecutive ae = new AccountExecutive();
-                    
-                    for (int i=0; i<tableModel.getRowCount(); i++) {
-                        String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
-                        String cMonthYear = monthYear.substring(0, monthYear.indexOf("/")) 
-                                + monthYear.substring(monthYear.indexOf("/") + 1);
-                        String invoiceNo = String.valueOf(tableModel.getValueAt(i, 1)) + cMonthYear;
-                        String unitNo = String.valueOf(tableModel.getValueAt(i, 1));
-                        String feeTypeNTarget = feeTypeNameLabel.getText();
-                        String feeType = feeTypeNTarget.substring(0, feeTypeNTarget.indexOf(", "));
-                        String target = feeTypeNTarget.substring(feeTypeNTarget.indexOf(",") + 2);
-                        String consumption = String.valueOf(tableModel.getValueAt(i, 2));
-                        String unit = String.valueOf(tableModel.getValueAt(i, 3));
-                        String unitPrice = String.valueOf(tableModel.getValueAt(i, 4));
-                        String totalPrice = String.valueOf(tableModel.getValueAt(i, 5));
-                        String period = monthYear;
-                        String generatedDate = new AccountExecutive().todayDate();
-                        String cDetails = invoiceNo +";"+ unitNo +";"+ feeType +";"+ target +";"+
-                                consumption +";"+ unit +";"+ unitPrice +";"+ totalPrice +";"+
-                                period +";"+ generatedDate+";";
-                        invoiceDetails.add(cDetails);
-                        ae.createUserTransactionLink(invoiceNo, unitNo);
-                    }
-                        
-                        ae.issueInvoice(invoiceDetails);
-                        setTable();
-                        JOptionPane.showMessageDialog (null, "Invoices have been issued!", 
-                                        "ISSUE INVOICE", JOptionPane.INFORMATION_MESSAGE);
-                }
-        }
-    }
-    
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
         int column = jTable1.getSelectedColumn();
         int row = jTable1.getSelectedRow();
         
-        if (column == 6) {
-            if (statusCB.getSelectedItem() == "PENDING"){
-                int result = JOptionPane.showConfirmDialog(null,"Are you sure to issue this invoice?",
-                            "ISSUE INVOICE",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE);
-
-                if(result == JOptionPane.YES_OPTION){
-                    List<String> invoiceDetails = new ArrayList<String>();
-                    AccountExecutive ae = new AccountExecutive();
-                    String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
-                    String cMonthYear = monthYear.substring(0, monthYear.indexOf("/")) 
-                            + monthYear.substring(monthYear.indexOf("/") + 1);
-                    String invoiceNo = String.valueOf(tableModel.getValueAt(row, 1)) + cMonthYear;
-                    String unitNo = String.valueOf(tableModel.getValueAt(row, 1));
-                    String feeTypeNTarget = feeTypeNameLabel.getText();
-                    String feeType = feeTypeNTarget.substring(0, feeTypeNTarget.indexOf(", "));
-                    String target = feeTypeNTarget.substring(feeTypeNTarget.indexOf(",") + 2);
-                    String consumption = String.valueOf(tableModel.getValueAt(row, 2));
-                    String unit = String.valueOf(tableModel.getValueAt(row, 3));
-                    String unitPrice = String.valueOf(tableModel.getValueAt(row, 4));
-                    String totalPrice = String.valueOf(tableModel.getValueAt(row, 5));
-                    String period = monthYear;
-                    String generatedDate = new AccountExecutive().todayDate();
-                    String cDetails = invoiceNo +";"+ unitNo +";"+ feeType +";"+ target +";"+
-                            consumption +";"+ unit +";"+ unitPrice +";"+ totalPrice +";"+
-                            period +";"+ generatedDate+";";
-                    invoiceDetails.add(cDetails);
-                    ae.createUserTransactionLink(invoiceNo, unitNo);
-
-                    ae.issueInvoice(invoiceDetails);
-                    setTable();
-                    JOptionPane.showMessageDialog (null, "Invoice has been issued!", 
-                                    "ISSUE INVOICE", JOptionPane.INFORMATION_MESSAGE);
-                }
-            }
+        if (column == 5) {
+            String invoiceNo = String.valueOf(tableModel.getValueAt(row, 2));
+            new AccountExecutiveLatePaymentFee(invoiceNo).setVisible(true);
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
-    private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
-        // TODO add your handling code here:
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        // reset table
-        tableModel.setRowCount(0);
-        setTable();
-        if (!"".equals(searchTextField.getText().toUpperCase())) {
-            String module_code = searchTextField.getText().toUpperCase();
-            for (int i=0; i<tableModel.getRowCount(); i++) {
-                // get module code from table
-                String tmodule_code = String.valueOf(jTable1.getValueAt(i, 1)).toUpperCase();
-                // if module code not contain in search bar
-                if (!tmodule_code.contains(module_code)) {
-                    // remove module from table
-                    tableModel.removeRow(i);
-                    i--;
-                }
-            }
-        } 
-        else {
-            tableModel.setRowCount(0);
-            setTable();
-        }
-        if (tableModel.getRowCount() == 0) {
-            issueAllPanel.setBackground(Color.GRAY);
-        } else {
-            issueAllPanel.setBackground(new Color(13,50,79));
-        }
-    }//GEN-LAST:event_searchTextFieldKeyReleased
-
-    private void jLabel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseClicked
+    private void dashboardLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseClicked
         // TODO add your handling code here:
         dispose();
         new AccountExecutiveDashboard().setVisible(true);
-    }//GEN-LAST:event_jLabel20MouseClicked
+    }//GEN-LAST:event_dashboardLabelMouseClicked
 
-    private void jLabel20MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseEntered
+    private void dashboardLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseEntered
         // TODO add your handling code here:
-        jLabel20.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_jLabel20MouseEntered
+        dashboardLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_dashboardLabelMouseEntered
 
-    private void jPanel16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel16MouseClicked
+    private void dashboardPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanelMouseClicked
         // TODO add your handling code here:
         dispose();
         new AccountExecutiveDashboard().setVisible(true);
-    }//GEN-LAST:event_jPanel16MouseClicked
+    }//GEN-LAST:event_dashboardPanelMouseClicked
 
-    private void jPanel16MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel16MouseEntered
+    private void dashboardPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanelMouseEntered
         // TODO add your handling code here:
-        jPanel16.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_jPanel16MouseEntered
+        dashboardPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_dashboardPanelMouseEntered
 
     private void issueInvoiceLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoiceLabelMouseClicked
         // TODO add your handling code here:
@@ -975,8 +751,6 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
 
     private void outstandingFeeLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeeLabelMouseClicked
         // TODO add your handling code here:
-        dispose();
-        new AccountExecutiveIssueOutstandingFee().setVisible(true);
     }//GEN-LAST:event_outstandingFeeLabelMouseClicked
 
     private void outstandingFeeLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeeLabelMouseEntered
@@ -986,8 +760,6 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
 
     private void outstandingFeePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeePanelMouseClicked
         // TODO add your handling code here:
-        dispose();
-        new AccountExecutiveIssueOutstandingFee().setVisible(true);
     }//GEN-LAST:event_outstandingFeePanelMouseClicked
 
     private void outstandingFeePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeePanelMouseEntered
@@ -1053,37 +825,39 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
         issueStatementPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_issueStatementPanelMouseEntered
 
-    private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextFieldActionPerformed
+    private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_searchTextFieldActionPerformed
- 
-    private void setFeeTypeNameLabel() {
-        try {
-            FileReader fr = new FileReader("currentInvoice.txt");
-            BufferedReader br = new BufferedReader(fr);
-            String line = br.readLine();
-            String[] invoiceFeeType = line.split(";");
-            String feeType = invoiceFeeType[0];
-            String target = invoiceFeeType[1];
-            feeTypeNameLabel.setText(feeType +", "+ target);
-            fr.close(); br.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        // reset table
+        tableModel.setRowCount(0);
+        setTable();
+        if (!"".equals(searchTextField.getText().toUpperCase())) {
+            String module_code = searchTextField.getText().toUpperCase();
+            for (int i=0; i<tableModel.getRowCount(); i++) {
+                // get module code from table
+                String tmodule_code = String.valueOf(jTable1.getValueAt(i, 1)).toUpperCase();
+                // if module code not contain in search bar
+                if (!tmodule_code.contains(module_code)) {
+                    // remove module from table
+                    tableModel.removeRow(i);
+                    i--;
+                }
+            }
+        } 
+        else {
+            tableModel.setRowCount(0);
+            setTable();
         }
-        
-    }
-    
+    }//GEN-LAST:event_searchTextFieldKeyReleased
+
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
 
     private void setMonthYearCB() {
         try {
-            String feeTypeNTarget = feeTypeNameLabel.getText();
-            String feeTypeName = feeTypeNTarget.substring(0, feeTypeNTarget.indexOf(", "));
-            String target = feeTypeNTarget.substring(feeTypeNTarget.indexOf(",") + 2);
             AccountExecutive ae = new AccountExecutive();
-            List<String> monthNYear = ae.rangeOfMonthNYear(feeTypeName, target);
+            List<String> monthNYear = ae.getAllMonthYearInvoice();
             for (int i=0; i<monthNYear.size(); i++) {
                 monthNYearCB.addItem(monthNYear.get(i));
             } monthNYearCB.setSelectedIndex(monthNYear.size() -1);
@@ -1093,43 +867,33 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
     }
     
     private void setTable() {
-        String feeTypeNTarget = feeTypeNameLabel.getText();
-        String feeTypeName = feeTypeNTarget.substring(0, feeTypeNTarget.indexOf(", "));
-        String target = feeTypeNTarget.substring(feeTypeNTarget.indexOf(",") + 2);
-        String status = String.valueOf(statusCB.getSelectedItem());
-        String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
-        AccountExecutive ae = new AccountExecutive();
-        List<String> invoiceDetails = ae.extractInvoiceDetails(feeTypeName,
-                target, status, monthYear);
-
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        tableModel.setRowCount(0);
-
-        String[] invoiceDetailsArray = new String[invoiceDetails.size()];
-        invoiceDetails.toArray(invoiceDetailsArray);
-        for (int i=0; i<invoiceDetails.size(); i++) {
-            String[] invoiceData = invoiceDetailsArray[i].split(";");
-            String unitNo = invoiceData[0];
-            String consumption = invoiceData[1];
-            String unit = invoiceData[2];
-            String unitPrice = invoiceData[3];
-            String totalPrice = invoiceData[4];
-            if (status.equals("PENDING")) {
-                String tbData[] = {String.valueOf(i+1), unitNo, consumption, unit,
-                    unitPrice, totalPrice, "ISSUE INVOICE"};
+        try {
+            DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+            tableModel.setRowCount(0);
+            
+            String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
+            String cMonthYear = monthYear.substring(0, monthYear.indexOf("/")) 
+                    + monthYear.substring(monthYear.indexOf("/") + 1);
+            AccountExecutive ae = new AccountExecutive();
+            List<String> pendingPaymentDetails = ae.calculateTotalOutstanding(cMonthYear);
+            
+            String[] pendingPaymentArray = new String[pendingPaymentDetails.size()];
+            pendingPaymentDetails.toArray(pendingPaymentArray);
+            
+            for (int i=0; i<pendingPaymentDetails.size(); i++) {
+                String[] paymentData = pendingPaymentArray[i].split(";");
+                String unitNo = paymentData[0];
+                String invoiceNo = paymentData[1];
+                String issuedDate = paymentData[2];
+                String totalOutstanding = paymentData[3];
+                
+                String tbData[] = {String.valueOf(i+1), unitNo, invoiceNo,
+                    issuedDate, totalOutstanding, "CHARGE LATE PAYMENT"};
                 tableModel.addRow(tbData);
-            } else if (status.equals("ISSUED")) {
-                String tbData[] = {String.valueOf(i+1), unitNo, consumption, unit,
-                    unitPrice, totalPrice, "VIEW"};
-                tableModel.addRow(tbData);
-            }
+            } 
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        if (tableModel.getRowCount() == 0) {
-            issueAllPanel.setBackground(Color.GRAY);
-        } else {
-            issueAllPanel.setBackground(new Color(13,50,79));
-        }
-        
     }
 
     /**
@@ -1149,14 +913,142 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutiveIssueInvoiceDetail.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AccountExecutiveIssueOutstandingFee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutiveIssueInvoiceDetail.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AccountExecutiveIssueOutstandingFee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutiveIssueInvoiceDetail.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AccountExecutiveIssueOutstandingFee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AccountExecutiveIssueInvoiceDetail.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AccountExecutiveIssueOutstandingFee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -1289,35 +1181,31 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutiveIssueInvoiceDetail().setVisible(true);
+                new AccountExecutiveIssueOutstandingFee().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clearbt;
-    private javax.swing.JLabel feeTypeNameLabel;
-    private javax.swing.JLabel issueAllLabel;
-    private javax.swing.JPanel issueAllPanel;
+    private javax.swing.JLabel dashboardLabel;
+    private javax.swing.JPanel dashboardPanel;
     private javax.swing.JLabel issueInvoiceLabel;
     private javax.swing.JPanel issueInvoicePanel;
     private javax.swing.JLabel issueReceiptLabel;
     private javax.swing.JPanel issueReceiptPanel;
     private javax.swing.JLabel issueStatementLabel;
     private javax.swing.JPanel issueStatementPanel;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
@@ -1329,7 +1217,6 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
     private javax.swing.JLabel paymentLabel;
     private javax.swing.JPanel paymentPanel;
     private javax.swing.JTextField searchTextField;
-    private javax.swing.JComboBox<String> statusCB;
     private javax.swing.JLabel viewProfileLabel;
     private javax.swing.JPanel viewProfilePanel;
     // End of variables declaration//GEN-END:variables
