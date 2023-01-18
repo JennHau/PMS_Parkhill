@@ -69,12 +69,14 @@ public class BuildingExecutive extends Users{
     
     // File each date schedule setting file
     String patScheduleModRec = "patScheduleModRec.txt";
+    
+    // File to store history file
+    String jobFileHistory = "jobFileHistory.txt";
 
 
     
     private ArrayList getEmployeeJobList(LocalDate localDate, LocalTime localTime) throws IOException {
         List<String> employeeList = fileHandling.fileRead(fullEmployeeList);
-        List<String> jobFile = fileHandling.fileRead(employeeJobFile);
         
         ArrayList<String> workingList = new ArrayList<>();
         ArrayList<String> assEmply = new ArrayList<>();
@@ -84,6 +86,21 @@ public class BuildingExecutive extends Users{
         // Get the day of the date parsed
         String dayOfWeek = localDate.getDayOfWeek().toString().toLowerCase();
         
+        ArrayList<String> historyList = new ArrayList<>();
+        ArrayList<String> updateJobList = new ArrayList<>();
+        List<String> oldVer = fileHandling.fileRead(employeeJobFile);
+        for (String eachLine : oldVer) {
+            String[] eachData = eachLine.split(sp);
+            String[] endDateTime = eachData[8].split(" ");
+            if (combineStringDateTime(endDateTime[0], endDateTime[1]).isBefore(LocalDateTime.now())){
+                String emplyId = eachData[1];
+                String emplyName = getEmployeeDetails(emplyId)[2];
+                historyList.add(eachData[0] + sp + eachData[1] + sp  + emplyName + sp + eachData[2] + sp + eachData[3] + sp + eachData[4] + sp + eachData[5] + sp + eachData[6]
+                                + sp + eachData[7] + sp + eachData[8] + sp + eachData[9] + sp + eachData[10] + sp + eachData[11] + sp + eachData[12] + sp + eachData[13] + sp);
+            }
+        }
+        
+        List<String> jobFile = fileHandling.fileRead(employeeJobFile);
         boolean firstLine = true;
         for (String jobFileLine : jobFile) {
             if (!firstLine) {
