@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package pms_parkhill_residence;
+package buildingExecutive;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
+import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -624,7 +626,7 @@ public class BuildingExecutive extends Users{
     }
     
     public String getComplaintDetails(String complaintId) {
-        List<String> complaintData = fh.fileRead(complaintFiles);
+        List<String> complaintData = fileHandling.fileRead(complaintFiles);
         
         boolean firstLine = true;
         for (String eachData : complaintData) {

@@ -2,14 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package pms_parkhill_residence;
+package buildingExecutive;
 
+import buildingExecutive.BuildingExecutive;
 import java.awt.Toolkit;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import pms_parkhill_residence.FileHandling;
 
 /**
  *
@@ -185,15 +187,15 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel24.setText(" Schedule: ");
         jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel24.setText(" Schedule: ");
 
         jButton1.setText("Add Row");
 
-        jLabel26.setText(" Slot Gap By: ");
         jLabel26.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel26.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel26.setText(" Slot Gap By: ");
 
         scheduleJT.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -208,17 +210,17 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(scheduleJT);
 
-        jLabel27.setText("Hour(s) ");
         jLabel27.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel27.setText("Hour(s) ");
 
-        jLabel28.setText(" Level Interval By: ");
         jLabel28.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel28.setText(" Level Interval By: ");
 
-        jLabel29.setText("Level(s)");
         jLabel29.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel29.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel29.setText("Level(s)");
 
         defaultBTN.setText("Reset to Default");
         defaultBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -227,9 +229,9 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
             }
         });
 
-        jLabel30.setText("Checkpoint Level: ");
         jLabel30.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel30.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel30.setText("Checkpoint Level: ");
 
         jButton3.setText("Back");
 
@@ -240,9 +242,9 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
             }
         });
 
-        jLabel25.setText(" Modification: ");
         jLabel25.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel25.setText(" Modification: ");
 
         hourComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2", "4", "6", "8", "10", "12" }));
         hourComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -348,10 +350,10 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("PATROLLING SCHEDULE MANAGEMENT");
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel2.setText("PATROLLING SCHEDULE MANAGEMENT");
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/parkhillLogo.png"))); // NOI18N
