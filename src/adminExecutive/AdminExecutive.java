@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import accountExecutive.AccountExecutive;
+import java.util.Calendar;
 import pms_parkhill_residence.FileHandling;
 
 /**
@@ -46,6 +47,26 @@ public class AdminExecutive {
                 availableList.add(unitNo +";"+ squareFoot +";"+ status +";"+
                         dateOfSold +";");
             }
+        } return availableList;
+    }
+    
+    public List<String> extractAllProperties() {
+        List<String> propertiesList = fh.fileRead("propertyDetails.txt");
+        String[] propertiesArray = new String[propertiesList.size()];
+        propertiesList.toArray(propertiesArray);
+        
+        List<String> availableList = new ArrayList<>();
+        
+        for (int i = 1; i < propertiesList.size(); i++) {
+            String[] propertyDetails = propertiesArray[i].split(";");
+            String unitNo = propertyDetails[0];
+            String squareFoot = propertyDetails[2];
+            String status = propertyDetails[3];
+            String dateOfSold = propertyDetails[4];
+            
+            availableList.add(unitNo +";"+ squareFoot +";"+ status +";"+
+                    dateOfSold +";");
+            
         } return availableList;
     }
     
@@ -240,7 +261,6 @@ public class AdminExecutive {
             
             
             if(eUnitNo.equals(unitNo) && userID.startsWith("rsd")) {
-                System.out.println(userID);
                 newData2.add(currentDeleteID +";"+ userArray[i]
                         + LocalDateTime.now() +";");
             } else {
@@ -608,5 +628,184 @@ public class AdminExecutive {
             }
             
         } fh.fileWrite("propertyDetails.txt", false, newData);
+    }
+    
+    public List<String> extractComplaintDetails() {
+        List<String> availableList = new ArrayList<>();
+        
+        List<String> complaintList = fh.fileRead("complaints.txt");
+        List<String> userList = fh.fileRead("userProfile.txt");
+        
+        for (int i = 1; i < complaintList.size(); i++) {
+            String[] complaintDetails = complaintList.get(i).split(";");
+            String complaintId = complaintDetails[0];
+            String complainerId = complaintDetails[1];
+            String complaintDesc = complaintDetails[2];
+            String date = complaintDetails[3];
+            String time = complaintDetails[4];
+            String status = complaintDetails[5];
+            
+            for (int j = 1; j < userList.size(); j++) {
+                String[] userDetails = userList.get(j).split(";");
+                String userID = userDetails[0];
+                String unitNo = userDetails[8];
+                if (userID.equals(complainerId)) {
+                    availableList.add(complaintId +";"+ complainerId +";"+ unitNo +";"+
+                            complaintDesc +";"+ date +";"+ time +";"+ status);
+                }
+            }
+        } return availableList;
+    }
+    
+    public List<String> extractAvailableComplainer(String unitNo) {
+        List<String> userList = fh.fileRead("userProfile.txt");
+        
+        List<String> availableComplainer = new ArrayList<>();
+        
+        for (int i = 1; i < userList.size(); i++) {
+            String[] userDetails = userList.get(i).split(";");
+            String userID = userDetails[0];
+            String name = userDetails[3] +" "+ userDetails[4];
+            String eUnitNo = userDetails[8];
+            
+            if (eUnitNo.equals(unitNo)) {
+                availableComplainer.add(userID +" - "+ name);
+            }
+        } return availableComplainer;
+    }
+    
+    public String getLatestComplaintID() {
+        List<String> complaintList =  fh.fileRead("complaints.txt");
+        
+        int largestComplaintID = 0;
+        for (int i = 1; i < complaintList.size(); i++) {
+            String[] complaintDetails = complaintList.get(i).split(";");
+            int complaintID = Integer.valueOf(complaintDetails[0].substring(3));
+            
+            if(complaintID > largestComplaintID) {
+                largestComplaintID = complaintID;
+            }
+        } largestComplaintID++;
+        int times = 6 - String.valueOf(largestComplaintID).length();
+        
+        String zero = "";
+        
+        
+        switch (times) {
+            case 0 ->                 {
+                     zero = "";
+                }
+            case 1 ->                 {
+                     zero = "0";
+                }
+            case 2 ->                 {
+                     zero = "00";
+                }
+            case 3 ->                 {
+                     zero = "000";
+                }
+            case 4 ->                 {
+                     zero = "0000";
+                }
+            case 5 ->                 {
+                     zero = "00000";
+                }
+            default -> {
+            }
+        }
+        
+        
+        String currentUsableID = "cmp" + zero +String.valueOf(largestComplaintID);
+        return currentUsableID;
+    }
+    
+    public void fileComplaint(String complainerID, String desc) {
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String todayDate = formatter.format(date);
+        
+        String currentTime = new SimpleDateFormat("HH:mm:ss").format
+                            (Calendar.getInstance().getTime());
+        
+        LocalDateTime recordedDT = LocalDateTime.now();
+        
+        String recordedPersonID = "";
+        List<String> rp =  fh.fileRead("currentSession.txt");
+        for (int i = 1; i < rp.size(); i++) {
+            String[] userDetails = rp.get(i).split(";");
+            String userID = userDetails[0];
+            recordedPersonID = userID;
+        }
+            
+            
+        
+        List<String> newData = new ArrayList<>();
+        newData.add(getLatestComplaintID() +";"+ complainerID +";"+ desc +";"+ 
+                    todayDate +";"+ currentTime +";"+ "Pending" +";"+ recordedPersonID
+                    +";"+ recordedDT +";");
+        
+        fh.fileWrite("complaints.txt", true, newData);
+    }
+    
+    public List<String> getComplainerUnitIDName(String complainerID) {
+        List<String> userList = fh.fileRead("userProfile.txt");
+        
+        List<String> availableComplainer = new ArrayList<>();
+        
+        for (int i = 1; i < userList.size(); i++) {
+            String[] complaintDetails = userList.get(i).split(";");
+            String userID = complaintDetails[0];
+            String name = complaintDetails[3] + complaintDetails[4];
+            String unitNo = complaintDetails[8];
+            
+            if (userID.equals(complainerID)) {
+                availableComplainer.add(unitNo +";"+ userID +" - "+ name);
+            }
+            
+        } return availableComplainer;
+    }
+    
+    public void modifyComplaint(String complaintID, String complainerID, String desc) {
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String todayDate = formatter.format(date);
+        
+        String currentTime = new SimpleDateFormat("HH:mm:ss").format
+                            (Calendar.getInstance().getTime());
+        
+        LocalDateTime recordedDT = LocalDateTime.now();
+        
+        String recordedPersonID = "";
+        List<String> rp =  fh.fileRead("currentSession.txt");
+        for (int i = 1; i < rp.size(); i++) {
+            String[] userDetails = rp.get(i).split(";");
+            String userID = userDetails[0];
+            recordedPersonID = userID;
+        }
+            
+            
+        
+        List<String> newData = new ArrayList<>();
+        newData.add(complaintID +";"+ complainerID +";"+ desc +";"+ 
+                    todayDate +";"+ currentTime +";"+ "Pending" +";"+ recordedPersonID
+                    +";"+ recordedDT +";");
+        
+        deleteComplaint(complaintID);
+        fh.fileWrite("complaints.txt", true, newData);
+    }
+    
+    public void deleteComplaint(String complaintID) {
+        List<String> complaintList =  fh.fileRead("complaints.txt");
+        
+        List<String> newData = new ArrayList<>();
+        
+        for (int i = 0; i < complaintList.size(); i++) {
+            String[] complaintDetails = complaintList.get(i).split(";");
+            String eComplaintID = complaintDetails[0];
+            
+            if (!complaintID.equals(eComplaintID)) {
+                newData.add(complaintList.get(i));
+            }
+        } fh.fileWrite("complaints.txt", false, newData);
     }
 }

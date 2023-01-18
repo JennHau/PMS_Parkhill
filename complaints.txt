@@ -1,0 +1,5 @@
+complaintId;complainerId;complaintDetails;date;time;status;statusUpdateBy;lastUpdate;
+cmp456669;tnt000003;Hello;2023-01-19;00:19:57;Completed;rsd000069;2023-01-19T00:19:57.834795100;
+cmp456670;vdr000006;Bro.....;2023-01-19;00:21:00;Pending;rsd000069;2023-01-19T00:21:00.510581500;
+cmp456671;tnt000005;hSIODhaioshdiohasdihaishdoiahsdiohioshd aihsd iosahdoi asd;2023-01-19;00:27:16;Processing;rsd000069;2023-01-19T00:27:16.910455700;
+cmp456672;vdr000008;OK ODJOJ DASO SDIHOIH DIOH SADHO!;2023-01-19;01:53:38;Pending;rsd000069;2023-01-19T01:53:38.297641900;
