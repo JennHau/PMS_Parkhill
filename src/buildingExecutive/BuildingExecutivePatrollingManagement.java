@@ -55,6 +55,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         fieldAction(false);
         deleteBTN.setEnabled(false);
         updateBTN.setEnabled(false);
+        removeSlotBTN.setEnabled(false);
         securityIdComboBox.removeAllItems();
         disableManageButton();
     }
@@ -119,6 +120,19 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     private void fieldAction(boolean enable) {
         securityIdComboBox.setEnabled(enable);
         remarksTA.setEnabled(enable);
+    }
+    
+    private void cleanField() {
+        slotTF.setText("");
+        levelTF.setText("");
+        blockTF.setText("");
+        checkpointsTF.setText("");
+        timeCheckedPicker.setText("");
+        statusTF.setText("");
+        securityIdComboBox.removeAllItems();
+        securityNameTF.setText("");
+        contactNoTF.setText("");
+        remarksTA.setText("");
     }
     
     /**
@@ -190,6 +204,8 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         datePicker = new com.github.lgooddatepicker.components.DatePicker();
         dateLabel = new javax.swing.JLabel();
         selectDateBTN = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        removeSlotBTN = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -567,7 +583,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             }
         });
 
-        deleteBTN.setText("Delete");
+        deleteBTN.setText("Remove Employee");
         deleteBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteBTNActionPerformed(evt);
@@ -670,18 +686,27 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         jLabel39.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel39.setForeground(new java.awt.Color(51, 51, 51));
 
+        jLabel40.setText("Date: ");
         jLabel40.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel40.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel40.setText("Date: ");
 
+        dateLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         dateLabel.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         dateLabel.setForeground(new java.awt.Color(51, 51, 51));
-        dateLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
         selectDateBTN.setText("Select");
         selectDateBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectDateBTNActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Add Slot");
+
+        removeSlotBTN.setText("Remove Slot");
+        removeSlotBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeSlotBTNActionPerformed(evt);
             }
         });
 
@@ -691,10 +716,18 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(backBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(removeSlotBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(deleteBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(updateBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSeparator1)
+                    .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel33, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -737,35 +770,28 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel37, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane2)))
-                    .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel38, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel30, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-                                    .addComponent(jLabel40)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(datePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(selectDateBTN)
-                                    .addGap(645, 645, 645)
-                                    .addComponent(manageScheduleBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 8, Short.MAX_VALUE)))
+                    .addComponent(jSeparator2)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(653, 653, 653)
+                        .addComponent(jLabel38, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel30)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel40)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(datePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(selectDateBTN)
+                        .addGap(653, 653, 653)
+                        .addComponent(manageScheduleBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(10, 10, 10))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(backBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25)
-                .addComponent(deleteBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25)
-                .addComponent(updateBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(382, 382, 382))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -784,8 +810,10 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel30)
-                .addGap(4, 4, 4)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel30)
+                    .addComponent(jButton1))
+                .addGap(2, 2, 2)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(4, 4, 4)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -836,7 +864,8 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(backBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(deleteBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(updateBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(updateBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(removeSlotBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(7, 7, 7))
         );
 
@@ -873,7 +902,8 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     }//GEN-LAST:event_backBTNActionPerformed
     
     private void patrollingScheduleTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_patrollingScheduleTableMouseClicked
-        // TODO add your handling code here:
+
+        // TODO: add checking to see is the schedule over
         int selectedCol = patrollingScheduleTable.getSelectedColumn();
         int selectedRow = patrollingScheduleTable.getSelectedRow();
         
@@ -927,6 +957,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             }
             
             fieldAction(true);
+            removeSlotBTN.setEnabled(true);
             updateBTN.setEnabled(false);
         }
     }//GEN-LAST:event_patrollingScheduleTableMouseClicked
@@ -941,6 +972,8 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         String securityId = securityIdComboBox.getSelectedItem().toString();
         String securityName = securityNameTF.getText();
         String remarks = (!remarksTA.getText().equals("")) ? remarksTA.getText() : " ";
+        
+        String timeNeeded = String.valueOf(BE.formatTime(checkBef).compareTo(BE.formatTime(slot)));
         
         List<String> scheduleList = fh.fileRead(patrollingScheduleFile);
         
@@ -964,24 +997,34 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         patrollingScheduleTableSetUp();
         fieldAction(false);
         
+        deletePatScheduleFromJobFile();
+        String newTaskId = null;
+        
         try {
-            List<String> addJob = new ArrayList<>();
-            
-            addJob.add(BE.getNewTaskId(BE.employeeJobFile, 0) + BE.sp + securityId + BE.sp + "null" + BE.sp + 
-                        "PT" + BE.sp + 0 + BE.sp + "1h" + BE.sp + this.inputDate + BE.sp + slot + BE.sp + this.inputDate + " " + checkBef + 
-                        BE.sp + "null" + BE.sp + remarks + BE.sp + "null" + BE.sp + 
-                        BE.combineStringDateTime(LocalDate.now().toString(), LocalTime.now().toString()) + 
-                        BE.sp + inputDate + " " + patID + BE.sp);
-            
-            deletePatScheduleFromJobFile();
-            fh.fileWrite(BE.employeeJobFile, true, addJob);
+            newTaskId = BE.getNewTaskId(BE.employeeJobFile, 0);
         } catch (IOException ex) {
             Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        ArrayList<String> addJob = new ArrayList<>();
+
+        if (newTaskId != null) {
+            addJob.add(newTaskId + BE.sp + securityId + BE.sp + "null" + BE.sp + 
+                    "PT" + BE.sp + 0 + BE.sp + timeNeeded+"h" + BE.sp + this.inputDate + BE.sp + slot + BE.sp + this.inputDate + " " + checkBef + 
+                    BE.sp + "null" + BE.sp + remarks + BE.sp + "null" + BE.sp + 
+                    BE.combineStringDateTime(LocalDate.now().toString(), LocalTime.now().toString()) + 
+                    BE.sp + inputDate + " " + patID + BE.sp);
+
+            System.out.println(addJob);
+            fh.fileWrite(BE.employeeJobFile, true, addJob);
         }
         
         try {
             comboBoxSetUp();
             updateBTN.setEnabled(false);
+            removeSlotBTN.setEnabled(false);
+            deleteBTN.setEnabled(false);
+            cleanField();
         } catch (IOException ex) {
             Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1012,6 +1055,8 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         patrollingScheduleTableSetUp();
         
         deletePatScheduleFromJobFile();
+        
+        cleanField();
     }//GEN-LAST:event_deleteBTNActionPerformed
     
     private void securityIdComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_securityIdComboBoxActionPerformed
@@ -1047,7 +1092,32 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     private void manageScheduleBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageScheduleBTNActionPerformed
         // TODO add your handling code here:
         BE.toScheduleModification(patrollingScheduleFile, inputDate);
+        this.dispose();
     }//GEN-LAST:event_manageScheduleBTNActionPerformed
+
+    private void removeSlotBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeSlotBTNActionPerformed
+        // TODO add your handling code here:
+        ArrayList<String> updatedSched = new ArrayList<>();
+        List<String> allSlots = fh.fileRead(patrollingScheduleFile);
+        for (String eachSlot : allSlots) {
+            String slotId = eachSlot.split(BE.sp)[0];
+            if (!slotId.equals(patID)) {
+                updatedSched.add(eachSlot);
+            }
+        }
+        
+        fh.fileWrite(patrollingScheduleFile, false, updatedSched);
+        
+        deletePatScheduleFromJobFile();
+        
+        patrollingScheduleTableSetUp();
+        
+        fieldAction(false);
+        updateBTN.setEnabled(false);
+        removeSlotBTN.setEnabled(false);
+        deleteBTN.setEnabled(false);
+        cleanField();
+    }//GEN-LAST:event_removeSlotBTNActionPerformed
     
     private void deletePatScheduleFromJobFile() {
         ArrayList<String> removeFromJobFile = new ArrayList<>();
@@ -1256,6 +1326,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     private javax.swing.JLabel dateLabel;
     private com.github.lgooddatepicker.components.DatePicker datePicker;
     private javax.swing.JButton deleteBTN;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -1302,6 +1373,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     private javax.swing.JButton manageScheduleBTN;
     private javax.swing.JTable patrollingScheduleTable;
     private javax.swing.JTextArea remarksTA;
+    private javax.swing.JButton removeSlotBTN;
     private javax.swing.JComboBox<String> securityIdComboBox;
     private javax.swing.JTextField securityNameTF;
     private javax.swing.JButton selectDateBTN;

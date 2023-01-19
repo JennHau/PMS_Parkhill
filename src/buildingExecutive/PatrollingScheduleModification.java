@@ -56,7 +56,8 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         fileSetUp(file);
         tableSetUp();
         getIntervalSet();
-        setEachComboBox();
+        cleanField();
+//        setEachComboBox();
         patrollingSchedule = this;
     }
     
@@ -76,7 +77,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         for (String eachSche : fileDet) {
             if (!firstLine) {
                 String[] sche = eachSche.split(BE.sp);
-                toTable.add(sche[1] + BE.sp + sche[2] + BE.sp + sche[3] + BE.sp + sche[4] + BE.sp);
+                toTable.add(sche[1] + BE.sp + sche[2] + BE.sp + sche[3] + BE.sp + sche[4] + BE.sp + sche[5] + BE.sp);
             }
             
             firstLine = false;
@@ -179,6 +180,33 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         timeSpinner.setEnabled(enabled);
     }
     
+    private String[] getEachField() {
+        String slot = slotTimePicker.getTime().toString();
+        String block = blockTF.getSelectedItem().toString();
+        String level = levelTF.getSelectedItem().toString();
+        String checkPoint = checkPTF.getSelectedItem().toString();
+        String timeNeeded = timeSpinner.getSelectedItem().toString();
+        String endTime = endTimeTF.getText();
+        
+        String[] fieldInfo = {slot, block, level, checkPoint, timeNeeded, endTime};
+        return fieldInfo;
+    }
+    
+    private void cleanField() {
+        slotTimePicker.setText("");
+        blockTF.removeAllItems();
+        levelTF.removeAllItems();
+        checkPTF.removeAllItems();
+        timeSpinner.setSelectedIndex(0);
+        endTimeTF.setText("");
+        
+        slotTimePicker.setEnabled(false);
+        blockTF.setEnabled(false);
+        levelTF.setEnabled(false);
+        checkPTF.setEnabled(false);
+        timeSpinner.setEnabled(false);
+    }
+    
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
@@ -202,13 +230,12 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         jLabel28 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
         defaultBTN = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        backBTN = new javax.swing.JButton();
+        saveBTN = new javax.swing.JButton();
         jLabel25 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         hourComboBox = new javax.swing.JComboBox<>();
         levelIntervalComboBox = new javax.swing.JComboBox<>();
-        jSpinner1 = new javax.swing.JSpinner();
         jLabel32 = new javax.swing.JLabel();
         jLabel33 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
@@ -228,6 +255,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         jLabel31 = new javax.swing.JLabel();
         slotTimePicker = new com.github.lgooddatepicker.components.TimePicker();
         timeSpinner = new javax.swing.JComboBox<>();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -289,12 +317,17 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Back");
-
-        jButton4.setText("Save");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        backBTN.setText("Back");
+        backBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                backBTNActionPerformed(evt);
+            }
+        });
+
+        saveBTN.setText("Save");
+        saveBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveBTNActionPerformed(evt);
             }
         });
 
@@ -303,6 +336,11 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         jLabel25.setForeground(new java.awt.Color(51, 51, 51));
 
         hourComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2", "4", "6", "8", "10", "12" }));
+        hourComboBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                hourComboBoxMouseClicked(evt);
+            }
+        });
         hourComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 hourComboBoxActionPerformed(evt);
@@ -324,13 +362,13 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         jLabel33.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel33.setForeground(new java.awt.Color(51, 51, 51));
 
+        jLabel23.setText("Slot:");
         jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel23.setText("Slot:");
 
+        jLabel16.setText("Block: ");
         jLabel16.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel16.setText("Block: ");
 
         blockTF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -338,9 +376,9 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
             }
         });
 
+        jLabel18.setText("Level: ");
         jLabel18.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel18.setText("Level: ");
 
         levelTF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -348,20 +386,20 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
             }
         });
 
+        jLabel19.setText("Check Before: ");
         jLabel19.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel19.setText("Check Before: ");
 
         endTimeTF.setEditable(false);
         endTimeTF.setEnabled(false);
 
+        jLabel17.setText("Time Needed: ");
         jLabel17.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel17.setText("Time Needed: ");
 
+        jLabel14.setText("Checkpoint: ");
         jLabel14.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel14.setText("Checkpoint: ");
 
         deleteBTN.setText("Delete");
         deleteBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -370,9 +408,9 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
             }
         });
 
+        jLabel30.setText("Hour(s) ");
         jLabel30.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel30.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel30.setText("Hour(s) ");
 
         updateBTN.setText("Update");
         updateBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -381,9 +419,9 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
             }
         });
 
+        jLabel31.setText(" Slot Modification: ");
         jLabel31.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel31.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel31.setText(" Slot Modification: ");
 
         slotTimePicker.setEnabled(false);
 
@@ -393,6 +431,8 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
                 timeSpinnerActionPerformed(evt);
             }
         });
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3" }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -413,23 +453,23 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
                         .addComponent(hourComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(26, 26, 26)
                         .addComponent(jLabel28)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(levelIntervalComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
+                        .addGap(26, 26, 26)
                         .addComponent(jLabel32)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSpinner1)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jSeparator3)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(backBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(saveBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -465,9 +505,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(endTimeTF)
                                     .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(updateBTN)
-                                .addGap(0, 0, 0))))
+                            .addComponent(updateBTN)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -497,9 +535,9 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
                     .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(hourComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(levelIntervalComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(8, 8, 8)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(3, 3, 3)
@@ -540,8 +578,8 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(backBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(saveBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -597,9 +635,48 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void saveBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBTNActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+        File patFile = new File(patrollingScheduleFile);
+        if (patFile.exists()) {
+            patFile.delete();
+        }
+        
+        File temp = new File(BE.tempFile);
+        temp.renameTo(patFile);
+        
+        ArrayList<String> removePat = new ArrayList<>();
+        List<String> jobFile = fh.fileRead(BE.employeeJobFile);
+        boolean firstLine = true;
+        for (String eachJob : jobFile) {
+            if (!firstLine) {
+                String[] jobDet = eachJob.split(BE.sp);
+                String patCode = jobDet[jobDet.length-1];
+                if (!patCode.equals("null")) {
+                    String[] patDate = patCode.split(" ");
+                    if (!BE.formatDate(patDate[0]).equals(inputDate)) {
+                        removePat.add(eachJob);
+                    }
+                }
+                else {
+                    removePat.add(eachJob);
+                }
+            }
+            else {
+                removePat.add(eachJob);
+            }
+            
+            firstLine = false;
+        }
+        
+        fh.fileWrite(BE.employeeJobFile, false, removePat);
+        
+        try {
+            BE.toPatrollingManagement(this);
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(PatrollingScheduleModification.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_saveBTNActionPerformed
 
     private void hourComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hourComboBoxActionPerformed
         // TODO add your handling code here:
@@ -696,10 +773,52 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         fh.fileWrite(BE.tempFile, false, updatedList);
         
         tableSetUp();
+        cleanField();
+        deleteBTN.setEnabled(false);
+        updateBTN.setEnabled(false);
     }//GEN-LAST:event_deleteBTNActionPerformed
 
     private void updateBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBTNActionPerformed
         // TODO add your handling code here:
+        String[] eachField = getEachField();
+        
+        ArrayList<String> updatedList = new ArrayList<>();
+        ArrayList<String> code = new ArrayList<>();
+
+        List<String> scheduleFile = fh.fileRead(BE.tempFile);
+        for (String eachLine : scheduleFile) {
+            String id = eachLine.split(BE.sp)[0];
+            code.add(id);
+            if (id.equals(scheduleID)) {
+                updatedList.add(eachLine.split(BE.sp)[0] + BE.sp + 
+                                eachLine.split(BE.sp)[1] + BE.sp +
+                                eachLine.split(BE.sp)[2] + BE.sp +
+                                eachLine.split(BE.sp)[3] + BE.sp +
+                                eachField[3] + BE.sp + eachField[5] + BE.sp +
+                                " " + BE.sp + " " + BE.sp + " " +
+                                BE.sp + " " + BE.sp + " " + BE.sp + 
+                                " " + BE.sp);
+            }
+            else {
+                updatedList.add(eachLine);
+            }
+        }
+        
+        if (!code.contains(scheduleID)){
+            updatedList.add(scheduleID + BE.sp + eachField[0] + BE.sp +
+                            eachField[1] + BE.sp + eachField[2] + BE.sp +
+                            eachField[3] + BE.sp + eachField[5] + BE.sp +
+                            " " + BE.sp + " " + BE.sp + " " +
+                            BE.sp + " " + BE.sp + " " + BE.sp + 
+                            " " + BE.sp);
+        }
+        
+        fh.fileWrite(BE.tempFile, false, updatedList);
+        
+        tableSetUp();
+        cleanField();
+        updateBTN.setEnabled(false);
+        deleteBTN.setEnabled(false);
     }//GEN-LAST:event_updateBTNActionPerformed
 
     private void timeSpinnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeSpinnerActionPerformed
@@ -707,9 +826,26 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         int selHour = Integer.valueOf(timeSpinner.getSelectedItem().toString());
         
         if (slotTimePicker.getTime()!= null) {
-            endTimeTF.setText(slotTimePicker.getTime().plusHours(selHour).toString());
+            endTimeTF.setText(slotTimePicker.getTime().plusHours(selHour).plusSeconds(1).toString());
         }
     }//GEN-LAST:event_timeSpinnerActionPerformed
+
+    private void hourComboBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hourComboBoxMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_hourComboBoxMouseClicked
+
+    private void backBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBTNActionPerformed
+        // TODO add your handling code here:
+        if (new File(BE.tempFile).exists()) {
+            new File(BE.tempFile).delete();
+        }
+        
+        try {
+            BE.toPatrollingManagement(this);
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(PatrollingScheduleModification.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_backBTNActionPerformed
 
     /**
      * @param args the command line arguments
@@ -749,14 +885,14 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addRowBTN;
+    private javax.swing.JButton backBTN;
     private javax.swing.JComboBox<String> blockTF;
     private javax.swing.JComboBox<String> checkPTF;
     private javax.swing.JButton defaultBTN;
     private javax.swing.JButton deleteBTN;
     private javax.swing.JTextField endTimeTF;
     private javax.swing.JComboBox<String> hourComboBox;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
@@ -780,9 +916,9 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JComboBox<String> levelIntervalComboBox;
     private javax.swing.JComboBox<String> levelTF;
+    private javax.swing.JButton saveBTN;
     private javax.swing.JTable scheduleJT;
     private com.github.lgooddatepicker.components.TimePicker slotTimePicker;
     private javax.swing.JComboBox<String> timeSpinner;

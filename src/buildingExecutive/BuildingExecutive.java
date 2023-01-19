@@ -103,6 +103,7 @@ public class BuildingExecutive extends Users{
                 String[] endDateTime = eachData[8].split(" ");
                 if (!endDateTime[0].equals("null")) {
                     if (combineStringDateTime(endDateTime[0], endDateTime[1]).isBefore(LocalDateTime.now())){
+                        System.out.println(LocalDateTime.now());
                         String emplyId = eachData[1];
                         String emplyName = getEmployeeDetails(emplyId)[2];
                         historyList.add(eachData[0] + sp + eachData[1] + sp  + emplyName + sp + eachData[2] + sp + eachData[3] + sp + eachData[4] + sp + eachData[5] + sp + eachData[6]
