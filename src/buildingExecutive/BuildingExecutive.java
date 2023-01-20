@@ -150,67 +150,7 @@ public class BuildingExecutive extends Users{
                     workingEndDateTime = dateData.get(4).split(" ");
                 }
                 
-//                if (repitition == repititionON) {
-//                    int overnightDay = checkOvernight(formatTime(workingEndDateTime[1]), timeNeeded);
-//                    boolean isOvernight = (overnightDay != 0);
-//                    ArrayList<String> dayToRepeat = new ArrayList<>(Arrays.asList(jobLineDetails[9].split(",")));
-//                    
-//                    boolean foundToday = false;
-//                    if (dayToRepeat.contains(dayOfWeek)) {
-//                        foundToday = true;
-//                    }
-//                    
-//                    boolean foundYesterday = false;
-//                    if (isOvernight) {
-//                        if (dayToRepeat.contains(localDate.getDayOfWeek().plus(overnightDay).toString().toLowerCase())) {
-//                            foundYesterday = true;
-//                        }
-//                    }
-//                    
-//                    if (isOvernight && foundYesterday || 
-//                        isOvernight && foundToday || 
-//                        isOvernight && foundYesterday ||
-//                        !isOvernight && foundToday && !foundYesterday) 
-//                    {
-//                        workingDate = localDate;
-//                        workingEndDateTime[0] = localDate.toString();
-//                    }
-//                    
-//                    if (isOvernight && foundToday && foundYesterday) {
-//                        workingStartTime2 = workingTime;
-//                        workingTime = LocalTime.parse("00:00:00");
-//                        workingEndTime2 = LocalTime.parse("00:00:00");
-//                    }
-//                    else if (isOvernight && foundToday && !foundYesterday) {
-//                        workingEndDateTime[1] = "00:00:00";
-//                    }
-//                    else if (isOvernight && !foundToday && foundYesterday) {
-//                        workingTime = LocalTime.parse("00:00:00");
-//                    }
-//                }
-//                else {
-//                    workingDate = formatDate(jobLineDetails[6]);
-//                }
-                
                 if (workingDate != null) {
-//                    LocalDateTime selectedDateTime = LocalDateTime.of(localDate, localTime);
-//                    LocalDateTime startDateTime = LocalDateTime.of(workingDate, workingTime);
-//                    LocalDateTime endDateTime = LocalDateTime.of(formatDate(workingEndDateTime[0]), formatTime(workingEndDateTime[1]));
-//                    
-//                    boolean addToList = false;
-//                    if ((selectedDateTime.equals(startDateTime) || selectedDateTime.isAfter(startDateTime)) && 
-//                        (selectedDateTime.equals(endDateTime) || selectedDateTime.isBefore(endDateTime))) {
-//                        addToList = true;
-//                    }
-//                    else if (workingStartTime2 != null && workingEndTime2 != null) {
-//                        LocalDateTime startDateTime2 = LocalDateTime.of(workingDate, workingStartTime2);
-//                        LocalDateTime endDateTime2 = LocalDateTime.of(workingDate.plusDays(1), workingEndTime2);
-//                        
-//                        if ((selectedDateTime.equals(startDateTime2) || selectedDateTime.isAfter(startDateTime2)) &&
-//                            (selectedDateTime.equals(endDateTime2) || selectedDateTime.isBefore(endDateTime2))) {
-//                            addToList = true;
-//                        }
-//                    }
                     boolean addToList = compareDateTime(localDate, localTime, workingDate, workingTime, workingEndDateTime, workingStartTime2, workingEndTime2);
 
                     if (addToList) {
