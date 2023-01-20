@@ -362,24 +362,6 @@ public class Users {
         fh.fileWrite("userProfile.txt", false, newData);
     }
     
-    public void userRegistration() {
-        String userID = this.getUserID().toLowerCase();
-        String email = this.getEmail();
-        String password = this.getPassword();
-        String firstName = this.getFirstName();
-        String lastName = this.getLastName();
-        String identificationNo = this.getIdentificationNo();
-        String gender = this.getGender();
-        String phoneNo = this.getPhoneNo();
-        String unitNo = this.getUnitNo();
-        
-        List<String> newData = new ArrayList<>();
-        newData.add(userID +";"+ email +";"+password +";"+ firstName +";"+ lastName
-                +";"+ identificationNo +";"+ gender +";"+ phoneNo +";"+ unitNo +";");
-        
-        fh.fileWrite("userProfile.txt", true, newData);
-    }
-    
     public void setAllUserData(String userID) {
         List<String> userProfile = fh.fileRead("userProfile.txt");
         String[] userProfileArray = new String[userProfile.size()];

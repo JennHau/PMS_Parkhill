@@ -138,7 +138,7 @@ public class AdminExecutive {
             String eUnitNo = propertyDetails[0];
             
             if(eUnitNo.equals(unitNo)) {
-                String currentDeleteID = getLatestDeleteID();
+                String currentDeleteID = getLatestID("inactiveUserProfile.txt", "dlt");
                 newData2.add(currentDeleteID +";"+ propertiesArray[i]
                         + LocalDateTime.now() +";");
                 
@@ -151,21 +151,22 @@ public class AdminExecutive {
         deleteTenantResident(unitNo);
     }
     
-    public String getLatestDeleteID() {
-        List<String> userList =  fh.fileRead("inactiveUserProfile.txt");
+    public String getLatestID(String filename, String initial) {
+        List<String> userList =  fh.fileRead(filename);
         String[] userArray = new String[userList.size()];
         userList.toArray(userArray);
         
-        int largestDeleteID = 0;
+        int largestID = 0;
         for (int i = 1; i < userList.size(); i++) {
             String[] userDetails = userArray[i].split(";");
-            int deleteID = Integer.valueOf(userDetails[0].substring(3));
+            String id = userDetails[0];
+            int existingID = Integer.valueOf(userDetails[0].substring(3));
             
-            if(deleteID > largestDeleteID) {
-                largestDeleteID = deleteID;
+            if(existingID > largestID && id.startsWith(initial)) {
+                largestID = existingID;
             }
-        } largestDeleteID++;
-        int times = 6 - String.valueOf(largestDeleteID).length();
+        } largestID++;
+        int times = 6 - String.valueOf(largestID).length();
         
         String zero = "";
         
@@ -194,12 +195,12 @@ public class AdminExecutive {
         }
         
         
-        String currentUsableID = "dlt" + zero +String.valueOf(largestDeleteID);
+        String currentUsableID = initial + zero +String.valueOf(largestID);
         return currentUsableID;
     }
     
     public void deleteTenantResident(String unitNo) {
-        String currentDeleteID = getLatestDeleteID();
+        String currentDeleteID = getLatestID("inactiveUserProfile.txt", "dlt");
         
         List<String> propertiesList = fh.fileRead("propertyDetails.txt");
         String[] propertiesArray = new String[propertiesList.size()];
@@ -245,7 +246,7 @@ public class AdminExecutive {
     }
     
     public void deleteResident(String unitNo) {
-        String currentDeleteID = getLatestDeleteID();
+        String currentDeleteID = getLatestID("inactiveUserProfile.txt", "dlt");
         
         List<String> userList =  fh.fileRead("userProfile.txt");
         String[] userArray = new String[userList.size()];
@@ -446,6 +447,17 @@ public class AdminExecutive {
                 }
             }
         } return check;
+    }
+    
+    public void userRegistration(String userID, String email, String password, 
+            String firstName, String lastName, String identificationNo, String gender,
+            String phoneNo, String unitNo) {
+        
+        List<String> newData = new ArrayList<>();
+        newData.add(userID +";"+ email +";"+password +";"+ firstName +";"+ lastName
+                +";"+ identificationNo +";"+ gender +";"+ phoneNo +";"+ unitNo +";");
+        
+        fh.fileWrite("userProfile.txt", true, newData);
     }
     
     public List<String> extractAllTenantResident(String type) {
@@ -807,5 +819,103 @@ public class AdminExecutive {
                 newData.add(complaintList.get(i));
             }
         } fh.fileWrite("complaints.txt", false, newData);
+    }
+    
+    public List<String> extractEmployeeDetails() {
+        List<String> employeeList =  fh.fileRead("employeeList.txt");
+        
+        List<String> availableList = new ArrayList<>();
+        
+        for (int i = 1; i < employeeList.size(); i++) {
+            String[] employeeDetails = employeeList.get(i).split(";");
+            String id = employeeDetails[0];
+            String email = employeeDetails[1];
+            String name = employeeDetails[2];
+            String phoneNo = employeeDetails[3];
+            String position = employeeDetails[4];
+            
+            availableList.add(id +";"+ name +";"+ email +";"+ phoneNo +";"+ position);
+        } return availableList;
+    }
+    
+    public List<String> extractEmployeeType() {
+        List<String> employeeTypeList =  fh.fileRead("employeeType.txt");
+        
+        List<String> availableList = new ArrayList<>();
+        
+        for (int i = 1; i < employeeTypeList.size(); i++) {
+            availableList.add(employeeTypeList.get(i));
+        } return availableList;
+    }
+    
+    public boolean addEmployeeTypeValidation(String employeeType, String initialise) {
+        List<String> employeeTypeList =  fh.fileRead("employeeType.txt");
+        
+        for (int i = 1; i < employeeTypeList.size(); i++) {
+            String[] employeeTypeDetails = employeeTypeList.get(i).split(";");
+            String position = employeeTypeDetails[0].toLowerCase();
+            String eInitialise = employeeTypeDetails[1];
+            if (position.equals(employeeType)) {
+                return false;
+            } else if (initialise.equals(eInitialise)) {
+                return false;
+            } else if (position.equals(employeeType) && initialise.equals(eInitialise)) {
+                return false;
+            }
+        } return true;
+    }
+    
+    public void addEmployeeType(String employeeType, String initialise) {
+        List<String> newData = new ArrayList<>();
+        newData.add(employeeType +";"+ initialise +";");
+        
+        fh.fileWrite("employeeType.txt", true, newData);
+    }
+    
+    public void deleteEmployeeType(String employeeType) {
+        List<String> employeeTypeList =  fh.fileRead("employeeType.txt");
+        
+        List<String> newData = new ArrayList<>();
+        
+        for (int i = 0; i < employeeTypeList.size(); i++) {
+            String[] employeeTypeDetails = employeeTypeList.get(i).split(";");
+            String position = employeeTypeDetails[0].toLowerCase();
+            
+            if (!position.equals(employeeType)) {
+                newData.add(employeeTypeList.get(i));
+            }
+        } fh.fileWrite("employeeType.txt", false, newData);
+    }
+    
+    public void addEmployee(String employeeID, String email, String firstName,
+            String lastName, String phoneNo, String position, String idNo, String gender) {
+        List<String> newData = new ArrayList<>();
+        newData.add(employeeID +";"+ email +";"+ firstName +" "+ lastName +";"+
+                phoneNo +";"+ position +";"+ idNo +";"+ gender +";");
+        
+        fh.fileWrite("employeeList.txt", true, newData);
+        
+        if (employeeID.startsWith("scg")) {
+            List<String> newData2 = new ArrayList<>();
+            newData2.add(employeeID +";"+ email +";"+ "Parkhill@1234" +";"+
+                    firstName +" "+ lastName +";"+ idNo +";"+ gender +";"+
+                    phoneNo +";"+ "-" +";");
+            fh.fileWrite("userProfile.txt", true, newData2);
+        }
+    }
+    
+    public void deleteEmployee(String employeeID) {
+        List<String> employeeTypeList =  fh.fileRead("employeeList.txt");
+        
+        List<String> newData = new ArrayList<>();
+        
+        for (int i = 0; i < employeeTypeList.size(); i++) {
+            String[] employeeTypeDetails = employeeTypeList.get(i).split(";");
+            String id = employeeTypeDetails[0];
+            
+            if (!id.equals(employeeID)) {
+                newData.add(employeeTypeList.get(i));
+            }
+        } fh.fileWrite("employeeList.txt", false, newData);
     }
 }
