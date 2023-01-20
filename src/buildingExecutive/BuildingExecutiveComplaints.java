@@ -13,12 +13,16 @@ import java.util.logging.Logger;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 
 /**
  *
  * @author wongj
  */
 public class BuildingExecutiveComplaints extends javax.swing.JFrame {
+    public static BuildingExecutiveComplaints BEcomplaints;
+    private Users user;
+    private String currentBEid;
     DefaultTableModel newComplaintsTab;
     DefaultTableModel actionedComplaintsTab;
     
@@ -29,13 +33,19 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
     
     /**
      * Creates new form homePage
+     * @param users
+     * @throws java.io.IOException
      */
-    public BuildingExecutiveComplaints() throws IOException {
+    public BuildingExecutiveComplaints(Users users) throws IOException {
+        BEcomplaints = this;
         initComponents();
-        runDefaultSetUp();
+        runDefaultSetUp(users);
     }
     
-    public void runDefaultSetUp(){
+    public void runDefaultSetUp(Users users){
+        this.user = users;
+        this.setCurrentBEid(this.user.getUserID());
+
         newComplaintsTab = (DefaultTableModel) newComplaintsTable.getModel();
         actionedComplaintsTab = (DefaultTableModel) actionedComplaintsTable.getModel();
         
@@ -136,6 +146,9 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(13, 24, 42));
         jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel2MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jPanel2MouseEntered(evt);
             }
@@ -144,6 +157,11 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Dashboard");
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -163,10 +181,20 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         );
 
         jPanel7.setBackground(new java.awt.Color(13, 24, 42));
+        jPanel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel7MouseClicked(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Job Assignation");
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -186,8 +214,8 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         );
 
         jPanel8.setBackground(new java.awt.Color(13, 50, 79));
-        jPanel8.setName(""); // NOI18N
         jPanel8.setToolTipText("");
+        jPanel8.setName(""); // NOI18N
 
         jLabel5.setBackground(new java.awt.Color(13, 24, 42));
         jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
@@ -212,10 +240,20 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         );
 
         jPanel9.setBackground(new java.awt.Color(13, 24, 42));
+        jPanel9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel9MouseClicked(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Patrolling Management");
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel6MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -678,13 +716,52 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_actionedComplaintsTableMouseClicked
 
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        // TODO add your handling code here:
+        BE.toDashboard(this, user);
+    }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
+        // TODO add your handling code here:
+        BE.toDashboard(this, user);
+    }//GEN-LAST:event_jPanel2MouseClicked
+
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+        // TODO add your handling code here:
+        BE.toJobManagement(this, user, null, false);
+    }//GEN-LAST:event_jLabel4MouseClicked
+
+    private void jPanel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseClicked
+        // TODO add your handling code here:
+        BE.toJobManagement(this, user, null, false);
+    }//GEN-LAST:event_jPanel7MouseClicked
+
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
+        try {
+            // TODO add your handling code here:
+            BE.toPatrollingManagement(this, user);
+        } catch (IOException ex) {
+            Logger.getLogger(BuildingExecutiveComplaints.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jLabel6MouseClicked
+
+    private void jPanel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseClicked
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            BE.toPatrollingManagement(this, user);
+        } catch (IOException ex) {
+            Logger.getLogger(BuildingExecutiveComplaints.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jPanel9MouseClicked
+
     private void tableSelectedAction(JTable jTable, DefaultTableModel tableModel, int expectedCol) throws IOException {
         int selectedCol = jTable.getSelectedColumn();
         int selectedRow = jTable.getSelectedRow();
         
         this.complaintID = BE.validateTableSelectionAndGetValue(tableModel, selectedCol, selectedRow, expectedCol, 0);
         
-        BE.toComplaintDetailsPage(complaintID);
+        BE.toComplaintDetailsPage(this.user, complaintID);
     }
     
     private void setWindowIcon() {
@@ -785,7 +862,7 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new BuildingExecutiveComplaints().setVisible(true);
+                    new BuildingExecutiveComplaints(null).setVisible(true);
                 } catch (IOException ex) {
                     Logger.getLogger(BuildingExecutiveComplaints.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -833,4 +910,18 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTable newComplaintsTable;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the currentBEid
+     */
+    public String getCurrentBEid() {
+        return currentBEid;
+    }
+
+    /**
+     * @param currentBEid the currentBEid to set
+     */
+    public void setCurrentBEid(String currentBEid) {
+        this.currentBEid = currentBEid;
+    }
 }

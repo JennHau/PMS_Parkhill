@@ -1,3 +1,4 @@
 jobId;userId;complaintId;assignedJob;repitition;expectedTimeRequired;startDate;startTime;expectedEndDateTime;dayToRepeat;remarks;updatedBy;updatedTime;patrolCode; 
 tsk114562;scg184576;null;NS;1;12h;null;20:00:01;null 08:00:01;monday,tuesday,wednesday,thursday,friday,saturday,sunday,;night night;null;2023-01-08 01:56:01;null;
 tsk114561;scg184573;null;MS;1;15h;null;08:00:01;null 20:00:01;monday,wednesday,friday,saturday,sunday,;hihi;null;2023-01-07 17:17:01;null;
+tsk114563;scg184574;cmp456668;00;0;1h;2023-01-20;13:30:01;2023-01-20 14:30:01;;;bde198234;2023-01-20 13:56:01;null;

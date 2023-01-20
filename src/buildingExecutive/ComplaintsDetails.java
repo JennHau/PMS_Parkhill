@@ -4,7 +4,6 @@
  */
 package buildingExecutive;
 
-import buildingExecutive.BuildingExecutive;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -12,12 +11,14 @@ import java.time.LocalTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 
 /**
  *
  * @author Winson
  */
 public class ComplaintsDetails extends javax.swing.JFrame {
+    private Users user;
     FileHandling fh = new FileHandling();
     BuildingExecutive BE = new BuildingExecutive();
     
@@ -27,15 +28,19 @@ public class ComplaintsDetails extends javax.swing.JFrame {
     
     /**
      * Creates new form EmployeeJobAssignation
+     * @param users
      * @param complaintId
      * @throws java.io.IOException
      */
-    public ComplaintsDetails(String complaintId) throws IOException {
+    public ComplaintsDetails(Users users, String complaintId) throws IOException {
         initComponents();
-        runDefaultSetUp("cmp456668");
+        runDefaultSetUp(users, complaintId);
     }
     
-    private void runDefaultSetUp(String complaintId) throws IOException {
+    private void runDefaultSetUp(Users users, String complaintId) throws IOException {
+        this.user = users;
+        this.setCurrentBEid(this.user.getUserID());
+        
         setWindowIcon();
         setComplaintId(complaintId);
         complaintFormSetUp();
@@ -389,11 +394,19 @@ public class ComplaintsDetails extends javax.swing.JFrame {
 
     private void backBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBTNActionPerformed
         // TODO add your handling code here:
+        if (BuildingExecutiveComplaints.BEcomplaints != null) {
+            BuildingExecutiveComplaints.BEcomplaints.dispose();
+        }
+        
+        BE.toComplaints(this, user);
     }//GEN-LAST:event_backBTNActionPerformed
 
     private void assignBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assignBTNActionPerformed
         // TODO add your handling code here:
-        BE.toJobManagement(this, this.complaintID, true);
+        if (BuildingExecutiveComplaints.BEcomplaints != null) {
+            BuildingExecutiveComplaints.BEcomplaints.dispose();
+        }
+        BE.toJobManagement(this, user, this.complaintID, true);
     }//GEN-LAST:event_assignBTNActionPerformed
 
     private void statusBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusBTNActionPerformed
@@ -451,7 +464,7 @@ public class ComplaintsDetails extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new ComplaintsDetails(null).setVisible(true);
+                    new ComplaintsDetails(null, null).setVisible(true);
                 } catch (IOException ex) {
                     Logger.getLogger(ComplaintsDetails.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -515,5 +528,19 @@ public class ComplaintsDetails extends javax.swing.JFrame {
      */
     public void setComplainerID(String complainerID) {
         this.complainerID = complainerID;
+    }
+
+    /**
+     * @return the currentBEid
+     */
+    public String getCurrentBEid() {
+        return currentBEid;
+    }
+
+    /**
+     * @param currentBEid the currentBEid to set
+     */
+    public void setCurrentBEid(String currentBEid) {
+        this.currentBEid = currentBEid;
     }
 }

@@ -4,7 +4,6 @@
  */
 package buildingExecutive;
 
-import buildingExecutive.BuildingExecutive;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -18,14 +17,17 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 
 /**
  *
  * @author Winson
  */
 public class EmployeeJobAssignation extends javax.swing.JFrame {
+    public static EmployeeJobAssignation employeeJobAssignation;
     BuildingExecutive BE = new BuildingExecutive();
     FileHandling fileHandling = new FileHandling();
+    private Users user;
     
     // Remove unnecessary data
     private String jobID;
@@ -43,24 +45,26 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
     private DefaultTableModel employeeJobTable;
     /**
      * Creates new form EmployeeJobAssignation
-     * @param userID
+     * @param user
      * @param employeeID
      * @param jobId
      * @param complaintId
      * @param complaintsPage
      * @throws java.io.IOException
      */
-    public EmployeeJobAssignation(String userID, String employeeID, String jobId, String complaintId, boolean complaintsPage) throws IOException {
+    public EmployeeJobAssignation(Users user, String employeeID, String jobId, String complaintId, boolean complaintsPage) throws IOException {
+        employeeJobAssignation = this;
         initComponents();
-        runDefaultSetUp(userID, employeeID, jobId, complaintId, complaintsPage);
+        runDefaultSetUp(user, employeeID, jobId, complaintId, complaintsPage);
     }
 
-    private void runDefaultSetUp(String userID, String employeeID, String jobId, String complaintId, boolean complaintsPage) throws IOException {
+    private void runDefaultSetUp(Users user, String employeeID, String jobId, String complaintId, boolean complaintsPage) throws IOException {
+        this.user = user;
         employeeJobTable = (DefaultTableModel) assignedJobTable.getModel();
         
         setWindowIcon();
         setSelectedEmployee(employeeID, jobId);
-        setCurrentBE(userID);
+        setCurrentBE();
         setComplaintsId(complaintId);
         setFromComplaintsPage(complaintsPage);
         jobComboBoxSetUp();
@@ -83,8 +87,8 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         this.selectedEmployeePosCode = BE.getEmployeePositionCode(employeeID, null);
     }
 
-    private void setCurrentBE(String beID) {
-        this.currentBEid = beID;
+    private void setCurrentBE() {
+        this.currentBEid = user.getUserID();
     }
 
     // employeeDetails[userID, email, fullName, phoneNo, position]
@@ -103,6 +107,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         }
         
         assignedJobTable.setEnabled(!fromComplaintsPage);
+        editJobBTN.setEnabled(!fromComplaintsPage);
     }
     
     private void formAdditionalDetailsSetUp() throws IOException {
@@ -121,12 +126,8 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             String timePlace = timeNeeded.substring(timeNeeded.length()-1);
             timeNeeded = timeNeeded.substring(0, timeNeeded.length()-1);
             
-            if (timePlace.equals("m")) {
-                hrsMinsComboBox.setSelectedItem("mins");
-            }
-            else {
-                hrsMinsComboBox.setSelectedItem("hrs");
-            }
+            timePlace = (timePlace.equals("m")) ? "mins" : "hrs";
+            hrsMinsComboBox.setSelectedItem(timePlace);
             
             jobComboBox.setSelectedItem(jobToAssign);
             timeNeededSpinner.setValue(Integer.valueOf(timeNeeded));
@@ -339,6 +340,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         hrsMinsComboBox = new javax.swing.JComboBox<>();
         deleteBTN = new javax.swing.JButton();
         editJobBTN = new javax.swing.JButton();
+        backBTN = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -570,7 +572,6 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         jLabel25.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(51, 51, 51));
 
-        messagesTF.setText("jLabel1");
         messagesTF.setFont(new java.awt.Font("Yu Gothic UI", 2, 12)); // NOI18N
 
         jLabel28.setText("Time Needed: ");
@@ -610,6 +611,13 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             }
         });
 
+        backBTN.setText("Back");
+        backBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backBTNActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -641,13 +649,15 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                             .addComponent(contNoTF)
                             .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(messagesTF, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(clearBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(backBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(clearBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(deleteBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(updateBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(addBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -772,7 +782,8 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                                     .addComponent(clearBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(updateBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(addBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(deleteBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                    .addComponent(deleteBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(backBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addGap(13, 13, 13))
         );
 
@@ -850,6 +861,8 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             this.jobID = null;
             setJobFormTable();
             setJobFormTable();
+            messagesTF.setText("");
+            jobComboBox.setEnabled(true);
         } catch (IOException ex) {
             Logger.getLogger(EmployeeJobAssignation.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -859,6 +872,10 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             performButtonForAddUpdateDelete(this.addItem);
+            if (fromComplaintsPage) {
+                fromComplaintsPage = false;
+                complaintsId = null;
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -903,7 +920,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
     private void editJobBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editJobBTNActionPerformed
         try {
             // TODO add your handling code here:
-            BE.toJobModificationPage(selectedEmployeePosCode);
+            BE.toJobModificationPage(this.user, selectedEmployeePosCode, this.jobID, this.complaintsId, this.selectedEmployeeId);
         } catch (IOException ex) {
             Logger.getLogger(EmployeeJobAssignation.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -925,7 +942,47 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
 
     private void jobComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jobComboBoxActionPerformed
         // TODO add your handling code here:
+        String selectedJob = (jobComboBox.getSelectedItem()!=null) ? jobComboBox.getSelectedItem().toString() : null;
+        if (selectedJob!=null){
+            if (selectedJob.equals("Patrolling")) {
+                addBTN.setEnabled(false);
+                jobComboBox.setEnabled(false);
+                
+                messagesTF.setText("Assign this job at Patrolling Management. Thank you.");
+            }
+            else {
+                if (jobID!=null) {
+                    List<String> jobFile = fileHandling.fileRead(BE.jobListFile);
+                    for (String eachJob : jobFile) {
+                        String[] jobDet = eachJob.split(BE.sp);
+                        if  (jobDet[2].equals(selectedJob)) {
+                            String timeNeeded = jobDet[3];
+                            String timePlace = timeNeeded.substring(timeNeeded.length()-1);
+                            timeNeeded = timeNeeded.substring(0, timeNeeded.length()-1);
+
+                            timePlace = (timePlace.equals("m")) ? "mins" : "hrs";
+                            hrsMinsComboBox.setSelectedItem(timePlace);
+                            
+                            timeNeededSpinner.setValue(Integer.valueOf(timeNeeded));
+                            
+                            String startTime = jobDet[4];
+                            dateTimePicker1.timePicker.setTime(BE.formatTime(startTime));
+                        }
+                    }
+                }
+                
+                messagesTF.setText("");
+            }
+        }
     }//GEN-LAST:event_jobComboBoxActionPerformed
+
+    private void backBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBTNActionPerformed
+        // TODO add your handling code here:
+        if (BuildingExecutiveJobManagement.BEjobManagement != null) {
+            BuildingExecutiveJobManagement.BEjobManagement.dispose();
+        }
+        BE.toJobManagement(this, user, complaintsId, fromComplaintsPage);
+    }//GEN-LAST:event_backBTNActionPerformed
 
     private void updateJobTextFile(String[] jobItems, int action) throws IOException {
         List<String> readJobFile = fileHandling.fileRead(BE.employeeJobFile);
@@ -958,6 +1015,46 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         }
         
         fileHandling.fileWrite(BE.employeeJobFile, false, newItemLists);
+        
+        if (complaintsId!=null) {
+            updateComplaintsFile(action);
+        }
+    }
+    
+    private void updateComplaintsFile(int action){
+        ArrayList<String> updateComFile = new ArrayList<>();
+        List<String> complaintFile = fileHandling.fileRead(BE.complaintFiles);
+        for (String eachComp : complaintFile) {
+            String[] compDet = eachComp.split(BE.sp);
+            String compId = compDet[0];
+            
+            if (compId.equals(this.complaintsId)) {
+                String updateLine =  "";
+                for (int data = 0; data < compDet.length; data++) {
+                    if (data == 5) {
+                        String status = null;
+                        if (action == this.addItem) {
+                            status = cptStatus.Progressing.toString();
+                        }
+                        else if (action == this.deleteItem) {
+                            status = cptStatus.Pending.toString();
+                        }
+                        
+                        updateLine = updateLine + status + BE.sp;
+                    }
+                    else {
+                        updateLine = updateLine + compDet[data] + BE.sp;
+                    }
+                }
+                
+                updateComFile.add(updateLine);
+            }
+            else {
+                updateComFile.add(eachComp);
+            }
+        }
+        
+        fileHandling.fileWrite(BE.complaintFiles, false, updateComFile);
     }
     
     private String[] getAllFields(int action) throws IOException {
@@ -1275,6 +1372,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBTN;
     private javax.swing.JTable assignedJobTable;
+    private javax.swing.JButton backBTN;
     private javax.swing.JButton clearBTN;
     private javax.swing.JTextField complaintIdTF;
     private javax.swing.JTextField contNoTF;

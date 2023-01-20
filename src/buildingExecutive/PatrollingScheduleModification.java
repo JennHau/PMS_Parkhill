@@ -7,20 +7,20 @@ package buildingExecutive;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 
 /**
  *
  * @author Winson
  */
 public class PatrollingScheduleModification extends javax.swing.JFrame {
+    private Users user;
+    
     public static PatrollingScheduleModification patrollingSchedule;
     ArrayList<String> blockList;
 
@@ -41,15 +41,19 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
     
     /**
      * Creates new form EmployeeJobAssignation
+     * @param users
      * @param file
      * @param inputDate
      */
-    public PatrollingScheduleModification(String file, LocalDate inputDate) {
+    public PatrollingScheduleModification(Users users, String file, LocalDate inputDate) {
         initComponents();
-        runDefaultSetUp(file, inputDate);
+        runDefaultSetUp(users, file, inputDate);
     }
     
-    private void runDefaultSetUp(String file, LocalDate inputDate){
+    private void runDefaultSetUp(Users users, String file, LocalDate inputDate){
+        this.user = users;
+        this.setCurrentBEid(user.getUserID());
+        
         scheduleTable = (DefaultTableModel) scheduleJT.getModel();
         setWindowIcon();
         this.setInputDate(inputDate);
@@ -672,7 +676,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         fh.fileWrite(BE.employeeJobFile, false, removePat);
         
         try {
-            BE.toPatrollingManagement(this);
+            BE.toPatrollingManagement(this, user);
         } catch (IOException ex) {
             java.util.logging.Logger.getLogger(PatrollingScheduleModification.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
@@ -841,7 +845,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         }
         
         try {
-            BE.toPatrollingManagement(this);
+            BE.toPatrollingManagement(this, user);
         } catch (IOException ex) {
             java.util.logging.Logger.getLogger(PatrollingScheduleModification.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
@@ -878,7 +882,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PatrollingScheduleModification(null, null).setVisible(true);
+                new PatrollingScheduleModification(null, null, null).setVisible(true);
             }
         });
     }
@@ -937,5 +941,19 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
      */
     public void setInputDate(LocalDate inputDate) {
         this.inputDate = inputDate;
+    }
+
+    /**
+     * @return the currentBEid
+     */
+    public String getCurrentBEid() {
+        return currentBEid;
+    }
+
+    /**
+     * @param currentBEid the currentBEid to set
+     */
+    public void setCurrentBEid(String currentBEid) {
+        this.currentBEid = currentBEid;
     }
 }

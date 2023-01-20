@@ -24,7 +24,7 @@ public class AccountExecutive extends Users {
     FileHandling fh = new FileHandling();
 
     public List<String> extractFeeTypes(String fileName) {
-        List<String> feeTypes = new ArrayList<String>();
+        List<String> feeTypes = new ArrayList<>();
 
         List<String> feeTypesList = fh.fileRead(fileName);
         String[] feeTypesArray = new String[feeTypesList.size()];

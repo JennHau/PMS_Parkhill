@@ -13,15 +13,20 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import pms_parkhill_residence.Users;
 
 /**
  *  
  * @author wongj
  */
 public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
+    public static BuildingExecutiveJobManagement BEjobManagement;
     BuildingExecutive BE = new BuildingExecutive();
+    private Users user;
     
     private DefaultTableModel assignedEmployeeTable;
     private DefaultTableModel unassignedEmployeeTable;
@@ -38,27 +43,33 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
     
     /**
      * Creates new form homePage
+     * @param user
      * @param beID current building executive ID
      * @param complaintID
      * @param fromComplaintsPage
      * @throws java.io.IOException
      */
-    public BuildingExecutiveJobManagement(String beID, String complaintID, boolean fromComplaintsPage) throws IOException 
+    public BuildingExecutiveJobManagement(Users user, String complaintID, boolean fromComplaintsPage) throws IOException 
     {
+        BEjobManagement = this;
         initComponents();
-        runDefaultSetUp(beID, complaintID, fromComplaintsPage);
+        runDefaultSetUp(user, complaintID, fromComplaintsPage);
     }
     
     // Method to run all default setting when page is open
-    private void runDefaultSetUp(String beID, String complaintID, boolean fromComplaintsPage) throws IOException {
+    private void runDefaultSetUp(Users user, String complaintID, boolean fromComplaintsPage) throws IOException {
+        this.user = user;
+        this.setCurrentBEid(user.getUserID());
         assignedEmployeeTable = (DefaultTableModel) assignedEmplyTable.getModel();
         unassignedEmployeeTable = (DefaultTableModel) unassignedEmplyTable.getModel();
         
         setWindowIcon();
         employeeJobTableSetup();
-        setUserProfile(beID);
+        setUserProfile();
         setFromComplaintPage(fromComplaintsPage);
         setComplaintId(complaintID);
+        
+        assignedEmplyTable.setEnabled(!fromComplaintsPage);
     }
     
     // To set the window Icon
@@ -79,14 +90,11 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
     }
     
     // Method to set current user (Business Executive) profile
-    private void setUserProfile(String beID) throws IOException {
+    private void setUserProfile() throws IOException {
         // get current user details
-        String[] beDetails = BE.getUserDetails(beID);
-        
         // Set text field
-        if (beDetails != null) {
-            this.currentBEid = beDetails[0];
-            String beName = beDetails[1] + " " + beDetails[2];
+        if (currentBEid != null) {
+            String beName = user.getFirstName() + " " + user.getLastName();
             usernameLabel.setText(beName);
         }
     }
@@ -254,11 +262,21 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         );
 
         jPanel8.setBackground(new java.awt.Color(13, 24, 42));
+        jPanel8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel8MouseClicked(evt);
+            }
+        });
 
         jLabel5.setText("Complaints");
         jLabel5.setBackground(new java.awt.Color(13, 24, 42));
         jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel5MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -278,10 +296,20 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         );
 
         jPanel9.setBackground(new java.awt.Color(13, 24, 42));
+        jPanel9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel9MouseClicked(evt);
+            }
+        });
 
         jLabel6.setText("Patrolling Management");
         jLabel6.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel6MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -788,22 +816,20 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
 
     private void jobAssignationInnerPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationInnerPanelMouseClicked
         // TODO add your handling code here:
-        BE.toJobManagement(this, this.complaintId, fromComplaintPage);
     }//GEN-LAST:event_jobAssignationInnerPanelMouseClicked
 
     private void jobAssignationOuterPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationOuterPanelMouseClicked
         // TODO add your handling code here:
-        BE.toJobManagement(this, this.complaintId, fromComplaintPage);
     }//GEN-LAST:event_jobAssignationOuterPanelMouseClicked
 
     private void BEdashboardInnerPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BEdashboardInnerPanelMouseClicked
         // TODO add your handling code here:
-        BE.toDashboard(this);
+        BE.toDashboard(this, user);
     }//GEN-LAST:event_BEdashboardInnerPanelMouseClicked
 
     private void BEdashboardOuterPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BEdashboardOuterPanelMouseClicked
         // TODO add your handling code here:
-        BE.toDashboard(this);
+        BE.toDashboard(this, user);
     }//GEN-LAST:event_BEdashboardOuterPanelMouseClicked
 
     private void jobAssignationOuterPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationOuterPanelMouseEntered
@@ -820,7 +846,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         
         if (employeeData != null) {
             setSelectedEmployee(employeeData);
-            BE.toEmployeeJobAssignation(currentBEid, selectedEmployeeId, jobId, complaintId, fromComplaintPage);
+            BE.toEmployeeJobAssignation(this.user, selectedEmployeeId, jobId, complaintId, fromComplaintPage);
         }
     }//GEN-LAST:event_unassignedEmplyTableMouseClicked
 
@@ -847,9 +873,38 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
             setSelectedEmployee(employeeData);
             this.jobId = (String) assignedEmployeeTable.getValueAt(selectedRow, 3);
             this.selectedEmployeeId = (String) assignedEmployeeTable.getValueAt(selectedRow, 0);
-            BE.toEmployeeJobAssignation(currentBEid, selectedEmployeeId, jobId, complaintId, fromComplaintPage);
+            BE.toEmployeeJobAssignation(this.user, selectedEmployeeId, jobId, complaintId, fromComplaintPage);
         }
     }//GEN-LAST:event_assignedEmplyTableMouseClicked
+
+    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
+        // TODO add your handling code here:
+        BE.toComplaints(this, this.user);
+    }//GEN-LAST:event_jLabel5MouseClicked
+
+    private void jPanel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseClicked
+        // TODO add your handling code here:
+        BE.toComplaints(this, this.user);
+    }//GEN-LAST:event_jPanel8MouseClicked
+
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
+        try {
+            // TODO add your handling code here:
+            BE.toPatrollingManagement(this, user);
+        } catch (IOException ex) {
+            Logger.getLogger(BuildingExecutiveJobManagement.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jLabel6MouseClicked
+
+    private void jPanel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseClicked
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            BE.toPatrollingManagement(this, user);
+        } catch (IOException ex) {
+            Logger.getLogger(BuildingExecutiveJobManagement.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jPanel9MouseClicked
 
     private void updateTable() throws IOException {
         // Red Error from here
@@ -1019,5 +1074,19 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
      */
     public void setFromComplaintPage(boolean fromComplaintPage) {
         this.fromComplaintPage = fromComplaintPage;
+    }
+
+    /**
+     * @return the currentBEid
+     */
+    public String getCurrentBEid() {
+        return currentBEid;
+    }
+
+    /**
+     * @param currentBEid the currentBEid to set
+     */
+    public void setCurrentBEid(String currentBEid) {
+        this.currentBEid = currentBEid;
     }
 }

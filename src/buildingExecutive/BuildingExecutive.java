@@ -77,7 +77,6 @@ public class BuildingExecutive extends Users{
     
     // temporary usage file
     String tempFile = "tempPatFile.txt";
-
     
     private ArrayList getEmployeeJobList(LocalDate localDate, LocalTime localTime) throws IOException {
         List<String> employeeList = fileHandling.fileRead(fullEmployeeList);
@@ -103,11 +102,13 @@ public class BuildingExecutive extends Users{
                 String[] endDateTime = eachData[8].split(" ");
                 if (!endDateTime[0].equals("null")) {
                     if (combineStringDateTime(endDateTime[0], endDateTime[1]).isBefore(LocalDateTime.now())){
-                        System.out.println(LocalDateTime.now());
                         String emplyId = eachData[1];
                         String emplyName = getEmployeeDetails(emplyId)[2];
                         historyList.add(eachData[0] + sp + eachData[1] + sp  + emplyName + sp + eachData[2] + sp + eachData[3] + sp + eachData[4] + sp + eachData[5] + sp + eachData[6]
                                         + sp + eachData[7] + sp + eachData[8] + sp + eachData[9] + sp + eachData[10] + sp + eachData[11] + sp + eachData[12] + sp + eachData[13] + sp);
+                    }
+                    else {
+                        updateJobList.add(eachLine);
                     }
                 }
                 else {
@@ -612,8 +613,14 @@ public class BuildingExecutive extends Users{
         boolean firstLine = true;
         for (String eachRec : scheRec) {
             if (!firstLine) {
-                int id = Integer.valueOf(eachRec.split(sp)[idColumn]);
-                largestId = (id > largestId) ? id : largestId;
+                String checkId = eachRec.split(sp)[idColumn];
+                
+                for (int check = 0; check < checkId.length(); check++) {
+                    if (Character.isDigit(checkId.charAt(check))) {
+                        int id = Integer.valueOf(eachRec.split(sp)[idColumn]);
+                        largestId = (id > largestId) ? id : largestId;
+                    }
+                }
             }
             
             firstLine = false;
@@ -697,7 +704,7 @@ public class BuildingExecutive extends Users{
         }
         
         CRUD crud = new CRUD();
-        crud.update(complaintFiles, complaintId, complaint);
+        crud.update(complaintFiles, complaintId, complaint, 0);
     }
     
     public ArrayList getAvailableBlock() {
@@ -794,21 +801,17 @@ public class BuildingExecutive extends Users{
     }
     
     // Change Page Method
-    public void toDashboard(JFrame frame) {
-        try {
+    public void toDashboard(JFrame frame, Users user) {
             BuildingExecutiveMainPage page;
-            page = new BuildingExecutiveMainPage();
+            page = new BuildingExecutiveMainPage(user);
             page.setVisible(true);
             frame.dispose();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
     }
     
-    public void toJobManagement(JFrame frame, String complaintId, boolean fromComplaintPage) {
+    public void toJobManagement(JFrame frame, Users user, String complaintId, boolean fromComplaintPage) {
         try {
             BuildingExecutiveJobManagement page;
-            page = new BuildingExecutiveJobManagement(this.getUserID(), complaintId, fromComplaintPage);
+            page = new BuildingExecutiveJobManagement(user, complaintId, fromComplaintPage);
             page.setVisible(true);
             frame.dispose();
         } catch (IOException ex) {
@@ -816,10 +819,10 @@ public class BuildingExecutive extends Users{
         }
     }
     
-    public void toComplaints(JFrame frame) {
+    public void toComplaints(JFrame frame, Users users) {
         try {
             BuildingExecutiveComplaints page;
-            page = new BuildingExecutiveComplaints();
+            page = new BuildingExecutiveComplaints(users);
             page.setVisible(true);
             frame.dispose();
         } catch (IOException ex) {
@@ -827,9 +830,9 @@ public class BuildingExecutive extends Users{
         }
     }
     
-    public void toPatrollingManagement(JFrame frame) throws IOException {
+    public void toPatrollingManagement(JFrame frame, Users users) throws IOException {
         BuildingExecutivePatrollingManagement page;
-        page = new BuildingExecutivePatrollingManagement();
+        page = new BuildingExecutivePatrollingManagement(users);
         page.setVisible(true);
         frame.dispose();
     }
@@ -841,28 +844,28 @@ public class BuildingExecutive extends Users{
         frame.dispose();
     }
     
-    public void toEmployeeJobAssignation(String beID, String employeeID, String jobID, String complaintID, boolean fromComplaintPage) {
+    public void toEmployeeJobAssignation(Users user, String employeeID, String jobID, String complaintID, boolean fromComplaintPage) {
         EmployeeJobAssignation EJA;
         try {
-            EJA = new EmployeeJobAssignation(beID, employeeID, jobID, complaintID, fromComplaintPage);
+            EJA = new EmployeeJobAssignation(user, employeeID, jobID, complaintID, fromComplaintPage);
             EJA.setVisible(true);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
     
-    public void toJobModificationPage(String positionCode) throws IOException {
-        JobModificationPage page = new JobModificationPage(positionCode);
+    public void toJobModificationPage(Users users, String positionCode, String jobID, String complaintID, String employeeID) throws IOException {
+        JobModificationPage page = new JobModificationPage(users, positionCode, jobID, complaintID, employeeID);
         page.setVisible(true);
     }
     
-    public void toComplaintDetailsPage(String complaintId) throws IOException {
-        ComplaintsDetails page = new ComplaintsDetails(complaintId);
+    public void toComplaintDetailsPage(Users users, String complaintId) throws IOException {
+        ComplaintsDetails page = new ComplaintsDetails(users, complaintId);
         page.setVisible(true);
     }
     
-    public void toScheduleModification(String file, LocalDate inputDate) {
-        PatrollingScheduleModification page = new PatrollingScheduleModification(file, inputDate);
+    public void toScheduleModification(Users users, String file, LocalDate inputDate) {
+        PatrollingScheduleModification page = new PatrollingScheduleModification(users, file, inputDate);
         page.setVisible(true);
     }
 }
@@ -870,5 +873,5 @@ public class BuildingExecutive extends Users{
 enum cptStatus{
     Pending,
     Progressing,
-    Completed,
+    Complete,
 }

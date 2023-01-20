@@ -35,7 +35,7 @@ public class CRUD extends FileHandling {
         return null;
     }
     
-    public boolean update(String fileName, String Id, String updatedData) {
+    public boolean update(String fileName, String Id, String updatedData, int idCol) {
         ArrayList<String> updatedList = new ArrayList<>();
         List<String> fileItems = this.fileRead(fileName);
         
@@ -43,7 +43,7 @@ public class CRUD extends FileHandling {
         
         for (String eachItem : fileItems) {
             String[] itemDetails = eachItem.split(BE.sp);
-            String itemId = itemDetails[0];
+            String itemId = itemDetails[idCol];
             if (itemId.equals(Id)) {
                 updatedList.add(updatedData);
                 itemUpdated = true;
@@ -58,7 +58,7 @@ public class CRUD extends FileHandling {
         return itemUpdated;
     }
     
-    public boolean delete(String fileName, String Id, String toRemoveData) {
+    public boolean delete(String fileName, String Id, int idCol) {
         ArrayList<String> removedList = new ArrayList<>();
         List<String> fileItems = this.fileRead(fileName);
         
@@ -66,7 +66,7 @@ public class CRUD extends FileHandling {
         
         for (String eachItem : fileItems) {
             String[] itemDetails = eachItem.split(BE.sp);
-            String itemId = itemDetails[0];
+            String itemId = itemDetails[idCol];
             if (!itemId.equals(Id)) {
                 removedList.add(eachItem);
             }

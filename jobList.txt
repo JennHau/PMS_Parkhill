@@ -19,5 +19,5 @@ cln;17;Cleaning Block B Toilet;30m;14:00:00;
 cln;18;Cleaning Facilities;2h;14:00:00;
 scg;MS;Morning Shift (8am-8pm);12h;08:00:00;
 scg;NS;Night Shift (8pm-8am);12h;20:00:00;
-scg;PT;Patrolling;1h;null;
-cmp;00;Complaints;0;null; 
+scg;PT;Patrolling;1h; ;
+cmp;00;Complaints;0; ; 

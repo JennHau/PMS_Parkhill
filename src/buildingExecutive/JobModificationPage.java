@@ -4,7 +4,6 @@
  */
 package buildingExecutive;
 
-import buildingExecutive.BuildingExecutive;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.time.LocalTime;
@@ -14,38 +13,60 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 
 /**
  *
  * @author Winson
  */
 public class JobModificationPage extends javax.swing.JFrame {
-
+    private Users user;
+    private String currentBEid;
     DefaultTableModel jobTable;
     String jobListFile = "jobList.txt";
     BuildingExecutive BE = new BuildingExecutive();
     FileHandling fileHandling = new FileHandling();
+    CRUD crud = new CRUD();
+    
+    private String selectedId;
     
     private String jobId;
+    private String complaintId;
+    private String employeeId;
+    private String positionCode;
     
     /**
      * Creates new form EmployeeJobAssignation
+     * @param user
      * @param positionCode employee position code
+     * @param jobID
+     * @param complaintID
+     * @param employeeID
      * @throws java.io.IOException
      */
-    public JobModificationPage(String positionCode) throws IOException {
+    public JobModificationPage(Users user, String positionCode, String jobID, String complaintID, String employeeID) throws IOException {
         initComponents();
         jobTable = (DefaultTableModel) jobsTableUI.getModel();
-        runDefaultSetUp(positionCode);
+        runDefaultSetUp(user, positionCode, jobID, complaintID, employeeID);
     }
     
-    private void runDefaultSetUp(String positionCode) throws IOException {
+    private void runDefaultSetUp(Users user, String positionCode, String jobID, String complaintID, String employeeID) throws IOException {
+        this.user = user;
+        this.setCurrentBEid(this.user.getUserID());
+        
+        this.setJobId(jobID);
+        this.setComplaintId(complaintID);
+        this.setEmployeeId(employeeID);
+        this.setPositionCode(positionCode);
+        
         setWindowIcon();
-        comboBoxSetUp(positionCode);
-        tableJobSetUp(positionCode);
+        comboBoxSetUp(this.positionCode);
+        tableJobSetUp(this.positionCode);
         
         deleteBTN.setEnabled(false);
         updateBTN.setEnabled(false);
+        
+        jobTF.setText("");
     }
     
     private void tableJobSetUp(String positionCode) throws IOException {
@@ -75,6 +96,56 @@ public class JobModificationPage extends javax.swing.JFrame {
         employeeRoleComboBox.setSelectedItem(employeeRoleName);
     }
     
+    private String getAllField(boolean add) {
+        ArrayList<String> dataField = new ArrayList<>();
+        String toLine = "";
+        
+        dataField.add(this.positionCode);
+        
+        if (add) {
+            dataField.add(BE.getNewId(BE.jobListFile, 1));
+        }
+        else {
+            dataField.add(this.selectedId);
+        }
+        
+        if (jobTF.getText() != null) {
+            if (!jobTitleExist(jobTF.getText())) {
+                dataField.add(jobTF.getText());
+                
+                if (Integer.valueOf(timeNeededSpinner.getValue().toString()) != 0 && timeValueCB.getSelectedItem()!=null) {
+                    String timeValue = (timeValueCB.getSelectedItem().toString().equals("hrs")) ? "h" : "m";
+                    
+                    dataField.add(timeNeededSpinner.getValue().toString()+timeValue);
+
+                    if (startTimePicker.getTime()!=null) {
+                        dataField.add(BE.formatTime(startTimePicker.getTime().toString()).toString());
+
+                        for (String eachData :  dataField) {
+                            toLine = toLine + eachData + BE.sp;
+                        }
+                        
+                        return toLine;
+                    }
+                }
+            }
+        }
+        
+        return null;
+    }
+    
+    private boolean jobTitleExist(String jobTitle) {
+        List<String> jobFile = fileHandling.fileRead(BE.jobListFile);
+        for (String eachJob : jobFile) {
+            String title = eachJob.split(BE.sp)[2];
+            if (title.equals(jobTitle)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -102,11 +173,12 @@ public class JobModificationPage extends javax.swing.JFrame {
         deleteBTN = new javax.swing.JButton();
         clearBTN = new javax.swing.JButton();
         timeValueCB = new javax.swing.JComboBox<>();
+        backBTN = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -170,6 +242,11 @@ public class JobModificationPage extends javax.swing.JFrame {
         jLabel19.setForeground(new java.awt.Color(51, 51, 51));
 
         addBTN.setText("Add");
+        addBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addBTNActionPerformed(evt);
+            }
+        });
 
         updateBTN.setText("Update");
         updateBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -193,6 +270,18 @@ public class JobModificationPage extends javax.swing.JFrame {
         });
 
         timeValueCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "hrs", "mins" }));
+        timeValueCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                timeValueCBActionPerformed(evt);
+            }
+        });
+
+        backBTN.setText("Back");
+        backBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backBTNActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -225,8 +314,10 @@ public class JobModificationPage extends javax.swing.JFrame {
                             .addComponent(startTimePicker, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
                             .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(clearBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(backBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(clearBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15)
                         .addComponent(deleteBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(15, 15, 15)
                         .addComponent(updateBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -263,7 +354,8 @@ public class JobModificationPage extends javax.swing.JFrame {
                     .addComponent(addBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(updateBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(deleteBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(clearBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(clearBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(backBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -345,18 +437,14 @@ public class JobModificationPage extends javax.swing.JFrame {
             String jobID = jobDetails[1];
             
             if (jobTitle.equals(jobDesc)) {
-                this.jobId = jobID;
+                this.setSelectedId(jobID);
                 jobTF.setText(jobTitle);
                 
                 String timeNeededValue = jobDetails[3];
                 String timeValue = timeNeededValue.substring(timeNeededValue.length() - 1);
                 
-                if (timeValue.equals("h")) {
-                    timeValueCB.setSelectedItem("hrs");
-                }
-                else {
-                    timeValueCB.setSelectedItem("mins");
-                }
+                timeValue = (timeValue.equals("h")) ? "hrs" : "mins";
+                timeValueCB.setSelectedItem(timeValue);
                 
                 String timeNeeded = "0";
                 if (!timeNeededValue.equals("0")) {
@@ -366,25 +454,30 @@ public class JobModificationPage extends javax.swing.JFrame {
                 timeNeededSpinner.setValue(Integer.valueOf(timeNeeded));
                 
                 String startTime = jobDetails[4];
-                if (!startTime.equals("null")) {
+                if (!startTime.equals(" ")) {
                     LocalTime jobStartTime = BE.getTimeCategory(BE.formatTime(startTime));
                     startTimePicker.setTime(jobStartTime);
                     startTimePicker.setEnabled(true);
                     timeNeededSpinner.setEnabled(true);
                     timeValueCB.setEnabled(true);
+                    
+                    addBTN.setEnabled(false);
+                    deleteBTN.setEnabled(true);
+                    updateBTN.setEnabled(true);
                 }
                 else {
                     startTimePicker.setTime(null);
                     startTimePicker.setEnabled(false);
                     timeNeededSpinner.setEnabled(false);    
                     timeValueCB.setEnabled(false);
+                    jobTF.setEnabled(false);
+                    
+                    addBTN.setEnabled(false);
+                    deleteBTN.setEnabled(false);
+                    updateBTN.setEnabled(false);
                 }
             }
         }
-        
-        addBTN.setEnabled(false);
-        deleteBTN.setEnabled(true);
-        updateBTN.setEnabled(true);
     }//GEN-LAST:event_jobsTableUIMouseClicked
 
     private void clearBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBTNActionPerformed
@@ -394,19 +487,104 @@ public class JobModificationPage extends javax.swing.JFrame {
 
     private void deleteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBTNActionPerformed
         // TODO add your handling code here:
+//        ArrayList<String> removedItem = new ArrayList<>();
+//
+//        List<String> oldVer = fileHandling.fileRead(BE.jobListFile);
+//        for (String eachJob : oldVer) {
+//            String taskId = eachJob.split(BE.sp)[1];
+//            if (!taskId.equals(this.selectedId)) {
+//                removedItem.add(eachJob);
+//            }
+//        }
+//        
+//        fileHandling.fileWrite(BE.jobListFile, false, removedItem);
+
+        crud.delete(BE.jobListFile, this.selectedId, 1);
+        
+        clearField();
+        
+        try {
+            tableJobSetUp(positionCode);
+        } catch (IOException ex) {
+            Logger.getLogger(JobModificationPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_deleteBTNActionPerformed
 
     private void updateBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBTNActionPerformed
         // TODO add your handling code here:
+//        ArrayList<String> itemUpdate = new ArrayList<>();
+        
+//        String[] eachData = dataLine.split(BE.sp);
+//        
+//        List<String> oldVer = fileHandling.fileRead(BE.jobListFile);
+//        for (String eachJob : oldVer) {
+//            String taskId = eachJob.split(BE.sp)[1];
+//            if (taskId.equals(eachData[1])) {
+//                itemUpdate.add(dataLine);
+//            }
+//            else {
+//                itemUpdate.add(eachJob);
+//            }
+//        }
+//        
+//        fileHandling.fileWrite(BE.jobListFile, false, itemUpdate);
+
+        String dataLine = this.getAllField(false);
+
+        crud.update(BE.jobListFile, this.selectedId, dataLine, 1);
+        
+        clearField();
+        
+        try {
+            tableJobSetUp(positionCode);
+        } catch (IOException ex) {
+            Logger.getLogger(JobModificationPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_updateBTNActionPerformed
+
+    private void addBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBTNActionPerformed
+        // TODO add your handling code here:
+        String dataLine = this.getAllField(true);
+        
+        List<String> addItem = new ArrayList<>();
+        addItem.add(dataLine);
+        
+        crud.create(BE.jobListFile, addItem);
+        clearField();
+        
+        try {
+            tableJobSetUp(positionCode);
+        } catch (IOException ex) {
+            Logger.getLogger(JobModificationPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_addBTNActionPerformed
+
+    private void timeValueCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeValueCBActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_timeValueCBActionPerformed
+
+    private void backBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBTNActionPerformed
+        // TODO add your handling code here:
+        if (EmployeeJobAssignation.employeeJobAssignation != null) {
+            EmployeeJobAssignation.employeeJobAssignation.dispose();
+        }
+        
+        BE.toEmployeeJobAssignation(this.user, this.employeeId, this.jobId, this.complaintId, false);
+        this.dispose();
+    }//GEN-LAST:event_backBTNActionPerformed
     
     private void clearField() {
         addBTN.setEnabled(true);
+        jobTF.setEnabled(true);
+        timeNeededSpinner.setEnabled(true);
+        startTimePicker.setEnabled(true);
+        timeValueCB.setEnabled(true);
         deleteBTN.setEnabled(false);
         updateBTN.setEnabled(false);
         
         jobTF.setText("");
         timeNeededSpinner.setValue(0);
+        timeValueCB.setSelectedIndex(0);
         startTimePicker.setTime(null);
     }
     /**
@@ -443,7 +621,7 @@ public class JobModificationPage extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new JobModificationPage(null).setVisible(true);
+                    new JobModificationPage(null, null, null, null, null).setVisible(true);
                 } catch (IOException ex) {
                     Logger.getLogger(JobModificationPage.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -453,6 +631,7 @@ public class JobModificationPage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBTN;
+    private javax.swing.JButton backBTN;
     private javax.swing.JButton clearBTN;
     private javax.swing.JButton deleteBTN;
     private javax.swing.JComboBox<String> employeeRoleComboBox;
@@ -473,4 +652,89 @@ public class JobModificationPage extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> timeValueCB;
     private javax.swing.JButton updateBTN;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the currentBEid
+     */
+    public String getCurrentBEid() {
+        return currentBEid;
+    }
+
+    /**
+     * @param currentBEid the currentBEid to set
+     */
+    public void setCurrentBEid(String currentBEid) {
+        this.currentBEid = currentBEid;
+    }
+
+    /**
+     * @return the jobId
+     */
+    public String getJobId() {
+        return jobId;
+    }
+
+    /**
+     * @param jobId the jobId to set
+     */
+    public void setJobId(String jobId) {
+        this.jobId = jobId;
+    }
+
+    /**
+     * @return the complaintId
+     */
+    public String getComplaintId() {
+        return complaintId;
+    }
+
+    /**
+     * @param complaintId the complaintId to set
+     */
+    public void setComplaintId(String complaintId) {
+        this.complaintId = complaintId;
+    }
+
+    /**
+     * @return the employeeId
+     */
+    public String getEmployeeId() {
+        return employeeId;
+    }
+
+    /**
+     * @param employeeId the employeeId to set
+     */
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    /**
+     * @return the selectedId
+     */
+    public String getSelectedId() {
+        return selectedId;
+    }
+
+    /**
+     * @param selectedId the selectedId to set
+     */
+    public void setSelectedId(String selectedId) {
+        this.selectedId = selectedId;
+    }
+
+    /**
+     * @return the positionCode
+     */
+    public String getPositionCode() {
+        return positionCode;
+    }
+
+    /**
+     * @param positionCode the positionCode to set
+     */
+    public void setPositionCode(String positionCode) {
+        this.positionCode = positionCode;
+    }
+
 }

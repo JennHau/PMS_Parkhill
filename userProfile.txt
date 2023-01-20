@@ -1,5 +1,4 @@
 userID;email;password;firstName;lastName;identificationNo;gender;phoneNo;unitNo;
-<<<<<<< HEAD
 rsd000001;Ileane@gmail.com;X8Th1MBt7z;Ileane;Campa;990229145877;Female;019-131-2229;A-01-01; 
 rsd000002;Syman@gmail.com;t0079NE0K;Syman;Ivkovic;990229145878;Male;014-131-2230;A-01-02; 
 rsd000003;Octavius@gmail.com;MQBUuPRbc;Octavius;McCool;990229145879;Male;019-131-2231;A-01-03; 
@@ -166,7 +165,6 @@ scg184574;asdw;asdw;asdw;asdw;678967896789;asdw;0198765432;asdw;
 scg184576;hi;hi;hi;hi;678967896789;hi;0198765432;hi;
 scg184577;bye;bye;hi;hi;678967896789;hi;0198765432;hi;
 bde198234;winson@gmail.com;winson123;Winson;Low;001101011111;M;0123456789;null;
-=======
 tnt000001;Ileane@gmail.com;woJDFU76@;Ileane;Campa;990229145877;Female;019-880-8734;A-01-01;
 tnt000002;Syman@gmail.com;t0079NE0K;Syman;Ivkovic;990229145878;Male;014-131-2230;A-01-02;
 tnt000003;Octavius@gmail.com;MQBUuPRbc;Octavius;McCool;990229145879;Male;019-131-2231;A-01-03;
@@ -327,5 +325,3 @@ vdr000007;Renado@gmail.com;isDu2x;Renado;Aveline;850129146033;Male;013-131-2385;
 vdr000008;Rickey@gmail.com;TaQlXpNZ7bh;Rickey;Jeaffreson;850129146034;Male;013-131-2386;S-02-03;
 vdr00009;Alaine@gmail.com;hCkYXqu;Alaine;Shackelton;850129146035;Female;019-131-2387;S-02-03A;
 vdr000010;Sula@gmail.com;IuGYCxEw7y;Sula;Ivashin;850129146036;Female;019-131-2388;S-02-05;
-
->>>>>>> master
