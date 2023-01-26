@@ -242,7 +242,7 @@ public class SignInPage extends javax.swing.JFrame {
             Users users = new Users();
             boolean valid = users.login(email.getText(), String.valueOf(password.getPassword()));
             if (valid) {
-                users.userRole(email.getText());
+                users.userPage();
                 dispose();
             } else {
                 warningMessage.setText("Invalid email address or password!");

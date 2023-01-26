@@ -4,6 +4,7 @@
  */
 package pms_parkhill_residence;
 
+import buildingExecutive.BuildingExecutiveMainPage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
  * @author wongj
  */
 public class Users{
+    private Users user;
     private String userID;
     private String firstName;
     private String lastName;
@@ -24,8 +26,27 @@ public class Users{
     private String unitNo;
     FileHandling fh = new FileHandling();
     
+    public Users() {}
+    
     //Constructor for non-residents
-    public Users(){}
+    public Users(String userId){
+        userID = userId;
+        List<String> userFile = fh.fileRead("userProfile.txt");
+        for (String eachUser : userFile) {
+            String[] userDetails = eachUser.split(";");
+            String id = userDetails[0];
+            if (userID.equals(id)) {
+                email = userDetails[1];
+                password = userDetails[2];
+                firstName = userDetails[3];
+                lastName = userDetails[4];
+                identificationNo = userDetails[5];
+                gender = userDetails[6];
+                phoneNo = userDetails[7];
+                unitNo = userDetails[8];
+            }
+        }
+    }
     
     //Constructor for non-redidents
     public Users(String userID, String email, String password, String firstName,
@@ -182,44 +203,61 @@ public class Users{
         this.unitNo = unitNo;
     }
     
+//    public boolean login(String email, String password) throws IOException {
+//        List<String> userProfile = fh.fileRead("userProfile.txt");
+//        String[] userProfileArray = new String[userProfile.size()];
+//        userProfile.toArray(userProfileArray);
+//        
+//        // declare username_lst arrayList to store username in text file
+//        ArrayList<String> email_lst = new ArrayList<String>();
+//        // declare password_lst arrayList to store password in text file
+//        ArrayList<String> password_lst = new ArrayList<String>();
+//        // declare repeatedPosition arrayList to store the repeated password index in text file
+//        ArrayList<Integer> repeatedPosition = new ArrayList<Integer>();
+//        
+//        // extract data from text file
+//        for (int i = 1; i<userProfile.size(); i++){
+//            String[] userInfo = userProfileArray[i].split(";");
+//            String email_temp = userInfo[1];
+//            String password_temp = userInfo[2];
+//            email_lst.add(email_temp);
+//            password_lst.add(password_temp);
+//        } 
+//
+//        // scan for repeated password
+//        for (int i = 0; i < password_lst.size(); i++) {
+//            if (password_lst.get(i).equals(password)) {
+//                // add index of repeated password to repeatedPosition arrayList
+//                repeatedPosition.add(i);
+//            } 
+//        }
+//        // if username from text field contains in arrayList 
+//        if (email_lst.contains(email) && password_lst.contains(password) &&
+//                // and password index in password_lst contains in repeatedPosition arrayList
+//                repeatedPosition.contains(password_lst.indexOf(password))) {
+//            setCurrentSession(email);
+//            // if password from text field contains in arrayList
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
+    
     public boolean login(String email, String password) throws IOException {
         List<String> userProfile = fh.fileRead("userProfile.txt");
-        String[] userProfileArray = new String[userProfile.size()];
-        userProfile.toArray(userProfileArray);
+        for (String eachUser : userProfile){
+            String[] userDet = eachUser.split(";");
+            String userEmail = userDet[1];
+            if (userEmail.equals(email)) {
+                String userPass = userDet[2];
+                if (userPass.equals(password)) {
+                    user = new Users(userDet[0]);
+                    return true;
+                }
+            }
+        }
         
-        // declare username_lst arrayList to store username in text file
-        ArrayList<String> email_lst = new ArrayList<String>();
-        // declare password_lst arrayList to store password in text file
-        ArrayList<String> password_lst = new ArrayList<String>();
-        // declare repeatedPosition arrayList to store the repeated password index in text file
-        ArrayList<Integer> repeatedPosition = new ArrayList<Integer>();
-            
-        // extract data from text file
-        for (int i = 1; i<userProfile.size(); i++){
-            String[] userInfo = userProfileArray[i].split(";");
-            String email_temp = userInfo[1];
-            String password_temp = userInfo[2];
-            email_lst.add(email_temp);
-            password_lst.add(password_temp);
-        } 
-
-        // scan for repeated password
-        for (int i = 0; i < password_lst.size(); i++) {
-            if (password_lst.get(i).equals(password)) {
-                // add index of repeated password to repeatedPosition arrayList
-                repeatedPosition.add(i);
-            } 
-        }
-        // if username from text field contains in arrayList 
-        if (email_lst.contains(email) && password_lst.contains(password) &&
-                // and password index in password_lst contains in repeatedPosition arrayList
-                repeatedPosition.contains(password_lst.indexOf(password))) {
-            setCurrentSession(email);
-            // if password from text field contains in arrayList
-            return true;
-        } else {
-            return false;
-        }
+        return false;
     }
     
     public void userRole(String email) throws IOException {
@@ -249,6 +287,14 @@ public class Users{
         } else if(userID.startsWith("scg")) {
             
         } else if(userID.startsWith("vst")) {
+            
+        }
+    }
+    
+    public void userPage() {
+        String userCode = user.getUserID().substring(0, 3);
+        switch (userCode) {
+            case "bde" -> new BuildingExecutiveMainPage(this.user).setVisible(true);
             
         }
     }

@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package buildingExecutive;
+package pms_parkhill_residence;
 
+import buildingExecutive.BuildingExecutive;
 import buildingExecutive.BuildingExecutive;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import pms_parkhill_residence.FileHandling;
  * @author Winson
  */
 public class CRUD extends FileHandling {
-    BuildingExecutive BE = new BuildingExecutive();
+    TextFiles TF = new TextFiles();
     
     public boolean create(String fileName, List<String> newData) {
         this.fileWrite(fileName, true, newData);
@@ -25,7 +26,7 @@ public class CRUD extends FileHandling {
         List<String> fileItems = this.fileRead(fileName);
         
         for (String eachItem : fileItems) {
-            String[] itemDetails = eachItem.split(BE.sp);
+            String[] itemDetails = eachItem.split(TF.sp);
             String itemId = itemDetails[0];
             if (itemId.equals(Id)) {
                 return eachItem;
@@ -42,7 +43,7 @@ public class CRUD extends FileHandling {
         boolean itemUpdated = false;
         
         for (String eachItem : fileItems) {
-            String[] itemDetails = eachItem.split(BE.sp);
+            String[] itemDetails = eachItem.split(TF.sp);
             String itemId = itemDetails[idCol];
             if (itemId.equals(Id)) {
                 updatedList.add(updatedData);
@@ -65,7 +66,7 @@ public class CRUD extends FileHandling {
         boolean itemRemoved = false;
         
         for (String eachItem : fileItems) {
-            String[] itemDetails = eachItem.split(BE.sp);
+            String[] itemDetails = eachItem.split(TF.sp);
             String itemId = itemDetails[idCol];
             if (!itemId.equals(Id)) {
                 removedList.add(eachItem);

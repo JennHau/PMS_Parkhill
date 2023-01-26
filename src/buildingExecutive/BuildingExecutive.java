@@ -4,6 +4,7 @@
  */
 package buildingExecutive;
 
+import pms_parkhill_residence.CRUD;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,6 +18,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.TextFiles;
 import pms_parkhill_residence.Users;
 
 /**
@@ -24,6 +26,7 @@ import pms_parkhill_residence.Users;
  * @author Winson
  */
 public class BuildingExecutive extends Users{
+    TextFiles TF = new TextFiles();
     FileHandling fileHandling = new FileHandling();
     
     // text file seperator
