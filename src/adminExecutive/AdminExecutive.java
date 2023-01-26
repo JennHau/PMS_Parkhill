@@ -10,7 +10,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import accountExecutive.AccountExecutive;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.DecimalFormat;
 import java.util.Calendar;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import pms_parkhill_residence.FileHandling;
 
 /**
@@ -917,5 +927,119 @@ public class AdminExecutive {
                 newData.add(employeeTypeList.get(i));
             }
         } fh.fileWrite("employeeList.txt", false, newData);
+    }
+    
+    public String browseImage() {
+        // choose file
+        JFileChooser fc = new JFileChooser();
+        // limit file extention type
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Image Files", "jpg");
+        fc.setFileFilter(filter);
+        int result = fc.showOpenDialog(null);
+        
+        String oriName="";
+        
+        // make sure that a file was chosen, else exit
+        if (result != JFileChooser.APPROVE_OPTION) {
+
+        } else {
+            // get file path
+            String path = fc.getSelectedFile().getAbsolutePath();
+            // get file name
+            oriName = fc.getSelectedFile().getName();
+            // create a file in the specific directory
+            File source = new File(path);
+            
+            try {
+                //copy file conventional way using Stream
+                copyFileUsingStream(source, new File("src\\images\\temp.jpg"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            } 
+        } return oriName;
+    }
+    
+    public void deleteTempImage() {
+        //declare variable to store temporary image file name
+        String tmpImgFile = "src\\images\\temp.jpg";
+        // create a file in the specific directory
+        File tempimage = new File(tmpImgFile);
+        // delete temporary image file
+        tempimage.delete();
+    }
+    
+    private void copyFileUsingStream(File source, File dest) throws IOException {
+        // set input and output stream to null
+        InputStream is = null;
+        OutputStream os = null;
+        try {
+            // create InputStream from source
+            is = new FileInputStream(source);
+            // write it to the destination file using OutputStream
+            os = new FileOutputStream(dest);
+            byte[] buffer = new byte[1024];
+            // declare length 
+            int length;
+            // while buffer of size >= one byte (get the exact buffer size)
+            while ((length = is.read(buffer)) > 0) {
+                // write to source based on the buffer size
+                os.write(buffer, 0, length);
+            }
+        } finally {
+            is.close();
+            os.close();
+        }
+    }
+    
+    public void checkUploadedImage(String facilityName) {
+        //declare variable to store temporary image file name
+        String tmpImgFile = "src\\images\\temp.jpg";
+        // declare newImgName to store new directory
+        String newImgName = "src\\images\\" + facilityName + ".jpg";
+        // create a file in the specific directory
+        File tempimage = new File(tmpImgFile);
+        // create a file in the specific directory
+        File newImageName = new File(newImgName);
+        
+        if(tempimage.exists()) {
+            // delete old image
+            newImageName.delete();
+            // rename temporary image to the old image name
+            tempimage.renameTo(newImageName);  
+        }
+    }
+    
+    public boolean checkAddFacilityValidation(String facilityName, String fctID) {
+        List<String> availableList = fh.fileRead("facility.txt");
+        
+        for (int i = 1; i < availableList.size(); i++) {
+            String[] employeeDetails = availableList.get(i).split(";");
+            String eFctID = employeeDetails[0].toLowerCase();
+            String eFacilityName = employeeDetails[1].toLowerCase();
+            
+            if (eFacilityName.equals(facilityName.toLowerCase()) 
+                    && !fctID.equals(eFctID)) {
+                return false;
+            } 
+        } return true;
+    }
+    
+    public void deleteFacility(String facilityID, String facilityName) {
+        System.out.println(facilityID +" "+ facilityName);
+        List<String> facilityList =  fh.fileRead("facility.txt");
+        
+        List<String> newData = new ArrayList<>();
+        
+        for (int i = 0; i < facilityList.size(); i++) {
+            String[] facilityDetails = facilityList.get(i).split(";");
+            String id = facilityDetails[0];
+            
+            if (!id.equals(facilityID)) {
+                newData.add(facilityList.get(i));
+            }
+        } fh.fileWrite("facility.txt", false, newData);
+        String newImgName = "src\\images\\" + facilityName + ".jpg";
+        File newImageName = new File(newImgName);
+        newImageName.delete();
     }
 }
