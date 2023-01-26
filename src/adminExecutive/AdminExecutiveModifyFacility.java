@@ -452,14 +452,7 @@ public class AdminExecutiveModifyFacility extends javax.swing.JFrame {
         facilityNameTF.setText(fb.getFacilityName());
         if (fb.isBooking()) {
             bookingCB.setSelected(true); paymentCB.setEnabled(true);
-        } else {
-            startHourCB.setSelectedItem(fb.getStartTime());
-            endHourCB.setSelectedItem(fb.getEndTime());
-            activeCB.setSelectedItem(fb.getActive());
-            quantitySp.setValue(Integer.valueOf(fb.getQuantity()));
-            imageNameLabel.setText(fb.getFacilityName() + ".jpg");
-        }
-        
+        } 
         if (fb.isPayment()) {
             paymentCB.setSelected(true); unitPriceTF.setEnabled(true);
             unitCB.setEnabled(true); unitPriceTF.setText(fb.getPrice());
@@ -469,13 +462,12 @@ public class AdminExecutiveModifyFacility extends javax.swing.JFrame {
             activeCB.setSelectedItem(fb.getActive());
             quantitySp.setValue(Integer.valueOf(fb.getQuantity()));
             imageNameLabel.setText(fb.getFacilityName() + ".jpg");
-        } else {
-            startHourCB.setSelectedItem(fb.getStartTime());
-            endHourCB.setSelectedItem(fb.getEndTime());
-            activeCB.setSelectedItem(fb.getActive());
-            quantitySp.setValue(Integer.valueOf(fb.getQuantity()));
-            imageNameLabel.setText(fb.getFacilityName() + ".jpg");
-        }
+        } 
+        startHourCB.setSelectedItem(fb.getStartTime());
+        endHourCB.setSelectedItem(fb.getEndTime());
+        activeCB.setSelectedItem(fb.getActive());
+        quantitySp.setValue(Integer.valueOf(fb.getQuantity()));
+        imageNameLabel.setText("Current: " + fb.getFacilityName() + ".jpg");
     }
     
     
@@ -559,7 +551,7 @@ public class AdminExecutiveModifyFacility extends javax.swing.JFrame {
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveEmployeeManagement().setVisible(true);
+        new AdminExecutiveFacilityManagement().setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
     private void deleteBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtActionPerformed
@@ -620,6 +612,9 @@ public class AdminExecutiveModifyFacility extends javax.swing.JFrame {
                         unitPrice +";"+ unit +";"+ startHour +";"+ endHour +";"+
                         quantity +";"+ active +";");
                         
+                        if(!imageNameLabel.getText().startsWith("Current: ")) {
+                            ae.checkUploadedImage(fctName);
+                        }
                         ae.deleteFacility(fctID, "");
                         fh.fileWrite("facility.txt", true, newData);
                         JOptionPane.showMessageDialog (null, "Facility has been modified!", 
@@ -639,6 +634,9 @@ public class AdminExecutiveModifyFacility extends javax.swing.JFrame {
                             "-" +";"+ "-" +";"+ startHour +";"+ endHour +";"+
                             quantity +";"+ active +";");
                         
+                        if(!imageNameLabel.getText().startsWith("Current: ")) {
+                            ae.checkUploadedImage(fctName);
+                        }
                         ae.deleteFacility(fctID, "");
                         fh.fileWrite("facility.txt", true, newData);
                         JOptionPane.showMessageDialog (null, "Facility has been modified!", 
