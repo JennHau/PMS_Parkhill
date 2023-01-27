@@ -714,28 +714,6 @@ public class AdminExecutiveFacilityManagement extends javax.swing.JFrame {
        setTable();
     }//GEN-LAST:event_clearbtActionPerformed
 
-    private void addLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addLabelMouseEntered
-        // TODO add your handling code here:
-            addLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_addLabelMouseEntered
-
-    private void addPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addPanelMouseEntered
-        // TODO add your handling code here:
-        addPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_addPanelMouseEntered
-
-    private void addPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addPanelMouseClicked
-        // TODO add your handling code here:
-        dispose();
-        new AdminExecutiveAddFacility().setVisible(true);
-    }//GEN-LAST:event_addPanelMouseClicked
-
-    private void addLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addLabelMouseClicked
-        // TODO add your handling code here:
-        dispose();
-        new AdminExecutiveAddFacility().setVisible(true);
-    }//GEN-LAST:event_addLabelMouseClicked
-
     
     
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -745,7 +723,7 @@ public class AdminExecutiveFacilityManagement extends javax.swing.JFrame {
         int row = jTable1.getSelectedRow();
         
         if (column == 7) {
-            String facilityID = String.valueOf(tableModel.getValueAt(row, 1)).toLowerCase();
+            String facilityID = String.valueOf(tableModel.getValueAt(row, 1)).toUpperCase();
             dispose();
             new AdminExecutiveModifyFacility(facilityID).setVisible(true);
         }
@@ -963,6 +941,28 @@ public class AdminExecutiveFacilityManagement extends javax.swing.JFrame {
     private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchTextFieldActionPerformed
+
+    private void addPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addPanelMouseEntered
+        // TODO add your handling code here:
+        addPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_addPanelMouseEntered
+
+    private void addPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addPanelMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AdminExecutiveAddFacility().setVisible(true);
+    }//GEN-LAST:event_addPanelMouseClicked
+
+    private void addLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addLabelMouseEntered
+        // TODO add your handling code here:
+        addLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_addLabelMouseEntered
+
+    private void addLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addLabelMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AdminExecutiveAddFacility().setVisible(true);
+    }//GEN-LAST:event_addLabelMouseClicked
     
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));

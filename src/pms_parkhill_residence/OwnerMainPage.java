@@ -6,6 +6,7 @@ package pms_parkhill_residence;
 
 import java.awt.Toolkit;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -434,8 +435,7 @@ public class OwnerMainPage extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        String currentTime = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
-        System.out.println(currentTime);
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void setWindowIcon() {

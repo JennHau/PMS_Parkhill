@@ -1,0 +1,6 @@
+bookingID;facilityID;facilityName;unitNo;date;startTime;endTime;payment;
+fbk000001;fct000001;Badminton Court 1;A-05-04;2023-01-01;-;-;-;
+fbk000002;fct000001;Badminton Court 1;A-05-04;2023-01-31;-;-;-;
+fbk000003;fct000001;Badminton Court 1;A-05-04;2023-01-15;-;-;67.99;
+fbk000004;fct000001;Badminton Court 1;A-05-04;2023-01-27;-;-;-;
+fbk000005;fct000001;Badminton Court 1;A-05-04;2023-01-27;-;-;-;

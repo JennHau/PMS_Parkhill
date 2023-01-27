@@ -4,6 +4,7 @@
  */
 package adminExecutive;
 
+import pms_parkhill_residence.FacilityBookingPaymentByHour;
 import java.awt.Toolkit;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -544,7 +545,7 @@ public class AdminExecutiveModifyFacility extends javax.swing.JFrame {
     }//GEN-LAST:event_quantitySpMousePressed
 
     private void browseBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseBtActionPerformed
-        String imageName = ae.browseImage();
+        String imageName = fh.browseImage();
         imageNameLabel.setText(imageName);
     }//GEN-LAST:event_browseBtActionPerformed
 
@@ -613,7 +614,7 @@ public class AdminExecutiveModifyFacility extends javax.swing.JFrame {
                         quantity +";"+ active +";");
                         
                         if(!imageNameLabel.getText().startsWith("Current: ")) {
-                            ae.checkUploadedImage(fctName);
+                            fh.checkUploadedImage(fctName);
                         }
                         ae.deleteFacility(fctID, "");
                         fh.fileWrite("facility.txt", true, newData);
@@ -635,7 +636,7 @@ public class AdminExecutiveModifyFacility extends javax.swing.JFrame {
                             quantity +";"+ active +";");
                         
                         if(!imageNameLabel.getText().startsWith("Current: ")) {
-                            ae.checkUploadedImage(fctName);
+                            fh.checkUploadedImage(fctName);
                         }
                         ae.deleteFacility(fctID, "");
                         fh.fileWrite("facility.txt", true, newData);

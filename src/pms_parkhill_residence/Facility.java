@@ -19,13 +19,14 @@ public abstract class Facility {
     private String priceUnit;
     private String startTime;
     private String endTime;
-    private String quantity;
+    private Integer quantity;
     private String active;
     FileHandling fh = new FileHandling();
     
     public Facility() {}
     
     public void setFacilityDetails(String facilityID) {
+        
         List<String> availableList = fh.fileRead("facility.txt");
         
         for (int i = 1; i < availableList.size(); i++) {
@@ -38,8 +39,8 @@ public abstract class Facility {
             String priceUnit = employeeDetails[5];
             String startTime = employeeDetails[6];
             String endTime = employeeDetails[7];
-            String quantity = employeeDetails[8];
-            String active = employeeDetails[9].toUpperCase();
+            Integer quantity = Integer.valueOf(employeeDetails[8]);
+            String active = employeeDetails[9];
             
             if(eFacilityID.equals(facilityID.toLowerCase())) {
                 this.facilityID = eFacilityID;
@@ -174,14 +175,14 @@ public abstract class Facility {
     /**
      * @return the quantity
      */
-    public String getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
     /**
      * @param quantity the quantity to set
      */
-    public void setQuantity(String quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 

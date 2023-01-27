@@ -473,7 +473,7 @@ public class AdminExecutiveAddFacility extends javax.swing.JFrame {
                         newData.add(fctID +";"+ fctName +";"+ booking +";"+ payment +";"+
                         unitPrice +";"+ unit +";"+ startHour +";"+ endHour +";"+
                         quantity +";"+ active +";");
-                        ae.checkUploadedImage(fctName);
+                        fh.checkUploadedImage(fctName);
                         fh.fileWrite("facility.txt", true, newData);
                         JOptionPane.showMessageDialog (null, "New facility has been added!", 
                                         "ADD FACILITY", JOptionPane.INFORMATION_MESSAGE);
@@ -491,7 +491,7 @@ public class AdminExecutiveAddFacility extends javax.swing.JFrame {
                         newData.add(fctID +";"+ fctName +";"+ booking +";"+ payment +";"+
                             "-" +";"+ "-" +";"+ startHour +";"+ endHour +";"+
                             quantity +";"+ active +";");
-                        ae.checkUploadedImage(fctName);
+                        fh.checkUploadedImage(fctName);
                         fh.fileWrite("facility.txt", true, newData);
                         JOptionPane.showMessageDialog (null, "New facility has been added!", 
                                         "ADD FACILITY", JOptionPane.INFORMATION_MESSAGE);
@@ -511,7 +511,7 @@ public class AdminExecutiveAddFacility extends javax.swing.JFrame {
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         if (!"".equals(imageNameLabel.getText())) {
-            ae.deleteTempImage();
+            fh.deleteTempImage();
             // close Admin_add JFrame
             dispose();
             new AdminExecutiveFacilityManagement().setVisible(true);
@@ -595,7 +595,7 @@ public class AdminExecutiveAddFacility extends javax.swing.JFrame {
     }//GEN-LAST:event_quantitySpMousePressed
 
     private void browseBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseBtActionPerformed
-        String imageName = ae.browseImage();
+        String imageName = fh.browseImage();
         imageNameLabel.setText(imageName);
     }//GEN-LAST:event_browseBtActionPerformed
     

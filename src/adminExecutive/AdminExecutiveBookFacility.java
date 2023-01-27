@@ -4,35 +4,39 @@
  */
 package adminExecutive;
 
-import pms_parkhill_residence.FacilityBookingPaymentByHour;
 import java.awt.Cursor;
 import java.awt.Toolkit;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 import accountExecutive.AccountExecutiveIssueInvoice;
 import accountExecutive.AccountExecutiveIssueOutstandingFee;
 import accountExecutive.AccountExecutiveIssueReceipt;
 import accountExecutive.AccountExecutiveIssueStatement;
 import accountExecutive.AccountExecutivePayment;
-import java.awt.Color;
-import java.awt.Image;
-import javax.swing.ImageIcon;
+import java.time.LocalDate;
+import pms_parkhill_residence.Facility;
+import pms_parkhill_residence.FacilityBookingPaymentByHour;
+import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.HomePage;
 
 /**
  *
  * @author wongj
  */
-public class AdminExecutiveFacilityPreview extends javax.swing.JFrame {
+public class AdminExecutiveBookFacility extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
-     * @param facilityID
+     * @param fb
+     * @param bookingID
      */
-    public AdminExecutiveFacilityPreview(String facilityID) {
+    public AdminExecutiveBookFacility(Facility fb, String bookingID) {
         initComponents();
         setWindowIcon();
-        this.facilityID = facilityID;
-        setImage();
+        this.facilityID = fb.getFacilityID(); this.facilityName = fb.getFacilityName();
+        this.bookingID = bookingID; this.quantity = fb.getQuantity();
         setDefault();
+        setTable();
     }
 
     /**
@@ -48,27 +52,21 @@ public class AdminExecutiveFacilityPreview extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        facilityNameLabel = new javax.swing.JLabel();
-        imageLabel = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        facilityIDLabel = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        operatingHoursLabel = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        bookingLabel = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        facilityTypeLabel = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        paymentLabel = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        variationCB = new javax.swing.JComboBox<>();
         jLabel19 = new javax.swing.JLabel();
-        priceLabel = new javax.swing.JLabel();
+        datePicker1 = new com.github.lgooddatepicker.components.DatePicker();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
-        chargeLabel = new javax.swing.JLabel();
-        jLabel23 = new javax.swing.JLabel();
-        statusPanel = new javax.swing.JPanel();
-        statusLabel = new javax.swing.JLabel();
-        bookBt = new javax.swing.JButton();
-        cancelBt2 = new javax.swing.JButton();
-        jSeparator1 = new javax.swing.JSeparator();
-        jSeparator2 = new javax.swing.JSeparator();
+        bookingIDLabel = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         dashboardPanel = new javax.swing.JPanel();
@@ -121,7 +119,7 @@ public class AdminExecutiveFacilityPreview extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
         jPanel3Layout.setVerticalGroup(
@@ -134,132 +132,167 @@ public class AdminExecutiveFacilityPreview extends javax.swing.JFrame {
                 .addContainerGap(9, Short.MAX_VALUE))
         );
 
-        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel6.setBackground(new java.awt.Color(226, 226, 226));
 
-        facilityNameLabel.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
-        facilityNameLabel.setForeground(new java.awt.Color(102, 102, 102));
-        facilityNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        facilityNameLabel.setText("FACILITY NAME");
-        facilityNameLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jPanel6.add(facilityNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 308, 1008, 47));
+        jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel14.setText("FACILITY BOOKING");
+        jLabel14.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
-        imageLabel.setBackground(new java.awt.Color(255, 255, 255));
-        imageLabel.setMaximumSize(new java.awt.Dimension(1020, 307));
-        imageLabel.setMinimumSize(new java.awt.Dimension(1020, 307));
-        imageLabel.setPreferredSize(new java.awt.Dimension(1020, 307));
-        jPanel6.add(imageLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 302));
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        jLabel11.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel11.setText("FACILITY ID:");
-        jPanel6.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(276, 389, -1, 25));
+            },
+            new String [] {
+                "FACILITY NAME", "START TIME", "END TIME", "BOOKED BY", "ACTION"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
 
-        facilityIDLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        facilityIDLabel.setForeground(new java.awt.Color(102, 102, 102));
-        facilityIDLabel.setText("FACILITY ID");
-        jPanel6.add(facilityIDLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(371, 387, -1, -1));
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
 
-        jLabel13.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel13.setText("OPEARATING HOURS:");
-        jPanel6.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(541, 389, -1, 25));
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        operatingHoursLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        operatingHoursLabel.setForeground(new java.awt.Color(102, 102, 102));
-        operatingHoursLabel.setText("FACILITY ID");
-        jPanel6.add(operatingHoursLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 387, -1, -1));
+            },
+            new String [] {
+                "FACILITY NAME", "START TIME", "END TIME", "ACTION"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
 
-        jLabel15.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel15.setText("BOOKING:");
-        jPanel6.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(57, 444, -1, 25));
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable2MouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(jTable2);
 
-        bookingLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        bookingLabel.setForeground(new java.awt.Color(102, 102, 102));
-        bookingLabel.setText("FACILITY ID");
-        jPanel6.add(bookingLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(142, 442, -1, -1));
+        facilityTypeLabel.setFont(new java.awt.Font("Yu Gothic UI", 1, 12)); // NOI18N
+        facilityTypeLabel.setForeground(new java.awt.Color(153, 153, 153));
+        facilityTypeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        facilityTypeLabel.setText("FACILITY ID - FACILITY NAME");
 
-        jLabel17.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel17.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel17.setText("PAYMENT:");
-        jPanel6.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(319, 444, -1, 25));
+        jLabel17.setFont(new java.awt.Font("Yu Gothic", 1, 12)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel17.setText("FACILITY BOOKING TIMESLOT:");
 
-        paymentLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        paymentLabel.setForeground(new java.awt.Color(102, 102, 102));
-        paymentLabel.setText("FACILITY ID");
-        jPanel6.add(paymentLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(404, 442, -1, -1));
+        jLabel18.setFont(new java.awt.Font("Yu Gothic", 1, 12)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel18.setText("SELECTED TIMESLOT:");
 
-        jLabel19.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel19.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel19.setText("PRICE:");
-        jPanel6.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(572, 444, -1, 25));
+        variationCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                variationCBActionPerformed(evt);
+            }
+        });
 
-        priceLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        priceLabel.setForeground(new java.awt.Color(102, 102, 102));
-        priceLabel.setText("FACILITY ID");
-        jPanel6.add(priceLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 442, -1, -1));
+        jLabel19.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel19.setText("FACILITY VARIATION:");
 
-        jLabel21.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel21.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel21.setText("CHARGE:");
-        jPanel6.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(782, 444, -1, 25));
+        datePicker1.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
 
-        chargeLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        chargeLabel.setForeground(new java.awt.Color(102, 102, 102));
-        chargeLabel.setText("FACILITY ID");
-        jPanel6.add(chargeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(857, 442, -1, -1));
+        jLabel20.setText("DATE:");
+        jLabel20.setForeground(new java.awt.Color(153, 153, 153));
 
-        jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel23.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel23.setText("STATUS:");
-        jPanel6.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(395, 496, 63, 37));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/searchIcon.png"))); // NOI18N
 
-        statusPanel.setBackground(new java.awt.Color(13, 50, 79));
+        jLabel21.setFont(new java.awt.Font("Yu Gothic", 1, 12)); // NOI18N
+        jLabel21.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel21.setText("BOOKING ID:");
 
-        statusLabel.setBackground(new java.awt.Color(255, 0, 51));
-        statusLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        statusLabel.setForeground(new java.awt.Color(255, 255, 255));
-        statusLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        statusLabel.setText("ACTIVE");
+        bookingIDLabel.setFont(new java.awt.Font("Yu Gothic", 1, 14)); // NOI18N
+        bookingIDLabel.setForeground(new java.awt.Color(153, 153, 153));
+        bookingIDLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        bookingIDLabel.setText("FBK000000");
 
-        javax.swing.GroupLayout statusPanelLayout = new javax.swing.GroupLayout(statusPanel);
-        statusPanel.setLayout(statusPanelLayout);
-        statusPanelLayout.setHorizontalGroup(
-            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(statusPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(statusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        statusPanelLayout.setVerticalGroup(
-            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(statusPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(statusLabel)
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel21)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bookingIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 960, Short.MAX_VALUE)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 960, Short.MAX_VALUE)
+                    .addComponent(facilityTypeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel17)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(variationCB, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(datePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        jPanel6.add(statusPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(476, 496, -1, -1));
-
-        bookBt.setBackground(new java.awt.Color(0, 204, 0));
-        bookBt.setText("BOOK");
-        bookBt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bookBtActionPerformed(evt);
-            }
-        });
-        jPanel6.add(bookBt, new org.netbeans.lib.awtextra.AbsoluteConstraints(514, 570, 80, 31));
-
-        cancelBt2.setText("BACK");
-        cancelBt2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelBt2ActionPerformed(evt);
-            }
-        });
-        jPanel6.add(cancelBt2, new org.netbeans.lib.awtextra.AbsoluteConstraints(428, 570, 80, 31));
-        jPanel6.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 550, 910, -1));
-        jPanel6.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 370, 910, -1));
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(facilityTypeLabel)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jLabel17))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel20)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(datePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel19)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(variationCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel18)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(bookingIDLabel)
+                            .addComponent(jLabel21))
+                        .addGap(0, 0, 0)))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         jPanel1.setBackground(new java.awt.Color(13, 24, 42));
 
@@ -725,50 +758,43 @@ public class AdminExecutiveFacilityPreview extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-    
-    FacilityBookingPaymentByHour fb = new FacilityBookingPaymentByHour();
-    String facilityID;
-    
-    private void setImage() {
-        // locate image directory
-        ImageIcon imageicon = new ImageIcon(getClass().getResource("/images/Badminton Court.jpg"));
-        // set image to assign size
-        Image image = (imageicon).getImage().getScaledInstance(1020, 307, Image.SCALE_SMOOTH);
-        // replace variable to new resized image
-        imageicon = new ImageIcon(image);
-        // set Jlabel to with the image as icon
-        imageLabel.setIcon(imageicon);
-    }
+
+    AdminExecutive ae = new AdminExecutive();
+    String facilityID; String facilityName; String bookingID; Integer quantity;
     
     private void setDefault() {
-        fb.setFacilityDetails(facilityID);
-        facilityNameLabel.setText(fb.getFacilityName());
-        facilityIDLabel.setText(fb.getFacilityID().toUpperCase());
-        operatingHoursLabel.setText(fb.getStartTime() +" - "+ fb.getEndTime());
-        if (fb.isBooking()) {
-            bookingLabel.setText("Required");
+        datePicker1.setDate(LocalDate.now());
+        facilityTypeLabel.setText(facilityID.toUpperCase() +" - "+ facilityName);
+        if(this.bookingID == null) {
+            String latestBookingID = ae.getLatestID("facilityBooking.txt", "fbk");
+            bookingIDLabel.setText(latestBookingID.toUpperCase());
         } else {
-            bookingLabel.setText("Not Required");
+            bookingIDLabel.setText(this.bookingID.toUpperCase());
         }
-        
-        if(fb.isPayment()) {
-            paymentLabel.setText("Required");
-            priceLabel.setText(fb.getPrice());
-            chargeLabel.setText(fb.getPriceUnit());
+        if(quantity == 1) {
+            variationCB.addItem(facilityName);
         } else {
-            paymentLabel.setText("Not Required");
-            priceLabel.setText("-");
-            chargeLabel.setText("-");
-        }
-        
-        statusLabel.setText(fb.getActive().toUpperCase());
-        if(statusLabel.getText().equals("INACTIVE")) {
-            statusPanel.setBackground(new Color(204,0,0)); 
-            statusLabel.setForeground(new Color(255,255,255));
-            bookBt.setEnabled(false);
+            for (int i = 1; i<quantity + 1; i++) {
+                variationCB.addItem(facilityName +" "+ i);
+            }
         }
     }
     
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        int column = jTable1.getSelectedColumn();
+        int row = jTable1.getSelectedRow();
+        
+        if (column == 7) {
+            tableModel.setValueAt("SELECTED", row, 7);
+            String facilityID = String.valueOf(tableModel.getValueAt(row, 1)).toLowerCase();
+            setTable2();
+//            dispose();
+//            new AdminExecutiveModifyFacility(facilityID).setVisible(true);
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
     private void dashboardLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_dashboardLabelMouseClicked
@@ -953,26 +979,79 @@ public class AdminExecutiveFacilityPreview extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_facBookManagePanelMouseEntered
 
-    private void bookBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookBtActionPerformed
+    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         // TODO add your handling code here:
-        dispose();
-        String fctID = facilityIDLabel.getText();
-        String fctName = facilityNameLabel.getText();
-        String paymentStatus = paymentLabel.getText();
-        new AdminExecutiveBookFacility(fb, null).setVisible(true);
-    }//GEN-LAST:event_bookBtActionPerformed
+        DefaultTableModel tableModel2 = (DefaultTableModel)jTable2.getModel();
+        int column = jTable2.getSelectedColumn();
+        int row = jTable2.getSelectedRow();
+        
+        if (column == 6) {
+            String startTime = (String)tableModel2.getValueAt(row, 2);
+            
+            DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+            for (int i=0; i<tableModel.getRowCount(); i++) {
+                String eStartTime = (String)tableModel.getValueAt(i, 3);
+                if (startTime.equals(eStartTime)) {
+                    tableModel.setValueAt("MANAGE", i, 7);
+                    setTable2();
+                }
+            }
+        }
+    }//GEN-LAST:event_jTable2MouseClicked
 
-    private void cancelBt2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBt2ActionPerformed
+    private void variationCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_variationCBActionPerformed
         // TODO add your handling code here:
-        dispose();
-        new AdminExecutiveViewFacilityBooking(facilityID,
-                facilityNameLabel.getText()).setVisible(true);
-    }//GEN-LAST:event_cancelBt2ActionPerformed
+        setTable();
+    }//GEN-LAST:event_variationCBActionPerformed
     
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
-   
+    
+    private void setTable() {
+        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        tableModel.setRowCount(0);
+            
+        FileHandling fh = new FileHandling();
+        List<String> availableList = fh.fileRead("facility.txt");
+        
+        for (int i = 1; i < availableList.size(); i++) {
+            String[] employeeDetails = availableList.get(i).split(";");
+            String facilityID = employeeDetails[0];
+            String facilityName = employeeDetails[1];
+            String startTime = employeeDetails[6];
+            String endTime = employeeDetails[7];
+            String quantity = employeeDetails[8];
+            String active = employeeDetails[9].toUpperCase();
+            String[] tbData = {String.valueOf(i), facilityID.toUpperCase(), 
+                facilityName, startTime, endTime, quantity, active,"MANAGE"};
+            tableModel.addRow(tbData);
+            
+        }
+    }
+    
+    private void setTable2() {
+        DefaultTableModel tableModel2 = (DefaultTableModel)jTable2.getModel();
+        tableModel2.setRowCount(0);
+        
+        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        
+        for (int i=0; i<tableModel.getRowCount(); i++) {
+            String facilityID = (String)tableModel.getValueAt(i, 1);
+            String facilityName = (String)tableModel.getValueAt(i, 2);
+            String startTime = (String)tableModel.getValueAt(i, 3);
+            String endTime = (String)tableModel.getValueAt(i, 4);
+            String quantity = (String)tableModel.getValueAt(i, 5);
+            String active = (String)tableModel.getValueAt(i, 6);
+            String status = (String)tableModel.getValueAt(i, 7);
+            
+            if (status.equals("SELECTED")) {
+                String[] tbData = {facilityID.toUpperCase(), facilityName,
+                    startTime, endTime, quantity, active, "REMOVE"};
+                tableModel2.addRow(tbData);
+            }
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -991,13 +1070,13 @@ public class AdminExecutiveFacilityPreview extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdminExecutiveFacilityPreview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutiveBookFacility.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdminExecutiveFacilityPreview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutiveBookFacility.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdminExecutiveFacilityPreview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutiveBookFacility.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdminExecutiveFacilityPreview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutiveBookFacility.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -9195,37 +9274,33 @@ public class AdminExecutiveFacilityPreview extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminExecutiveFacilityPreview(null).setVisible(true);
+                new AdminExecutiveBookFacility(null, null).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton bookBt;
-    private javax.swing.JLabel bookingLabel;
-    private javax.swing.JButton cancelBt2;
-    private javax.swing.JLabel chargeLabel;
+    private javax.swing.JLabel bookingIDLabel;
     private javax.swing.JLabel complaintManagement;
     private javax.swing.JPanel complaintManagementPanel;
     private javax.swing.JLabel dashboardLabel;
     private javax.swing.JPanel dashboardPanel;
+    private com.github.lgooddatepicker.components.DatePicker datePicker1;
     private javax.swing.JLabel employeeManageLabel;
     private javax.swing.JPanel employeeManagePanel;
     private javax.swing.JLabel facBookManageLabel;
     private javax.swing.JPanel facBookManagePanel;
-    private javax.swing.JLabel facilityIDLabel;
     private javax.swing.JLabel facilityManageLabel;
     private javax.swing.JPanel facilityManagePanel;
-    private javax.swing.JLabel facilityNameLabel;
-    private javax.swing.JLabel imageLabel;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel facilityTypeLabel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
@@ -9233,19 +9308,17 @@ public class AdminExecutiveFacilityPreview extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JLabel logoutLabel;
     private javax.swing.JPanel logoutPanel;
-    private javax.swing.JLabel operatingHoursLabel;
-    private javax.swing.JLabel paymentLabel;
-    private javax.swing.JLabel priceLabel;
     private javax.swing.JLabel rTManageLabel;
     private javax.swing.JPanel rTMangePanel;
-    private javax.swing.JLabel statusLabel;
-    private javax.swing.JPanel statusPanel;
     private javax.swing.JLabel unitManageLabel;
     private javax.swing.JPanel unitManagePanel;
+    private javax.swing.JComboBox<String> variationCB;
     private javax.swing.JLabel viewProfileLabel;
     private javax.swing.JPanel viewProfilePanel;
     // End of variables declaration//GEN-END:variables
