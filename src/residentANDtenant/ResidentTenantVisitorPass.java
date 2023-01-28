@@ -61,6 +61,8 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
         
         deleteBTN.setEnabled(false);
         saveBTN.setEnabled(false);
+        
+        this.passID = null;
     }
     
     private void registeredVisitorTableSetUp() {

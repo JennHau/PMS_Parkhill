@@ -420,25 +420,6 @@ public class BuildingExecutive extends Users{
         return null;
     }
     
-    public String[] getUserDetails(String userId) throws IOException {
-        List<String> readUserProfile = fileHandling.fileRead(userProfile);
-        
-        boolean firstLine = true;
-        for (String userLine : readUserProfile) {
-            if (!firstLine) {
-                String[] userDetails = userLine.split(sp);
-                String userID = userDetails[0];
-                if (userID.equals(userId)) {
-                    return userDetails;
-                }
-            }
-            
-            firstLine = false;
-        }
-        
-        return null;
-    }
-    
     public ArrayList getAssignedJobForSpecificEmployee(String employeeId) throws IOException {
         List<String> readJobFile = fileHandling.fileRead(employeeJobFile);
         ArrayList<String> employeeJobList = new ArrayList<>();

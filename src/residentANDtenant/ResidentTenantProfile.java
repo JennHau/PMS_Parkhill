@@ -4,11 +4,16 @@
  */
 package residentANDtenant;
 
-import buildingExecutive.*;
+import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import pms_parkhill_residence.Users;
 
 /**
@@ -18,6 +23,13 @@ import pms_parkhill_residence.Users;
 public class ResidentTenantProfile extends javax.swing.JFrame {
     private Users user;
     ResidentTenant RT = new ResidentTenant();
+    
+    private String defaultFilePath = "src\\userProfilePic\\";
+    
+    private final String defaultFileExtension = "jpg";
+    
+    private String previousProfilePicPath;
+    private String filePath;
     
     /**
      * Creates new form homePage
@@ -31,6 +43,20 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
     public void runDefaultSetUp(Users user) {
         this.user = user;
         setWindowIcon();
+    }
+    
+    private void profileFormSetUp() {
+        previousProfilePicPath = defaultFilePath + this.user.getUserID() + "." + defaultFileExtension;
+        
+        setImageIcon(previousProfilePicPath);
+        rsdIdTF.setText(this.user.getUserID());
+        unitNoTF.setText(this.user.getUnitNo());
+        firstNameTF.setText(this.user.getFirstName());
+        lastNameTF.setText(this.user.getLastName());
+        contactTF.setText(this.user.getPhoneNo());
+        emailTF.setText(this.user.getEmail());
+        icTF.setText(this.user.getIdentificationNo());
+        genderCB.setSelectedItem(this.user.getGender());
     }
     
     private void setCurrentUserProfile() {
@@ -73,7 +99,7 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jTextField1 = new javax.swing.JTextField();
+        rsdIdTF = new javax.swing.JTextField();
         jLabel25 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
@@ -81,15 +107,21 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
         jLabel29 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
         jLabel31 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
+        firstNameTF = new javax.swing.JTextField();
+        lastNameTF = new javax.swing.JTextField();
+        contactTF = new javax.swing.JTextField();
+        emailTF = new javax.swing.JTextField();
+        icTF = new javax.swing.JTextField();
+        unitNoTF = new javax.swing.JTextField();
         backBTN = new javax.swing.JButton();
         updateBTN = new javax.swing.JButton();
+        uploadImageBTN = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JSeparator();
+        genderCB = new javax.swing.JComboBox<>();
+        profilePicLabel = new javax.swing.JLabel();
+        editContactBTN = new javax.swing.JButton();
+        editEmailBTN = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -443,16 +475,16 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(226, 226, 226));
 
-        jLabel23.setText("Resident ID:");
         jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel23.setText("Resident ID:");
 
-        jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel24.setText("Resident / Tenant Profile:");
         jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 1, 24)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel24.setText("Resident / Tenant Profile:");
 
-        jTextField1.setText("jTextField1");
+        rsdIdTF.setEnabled(false);
 
         jLabel25.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(51, 51, 51));
@@ -482,23 +514,58 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
         jLabel31.setForeground(new java.awt.Color(51, 51, 51));
         jLabel31.setText("Unit No.:");
 
-        jTextField2.setText("jTextField1");
+        firstNameTF.setEnabled(false);
 
-        jTextField3.setText("jTextField1");
+        lastNameTF.setEnabled(false);
 
-        jTextField4.setText("jTextField1");
+        contactTF.setEnabled(false);
 
-        jTextField5.setText("jTextField1");
+        emailTF.setEnabled(false);
 
-        jTextField6.setText("jTextField1");
+        icTF.setEnabled(false);
 
-        jTextField7.setText("jTextField1");
-
-        jTextField8.setText("jTextField1");
+        unitNoTF.setEnabled(false);
 
         backBTN.setText("Back");
 
         updateBTN.setText("Update");
+        updateBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateBTNActionPerformed(evt);
+            }
+        });
+
+        uploadImageBTN.setText("Choose Image");
+        uploadImageBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uploadImageBTNActionPerformed(evt);
+            }
+        });
+
+        jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        genderCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
+        genderCB.setEnabled(false);
+
+        profilePicLabel.setBackground(new java.awt.Color(102, 102, 102));
+        profilePicLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        profilePicLabel.setText("Profile Picture");
+
+        editContactBTN.setText("Edit");
+        editContactBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editContactBTNActionPerformed(evt);
+            }
+        });
+
+        editEmailBTN.setText("Edit");
+        editEmailBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editEmailBTNActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("jLabel4");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -507,99 +574,122 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel24, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSeparator1)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
+                        .addGap(120, 120, 120)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel23)
-                            .addComponent(jLabel26)
-                            .addComponent(jLabel29)
-                            .addComponent(jTextField4)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
-                            .addComponent(jTextField1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                            .addComponent(uploadImageBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
+                            .addComponent(rsdIdTF)
+                            .addComponent(unitNoTF)
+                            .addComponent(jLabel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(profilePicLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(36, 36, 36)
+                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(62, 62, 62)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField8, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
-                                    .addComponent(jLabel27)
-                                    .addComponent(jTextField2)
-                                    .addComponent(jLabel25)
-                                    .addComponent(jTextField5))
-                                .addGap(35, 35, 35)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel28)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel30)
-                                    .addComponent(jTextField6))
-                                .addGap(62, 62, 62))
+                                    .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(contactTF)
+                                    .addComponent(firstNameTF)
+                                    .addComponent(jLabel25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(icTF)
+                                    .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(editContactBTN)
+                                .addGap(32, 32, 32)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lastNameTF)
+                                    .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                    .addComponent(emailTF)
+                                    .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(genderCB, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(editEmailBTN))
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel31)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addContainerGap())
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(380, 380, 380)
-                .addComponent(backBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(73, 73, 73)
-                .addComponent(updateBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(142, 142, 142)
+                                .addComponent(backBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(73, 73, 73)
+                                .addComponent(updateBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel24, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jSeparator1))
+                        .addContainerGap())))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(54, 54, 54)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSeparator2)
+                        .addGap(8, 8, 8))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(95, 95, 95)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lastNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(firstNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(55, 55, 55)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                        .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(emailTF, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(editEmailBTN))
+                                        .addGap(121, 121, 121))
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(contactTF, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(editContactBTN))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                                .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(41, 41, 41)))
+                                        .addGap(55, 55, 55)
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(icTF, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(genderCB, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(45, 45, 45)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(69, 69, 69)
+                                .addComponent(profilePicLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(uploadImageBTN)
+                                .addGap(33, 33, 33)
                                 .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 0, 0)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel6Layout.createSequentialGroup()
-                            .addGap(64, 64, 64)
-                            .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                            .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addGap(74, 74, 74)
-                        .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(69, 69, 69)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(backBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(updateBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(51, 51, 51))
+                                .addComponent(rsdIdTF, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(41, 41, 41)
+                                .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(unitNoTF, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(backBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(updateBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(28, 28, 28))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -654,6 +744,106 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jPanel9MouseClicked
 
+    private void uploadImageBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadImageBTNActionPerformed
+        //To allow user upload the image from the file explorer
+        JFileChooser saveFileChooser = new JFileChooser();
+        saveFileChooser.setFileFilter(new FileNameExtensionFilter("JPEG Images", "jpg"));
+        
+        //Only allow ".png" extension for choosing the image file
+        int returnValue = saveFileChooser.showSaveDialog(null);
+        
+        //If file is selected
+        if (returnValue == JFileChooser.APPROVE_OPTION){
+            //Get the selected file path
+            File f = saveFileChooser.getSelectedFile();
+            filePath = f.getAbsolutePath();
+            if (filePath!=null) {
+                String[] file = filePath.split("\\.");
+                String fileExtension = file[1];
+                
+                if (fileExtension.equals(this.defaultFileExtension)) {
+                    //Display the image in the jLabel
+                    setImageIcon(filePath);
+                }
+                else {
+                    profilePicLabel.setText("Invalid File Selected");
+                }
+            }
+        }
+    }//GEN-LAST:event_uploadImageBTNActionPerformed
+
+    private void updateBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBTNActionPerformed
+        // TODO add your handling code here:
+        ArrayList<String> allEmails = new ArrayList<>();
+        
+        List<String> userProfile = RT.fh.fileRead(RT.TF.userProfile);
+        for (String eachUser : userProfile) {
+            String[] userDet = eachUser.split(RT.TF.sp);
+            String userId = userDet[0];
+            if (!userId.equals(this.user.getUserID())) {
+                allEmails.add(userDet[1]);
+            }
+        }
+        
+        String userEmail = emailTF.getText();
+        String userContact = contactTF.getText();
+        
+        if (!allEmails.contains(userEmail)) {
+            String userData = user.getUserID() + RT.TF.sp + userEmail + RT.TF.sp + user.getPassword() + RT.TF.sp + 
+                              user.getFirstName() + RT.TF.sp + user.getLastName() + RT.TF.sp + user.getIdentificationNo() + RT.TF.sp +
+                              user.getGender() + RT.TF.sp + userContact + RT.TF.sp + user.getUnitNo() + RT.TF.sp;
+            
+            RT.crud.update(RT.TF.userProfile, this.user.getUserID(), userData, 0);
+            
+            boolean success = true;
+            if (filePath!=null) {
+                try {
+                    success = replaceFile(filePath, previousProfilePicPath);
+                } catch (Exception e) {
+                    success = false;
+                    e.printStackTrace();
+                }
+            }
+            
+            if (success) {
+                //Profile Form Set Up
+                contactTF.setEnabled(false);
+                emailTF.setEnabled(false);
+            }
+        }
+    }//GEN-LAST:event_updateBTNActionPerformed
+
+    private void editContactBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editContactBTNActionPerformed
+        // TODO add your handling code here:
+        contactTF.setEnabled(true);
+    }//GEN-LAST:event_editContactBTNActionPerformed
+
+    private void editEmailBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editEmailBTNActionPerformed
+        // TODO add your handling code here:
+        emailTF.setEnabled(true);
+    }//GEN-LAST:event_editEmailBTNActionPerformed
+
+    private boolean replaceFile(String fileLocation, String destination) throws IOException {
+        File dest = new File(destination);
+        File fileLoc = new File(fileLocation);
+        
+        if (dest.exists()) {
+            dest.delete();
+        }
+        
+        Files.copy(fileLoc.toPath(), dest.toPath());
+        
+        return dest.exists();
+    }
+    
+    private void setImageIcon(String fileLocation) {
+        profilePicLabel.setText("");
+        ImageIcon profilePic = new ImageIcon(fileLocation);
+        Image imageSize = (profilePic).getImage().getScaledInstance(158, 168, Image.SCALE_SMOOTH);
+        profilePic = new ImageIcon(imageSize);
+        profilePicLabel.setIcon(profilePic);
+    }
+    
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
@@ -822,6 +1012,13 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backBTN;
+    private javax.swing.JTextField contactTF;
+    private javax.swing.JButton editContactBTN;
+    private javax.swing.JButton editEmailBTN;
+    private javax.swing.JTextField emailTF;
+    private javax.swing.JTextField firstNameTF;
+    private javax.swing.JComboBox<String> genderCB;
+    private javax.swing.JTextField icTF;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -837,6 +1034,7 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
@@ -853,17 +1051,15 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel jobAssignationInnerTab;
     private javax.swing.JPanel jobAssignationTab;
+    private javax.swing.JTextField lastNameTF;
+    private javax.swing.JLabel profilePicLabel;
+    private javax.swing.JTextField rsdIdTF;
+    private javax.swing.JTextField unitNoTF;
     private javax.swing.JButton updateBTN;
+    private javax.swing.JButton uploadImageBTN;
     private javax.swing.JLabel userNameLabel;
     // End of variables declaration//GEN-END:variables
 

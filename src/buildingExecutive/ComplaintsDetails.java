@@ -59,11 +59,10 @@ public class ComplaintsDetails extends javax.swing.JFrame {
         LocalTime issueTime = BE.formatTime(complaintDetails[4]);
         String complaintStatus = complaintDetails[5];
         
-        String[] userDetails = BE.getUserDetails(complainerID);
-        String complainerName = userDetails[3] + " " + userDetails[4];
-        String unitNo = userDetails[8];
-        String contactNo = userDetails[7];
-        String email = userDetails[1];
+        String complainerName = user.getFirstName() + " " + user.getLastName();
+        String unitNo = user.getUnitNo();
+        String contactNo = user.getPhoneNo();
+        String email = user.getEmail();
         
         complaintIdTF.setText(this.complaintID);
         complainerIdTF.setText(this.complainerID);

@@ -133,6 +133,95 @@ public class ResidentTenant {
         
         return passCode + (minimumId + 1);
     }
+    
+    public ArrayList getCurrentUnitInvoice(String unitNo) {
+        ArrayList<ArrayList> combineList = new ArrayList<>();
+        ArrayList<String> incompleteInvoice = new ArrayList<>();
+        ArrayList<String> completeInvoice = new ArrayList<>();        
+        
+        List<String> invoiceFile = fh.fileRead(TF.invoiceFile);
+        List<String> paymentFile = fh.fileRead(TF.paymentFile);
+        for (String eachInv : invoiceFile) {
+            String[] invDet = eachInv.split(TF.sp);
+            String uNo = invDet[1];
+            if (uNo.equals(unitNo)) {
+                String invNo = invDet[0];
+                String feeType = invDet[2];
+                String[] combine = {invNo, feeType};
+                String invoiceKey = concatenateKey(combine);
+                
+                boolean unpaid = true;
+                for (String eachPay : paymentFile) {
+                    String[] payDet = eachPay.split(TF.sp);
+                    String[] payCom = {payDet[0], payDet[2]};
+                    String paymentKey = concatenateKey(payCom);
+                    
+                    if (paymentKey.equals(invoiceKey)) {
+                        String completedLine = "";
+                        
+                        String[] tableData = {payDet[0], payDet[2], payDet[3], payDet[4], payDet[7], payDet[9], payDet[10]};
+                        for (String eachData : tableData) {
+                            completedLine = completedLine + eachData + TF.sp;
+                        }
+                        
+                        completeInvoice.add(completedLine);
+                        unpaid = false;
+                    }
+                }
+                
+                if (unpaid) {
+                    String incompletedLine = "";
+                    String[] tableData = {invDet[0], invDet[2], invDet[3], invDet[4], invDet[5], invDet[6], invDet[7]};
+                    for (String eachData : tableData) {
+                        incompletedLine = incompletedLine + eachData + TF.sp;
+                    }
+                    
+                    incompleteInvoice.add(incompletedLine);
+                }
+            }
+        }
+        
+        combineList.add(incompleteInvoice);
+        combineList.add(completeInvoice);
+        
+        return combineList;
+    }
+    
+    public ArrayList getCurrentUnitPaymentHistory(String unitNo) {
+        ArrayList<String> paymentHistory = new ArrayList<>();
+        List<String> paymentFile = fh.fileRead(TF.paymentFile);
+        
+        int itemNo = 1;
+        for (String eachPay : paymentFile) {
+            String[] payDet = eachPay.split(TF.sp);
+            String uNo = payDet[1];
+            if (uNo.equals(unitNo)) {
+                String toAdd = "";
+                String invoiceNo = payDet[0];
+                String feeType = payDet[2];
+                String totalPrice = payDet[7];
+                String paidBy = payDet[9];
+                String paidDate = payDet[10];
+                String[] data = {String.valueOf(itemNo), invoiceNo, feeType, totalPrice, paidBy, paidDate};
+                for (String eachData : data) {
+                    toAdd = toAdd + eachData + TF.sp;
+                }
+                paymentHistory.add(toAdd);
+                itemNo++;
+            }
+        }
+        
+        return paymentHistory;
+    }
+    
+    public String concatenateKey(String[] keyList) {
+        String concatenatedKey = "";
+        for (String eachKey : keyList) {
+            concatenatedKey = concatenatedKey + eachKey + "-";
+        }
+        
+        return concatenatedKey;
+    }
 }
 
 enum cptStatus{

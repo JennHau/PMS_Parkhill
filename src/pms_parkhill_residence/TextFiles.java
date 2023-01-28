@@ -48,6 +48,12 @@ public class TextFiles {
     // File to store visitor pass
     public String visitorPass = "visitorPass.txt";
     
+    // File for invoice
+    public String invoiceFile = "invoices.txt";
+    
+    // File for payment
+    public String paymentFile = "payment.txt";
+    
     // temporary usage file
     public String tempFile = "tempPatFile.txt";
 }

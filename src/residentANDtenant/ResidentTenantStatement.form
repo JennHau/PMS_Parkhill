@@ -572,16 +572,16 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jSeparator1" alignment="1" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="pendingFeeLabel" pref="88" max="32767" attributes="0"/>
-                              <Component id="pendingFeeLine" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="pendingFeeLabel" min="-2" pref="88" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="paymentHistLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="invoiceLabel" min="-2" pref="63" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-                          <Component id="statementLabel" min="-2" pref="79" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="statementLine" alignment="0" min="-2" pref="80" max="-2" attributes="0"/>
+                              <Component id="statementLabel" alignment="1" min="-2" pref="79" max="-2" attributes="0"/>
+                          </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -597,20 +597,18 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jLabel24" min="-2" pref="211" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="totalPendingFeeTF" min="-2" pref="240" max="-2" attributes="0"/>
+                                  <Component id="totalPendingFeeTF" min="-2" pref="186" max="-2" attributes="0"/>
                               </Group>
                               <Component id="jSeparator3" max="32767" attributes="0"/>
                               <Component id="jSeparator4" alignment="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="380" max="-2" attributes="0"/>
-                          <Component id="jButton2" min="-2" pref="96" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="449" max="-2" attributes="0"/>
                           <Component id="jButton1" min="-2" pref="96" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace min="0" pref="18" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -627,7 +625,7 @@
                               <Component id="invoiceLabel" alignment="3" min="-2" pref="26" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                          <Component id="pendingFeeLine" min="-2" pref="4" max="-2" attributes="0"/>
+                          <Component id="statementLine" min="-2" pref="4" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
@@ -647,12 +645,9 @@
                   <Component id="jSeparator3" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                   <Component id="jSeparator4" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jButton1" alignment="3" pref="27" max="32767" attributes="0"/>
-                      <Component id="jButton2" alignment="3" pref="27" max="32767" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="jButton1" pref="28" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -663,10 +658,7 @@
         <Component class="javax.swing.JLabel" name="pendingFeeLabel">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Yu Gothic UI" size="14" style="1"/>
-            </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="2a" green="18" red="d" type="rgb"/>
+              <Font name="Yu Gothic UI" size="14" style="0"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="Pending Fee"/>
@@ -675,21 +667,13 @@
             <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="pendingFeeLabelMouseEntered"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JTextField" name="pendingFeeLine">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="2a" green="18" red="d" type="rgb"/>
-            </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="2a" green="18" red="d" type="rgb"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="jTextField1"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JLabel" name="statementLabel">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Yu Gothic UI" size="14" style="0"/>
+              <Font name="Yu Gothic UI" size="14" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="2a" green="18" red="d" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="Statement"/>
@@ -710,6 +694,17 @@
             <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="invoiceLabelMouseEntered"/>
           </Events>
         </Component>
+        <Component class="javax.swing.JTextField" name="statementLine">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="2a" green="18" red="d" type="rgb"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="2a" green="18" red="d" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="jTextField1"/>
+          </Properties>
+        </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane1">
           <AuxValues>
             <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
@@ -717,18 +712,24 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="pendingFeeTable">
+            <Component class="javax.swing.JTable" name="statementTableSetUp">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="4" rowCount="4">
-                    <Column editable="true" title="No." type="java.lang.Object"/>
+                  <Table columnCount="5" rowCount="4">
+                    <Column editable="true" title="Date" type="java.lang.Object"/>
                     <Column editable="true" title="Item ID" type="java.lang.Object"/>
-                    <Column editable="true" title="Item Type" type="java.lang.Object"/>
-                    <Column editable="true" title="Amount (RM)" type="java.lang.Object"/>
+                    <Column editable="true" title="Payment Type" type="java.lang.Object"/>
+                    <Column editable="true" title="Income (RM)" type="java.lang.Object"/>
+                    <Column editable="true" title="Expenses (RM)" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
@@ -766,7 +767,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="33" green="33" red="33" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Pending Fee:"/>
+            <Property name="text" type="java.lang.String" value="Statement: "/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="paymentHistLabel">
@@ -791,7 +792,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="33" green="33" red="33" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Total Pending Fee (RM):"/>
+            <Property name="text" type="java.lang.String" value="Total Fee (RM):"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="totalPendingFeeTF">
@@ -806,14 +807,9 @@
         </Component>
         <Component class="javax.swing.JSeparator" name="jSeparator4">
         </Component>
-        <Component class="javax.swing.JButton" name="jButton2">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Pay One"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JButton" name="jButton1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Pay All"/>
+            <Property name="text" type="java.lang.String" value="Print"/>
           </Properties>
         </Component>
       </SubComponents>
