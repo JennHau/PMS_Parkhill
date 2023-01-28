@@ -1061,4 +1061,45 @@ public class AdminExecutive {
         } return feeData;
     }
     
+    public String calculateFacilityAdvancedPayment(String bookingID) {
+        List<String> availableList = fh.fileRead("facilityBooking.txt");
+        
+        for (int i = 1; i < availableList.size(); i++) {
+            String[] bookingDetails = availableList.get(i).split(";");
+            String eBookingID = bookingDetails[0];
+            String totalPrice = bookingDetails[8];
+            
+            if(bookingID.equals(eBookingID)) {
+                return totalPrice;
+            }
+        } return "0.00";
+    }
+    
+    public String extractFacilityBookingUnit(String bookingID) {
+        List<String> availableList = fh.fileRead("facilityBooking.txt");
+        
+        for (int i = 1; i < availableList.size(); i++) {
+            String[] bookingDetails = availableList.get(i).split(";");
+            String eBookingID = bookingDetails[0];
+            String unitNo = bookingDetails[3];
+            
+            if(eBookingID.equals(bookingID)) {
+                return unitNo;
+            }
+        } return null;
+    }
+    
+    public void deleteFacilityBooking(String bookingID) {
+        List<String> availableList = fh.fileRead("facilityBooking.txt");
+        List<String> newData = new ArrayList<>();
+        
+        for (int i = 0; i < availableList.size(); i++) {
+            String[] bookingDetails = availableList.get(i).split(";");
+            String eBookingID = bookingDetails[0];
+            
+            if(!eBookingID.equals(bookingID)) {
+                newData.add(availableList.get(i));
+            }
+        } fh.fileWrite("facilityBooking.txt", false, newData);
+    }
 }

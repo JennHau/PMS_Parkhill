@@ -211,7 +211,7 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
             addPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addPanelLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(addLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(addLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         addPanelLayout.setVerticalGroup(
             addPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,16 +241,16 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
                         .addComponent(jLabel17)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(statusCB1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(212, 212, 212)
                         .addComponent(jLabel16)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(clearbt)
-                        .addGap(257, 257, 257)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(addPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(facilityTypeLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -759,12 +759,21 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
         int column = jTable1.getSelectedColumn();
         int row = jTable1.getSelectedRow();
+        String status = String.valueOf(statusCB1.getSelectedItem());
         
         
-        if (column == 7) {
+        if (column == 7 && status.equals("UPCOMING")) {
             String bookingID = String.valueOf(tableModel.getValueAt(row, 0)).toLowerCase();
+            String date = String.valueOf(tableModel.getValueAt(row, 3));
             dispose();
-//            new AdminExecutiveBookFacility(fb, bookingID).setVisible(true);
+            FacilityBookingPaymentByHour fb = new FacilityBookingPaymentByHour();
+            fb.setFacilityDetails(facilityID);
+            new AdminExecutiveManageBookedFacility(fb, bookingID, date).setVisible(true);
+            
+        } else if(column == 7 && status.equals("HISTORY") &&
+                tableModel.getValueAt(row, 7).equals("VIEW RECEIPT")) {
+            String bookingID = String.valueOf(tableModel.getValueAt(row, 0));
+            new AdminExecutiveFacilityBookingReceipt(bookingID).setVisible(true);
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -17494,7 +17503,6 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
     private javax.swing.JLabel rTManageLabel;
     private javax.swing.JPanel rTMangePanel;
     private javax.swing.JTextField searchTextField;
-    private javax.swing.JComboBox<String> statusCB;
     private javax.swing.JComboBox<String> statusCB1;
     private javax.swing.JLabel unitManageLabel;
     private javax.swing.JPanel unitManagePanel;

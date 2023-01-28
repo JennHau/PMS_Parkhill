@@ -956,10 +956,7 @@ public class AdminExecutiveFacilityPreview extends javax.swing.JFrame {
     private void bookBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        String fctID = facilityIDLabel.getText();
-        String fctName = facilityNameLabel.getText();
-        String paymentStatus = paymentLabel.getText();
-        new AdminExecutiveBookFacility(fb, null).setVisible(true);
+        new AdminExecutiveBookFacility(fb).setVisible(true);
     }//GEN-LAST:event_bookBtActionPerformed
 
     private void cancelBt2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBt2ActionPerformed
