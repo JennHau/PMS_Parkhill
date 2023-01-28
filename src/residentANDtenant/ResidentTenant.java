@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.TextFiles;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -221,6 +222,12 @@ public class ResidentTenant {
         }
         
         return concatenatedKey;
+    }
+    
+    // Page Navigator
+    public void toPaymentGateway(Users user, String totalAmount, ArrayList itemId) {
+        ResidentTenantPaymentGateway page = new ResidentTenantPaymentGateway(user, totalAmount, itemId);
+        page.setVisible(true);
     }
 }
 

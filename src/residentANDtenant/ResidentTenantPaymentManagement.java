@@ -113,8 +113,8 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
         totalPendingFeeTF = new javax.swing.JTextField();
         jSeparator3 = new javax.swing.JSeparator();
         jSeparator4 = new javax.swing.JSeparator();
-        jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        payOneBTN = new javax.swing.JButton();
+        payAllBTN = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -499,9 +499,14 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
         totalPendingFeeTF.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         totalPendingFeeTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
-        jButton2.setText("Pay One");
+        payOneBTN.setText("Pay One");
 
-        jButton1.setText("Pay All");
+        payAllBTN.setText("Pay All");
+        payAllBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                payAllBTNActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -538,9 +543,9 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
                             .addComponent(jSeparator4)))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(380, 380, 380)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(payOneBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(28, 28, 28)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(payAllBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 18, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
@@ -574,8 +579,8 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))
+                    .addComponent(payAllBTN, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
+                    .addComponent(payOneBTN, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))
                 .addGap(10, 10, 10))
         );
 
@@ -650,6 +655,20 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
         // TODO add your handling code here:
         statementLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_statementLabelMouseEntered
+
+    private void payAllBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payAllBTNActionPerformed
+        // TODO add your handling code here:
+        ArrayList<String> itemId = new ArrayList<>();
+        int tableSize = pendingFeeTable.getRowCount();
+        for (int count = 0; count < tableSize; count++) {
+            String data = pendingFeeTable.getValueAt(count, 1).toString();
+            itemId.add(data);
+        }
+        
+        String totalAmount = totalPendingFeeTF.getText();
+        
+        RT.toPaymentGateway(user, totalAmount, itemId);
+    }//GEN-LAST:event_payAllBTNActionPerformed
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
@@ -819,8 +838,6 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel invoiceLabel;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -849,6 +866,8 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JLabel jobAssignationInnerTab;
     private javax.swing.JPanel jobAssignationTab;
+    private javax.swing.JButton payAllBTN;
+    private javax.swing.JButton payOneBTN;
     private javax.swing.JLabel paymentHistLabel;
     private javax.swing.JLabel pendingFeeLabel;
     private javax.swing.JTextField pendingFeeLine;
