@@ -5,25 +5,27 @@
 package adminExecutive;
 
 import java.awt.Toolkit;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Validation;
 
 /**
  *
  * @author wongj
  */
-public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
+public class AdminExecutivePaymentGatewayModify extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param bookingList
      */
-    public AdminExecutiveAddResidentTenant() {
+    public AdminExecutivePaymentGatewayModify(List<String> bookingList) {
         initComponents();
         setWindowIcon();
-        tenantRB.setSelected(true);
+        this.bookingList = bookingList;
         setDefault();
     }
 
@@ -40,33 +42,27 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        emailTF = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        unitNoCB = new javax.swing.JComboBox<>();
+        bookBt = new javax.swing.JButton();
+        cancelBT = new javax.swing.JButton();
+        jLabel14 = new javax.swing.JLabel();
+        warningLabel = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        totalLabel = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
         jLabel5 = new javax.swing.JLabel();
-        addBt = new javax.swing.JButton();
-        cancelBt = new javax.swing.JButton();
-        warningMessage = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        firstNameTF = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        bookingIDLabel = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        lastNameTF = new javax.swing.JTextField();
+        facilityIDLabel = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        phoneNoTF = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
-        identificationNoTF = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
-        genderCB = new javax.swing.JComboBox<>();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        tenantRB = new javax.swing.JRadioButton();
-        residentRB = new javax.swing.JRadioButton();
-        jLabel11 = new javax.swing.JLabel();
-        userIDTF = new javax.swing.JTextField();
-        jLabel12 = new javax.swing.JLabel();
-        typeCB = new javax.swing.JComboBox<>();
+        dateLabel = new javax.swing.JLabel();
+        jLabel49 = new javax.swing.JLabel();
+        advancedPaymentLabel = new javax.swing.JLabel();
+        jLabel50 = new javax.swing.JLabel();
+        currentChargesLabel = new javax.swing.JLabel();
+        unitNoLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -80,8 +76,8 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
         jLabel2.setBackground(new java.awt.Color(13, 24, 42));
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("NEW TENANT/ RESIDENT REGISTRATION");
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel2.setText("FACILITY BOOKING");
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/parkhillLogo.png"))); // NOI18N
@@ -90,12 +86,12 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(181, 181, 181)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(222, 222, 222))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -109,285 +105,225 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
-        emailTF.addActionListener(new java.awt.event.ActionListener() {
+        jLabel4.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel4.setText("Booking ID:");
+
+        bookBt.setBackground(new java.awt.Color(13, 50, 79));
+        bookBt.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        bookBt.setForeground(new java.awt.Color(255, 255, 255));
+        bookBt.setText("MODIFY");
+        bookBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                emailTFActionPerformed(evt);
+                bookBtActionPerformed(evt);
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel1.setText("EMAIL:");
+        cancelBT.setText("CANCEL");
+        cancelBT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelBTActionPerformed(evt);
+            }
+        });
 
-        jLabel4.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel4.setText("AVAILABLE PROPERTY UNIT:");
+        jLabel14.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel14.setText("Booking Details:");
+
+        warningLabel.setForeground(new java.awt.Color(255, 0, 0));
+        warningLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        warningLabel.setPreferredSize(new java.awt.Dimension(152, 16));
+
+        jPanel2.setBackground(new java.awt.Color(13, 50, 79));
+
+        totalLabel.setFont(new java.awt.Font("Stencil", 0, 18)); // NOI18N
+        totalLabel.setForeground(new java.awt.Color(255, 255, 255));
+        totalLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        totalLabel.setText("TOTAL: RM 0.00");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(totalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(totalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel5.setText("FIRST NAME:");
+        jLabel5.setText("Booking Unit No:");
 
-        addBt.setBackground(new java.awt.Color(0, 204, 0));
-        addBt.setText("ADD");
-        addBt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addBtActionPerformed(evt);
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "FACILITY NAME", "START TIME", "END TIME", "PRICE (RM)"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
-
-        cancelBt.setText("BACK");
-        cancelBt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelBtActionPerformed(evt);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
             }
         });
+        jScrollPane2.setViewportView(jTable1);
 
-        warningMessage.setForeground(new java.awt.Color(255, 0, 51));
-        warningMessage.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        warningMessage.setPreferredSize(new java.awt.Dimension(138, 17));
-
-        jLabel15.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel15.setText("Format: 012-345-6789");
-
-        firstNameTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                firstNameTFActionPerformed(evt);
-            }
-        });
+        bookingIDLabel.setFont(new java.awt.Font("Yu Gothic", 1, 14)); // NOI18N
+        bookingIDLabel.setForeground(new java.awt.Color(153, 153, 153));
+        bookingIDLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        bookingIDLabel.setText("FBK000000");
 
         jLabel6.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel6.setText("LAST NAME:");
+        jLabel6.setText("Facility ID:");
 
-        lastNameTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lastNameTFActionPerformed(evt);
-            }
-        });
+        facilityIDLabel.setFont(new java.awt.Font("Yu Gothic", 1, 14)); // NOI18N
+        facilityIDLabel.setForeground(new java.awt.Color(153, 153, 153));
+        facilityIDLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        facilityIDLabel.setText("FCT000000");
 
         jLabel7.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel7.setText("PHONE NO.");
+        jLabel7.setText("Booking Date:");
 
-        phoneNoTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                phoneNoTFActionPerformed(evt);
-            }
-        });
-        phoneNoTF.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                phoneNoTFKeyTyped(evt);
-            }
-        });
+        dateLabel.setFont(new java.awt.Font("Yu Gothic", 1, 14)); // NOI18N
+        dateLabel.setForeground(new java.awt.Color(153, 153, 153));
+        dateLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        dateLabel.setText("0000-00-00");
 
-        jLabel8.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel8.setText("IDENTIFICATION NO.:");
+        jLabel49.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel49.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel49.setText("ADVANCED PAYMENT:");
 
-        identificationNoTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                identificationNoTFActionPerformed(evt);
-            }
-        });
+        advancedPaymentLabel.setBackground(new java.awt.Color(0, 0, 0));
+        advancedPaymentLabel.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        advancedPaymentLabel.setForeground(new java.awt.Color(0, 0, 0));
+        advancedPaymentLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        advancedPaymentLabel.setText("RM 0.00");
+        advancedPaymentLabel.setPreferredSize(new java.awt.Dimension(51, 17));
 
-        jLabel9.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel9.setText("GENDER:");
+        jLabel50.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel50.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel50.setText("CURRENT CHARGES:");
 
-        genderCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-PLEASE SELECT-", "Male", "Female" }));
+        currentChargesLabel.setBackground(new java.awt.Color(0, 0, 0));
+        currentChargesLabel.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        currentChargesLabel.setForeground(new java.awt.Color(0, 0, 0));
+        currentChargesLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        currentChargesLabel.setText("RM 0.00");
+        currentChargesLabel.setPreferredSize(new java.awt.Dimension(51, 17));
 
-        jLabel10.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel10.setText("PASSWORD:");
-
-        jLabel16.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel16.setText("Default Password: Parkhill@1234");
-
-        jPasswordField1.setText("jPasswordField1");
-        jPasswordField1.setEnabled(false);
-
-        tenantRB.setForeground(new java.awt.Color(102, 102, 102));
-        tenantRB.setText("TENANT");
-        tenantRB.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                tenantRBMousePressed(evt);
-            }
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                tenantRBMouseReleased(evt);
-            }
-        });
-        tenantRB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tenantRBActionPerformed(evt);
-            }
-        });
-
-        residentRB.setForeground(new java.awt.Color(102, 102, 102));
-        residentRB.setText("RESIDENT");
-        residentRB.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                residentRBMouseReleased(evt);
-            }
-        });
-        residentRB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                residentRBActionPerformed(evt);
-            }
-        });
-
-        jLabel11.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel11.setText("USER ID:");
-
-        userIDTF.setEnabled(false);
-        userIDTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                userIDTFActionPerformed(evt);
-            }
-        });
-
-        jLabel12.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel12.setText("PROPERTY TYPE:");
-
-        typeCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Residential", "Commercial" }));
-        typeCB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                typeCBActionPerformed(evt);
-            }
-        });
+        unitNoLabel.setFont(new java.awt.Font("Yu Gothic", 1, 14)); // NOI18N
+        unitNoLabel.setForeground(new java.awt.Color(153, 153, 153));
+        unitNoLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        unitNoLabel.setText("A-01-01");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(cancelBt, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(addBt, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(353, 353, 353))
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
+                .addGap(25, 25, 25)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(emailTF, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11)
-                    .addComponent(userIDTF, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(warningLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 696, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(unitNoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel8)
-                        .addComponent(identificationNoTF, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
-                        .addComponent(jLabel5)
-                        .addComponent(firstNameTF))
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(genderCB, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addContainerGap(206, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lastNameTF, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(phoneNoTF, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(20, 20, 20))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(warningMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(jPanel6Layout.createSequentialGroup()
-                            .addComponent(tenantRB)
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel50, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel49, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addGap(18, 18, 18)
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(advancedPaymentLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(currentChargesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(residentRB))
-                        .addComponent(typeCB, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(346, 346, 346))
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 696, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(bookingIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(31, 31, 31)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(facilityIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(30, 30, 30)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(71, 71, 71)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(unitNoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(23, Short.MAX_VALUE))
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(289, 289, 289)
+                .addComponent(cancelBT, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bookBt, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(warningMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12))
+                .addGap(13, 13, 13)
+                .addComponent(warningLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(typeCB, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tenantRB)
-                    .addComponent(residentRB))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(unitNoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel5))
-                        .addGroup(jPanel6Layout.createSequentialGroup()
-                            .addComponent(jLabel6)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(lastNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(firstNameTF, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel6Layout.createSequentialGroup()
-                            .addComponent(jLabel1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(emailTF, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel6Layout.createSequentialGroup()
-                            .addComponent(jLabel8)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(identificationNoTF, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(phoneNoTF, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addComponent(jLabel15)
-                .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(genderCB, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, 0)
-                        .addComponent(jLabel16))
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(jPanel6Layout.createSequentialGroup()
-                            .addComponent(jLabel11)
-                            .addGap(40, 40, 40))
-                        .addComponent(userIDTF, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(34, 34, 34)
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel6))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(bookingIDLabel)
+                            .addComponent(facilityIDLabel)
+                            .addComponent(dateLabel)
+                            .addComponent(unitNoLabel)))
+                    .addComponent(jLabel7))
+                .addGap(26, 26, 26)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel49)
+                            .addComponent(advancedPaymentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel50)
+                            .addComponent(currentChargesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(17, 17, 17)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addBt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cancelBt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31))
+                    .addComponent(bookBt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cancelBT, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -409,162 +345,89 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    FileHandling fh = new FileHandling();
     AdminExecutive ae = new AdminExecutive();
+    FileHandling fh = new FileHandling();
+    List<String> bookingList = new ArrayList<>();
+    String bookingID; String facilityID; String facilityName;
+    String unitPrice; String totalPrice; String date;
     
     private void setDefault() {
-        String latestUserID = "";
-        if (typeCB.getSelectedItem().equals("Commercial")) {
-            latestUserID = ae.getLatestResidentTenantID("Commercial");
-        } else if (typeCB.getSelectedItem().equals("Residential") && tenantRB.isSelected()){
-            latestUserID = ae.getLatestResidentTenantID("Tenant");
-        } else if (typeCB.getSelectedItem().equals("Residential") && residentRB.isSelected()){
-            latestUserID = ae.getLatestResidentTenantID("Resident");
+        
+        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        for(int i = 0; i<bookingList.size(); i++) {
+            String[] bookingDetails = bookingList.get(i).split(";");
+            this.bookingID = bookingDetails[0];
+            this.facilityID = bookingDetails[1];
+            this.facilityName = bookingDetails[2];
+            String startTime = bookingDetails[3];
+            String endTime = bookingDetails[4];
+            this.date = bookingDetails[5];
+            String[] tbData = {facilityName, startTime, endTime};
+            tableModel.addRow(tbData);
         }
-        userIDTF.setText(latestUserID.toUpperCase());
-        setUnitComboBox();
+        
+        List<String> feeData = ae.extractFacilityBookingFee(facilityID.toLowerCase(),
+                    bookingList.size());
+        for(int i = 0; i<feeData.size(); i++) {
+            String[] feeDetails = feeData.get(i).split(";");
+            unitPrice = feeDetails[0];
+            totalPrice = feeDetails[1];
+        }
+        
+        for(int i = 0; i<bookingList.size(); i++) {
+            tableModel.setValueAt(unitPrice, i, 3);
+        }
+        
+        bookingIDLabel.setText(bookingID); facilityIDLabel.setText(facilityID);
+        currentChargesLabel.setText("RM " + totalPrice);
+        
+        String advancedPaymentFee = ae.calculateFacilityAdvancedPayment(bookingID.toLowerCase());
+        advancedPaymentLabel.setText("RM " + advancedPaymentFee);
+        
+        Float pending = Float.valueOf(totalPrice) - Float.valueOf(advancedPaymentFee);
+        DecimalFormat df = new DecimalFormat("0.00");
+        String totalPending = df.format(pending);
+        
+        totalLabel.setText("TOTAL: RM " + totalPending); dateLabel.setText(date);
+        unitNoLabel.setText(ae.extractFacilityBookingUnit(bookingID.toLowerCase()));
     }
     
-    private void setUnitComboBox() {
-        unitNoCB.removeAllItems(); unitNoCB.addItem("-PLEASE SELECT-");
-        List<String> availableUnit = new ArrayList<>();
-        
-        if (typeCB.getSelectedItem().equals("Commercial")) {
-            availableUnit = ae.getAvailableUnit("Commercial");
-        } else if (typeCB.getSelectedItem().equals("Residential") && tenantRB.isSelected()){
-            availableUnit = ae.getAvailableUnit("Tenant");
-        } else if (typeCB.getSelectedItem().equals("Residential") && residentRB.isSelected()){
-            availableUnit = ae.getAvailableUnit("Resident");
-        }
-        
-        for (int i = 0; i<availableUnit.size(); i++) {
-            unitNoCB.addItem(availableUnit.get(i));
-        }
-    }
-    
-    private void emailTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailTFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_emailTFActionPerformed
-
-    private void addBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtActionPerformed
-        // TODO add your handling code here:
-        Validation validation = new Validation();
-        
-        String unitNo = String.valueOf(unitNoCB.getSelectedItem());
-        String firstName = firstNameTF.getText();
-        String lastName = lastNameTF.getText();
-        String email = emailTF.getText().toLowerCase();
-        String idNo = identificationNoTF.getText();
-        String phoneNo = phoneNoTF.getText();
-        String userID = userIDTF.getText().toLowerCase();
-        String gender = String.valueOf(genderCB.getSelectedItem());
-        String password = "Parkhill@1234";
-        if (!unitNo.equals("-PLEASE SELECT-") && !firstName.equals("") && 
-                !lastName.equals("") && !email.equals("") && !idNo.equals("")
-                && !phoneNo.equals("") && !gender.equals("-PLEASE SELECT-")) {
-            if (validation.emailValid(email) && 
-                    validation.emailDuplication(email, "userProfile.txt", userID)) {
-                warningMessage.setText("");
-                int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
-                        + "add this property unit?",
-                        "ADD PROPERTY UNIT",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE);
-                
-                if(result == JOptionPane.YES_OPTION){
-                    ae.userRegistration(userID, email, password, firstName,
-                            lastName, idNo, gender, phoneNo, unitNo);
-                    JOptionPane.showMessageDialog (null, "New user has been added!", 
-                                    "USER REGISTRATION", JOptionPane.INFORMATION_MESSAGE);
-                    dispose();
-                    new AdminExecutiveResidentTManagement().setVisible(true);
-                }
-            } else {
-                warningMessage.setText("Invalid email or email existed!");
-            }
-        } else {
-            warningMessage.setText("Please complete the form!");
-        }
-    }//GEN-LAST:event_addBtActionPerformed
-
-    private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
+    private void cancelBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBTActionPerformed
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveResidentTManagement().setVisible(true);
-    }//GEN-LAST:event_cancelBtActionPerformed
+        new AdminExecutiveFacilityPreview(facilityID).setVisible(true);
+    }//GEN-LAST:event_cancelBTActionPerformed
 
-    private void firstNameTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstNameTFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_firstNameTFActionPerformed
+    private void bookBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookBtActionPerformed
+        int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
+                + "modify this booking?", "MODIFY FACILITY BOOKING",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE);
 
-    private void lastNameTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastNameTFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_lastNameTFActionPerformed
-
-    private void phoneNoTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phoneNoTFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_phoneNoTFActionPerformed
-
-    private void identificationNoTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_identificationNoTFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_identificationNoTFActionPerformed
-
-    private void tenantRBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tenantRBActionPerformed
-        // TODO add your handling code here:
-        if (tenantRB.isSelected()) {
-            residentRB.setSelected(false);
+        if(result == JOptionPane.YES_OPTION){
+            List<String> newData = new ArrayList<>();
+            for(int i = 0; i<bookingList.size(); i++) {
+                String[] bookingDetails = bookingList.get(i).split(";");
+                String startTime = bookingDetails[3];
+                String endTime = bookingDetails[4];
+                newData.add(bookingID.toLowerCase() +";"+ facilityID.toLowerCase()
+                        +";"+ facilityName +";"+ String.valueOf(unitNoLabel.getText())
+                        +";"+ date +";"+ startTime +";"+ endTime +";"+ unitPrice
+                        +";"+ totalPrice);
+            } 
+            ae.deleteFacilityBooking(bookingID.toLowerCase());
+            fh.fileWrite("facilityBooking.txt", true, newData);
+            JOptionPane.showMessageDialog (null, "Facility Booking has been modified!", 
+                            "MODIFY FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+            new AdminExecutiveViewFacilityBooking(facilityID, facilityName).setVisible(true);
         }
-        setDefault();
-    }//GEN-LAST:event_tenantRBActionPerformed
+    }//GEN-LAST:event_bookBtActionPerformed
 
-    private void residentRBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_residentRBActionPerformed
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
-        if (residentRB.isSelected()) {
-            tenantRB.setSelected(false);
-        }
-        setDefault();
-    }//GEN-LAST:event_residentRBActionPerformed
+    }//GEN-LAST:event_jTable1MouseClicked
 
-    private void tenantRBMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tenantRBMousePressed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_tenantRBMousePressed
-
-    private void tenantRBMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tenantRBMouseReleased
-        // TODO add your handling code here:
-        if (residentRB.isSelected() == false) {
-            tenantRB.setSelected(true);
-        }
-    }//GEN-LAST:event_tenantRBMouseReleased
-
-    private void residentRBMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_residentRBMouseReleased
-        // TODO add your handling code here:
-        if (tenantRB.isSelected() == false) {
-            residentRB.setSelected(true);
-        }
-    }//GEN-LAST:event_residentRBMouseReleased
-
-    private void userIDTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userIDTFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_userIDTFActionPerformed
-
-    private void typeCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeCBActionPerformed
-        // TODO add your handling code here:
-        if (typeCB.getSelectedItem().equals("Commercial")) {
-            residentRB.setEnabled(false); residentRB.setSelected(false);
-            tenantRB.setSelected(true);
-        } else {
-            residentRB.setEnabled(true);
-        }
-        setDefault(); 
-    }//GEN-LAST:event_typeCBActionPerformed
-
-    private void phoneNoTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_phoneNoTFKeyTyped
-        // TODO add your handling code here:
-        int phoneNoL = phoneNoTF.getText().length();
-        if (Character.isLetter(evt.getKeyChar()) || phoneNoL > 13)
-            evt.consume();
-    }//GEN-LAST:event_phoneNoTFKeyTyped
     
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
@@ -587,13 +450,13 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdminExecutiveAddResidentTenant.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutivePaymentGatewayModify.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdminExecutiveAddResidentTenant.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutivePaymentGatewayModify.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdminExecutiveAddResidentTenant.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutivePaymentGatewayModify.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdminExecutiveAddResidentTenant.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutivePaymentGatewayModify.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -1623,42 +1486,36 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminExecutiveAddResidentTenant().setVisible(true);
+                new AdminExecutivePaymentGatewayModify(null).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addBt;
-    private javax.swing.JButton cancelBt;
-    private javax.swing.JTextField emailTF;
-    private javax.swing.JTextField firstNameTF;
-    private javax.swing.JComboBox<String> genderCB;
-    private javax.swing.JTextField identificationNoTF;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel advancedPaymentLabel;
+    private javax.swing.JButton bookBt;
+    private javax.swing.JLabel bookingIDLabel;
+    private javax.swing.JButton cancelBT;
+    private javax.swing.JLabel currentChargesLabel;
+    private javax.swing.JLabel dateLabel;
+    private javax.swing.JLabel facilityIDLabel;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField lastNameTF;
-    private javax.swing.JTextField phoneNoTF;
-    private javax.swing.JRadioButton residentRB;
-    private javax.swing.JRadioButton tenantRB;
-    private javax.swing.JComboBox<String> typeCB;
-    private javax.swing.JComboBox<String> unitNoCB;
-    private javax.swing.JTextField userIDTF;
-    private javax.swing.JLabel warningMessage;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel totalLabel;
+    private javax.swing.JLabel unitNoLabel;
+    private javax.swing.JLabel warningLabel;
     // End of variables declaration//GEN-END:variables
 }

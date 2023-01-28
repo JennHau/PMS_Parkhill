@@ -986,7 +986,6 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
                 tableModel.addRow(tbData);
             }
         }
-        System.out.println(tableModel.getRowCount());
         if (tableModel.getRowCount() == 0) {
             issueAllPanel.setBackground(Color.GRAY);
         } else {

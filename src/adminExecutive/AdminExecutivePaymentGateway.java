@@ -5,7 +5,6 @@
 package adminExecutive;
 
 import java.awt.Toolkit;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -16,17 +15,18 @@ import pms_parkhill_residence.FileHandling;
  *
  * @author wongj
  */
-public class AdminExecutiveAddUnit extends javax.swing.JFrame {
+public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
-     * @param propertyType
+     * @param bookingList
      */
-    public AdminExecutiveAddUnit(String propertyType) {
+    public AdminExecutivePaymentGateway(List<String> bookingList) {
         initComponents();
         setWindowIcon();
-        this.type = propertyType;
-        setTable();
+        this.bookingList = bookingList;
+        setUnitNoCB();
+        setDefault();
     }
 
     /**
@@ -42,20 +42,23 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        unitNoTF = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        typeCB = new javax.swing.JComboBox<>();
-        jLabel5 = new javax.swing.JLabel();
-        squareFootTF = new javax.swing.JTextField();
-        addBt = new javax.swing.JButton();
-        cancelBt = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jSeparator1 = new javax.swing.JSeparator();
+        bookBt = new javax.swing.JButton();
+        cancelBT = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
-        warningMessage = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
+        warningLabel = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        totalLabel = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
+        jLabel5 = new javax.swing.JLabel();
+        unitNoCB = new javax.swing.JComboBox<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        bookingIDLabel = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        facilityIDLabel = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        dateLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -69,8 +72,8 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
         jLabel2.setBackground(new java.awt.Color(13, 24, 42));
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("ADD PROPERTY UNIT");
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel2.setText("FACILITY BOOKING");
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/parkhillLogo.png"))); // NOI18N
@@ -79,12 +82,12 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(341, 341, 341)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(222, 222, 222))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -98,44 +101,66 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
-        unitNoTF.addActionListener(new java.awt.event.ActionListener() {
+        jLabel4.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel4.setText("Booking ID:");
+
+        bookBt.setBackground(new java.awt.Color(13, 50, 79));
+        bookBt.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        bookBt.setForeground(new java.awt.Color(255, 255, 255));
+        bookBt.setText("BOOK");
+        bookBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                unitNoTFActionPerformed(evt);
+                bookBtActionPerformed(evt);
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel1.setText("UNIT NO:");
+        cancelBT.setText("CANCEL");
+        cancelBT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelBTActionPerformed(evt);
+            }
+        });
 
-        jLabel4.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel4.setText("Property Type:");
+        jLabel14.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel14.setText("Booking Details:");
 
-        typeCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-PLEASE SELECT-", "Residential", "Commercial" }));
+        warningLabel.setForeground(new java.awt.Color(255, 0, 0));
+        warningLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        warningLabel.setPreferredSize(new java.awt.Dimension(152, 16));
+
+        jPanel2.setBackground(new java.awt.Color(13, 50, 79));
+
+        totalLabel.setFont(new java.awt.Font("Stencil", 0, 18)); // NOI18N
+        totalLabel.setForeground(new java.awt.Color(255, 255, 255));
+        totalLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        totalLabel.setText("TOTAL: RM 0.00");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(totalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(totalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel5.setText("SQUARE FOOT:");
+        jLabel5.setText("Booking Unit No:");
 
-        squareFootTF.addActionListener(new java.awt.event.ActionListener() {
+        unitNoCB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                squareFootTFActionPerformed(evt);
-            }
-        });
-
-        addBt.setBackground(new java.awt.Color(0, 204, 0));
-        addBt.setText("ADD");
-        addBt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addBtActionPerformed(evt);
-            }
-        });
-
-        cancelBt.setText("BACK");
-        cancelBt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelBtActionPerformed(evt);
+                unitNoCBActionPerformed(evt);
             }
         });
 
@@ -144,101 +169,117 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
 
             },
             new String [] {
-                "NO", "UNIT NO.", "SQUARE FOOT", "STATUS", "DATE OF SOLD"
+                "FACILITY NAME", "START TIME", "END TIME", "PRICE (RM)"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(jTable1);
 
-        jSeparator1.setForeground(new java.awt.Color(153, 153, 153));
-        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jSeparator1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        bookingIDLabel.setFont(new java.awt.Font("Yu Gothic", 1, 14)); // NOI18N
+        bookingIDLabel.setForeground(new java.awt.Color(153, 153, 153));
+        bookingIDLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        bookingIDLabel.setText("FBK000000");
 
-        jLabel14.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel14.setText("Existing Unit Details:");
+        jLabel6.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel6.setText("Facility ID:");
 
-        warningMessage.setForeground(new java.awt.Color(255, 0, 51));
-        warningMessage.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        warningMessage.setPreferredSize(new java.awt.Dimension(138, 17));
+        facilityIDLabel.setFont(new java.awt.Font("Yu Gothic", 1, 14)); // NOI18N
+        facilityIDLabel.setForeground(new java.awt.Color(153, 153, 153));
+        facilityIDLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        facilityIDLabel.setText("FCT000000");
 
-        jLabel15.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel15.setText("e.g. A-01-04 | S-04-09");
+        jLabel7.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel7.setText("Booking Date:");
+
+        dateLabel.setFont(new java.awt.Font("Yu Gothic", 1, 14)); // NOI18N
+        dateLabel.setForeground(new java.awt.Color(153, 153, 153));
+        dateLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        dateLabel.setText("0000-00-00");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(51, 51, 51)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(25, 25, 25)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(warningLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 696, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 696, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel4)
-                                .addComponent(typeCB, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel5)
-                                .addComponent(jLabel1)
-                                .addComponent(unitNoTF, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
-                                .addComponent(squareFootTF)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                                    .addComponent(cancelBt, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(addBt, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(63, 63, 63)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(warningMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 604, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(32, Short.MAX_VALUE))
+                            .addComponent(jLabel4)
+                            .addComponent(bookingIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(31, 31, 31)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(facilityIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(30, 30, 30)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(71, 71, 71)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(unitNoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(23, Short.MAX_VALUE))
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(289, 289, 289)
+                .addComponent(cancelBT, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bookBt, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addGap(13, 13, 13)
+                .addComponent(warningLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel14)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(warningMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(typeCB, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(28, 28, 28)
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(unitNoTF, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(1, 1, 1)
-                                .addComponent(jLabel15)
-                                .addGap(27, 27, 27)
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(squareFootTF, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(addBt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cancelBt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addContainerGap(22, Short.MAX_VALUE))
+                                .addComponent(jLabel6))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(unitNoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(bookingIDLabel)
+                            .addComponent(facilityIDLabel)
+                            .addComponent(dateLabel)))
+                    .addComponent(jLabel7))
+                .addGap(25, 25, 25)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bookBt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cancelBT, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -260,91 +301,96 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public String type;
+    AdminExecutive ae = new AdminExecutive();
     FileHandling fh = new FileHandling();
+    List<String> bookingList = new ArrayList<>();
+    String bookingID; String facilityID; String facilityName;
+    String unitPrice; String totalPrice; String date;
     
-    private void unitNoTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unitNoTFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_unitNoTFActionPerformed
-
-    private void squareFootTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_squareFootTFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_squareFootTFActionPerformed
-
-    private void addBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtActionPerformed
-        // TODO add your handling code here:
-        String newType = String.valueOf(typeCB.getSelectedItem());
-        String newUnitNo = unitNoTF.getText();
-        String squareFoot = squareFootTF.getText();
+    private void setDefault() {
         
-        if (typeCB.getSelectedIndex()!=0 && !newUnitNo.equals("") &&
-                !squareFoot.equals("")) {
-            warningMessage.setText("");
-            AdminExecutive ae = new AdminExecutive();
-            boolean check = ae.checkUnitAvailability(newUnitNo.toLowerCase());
-            
-            if (check) {
-                int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
-                        + "add this property unit?",
-                        "ADD PROPERTY UNIT",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE);
-            
-                if(result == JOptionPane.YES_OPTION){
-                    warningMessage.setText("");
-                
-                    List<String> newData1 = new ArrayList<>();
-                    newData1.add(newUnitNo.toUpperCase() +";"+ newType +";"+ 
-                            squareFoot +";"+ "Unsold" +";"+ "-" +";");
-                    fh.fileWrite("propertyDetails.txt", true, newData1);
-
-                    List<String> newData2 = new ArrayList<>();
-                    newData2.add("Parkhill;parkhill@gmail.com;Parkhill@123;Parkill;"
-                            + "Residence;-;-;-;" + newUnitNo.toUpperCase() + ";");             
-                    fh.fileWrite("userProfile.txt", check, newData2);
-
-                    JOptionPane.showMessageDialog (null, "New unit has been added!", 
-                                    "ADD PROPERTY UNIT", JOptionPane.INFORMATION_MESSAGE);
-                    dispose();
-                    new AdminExecutiveUnitManagement().setVisible(true);
-                }
-                
-            } else {
-                warningMessage.setText("This unit is existed!");
-            }
-        } else {
-            warningMessage.setText("Please complete the form!");
+        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        for(int i = 0; i<bookingList.size(); i++) {
+            String[] bookingDetails = bookingList.get(i).split(";");
+            this.bookingID = bookingDetails[0];
+            this.facilityID = bookingDetails[1];
+            this.facilityName = bookingDetails[2];
+            String startTime = bookingDetails[3];
+            String endTime = bookingDetails[4];
+            this.date = bookingDetails[5];
+            String[] tbData = {facilityName, startTime, endTime};
+            tableModel.addRow(tbData);
         }
-    }//GEN-LAST:event_addBtActionPerformed
-
-    private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
+        
+        List<String> feeData = ae.extractFacilityBookingFee(facilityID.toLowerCase(),
+                    bookingList.size());
+        for(int i = 0; i<feeData.size(); i++) {
+            String[] feeDetails = feeData.get(i).split(";");
+            unitPrice = feeDetails[0];
+            totalPrice = feeDetails[1];
+        }
+        
+        for(int i = 0; i<bookingList.size(); i++) {
+            tableModel.setValueAt(unitPrice, i, 3);
+        }
+        
+        bookingIDLabel.setText(bookingID); facilityIDLabel.setText(facilityID);
+        totalLabel.setText("TOTAL: RM " + totalPrice); dateLabel.setText(date);
+    }
+    
+    private void cancelBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBTActionPerformed
         // TODO add your handling code here:
         dispose();
-        AdminExecutiveUnitManagement aei = new AdminExecutiveUnitManagement();
-        aei.setVisible(true);
-    }//GEN-LAST:event_cancelBtActionPerformed
+        new AdminExecutiveFacilityPreview(facilityID).setVisible(true);
+    }//GEN-LAST:event_cancelBTActionPerformed
 
-    private void setTable() {
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        tableModel.setRowCount(0);
-            
-        AdminExecutive ae = new AdminExecutive();
-        List<String> availableList = 
-                ae.extractAllProperties(type);
-        
-        String[] propertiesArray = new String[availableList.size()];
-        availableList.toArray(propertiesArray);
-        
-        for (int i = 0; i < availableList.size(); i++) {
-            String[] propertyDetails = propertiesArray[i].split(";");
-            String unitNo = propertyDetails[0];
-            String squareFoot = propertyDetails[1];
-            String status = propertyDetails[2];
-            String dateOfSold = propertyDetails[3];
-            
-            String[] tbData = {String.valueOf(i+1), unitNo, squareFoot, status,
-                dateOfSold};
-            tableModel.addRow(tbData);
+    private void bookBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookBtActionPerformed
+        int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
+                + "proceed with this booking?", "FACILITY BOOKING",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE);
+
+        if(result == JOptionPane.YES_OPTION){
+            List<String> newData = new ArrayList<>();
+            for(int i = 0; i<bookingList.size(); i++) {
+                String[] bookingDetails = bookingList.get(i).split(";");
+                String startTime = bookingDetails[3];
+                String endTime = bookingDetails[4];
+                newData.add(bookingID.toLowerCase() +";"+ facilityID.toLowerCase()
+                        +";"+ facilityName +";"+ String.valueOf(unitNoCB.getSelectedItem())
+                        +";"+ date +";"+ startTime +";"+ endTime +";"+ unitPrice
+                        +";"+ totalPrice);
+            } fh.fileWrite("facilityBooking.txt", true, newData);
+            JOptionPane.showMessageDialog (null, "Facility Booking has been made!", 
+                            "FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+            new AdminExecutiveViewFacilityBooking(facilityID, facilityName).setVisible(true);
+        }
+    }//GEN-LAST:event_bookBtActionPerformed
+
+    private void unitNoCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unitNoCBActionPerformed
+        // TODO add your handling code here:
+        if(!unitNoCB.getSelectedItem().equals("-PLEASE SELECT-")) {
+            bookBt.setEnabled(true);
+        } else {
+            bookBt.setEnabled(false);
+        }
+    }//GEN-LAST:event_unitNoCBActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void setUnitNoCB() {
+        List<String> availableUnit = ae.extractAllProperties("residential");
+        unitNoCB.addItem("-PLEASE SELECT-");
+        for(int i = 0; i<availableUnit.size(); i++) {
+            String[] unitDetails = availableUnit.get(i).split(";");
+            String unitNo = unitDetails[0];
+            String status = unitDetails[2];
+            if(status.equals("sold")) {
+                unitNoCB.addItem(unitNo);
+            }
         }
     }
     
@@ -369,13 +415,13 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdminExecutiveAddUnit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutivePaymentGateway.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdminExecutiveAddUnit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutivePaymentGateway.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdminExecutiveAddUnit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutivePaymentGateway.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdminExecutiveAddUnit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutivePaymentGateway.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -893,29 +939,32 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminExecutiveAddUnit(null).setVisible(true);
+                new AdminExecutivePaymentGateway(null).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addBt;
-    private javax.swing.JButton cancelBt;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton bookBt;
+    private javax.swing.JLabel bookingIDLabel;
+    private javax.swing.JButton cancelBT;
+    private javax.swing.JLabel dateLabel;
+    private javax.swing.JLabel facilityIDLabel;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField squareFootTF;
-    private javax.swing.JComboBox<String> typeCB;
-    private javax.swing.JTextField unitNoTF;
-    private javax.swing.JLabel warningMessage;
+    private javax.swing.JLabel totalLabel;
+    private javax.swing.JComboBox<String> unitNoCB;
+    private javax.swing.JLabel warningLabel;
     // End of variables declaration//GEN-END:variables
 }

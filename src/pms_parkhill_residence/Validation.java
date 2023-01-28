@@ -4,6 +4,7 @@
  */
 package pms_parkhill_residence;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +15,8 @@ import java.util.regex.Pattern;
 public class Validation {
     
     public Validation() {};
+    
+    FileHandling fh = new FileHandling();
     
     public boolean passwordValid(String password) {   
         String passwordPattern =
@@ -29,5 +32,18 @@ public class Validation {
         Pattern pattern = Pattern.compile(emailPattern);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+    
+    public boolean emailDuplication(String email, String fileName, String exception) {
+        List<String> userProfile = fh.fileRead(fileName);
+        
+        for (int i = 1; i<userProfile.size(); i++) {
+            String[] userInfo = userProfile.get(i).split(";");
+            String userID = userInfo[0];
+            String eEmail = userInfo[1].toLowerCase();
+            if (email.toLowerCase().equals(eEmail) && !userID.equals(exception)) {
+                return false;
+            }
+        } return true;
     }
 }

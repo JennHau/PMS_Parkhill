@@ -1,0 +1,7 @@
+facilityID;facilityName;booking;payment;price;priceUnit;startTime;endTime;quantity;active;
+fct000001;Badminton Court;true;true;15.00;Per Hour;08:00;22:00;3;Active;
+fct000002;Swimming Pool;false;false;-;-;07:00;21:00;1;Active;
+fct000003;Multipurpose Hall;true;false;-;-;07:00;21:00;1;Active;
+fct000004;Basketball Court;true;false;-;-;07:00;21:00;1;Inactive;
+fct000005;Check 1;false;false;-;-;07:00;21:00;1;Active;
+fct000006;Check 2;false;false;-;-;07:00;21:00;1;Active;
