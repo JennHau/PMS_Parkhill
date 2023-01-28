@@ -14,6 +14,8 @@ import com.sun.source.tree.NewArrayTree;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.Calendar;
+import pms_parkhill_residence.FacilityBookingPaymentByBooking;
+import pms_parkhill_residence.FacilityBookingPaymentByHour;
 import pms_parkhill_residence.FileHandling;
 
 /**
@@ -984,4 +986,79 @@ public class AdminExecutive {
             }
         } return availableList;
     }
+    
+    public List<String> extractFacilityTimeSlot(String facilityID, String variation,
+                String date, String bookingID) {
+        FileHandling fh = new FileHandling();
+        List<String> availableList = fh.fileRead("facility.txt");
+        List<String> availableBooking = fh.fileRead("facilityBooking.txt");
+        
+        List<String> timeSlot = new ArrayList<>();
+        
+        for (int i = 1; i < availableList.size(); i++) {
+            String[] employeeDetails = availableList.get(i).split(";");
+            String eFacilityID = employeeDetails[0];
+            String startTime = employeeDetails[6];
+            String endTime = employeeDetails[7];
+            
+            int firstSlot = Integer.valueOf(startTime.substring(0, 2));
+            int lastSlot = Integer.valueOf(endTime.substring(0, 2));
+            if (eFacilityID.equals(facilityID)) {
+                for (int j = firstSlot; j < lastSlot+1; j++) {
+                    String cStartTime = String.valueOf(j) + ":00";
+                    boolean check = true;
+                    for (int k = 1; k < availableBooking.size(); k++) {
+                        String[] bookingDetails = availableBooking.get(k).split(";");
+                        String bBookingID = bookingDetails[0];
+                        String bFctName = bookingDetails[2];
+                        String bBookBy = bookingDetails[3];
+                        String bDate = bookingDetails[4];
+                        String bStartTime = bookingDetails[5];
+                        String bEndTime = bookingDetails[6];
+                        if(bFctName.equals(variation) && bDate.equals(date) &&
+                                bStartTime.equals(cStartTime) && bBookingID.equals(bookingID)) {
+                            timeSlot.add(variation +";"+ cStartTime +";"+ bEndTime +";"+ bBookBy +";"+ "SELECTED");
+                            check = false;
+                        } else if(bFctName.equals(variation) && bDate.equals(date) && bStartTime.equals(cStartTime)) {
+                            timeSlot.add(variation +";"+ cStartTime +";"+ bEndTime +";"+ bBookBy +";"+ "BOOKED");
+                            check = false;
+                        }
+                    } 
+                    if(check){
+                        timeSlot.add(variation +";"+ cStartTime +";"+ String.valueOf(j+1) + ":00" +";"+ "-" +";"+ "SELECT");
+                    }
+                    
+                }
+            }
+        } return timeSlot;
+    }
+    
+    public List<String> extractFacilityBookingFee(String facilityID, int hour) {
+        List<String> availableList = fh.fileRead("facility.txt");
+        List<String> feeData = new ArrayList<>();
+        
+        for (int i = 1; i < availableList.size(); i++) {
+            String[] bookingDetails = availableList.get(i).split(";");
+            String eFacilityID = bookingDetails[0];
+            boolean payment = Boolean.valueOf(bookingDetails[3]);
+            String price = bookingDetails[4];
+            String priceUnit = bookingDetails[5];
+            
+            if(facilityID.equals(eFacilityID)) {
+                if(payment == true && priceUnit.equals("Per Hour")) {
+                    FacilityBookingPaymentByHour fb = new FacilityBookingPaymentByHour();
+                    fb.setFacilityDetails(facilityID);
+                    fb.setHour(hour); fb.calculateBookingFee();
+                    feeData.add(price +";"+ fb.getTotalPrice());
+                } else if(payment && priceUnit.equals("Per Booking")) {
+                    FacilityBookingPaymentByBooking fb = new FacilityBookingPaymentByBooking();
+                    fb.setFacilityDetails(facilityID); fb.calculateBookingFee(); 
+                    feeData.add("-" +";"+ fb.getTotalPrice());
+                } else {
+                    feeData.add("-" +";"+ "0.00");
+                }
+            } 
+        } return feeData;
+    }
+    
 }

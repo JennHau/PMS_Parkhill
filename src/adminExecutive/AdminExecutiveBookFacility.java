@@ -14,9 +14,8 @@ import accountExecutive.AccountExecutiveIssueReceipt;
 import accountExecutive.AccountExecutiveIssueStatement;
 import accountExecutive.AccountExecutivePayment;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import pms_parkhill_residence.Facility;
-import pms_parkhill_residence.FacilityBookingPaymentByHour;
-import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.HomePage;
 
 /**
@@ -67,6 +66,9 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         bookingIDLabel = new javax.swing.JLabel();
+        cancelBt2 = new javax.swing.JButton();
+        bookBt = new javax.swing.JButton();
+        warningMessage = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         dashboardPanel = new javax.swing.JPanel();
@@ -100,16 +102,16 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(153, 153, 153), null, null));
 
-        jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(13, 24, 42));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("ADMIN EXECUTIVE");
+        jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(13, 24, 42));
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
         jLabel7.setText("USERNAME");
+        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -134,11 +136,11 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(226, 226, 226));
 
-        jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(102, 102, 102));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setText("FACILITY BOOKING");
         jLabel14.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(102, 102, 102));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -186,19 +188,19 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(jTable2);
 
-        facilityTypeLabel.setFont(new java.awt.Font("Yu Gothic UI", 1, 12)); // NOI18N
-        facilityTypeLabel.setForeground(new java.awt.Color(153, 153, 153));
         facilityTypeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         facilityTypeLabel.setText("FACILITY ID - FACILITY NAME");
+        facilityTypeLabel.setFont(new java.awt.Font("Yu Gothic UI", 1, 12)); // NOI18N
+        facilityTypeLabel.setForeground(new java.awt.Color(153, 153, 153));
 
-        jLabel17.setFont(new java.awt.Font("Yu Gothic", 1, 12)); // NOI18N
-        jLabel17.setForeground(new java.awt.Color(153, 153, 153));
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel17.setText("FACILITY BOOKING TIMESLOT:");
+        jLabel17.setFont(new java.awt.Font("Yu Gothic", 1, 12)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(153, 153, 153));
 
+        jLabel18.setText("SELECTED TIMESLOT:");
         jLabel18.setFont(new java.awt.Font("Yu Gothic", 1, 12)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel18.setText("SELECTED TIMESLOT:");
 
         variationCB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -206,8 +208,8 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
             }
         });
 
-        jLabel19.setForeground(new java.awt.Color(153, 153, 153));
         jLabel19.setText("FACILITY VARIATION:");
+        jLabel19.setForeground(new java.awt.Color(153, 153, 153));
 
         datePicker1.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
 
@@ -215,46 +217,83 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
         jLabel20.setForeground(new java.awt.Color(153, 153, 153));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/searchIcon.png"))); // NOI18N
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel1MouseEntered(evt);
+            }
+        });
 
+        jLabel21.setText("BOOKING ID:");
         jLabel21.setFont(new java.awt.Font("Yu Gothic", 1, 12)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel21.setText("BOOKING ID:");
 
-        bookingIDLabel.setFont(new java.awt.Font("Yu Gothic", 1, 14)); // NOI18N
-        bookingIDLabel.setForeground(new java.awt.Color(153, 153, 153));
         bookingIDLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         bookingIDLabel.setText("FBK000000");
+        bookingIDLabel.setFont(new java.awt.Font("Yu Gothic", 1, 14)); // NOI18N
+        bookingIDLabel.setForeground(new java.awt.Color(153, 153, 153));
+
+        cancelBt2.setText("BACK");
+        cancelBt2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelBt2ActionPerformed(evt);
+            }
+        });
+
+        bookBt.setBackground(new java.awt.Color(0, 204, 0));
+        bookBt.setText("BOOK");
+        bookBt.setEnabled(false);
+        bookBt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bookBtActionPerformed(evt);
+            }
+        });
+
+        warningMessage.setForeground(new java.awt.Color(255, 0, 51));
+        warningMessage.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        warningMessage.setPreferredSize(new java.awt.Dimension(138, 17));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel18)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel21)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bookingIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 960, Short.MAX_VALUE)
-                    .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 960, Short.MAX_VALUE)
-                    .addComponent(facilityTypeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel17)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(28, 28, 28)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(variationCB, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(datePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel21)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(bookingIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 960, Short.MAX_VALUE)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 960, Short.MAX_VALUE)
+                            .addComponent(facilityTypeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel17)
+                                .addGap(53, 53, 53)
+                                .addComponent(warningMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(variationCB, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addComponent(datePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(422, 422, 422)
+                        .addComponent(cancelBt2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(bookBt, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
@@ -262,36 +301,40 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addComponent(facilityTypeLabel)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(jLabel17))
+                        .addGap(27, 27, 27)
+                        .addComponent(warningMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel20)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel19)
+                                    .addComponent(jLabel20))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(datePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel19)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(variationCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel18)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(bookingIDLabel)
-                            .addComponent(jLabel21))
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(variationCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel17)
+                                    .addComponent(datePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, 0)))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(bookingIDLabel)
+                        .addComponent(jLabel21))
+                    .addComponent(jLabel18))
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cancelBt2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bookBt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         jPanel1.setBackground(new java.awt.Color(13, 24, 42));
@@ -309,9 +352,9 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
             }
         });
 
+        dashboardLabel.setText("Dashboard");
         dashboardLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         dashboardLabel.setForeground(new java.awt.Color(255, 255, 255));
-        dashboardLabel.setText("Dashboard");
         dashboardLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 dashboardLabelMouseClicked(evt);
@@ -348,9 +391,9 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
             }
         });
 
+        unitManageLabel.setText("Unit Management");
         unitManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         unitManageLabel.setForeground(new java.awt.Color(255, 255, 255));
-        unitManageLabel.setText("Unit Management");
         unitManageLabel.setPreferredSize(new java.awt.Dimension(150, 25));
         unitManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -388,10 +431,10 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
             }
         });
 
+        rTManageLabel.setText("Resident/ Tenant Management");
         rTManageLabel.setBackground(new java.awt.Color(13, 24, 42));
         rTManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         rTManageLabel.setForeground(new java.awt.Color(255, 255, 255));
-        rTManageLabel.setText("Resident/ Tenant Management");
         rTManageLabel.setPreferredSize(new java.awt.Dimension(250, 25));
         rTManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -434,9 +477,9 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
             }
         });
 
+        complaintManagement.setText("Complaint Management");
         complaintManagement.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         complaintManagement.setForeground(new java.awt.Color(255, 255, 255));
-        complaintManagement.setText("Complaint Management");
         complaintManagement.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 complaintManagementMouseClicked(evt);
@@ -473,9 +516,9 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
             }
         });
 
+        employeeManageLabel.setText("Employee Management");
         employeeManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         employeeManageLabel.setForeground(new java.awt.Color(255, 255, 255));
-        employeeManageLabel.setText("Employee Management");
         employeeManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 employeeManageLabelMouseClicked(evt);
@@ -504,10 +547,10 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
 
         jPanel11.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel9.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/notificationIcon.png"))); // NOI18N
         jLabel9.setText(" NOTIFICATIONS");
+        jLabel9.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
@@ -536,10 +579,10 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
             }
         });
 
-        logoutLabel.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        logoutLabel.setForeground(new java.awt.Color(255, 255, 255));
         logoutLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
         logoutLabel.setText("LOGOUT");
+        logoutLabel.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        logoutLabel.setForeground(new java.awt.Color(255, 255, 255));
         logoutLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 logoutLabelMouseClicked(evt);
@@ -573,10 +616,10 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
             }
         });
 
-        viewProfileLabel.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        viewProfileLabel.setForeground(new java.awt.Color(255, 255, 255));
         viewProfileLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
         viewProfileLabel.setText("VIEW PROFILE");
+        viewProfileLabel.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        viewProfileLabel.setForeground(new java.awt.Color(255, 255, 255));
         viewProfileLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 viewProfileLabelMouseClicked(evt);
@@ -613,9 +656,9 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
             }
         });
 
+        facilityManageLabel.setText("Facility Management");
         facilityManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         facilityManageLabel.setForeground(new java.awt.Color(255, 255, 255));
-        facilityManageLabel.setText("Facility Management");
         facilityManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 facilityManageLabelMouseClicked(evt);
@@ -652,9 +695,9 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
             }
         });
 
+        facBookManageLabel.setText("Facility Booking Management");
         facBookManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         facBookManageLabel.setForeground(new java.awt.Color(255, 255, 255));
-        facBookManageLabel.setText("Facility Booking Management");
         facBookManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 facBookManageLabelMouseClicked(evt);
@@ -726,7 +769,7 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
                 .addComponent(facilityManagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(facBookManagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 174, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(viewProfilePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -780,18 +823,17 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
         }
     }
     
+    
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
         int column = jTable1.getSelectedColumn();
         int row = jTable1.getSelectedRow();
+        String status = String.valueOf(tableModel.getValueAt(row, 4));
         
-        if (column == 7) {
-            tableModel.setValueAt("SELECTED", row, 7);
-            String facilityID = String.valueOf(tableModel.getValueAt(row, 1)).toLowerCase();
+        if (column == 4 && status.equals("SELECT")) {
+            tableModel.setValueAt("SELECTED", row, 4);
             setTable2();
-//            dispose();
-//            new AdminExecutiveModifyFacility(facilityID).setVisible(true);
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -985,14 +1027,14 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
         int column = jTable2.getSelectedColumn();
         int row = jTable2.getSelectedRow();
         
-        if (column == 6) {
-            String startTime = (String)tableModel2.getValueAt(row, 2);
+        if (column == 3) {
+            String startTime = (String)tableModel2.getValueAt(row, 1);
             
             DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
             for (int i=0; i<tableModel.getRowCount(); i++) {
-                String eStartTime = (String)tableModel.getValueAt(i, 3);
+                String eStartTime = (String)tableModel.getValueAt(i, 1);
                 if (startTime.equals(eStartTime)) {
-                    tableModel.setValueAt("MANAGE", i, 7);
+                    tableModel.setValueAt("SELECT", i, 4);
                     setTable2();
                 }
             }
@@ -1003,31 +1045,72 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
         // TODO add your handling code here:
         setTable();
     }//GEN-LAST:event_variationCBActionPerformed
+
+    private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
+        // TODO add your handling code here:
+        jLabel1.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jLabel1MouseEntered
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        // TODO add your handling code here:
+        setTable();
+    }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void cancelBt2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBt2ActionPerformed
+        // TODO add your handling code here:
+        dispose();
+        new AdminExecutiveFacilityPreview(facilityID).setVisible(true);
+    }//GEN-LAST:event_cancelBt2ActionPerformed
+
+    private void bookBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookBtActionPerformed
+        // TODO add your handling code here:
+        List<String> availableList = new ArrayList<>();
+        
+        DefaultTableModel tableModel2 = (DefaultTableModel)jTable2.getModel();
+        for (int i=0; i<tableModel2.getRowCount(); i++) {
+            String bkgID = bookingIDLabel.getText();
+            String fctID = facilityTypeLabel.getText().substring(0, 9);
+            String fctName = (String)tableModel2.getValueAt(i, 0);
+            String startTime = (String)tableModel2.getValueAt(i, 1);
+            String endTime = (String)tableModel2.getValueAt(i, 2);
+            String date = String.valueOf(datePicker1.getDate());
+            
+            availableList.add(bkgID +";"+ fctID +";"+ fctName +";"+ startTime
+                    +";"+ endTime +";"+ date);
+        }
+        dispose();
+        new AdminExecutivePaymentGateway(availableList).setVisible(true);
+    }//GEN-LAST:event_bookBtActionPerformed
     
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
     
     private void setTable() {
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        tableModel.setRowCount(0);
-            
-        FileHandling fh = new FileHandling();
-        List<String> availableList = fh.fileRead("facility.txt");
-        
-        for (int i = 1; i < availableList.size(); i++) {
-            String[] employeeDetails = availableList.get(i).split(";");
-            String facilityID = employeeDetails[0];
-            String facilityName = employeeDetails[1];
-            String startTime = employeeDetails[6];
-            String endTime = employeeDetails[7];
-            String quantity = employeeDetails[8];
-            String active = employeeDetails[9].toUpperCase();
-            String[] tbData = {String.valueOf(i), facilityID.toUpperCase(), 
-                facilityName, startTime, endTime, quantity, active,"MANAGE"};
-            tableModel.addRow(tbData);
-            
+        if(!datePicker1.getDate().isBefore(LocalDate.now())) {
+            warningMessage.setText("");
+            DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+            tableModel.setRowCount(0);
+            String pickDate = String.valueOf(datePicker1.getDate());
+            String variation = (String)variationCB.getSelectedItem();
+            List<String> availableList = ae.extractFacilityTimeSlot(facilityID, variation, pickDate, bookingID);
+
+
+            for (int i = 0; i < availableList.size(); i++) {
+                String[] employeeDetails = availableList.get(i).split(";");
+                String facilityName = employeeDetails[0];
+                String startTime = employeeDetails[1];
+                String endTime = employeeDetails[2];
+                String bookedBy = employeeDetails[3];
+                String action = employeeDetails[4];
+
+                String[] tbData = {facilityName, startTime, endTime, bookedBy, action};
+                tableModel.addRow(tbData);
+            }
+        } else {
+            warningMessage.setText("Invalid date!");
         }
+        
     }
     
     private void setTable2() {
@@ -1037,19 +1120,20 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
         
         for (int i=0; i<tableModel.getRowCount(); i++) {
-            String facilityID = (String)tableModel.getValueAt(i, 1);
-            String facilityName = (String)tableModel.getValueAt(i, 2);
-            String startTime = (String)tableModel.getValueAt(i, 3);
-            String endTime = (String)tableModel.getValueAt(i, 4);
-            String quantity = (String)tableModel.getValueAt(i, 5);
-            String active = (String)tableModel.getValueAt(i, 6);
-            String status = (String)tableModel.getValueAt(i, 7);
+            String facilityName = (String)tableModel.getValueAt(i, 0);
+            String startTime = (String)tableModel.getValueAt(i, 1);
+            String endTime = (String)tableModel.getValueAt(i, 2);
+            String status = (String)tableModel.getValueAt(i, 4);
             
             if (status.equals("SELECTED")) {
-                String[] tbData = {facilityID.toUpperCase(), facilityName,
-                    startTime, endTime, quantity, active, "REMOVE"};
+                String[] tbData = {facilityName, startTime, endTime, "REMOVE"};
                 tableModel2.addRow(tbData);
             }
+        } 
+        if(tableModel2.getRowCount() > 0) {
+            bookBt.setEnabled(true);
+        } else {
+            bookBt.setEnabled(false);
         }
     }
 
@@ -9280,7 +9364,9 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bookBt;
     private javax.swing.JLabel bookingIDLabel;
+    private javax.swing.JButton cancelBt2;
     private javax.swing.JLabel complaintManagement;
     private javax.swing.JPanel complaintManagementPanel;
     private javax.swing.JLabel dashboardLabel;
@@ -9321,5 +9407,6 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> variationCB;
     private javax.swing.JLabel viewProfileLabel;
     private javax.swing.JPanel viewProfilePanel;
+    private javax.swing.JLabel warningMessage;
     // End of variables declaration//GEN-END:variables
 }

@@ -4,26 +4,19 @@
  */
 package pms_parkhill_residence;
 
-import java.text.DecimalFormat;
 
 
 /**
  *
  * @author wongj
  */
-public class FacilityBookingPaymentByHour extends Facility{
+public class FacilityBookingPaymentByBooking extends Facility{
 
-    int hour; String totalPrice;
+    String totalPrice;
     
     @Override
     public void calculateBookingFee() {
-        float bTotalPrice = hour * Float.valueOf(this.getPrice());
-        DecimalFormat df = new DecimalFormat("0.00");
-        totalPrice = df.format(bTotalPrice);
-    }
-    
-    public void setHour(int hour) {
-        this.hour = hour;
+        totalPrice = this.getPrice();
     }
     
     public String getTotalPrice() {

@@ -55,7 +55,6 @@ public abstract class Facility {
                 this.active = active;
             }
         }
-        
     }
 
     public abstract void calculateBookingFee();

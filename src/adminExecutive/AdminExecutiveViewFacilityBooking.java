@@ -13,6 +13,7 @@ import accountExecutive.AccountExecutiveIssueOutstandingFee;
 import accountExecutive.AccountExecutiveIssueReceipt;
 import accountExecutive.AccountExecutiveIssueStatement;
 import accountExecutive.AccountExecutivePayment;
+import pms_parkhill_residence.FacilityBookingPaymentByHour;
 import pms_parkhill_residence.HomePage;
 
 /**
@@ -759,10 +760,11 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
         int column = jTable1.getSelectedColumn();
         int row = jTable1.getSelectedRow();
         
-        if (column == 6) {
-            String facilityID = String.valueOf(tableModel.getValueAt(row, 0)).toLowerCase();
+        
+        if (column == 7) {
+            String bookingID = String.valueOf(tableModel.getValueAt(row, 0)).toLowerCase();
             dispose();
-//            new AdminExecutiveFacilityPreview(facilityID).setVisible(true);
+//            new AdminExecutiveBookFacility(fb, bookingID).setVisible(true);
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
