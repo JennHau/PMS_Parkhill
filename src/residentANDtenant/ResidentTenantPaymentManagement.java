@@ -15,6 +15,7 @@ import pms_parkhill_residence.Users;
  * @author wongj
  */
 public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
+    public static ResidentTenantPaymentManagement rtPayMan;
     private Users user;
     ResidentTenant RT = new ResidentTenant();
     
@@ -25,6 +26,7 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
      * @param user
      */
     public ResidentTenantPaymentManagement(Users user) {
+        rtPayMan = this;
         initComponents();
         runDefaultSetUp(user);
     }
@@ -500,6 +502,11 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
         totalPendingFeeTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         payOneBTN.setText("Pay One");
+        payOneBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                payOneBTNActionPerformed(evt);
+            }
+        });
 
         payAllBTN.setText("Pay All");
         payAllBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -661,7 +668,12 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
         ArrayList<String> itemId = new ArrayList<>();
         int tableSize = pendingFeeTable.getRowCount();
         for (int count = 0; count < tableSize; count++) {
-            String data = pendingFeeTable.getValueAt(count, 1).toString();
+            String invNo = pendingFeeTable.getValueAt(count, 1).toString();
+            String invType = pendingFeeTable.getValueAt(count, 2).toString();
+            
+            String[] toConcatenate = {invNo, invType};
+            
+            String data = RT.concatenateKey(toConcatenate);
             itemId.add(data);
         }
         
@@ -669,6 +681,12 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
         
         RT.toPaymentGateway(user, totalAmount, itemId);
     }//GEN-LAST:event_payAllBTNActionPerformed
+
+    private void payOneBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payOneBTNActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        RT.toInvoice(user);
+    }//GEN-LAST:event_payOneBTNActionPerformed
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));

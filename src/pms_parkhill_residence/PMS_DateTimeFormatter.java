@@ -7,17 +7,26 @@ package pms_parkhill_residence;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
  * @author Winson
  */
-public class DateTimeFormatter {
+public class PMS_DateTimeFormatter {
     public LocalDate formatDate(String date) {
         java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd");
         
         LocalDate localDate = LocalDate.parse(date, dateFormatter);
         
+        return localDate;
+    }
+    
+    public LocalDate formatDate2(String date) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        LocalDate localDate = LocalDate.parse(date, dateFormatter);
+
         return localDate;
     }
     

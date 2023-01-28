@@ -229,6 +229,26 @@ public class ResidentTenant {
         ResidentTenantPaymentGateway page = new ResidentTenantPaymentGateway(user, totalAmount, itemId);
         page.setVisible(true);
     }
+    
+    public void toPaymentManagement(Users user) {
+        ResidentTenantPaymentManagement page = new ResidentTenantPaymentManagement(user);
+        page.setVisible(true);
+    }
+    
+    public void toPaymentHistory(Users user) {
+        ResidentTenantPaymentHistory page = new ResidentTenantPaymentHistory(user);
+        page.setVisible(true);
+    }
+    
+    public void toInvoice(Users user) {
+        ResidentTenantInvoice page = new ResidentTenantInvoice(user);
+        page.setVisible(true);
+    }
+    
+    public void toStatement(Users user) {
+        ResidentTenantStatement page = new ResidentTenantStatement(user);
+        page.setVisible(true);
+    }
 }
 
 enum cptStatus{

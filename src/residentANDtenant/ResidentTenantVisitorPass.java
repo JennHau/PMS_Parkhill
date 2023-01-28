@@ -9,7 +9,7 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
-import pms_parkhill_residence.DateTimeFormatter;
+import pms_parkhill_residence.PMS_DateTimeFormatter;
 import pms_parkhill_residence.Users;
 
 /**
@@ -19,7 +19,7 @@ import pms_parkhill_residence.Users;
 public class ResidentTenantVisitorPass extends javax.swing.JFrame {
     private Users user;
     ResidentTenant RT = new ResidentTenant();
-    DateTimeFormatter DTF = new DateTimeFormatter();
+    PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
     
     DefaultTableModel regVisTable;
     

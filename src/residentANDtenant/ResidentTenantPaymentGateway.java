@@ -7,7 +7,7 @@ package residentANDtenant;
 import java.awt.Toolkit;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import pms_parkhill_residence.DateTimeFormatter;
+import pms_parkhill_residence.PMS_DateTimeFormatter;
 import pms_parkhill_residence.Users;
 
 /**
@@ -19,7 +19,8 @@ public class ResidentTenantPaymentGateway extends javax.swing.JFrame {
     private Users user;
     private ArrayList<String> itemId;
     
-    DateTimeFormatter DTF = new DateTimeFormatter();
+    ResidentTenant RT = new ResidentTenant();
+    PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
     /**
      * Creates new form ResidentTenantPaymentGateway
      * @param user
@@ -38,7 +39,6 @@ public class ResidentTenantPaymentGateway extends javax.swing.JFrame {
         this.setUser(user);
         
         this.setItemId(itemId);
-        
     }
     
     private void amountSetUp(String totalAmount) {
@@ -279,12 +279,67 @@ public class ResidentTenantPaymentGateway extends javax.swing.JFrame {
         // TODO add your handling code here:
         boolean payable;
         payable = checkCardNo();
-        payable = checkHolderName();
-        payable = checkExpiryDate();
-        payable = checkCVV();
+        if (payable) {
+            payable = checkHolderName();
+        }
         
         if (payable) {
+            payable = checkExpiryDate();
+        }
+        
+        if (payable) {
+            payable = checkCVV();        
+        }
+        
+        if (payable) {
+            if (!itemId.isEmpty()) {
+                ArrayList<String> paidInv = new ArrayList<>();
+                ArrayList<String> removeCompInv = new ArrayList<>();
+                ArrayList<String> incompInv = (ArrayList<String>) (RT.getCurrentUnitInvoice(user.getUnitNo())).get(0);
+                
+                for (String eachInv : incompInv) {
+                    String[] invDet = eachInv.split(RT.TF.sp);
+                    String invNo = invDet[0];
+                    String invType = invDet[2];
+                    String[] toCon = {invNo, invType};
+                    String key = RT.concatenateKey(toCon);
+                    
+                    boolean notPaid = true;
+                    for (String eachId : itemId) {
+                        if (eachId.equals(key)) {
+                            String deletedID = invDet[invDet.length-1];
+                            String issuedDate = invDet[invDet.length-2];
+                            
+                            invDet[invDet.length-2] = user.getUserID();
+                            invDet[invDet.length-1] = DTF.formatDate2(LocalDate.now().toString()).toString();
+                            invDet[invDet.length] = issuedDate;
+                            invDet[invDet.length] = deletedID;
+                            
+                            String toPay = "";
+                            for (String eachData : invDet) {
+                                toPay = toPay + eachData + RT.TF.sp;
+                            }
+                            
+                            paidInv.add(toPay);
+                            notPaid = false;
+                        }
+                    }
+                    
+                    if (notPaid) {
+                        removeCompInv.add(eachInv);
+                    }
+                }
+                
+                RT.crud.create(RT.TF.paymentFile, paidInv);
+                RT.fh.fileWrite(RT.TF.invoiceFile, false, removeCompInv);
+            }
             
+            if (ResidentTenantPaymentManagement.rtPayMan != null) {
+                ResidentTenantPaymentManagement.rtPayMan.dispose();
+                this.dispose();
+                
+                RT.toPaymentManagement(user);
+            }
         }
     }//GEN-LAST:event_payBTNActionPerformed
 
@@ -346,7 +401,7 @@ public class ResidentTenantPaymentGateway extends javax.swing.JFrame {
         String month = checkExpiryMonth();
         String year = checkExpiryYear();
         
-        String date = "01-" + month + "-" + year;
+        String date = year + "-" + month + "-01";
         LocalDate enteredDate = DTF.formatDate(date);
         
         LocalDate dateNow = LocalDate.now();
