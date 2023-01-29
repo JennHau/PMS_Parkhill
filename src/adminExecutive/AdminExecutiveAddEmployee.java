@@ -6,11 +6,9 @@ package adminExecutive;
 
 import java.awt.Cursor;
 import java.awt.Toolkit;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 import pms_parkhill_residence.Validation;
 
 /**
@@ -446,7 +444,7 @@ public class AdminExecutiveAddEmployee extends javax.swing.JFrame {
             String initial = employeeTypeDetails[1];
             
             if (position.equals(employeeType)) {
-                userIDTF.setText(ae.getLatestID("employeeList.txt", initial));
+                userIDTF.setText(ae.getLatestID("employeeList.txt", initial).toUpperCase());
             }
         }
     }//GEN-LAST:event_positionCBActionPerformed

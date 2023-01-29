@@ -903,7 +903,7 @@ public class AdminExecutive {
         if (employeeID.startsWith("scg")) {
             List<String> newData2 = new ArrayList<>();
             newData2.add(employeeID +";"+ email +";"+ "Parkhill@1234" +";"+
-                    firstName +" "+ lastName +";"+ idNo +";"+ gender +";"+
+                    firstName +";"+ lastName +";"+ idNo +";"+ gender +";"+
                     phoneNo +";"+ "-" +";");
             fh.fileWrite("userProfile.txt", true, newData2);
         }

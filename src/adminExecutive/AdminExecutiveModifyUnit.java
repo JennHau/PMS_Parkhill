@@ -19,6 +19,8 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      * @param propertyType
+     * @param unitNo
+     * @param squareFoot
      */
     public AdminExecutiveModifyUnit(String propertyType, String unitNo, 
             String squareFoot) {

@@ -9,11 +9,6 @@ import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
-import accountExecutive.AccountExecutiveIssueInvoice;
-import accountExecutive.AccountExecutiveIssueOutstandingFee;
-import accountExecutive.AccountExecutiveIssueReceipt;
-import accountExecutive.AccountExecutiveIssueStatement;
-import accountExecutive.AccountExecutivePayment;
 import pms_parkhill_residence.HomePage;
 
 /**
@@ -55,10 +50,10 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
         typeCB = new javax.swing.JComboBox<>();
         jLabel13 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        dashboardPanel = new javax.swing.JPanel();
-        dashboardLabel = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        dashboardPanel1 = new javax.swing.JPanel();
+        dashboardLabel1 = new javax.swing.JLabel();
         unitManagePanel = new javax.swing.JPanel();
         unitManageLabel = new javax.swing.JLabel();
         rTMangePanel = new javax.swing.JPanel();
@@ -67,8 +62,6 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
         complaintManagement = new javax.swing.JLabel();
         employeeManagePanel = new javax.swing.JPanel();
         employeeManageLabel = new javax.swing.JLabel();
-        jPanel11 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
         logoutPanel = new javax.swing.JPanel();
         logoutLabel = new javax.swing.JLabel();
         viewProfilePanel = new javax.swing.JPanel();
@@ -264,59 +257,58 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
                             .addComponent(jLabel13)
                             .addGap(0, 0, 0)
                             .addComponent(typeCB, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(addPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(clearbt)
-                                .addComponent(jLabel16))))
+                        .addComponent(addPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(clearbt)
+                            .addComponent(jLabel16)))
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(29, Short.MAX_VALUE))
         );
 
-        jPanel1.setBackground(new java.awt.Color(13, 24, 42));
+        jPanel2.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/parkhillLogo.png"))); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/parkhillLogo.png"))); // NOI18N
 
-        dashboardPanel.setBackground(new java.awt.Color(13, 24, 42));
-        dashboardPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+        dashboardPanel1.setBackground(new java.awt.Color(13, 24, 42));
+        dashboardPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                dashboardPanelMouseClicked(evt);
+                dashboardPanel1MouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                dashboardPanelMouseEntered(evt);
+                dashboardPanel1MouseEntered(evt);
             }
         });
 
-        dashboardLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        dashboardLabel.setForeground(new java.awt.Color(255, 255, 255));
-        dashboardLabel.setText("Dashboard");
-        dashboardLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        dashboardLabel1.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        dashboardLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        dashboardLabel1.setText("Dashboard");
+        dashboardLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                dashboardLabelMouseClicked(evt);
+                dashboardLabel1MouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                dashboardLabelMouseEntered(evt);
+                dashboardLabel1MouseEntered(evt);
             }
         });
 
-        javax.swing.GroupLayout dashboardPanelLayout = new javax.swing.GroupLayout(dashboardPanel);
-        dashboardPanel.setLayout(dashboardPanelLayout);
-        dashboardPanelLayout.setHorizontalGroup(
-            dashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(dashboardPanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout dashboardPanel1Layout = new javax.swing.GroupLayout(dashboardPanel1);
+        dashboardPanel1.setLayout(dashboardPanel1Layout);
+        dashboardPanel1Layout.setHorizontalGroup(
+            dashboardPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dashboardPanel1Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addComponent(dashboardLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(dashboardLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        dashboardPanelLayout.setVerticalGroup(
-            dashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dashboardPanelLayout.createSequentialGroup()
+        dashboardPanel1Layout.setVerticalGroup(
+            dashboardPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dashboardPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(dashboardLabel)
+                .addComponent(dashboardLabel1)
                 .addContainerGap())
         );
 
@@ -484,30 +476,6 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel11.setBackground(new java.awt.Color(13, 24, 42));
-
-        jLabel9.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/notificationIcon.png"))); // NOI18N
-        jLabel9.setText(" NOTIFICATIONS");
-
-        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
-        jPanel11.setLayout(jPanel11Layout);
-        jPanel11Layout.setHorizontalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75))
-        );
-        jPanel11Layout.setVerticalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel11Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel9)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         logoutPanel.setBackground(new java.awt.Color(13, 24, 42));
         logoutPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -663,39 +631,36 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(80, 80, 80)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(dashboardPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(dashboardPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(unitManagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(rTMangePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(complaintManagementPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(employeeManagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(viewProfilePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(facilityManagePanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(logoutPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(facBookManagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(facBookManagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(logoutPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38)
-                .addComponent(dashboardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(dashboardPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(unitManagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -708,9 +673,7 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
                 .addComponent(facilityManagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(facBookManagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 174, Short.MAX_VALUE)
-                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 214, Short.MAX_VALUE)
                 .addComponent(viewProfilePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(logoutPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -722,7 +685,7 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -734,7 +697,7 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -826,28 +789,43 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_searchTextFieldKeyReleased
 
-    private void dashboardLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseClicked
+    private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
         // TODO add your handling code here:
-    }//GEN-LAST:event_dashboardLabelMouseClicked
+        jLabel1.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jLabel1MouseEntered
 
-    private void dashboardLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseEntered
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         // TODO add your handling code here:
-        dashboardLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_dashboardLabelMouseEntered
+        dispose();
+        new AdminExecutiveUnitManagementHistory().setVisible(true);
+    }//GEN-LAST:event_jLabel1MouseClicked
 
-    private void dashboardPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanelMouseClicked
+    private void dashboardLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabel1MouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_dashboardPanelMouseClicked
+        dispose();
+        new AdminExecutiveDashboard().setVisible(true);
+    }//GEN-LAST:event_dashboardLabel1MouseClicked
 
-    private void dashboardPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanelMouseEntered
+    private void dashboardLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabel1MouseEntered
         // TODO add your handling code here:
-        dashboardPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_dashboardPanelMouseEntered
+        dashboardLabel1.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_dashboardLabel1MouseEntered
+
+    private void dashboardPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanel1MouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AdminExecutiveDashboard().setVisible(true);
+    }//GEN-LAST:event_dashboardPanel1MouseClicked
+
+    private void dashboardPanel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanel1MouseEntered
+        // TODO add your handling code here:
+        dashboardLabel1.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_dashboardPanel1MouseEntered
 
     private void unitManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unitManageLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueInvoice().setVisible(true);
+        new AdminExecutiveUnitManagement().setVisible(true);
     }//GEN-LAST:event_unitManageLabelMouseClicked
 
     private void unitManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unitManageLabelMouseEntered
@@ -858,7 +836,7 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
     private void unitManagePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unitManagePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueInvoice().setVisible(true);
+        new AdminExecutiveUnitManagement().setVisible(true);
     }//GEN-LAST:event_unitManagePanelMouseClicked
 
     private void unitManagePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unitManagePanelMouseEntered
@@ -869,7 +847,7 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
     private void rTManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rTManageLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutivePayment().setVisible(true);
+        new AdminExecutiveResidentTManagement().setVisible(true);
     }//GEN-LAST:event_rTManageLabelMouseClicked
 
     private void rTManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rTManageLabelMouseEntered
@@ -880,7 +858,7 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
     private void rTMangePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rTMangePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutivePayment().setVisible(true);
+        new AdminExecutiveResidentTManagement().setVisible(true);
     }//GEN-LAST:event_rTMangePanelMouseClicked
 
     private void rTMangePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rTMangePanelMouseEntered
@@ -891,7 +869,7 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
     private void complaintManagementMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintManagementMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueReceipt().setVisible(true);
+        new AdminExecutiveComplaintManagement().setVisible(true);
     }//GEN-LAST:event_complaintManagementMouseClicked
 
     private void complaintManagementMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintManagementMouseEntered
@@ -906,7 +884,7 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
     private void complaintManagementPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintManagementPanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueReceipt().setVisible(true);
+        new AdminExecutiveComplaintManagement().setVisible(true);
     }//GEN-LAST:event_complaintManagementPanelMouseClicked
 
     private void complaintManagementPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintManagementPanelMouseEntered
@@ -917,7 +895,7 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
     private void employeeManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeManageLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueOutstandingFee().setVisible(true);
+        new AdminExecutiveEmployeeManagement().setVisible(true);
     }//GEN-LAST:event_employeeManageLabelMouseClicked
 
     private void employeeManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeManageLabelMouseEntered
@@ -928,7 +906,7 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
     private void employeeManagePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeManagePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueOutstandingFee().setVisible(true);
+        new AdminExecutiveEmployeeManagement().setVisible(true);
     }//GEN-LAST:event_employeeManagePanelMouseClicked
 
     private void employeeManagePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeManagePanelMouseEntered
@@ -975,7 +953,7 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
     private void facilityManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityManageLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueStatement().setVisible(true);
+        new AdminExecutiveFacilityManagement().setVisible(true);
     }//GEN-LAST:event_facilityManageLabelMouseClicked
 
     private void facilityManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityManageLabelMouseEntered
@@ -986,7 +964,7 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
     private void facilityManagePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityManagePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueStatement().setVisible(true);
+        new AdminExecutiveFacilityManagement().setVisible(true);
     }//GEN-LAST:event_facilityManagePanelMouseClicked
 
     private void facilityManagePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityManagePanelMouseEntered
@@ -996,30 +974,25 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
 
     private void facBookManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facBookManageLabelMouseClicked
         // TODO add your handling code here:
+        dispose();
+        new AdminExecutiveFacilityBookingManagement().setVisible(true);
     }//GEN-LAST:event_facBookManageLabelMouseClicked
 
     private void facBookManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facBookManageLabelMouseEntered
         // TODO add your handling code here:
+        facBookManageLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_facBookManageLabelMouseEntered
 
     private void facBookManagePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facBookManagePanelMouseClicked
         // TODO add your handling code here:
+        dispose();
+        new AdminExecutiveFacilityBookingManagement().setVisible(true);
     }//GEN-LAST:event_facBookManagePanelMouseClicked
 
     private void facBookManagePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facBookManagePanelMouseEntered
         // TODO add your handling code here:
+        facBookManagePanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_facBookManagePanelMouseEntered
-
-    private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
-        // TODO add your handling code here:
-        jLabel1.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_jLabel1MouseEntered
-
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        // TODO add your handling code here:
-        dispose();
-        new AdminExecutiveUnitManagementHistory().setVisible(true);
-    }//GEN-LAST:event_jLabel1MouseClicked
     
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
@@ -1346,8 +1319,8 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
     private javax.swing.JButton clearbt;
     private javax.swing.JLabel complaintManagement;
     private javax.swing.JPanel complaintManagementPanel;
-    private javax.swing.JLabel dashboardLabel;
-    private javax.swing.JPanel dashboardPanel;
+    private javax.swing.JLabel dashboardLabel1;
+    private javax.swing.JPanel dashboardPanel1;
     private javax.swing.JLabel employeeManageLabel;
     private javax.swing.JPanel employeeManagePanel;
     private javax.swing.JLabel facBookManageLabel;
@@ -1359,11 +1332,9 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;

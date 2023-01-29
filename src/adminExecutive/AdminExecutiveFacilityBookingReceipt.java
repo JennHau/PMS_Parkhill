@@ -17,6 +17,7 @@ public class AdminExecutiveFacilityBookingReceipt extends javax.swing.JFrame {
 
     /**
      * Creates new form custReceipt
+     * @param bookingID
      */
     public AdminExecutiveFacilityBookingReceipt(String bookingID) {
         initComponents();

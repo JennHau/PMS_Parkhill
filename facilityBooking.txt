@@ -1,6 +1,7 @@
-bookingID;facilityID;facilityName;unitNo;date;startTime;endTime;unitPrice;totalPrice;
-fbk000001;fct000001;Badminton Court 1;A-05-04;2023-01-01;-;-;-;-;
-fbk000002;fct000001;Badminton Court 1;A-05-04;2023-01-31;-;-;-;-;
-fbk000003;fct000001;Badminton Court 1;A-05-04;2023-01-15;15:00;16:00;67.99;67.99;
-fbk000004;fct000001;Badminton Court 1;A-05-04;2023-01-27;-;-;-;-;
-fbk000005;fct000001;Badminton Court 1;A-05-04;2023-01-28;20:00;21:00;15.00;15.00;
+bookingID;facilityID;facilityName;unitNo;bookingDate;startTime;endTime;unitPrice;totalPrice;paymentDate;
+fbk000001;fct000001;Badminton Court 1;A-03A-01;2023-01-31;10:00;11:00;15.00;30.00;2023-01-29;
+fbk000001;fct000001;Badminton Court 1;A-03A-01;2023-01-31;11:00;12:00;15.00;30.00;2023-01-29;
+fbk000002;fct000001;Badminton Court 2;A-06-02;2023-02-10;10:00;11:00;15.00;60.00;2023-01-29;
+fbk000002;fct000001;Badminton Court 2;A-06-02;2023-02-10;11:00;12:00;15.00;60.00;2023-01-29;
+fbk000002;fct000001;Badminton Court 2;A-06-02;2023-02-10;12:00;13:00;15.00;60.00;2023-01-29;
+fbk000002;fct000001;Badminton Court 2;A-06-02;2023-02-10;13:00;14:00;15.00;60.00;2023-01-29;
