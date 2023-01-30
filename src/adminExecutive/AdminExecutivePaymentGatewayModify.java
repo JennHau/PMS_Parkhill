@@ -6,6 +6,7 @@ package adminExecutive;
 
 import java.awt.Toolkit;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -413,7 +414,7 @@ public class AdminExecutivePaymentGatewayModify extends javax.swing.JFrame {
                 newData.add(bookingID.toLowerCase() +";"+ facilityID.toLowerCase()
                         +";"+ facilityName +";"+ String.valueOf(unitNoLabel.getText())
                         +";"+ date +";"+ startTime +";"+ endTime +";"+ unitPrice
-                        +";"+ totalPrice);
+                        +";"+ totalPrice +";"+ String.valueOf(LocalDate.now()) +";");
             } 
             ae.deleteFacilityBooking(bookingID.toLowerCase());
             fh.fileWrite("facilityBooking.txt", true, newData);

@@ -18,6 +18,7 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param userID
      */
     public AdminExecutiveModifyResidentTenant(String userID) {
         initComponents();

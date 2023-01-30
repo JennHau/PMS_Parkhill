@@ -8,11 +8,6 @@ import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
-import accountExecutive.AccountExecutiveIssueInvoice;
-import accountExecutive.AccountExecutiveIssueOutstandingFee;
-import accountExecutive.AccountExecutiveIssueReceipt;
-import accountExecutive.AccountExecutiveIssueStatement;
-import accountExecutive.AccountExecutivePayment;
 import pms_parkhill_residence.HomePage;
 
 /**
@@ -66,8 +61,6 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
         complaintManagement = new javax.swing.JLabel();
         employeeManagePanel = new javax.swing.JPanel();
         employeeManageLabel = new javax.swing.JLabel();
-        jPanel11 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
         logoutPanel = new javax.swing.JPanel();
         logoutLabel = new javax.swing.JLabel();
         viewProfilePanel = new javax.swing.JPanel();
@@ -87,16 +80,16 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(153, 153, 153), null, null));
 
-        jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(13, 24, 42));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("ADMIN EXECUTIVE");
+        jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(13, 24, 42));
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
         jLabel7.setText("USERNAME");
+        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -121,11 +114,11 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(226, 226, 226));
 
-        jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(102, 102, 102));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setText("RESIDENT/ TENANT MANAGEMENT");
         jLabel14.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(102, 102, 102));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -150,9 +143,9 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
+        jLabel16.setText("UNIT NO:");
         jLabel16.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel16.setText("UNIT NO:");
 
         searchTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -178,9 +171,9 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
             }
         });
 
-        addLabel.setForeground(new java.awt.Color(255, 255, 255));
         addLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         addLabel.setText("ADD");
+        addLabel.setForeground(new java.awt.Color(255, 255, 255));
         addLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 addLabelMouseClicked(evt);
@@ -210,9 +203,9 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
             }
         });
 
-        jLabel13.setForeground(new java.awt.Color(153, 153, 153));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel13.setText("TYPE:");
+        jLabel13.setForeground(new java.awt.Color(153, 153, 153));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/historyIcon.png"))); // NOI18N
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -289,9 +282,9 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
             }
         });
 
+        dashboardLabel.setText("Dashboard");
         dashboardLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         dashboardLabel.setForeground(new java.awt.Color(255, 255, 255));
-        dashboardLabel.setText("Dashboard");
         dashboardLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 dashboardLabelMouseClicked(evt);
@@ -328,9 +321,9 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
             }
         });
 
+        unitManageLabel.setText("Unit Management");
         unitManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         unitManageLabel.setForeground(new java.awt.Color(255, 255, 255));
-        unitManageLabel.setText("Unit Management");
         unitManageLabel.setPreferredSize(new java.awt.Dimension(150, 25));
         unitManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -368,10 +361,10 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
             }
         });
 
+        rTManageLabel.setText("Resident/ Tenant Management");
         rTManageLabel.setBackground(new java.awt.Color(13, 24, 42));
         rTManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         rTManageLabel.setForeground(new java.awt.Color(255, 255, 255));
-        rTManageLabel.setText("Resident/ Tenant Management");
         rTManageLabel.setPreferredSize(new java.awt.Dimension(250, 25));
         rTManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -414,9 +407,9 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
             }
         });
 
+        complaintManagement.setText("Complaint Management");
         complaintManagement.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         complaintManagement.setForeground(new java.awt.Color(255, 255, 255));
-        complaintManagement.setText("Complaint Management");
         complaintManagement.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 complaintManagementMouseClicked(evt);
@@ -453,9 +446,9 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
             }
         });
 
+        employeeManageLabel.setText("Employee Management");
         employeeManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         employeeManageLabel.setForeground(new java.awt.Color(255, 255, 255));
-        employeeManageLabel.setText("Employee Management");
         employeeManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 employeeManageLabelMouseClicked(evt);
@@ -482,30 +475,6 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel11.setBackground(new java.awt.Color(13, 24, 42));
-
-        jLabel9.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/notificationIcon.png"))); // NOI18N
-        jLabel9.setText(" NOTIFICATIONS");
-
-        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
-        jPanel11.setLayout(jPanel11Layout);
-        jPanel11Layout.setHorizontalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75))
-        );
-        jPanel11Layout.setVerticalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel11Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel9)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         logoutPanel.setBackground(new java.awt.Color(13, 24, 42));
         logoutPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -516,10 +485,10 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
             }
         });
 
-        logoutLabel.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        logoutLabel.setForeground(new java.awt.Color(255, 255, 255));
         logoutLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
         logoutLabel.setText("LOGOUT");
+        logoutLabel.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        logoutLabel.setForeground(new java.awt.Color(255, 255, 255));
         logoutLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 logoutLabelMouseClicked(evt);
@@ -553,10 +522,10 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
             }
         });
 
-        viewProfileLabel.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        viewProfileLabel.setForeground(new java.awt.Color(255, 255, 255));
         viewProfileLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
         viewProfileLabel.setText("VIEW PROFILE");
+        viewProfileLabel.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        viewProfileLabel.setForeground(new java.awt.Color(255, 255, 255));
         viewProfileLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 viewProfileLabelMouseClicked(evt);
@@ -593,9 +562,9 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
             }
         });
 
+        facilityManageLabel.setText("Facility Management");
         facilityManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         facilityManageLabel.setForeground(new java.awt.Color(255, 255, 255));
-        facilityManageLabel.setText("Facility Management");
         facilityManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 facilityManageLabelMouseClicked(evt);
@@ -632,9 +601,9 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
             }
         });
 
+        facBookManageLabel.setText("Facility Booking Management");
         facBookManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         facBookManageLabel.setForeground(new java.awt.Color(255, 255, 255));
-        facBookManageLabel.setText("Facility Booking Management");
         facBookManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 facBookManageLabelMouseClicked(evt);
@@ -677,14 +646,11 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
                             .addComponent(rTMangePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(complaintManagementPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(employeeManagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(viewProfilePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(facilityManagePanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(logoutPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(facBookManagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(facBookManagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(logoutPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -706,9 +672,7 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
                 .addComponent(facilityManagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(facBookManagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 174, Short.MAX_VALUE)
-                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 214, Short.MAX_VALUE)
                 .addComponent(viewProfilePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(logoutPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -816,8 +780,21 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_searchTextFieldKeyReleased
 
+    private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
+        // TODO add your handling code here:
+        jLabel1.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jLabel1MouseEntered
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AdminExecutiveResidentTManagementHistory().setVisible(true);
+    }//GEN-LAST:event_jLabel1MouseClicked
+
     private void dashboardLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseClicked
         // TODO add your handling code here:
+        dispose();
+        new AdminExecutiveDashboard().setVisible(true);
     }//GEN-LAST:event_dashboardLabelMouseClicked
 
     private void dashboardLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseEntered
@@ -827,6 +804,8 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
 
     private void dashboardPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanelMouseClicked
         // TODO add your handling code here:
+        dispose();
+        new AdminExecutiveDashboard().setVisible(true);
     }//GEN-LAST:event_dashboardPanelMouseClicked
 
     private void dashboardPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanelMouseEntered
@@ -837,7 +816,7 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
     private void unitManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unitManageLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueInvoice().setVisible(true);
+        new AdminExecutiveUnitManagement().setVisible(true);
     }//GEN-LAST:event_unitManageLabelMouseClicked
 
     private void unitManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unitManageLabelMouseEntered
@@ -848,7 +827,7 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
     private void unitManagePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unitManagePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueInvoice().setVisible(true);
+        new AdminExecutiveUnitManagement().setVisible(true);
     }//GEN-LAST:event_unitManagePanelMouseClicked
 
     private void unitManagePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unitManagePanelMouseEntered
@@ -858,8 +837,6 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
 
     private void rTManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rTManageLabelMouseClicked
         // TODO add your handling code here:
-        dispose();
-        new AccountExecutivePayment().setVisible(true);
     }//GEN-LAST:event_rTManageLabelMouseClicked
 
     private void rTManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rTManageLabelMouseEntered
@@ -869,8 +846,6 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
 
     private void rTMangePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rTMangePanelMouseClicked
         // TODO add your handling code here:
-        dispose();
-        new AccountExecutivePayment().setVisible(true);
     }//GEN-LAST:event_rTMangePanelMouseClicked
 
     private void rTMangePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rTMangePanelMouseEntered
@@ -881,7 +856,7 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
     private void complaintManagementMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintManagementMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueReceipt().setVisible(true);
+        new AdminExecutiveComplaintManagement().setVisible(true);
     }//GEN-LAST:event_complaintManagementMouseClicked
 
     private void complaintManagementMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintManagementMouseEntered
@@ -896,7 +871,7 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
     private void complaintManagementPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintManagementPanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueReceipt().setVisible(true);
+        new AdminExecutiveComplaintManagement().setVisible(true);
     }//GEN-LAST:event_complaintManagementPanelMouseClicked
 
     private void complaintManagementPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintManagementPanelMouseEntered
@@ -907,7 +882,7 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
     private void employeeManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeManageLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueOutstandingFee().setVisible(true);
+        new AdminExecutiveEmployeeManagement().setVisible(true);
     }//GEN-LAST:event_employeeManageLabelMouseClicked
 
     private void employeeManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeManageLabelMouseEntered
@@ -918,7 +893,7 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
     private void employeeManagePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeManagePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueOutstandingFee().setVisible(true);
+        new AdminExecutiveEmployeeManagement().setVisible(true);
     }//GEN-LAST:event_employeeManagePanelMouseClicked
 
     private void employeeManagePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeManagePanelMouseEntered
@@ -965,7 +940,7 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
     private void facilityManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityManageLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueStatement().setVisible(true);
+        new AdminExecutiveFacilityManagement().setVisible(true);
     }//GEN-LAST:event_facilityManageLabelMouseClicked
 
     private void facilityManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityManageLabelMouseEntered
@@ -976,7 +951,7 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
     private void facilityManagePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityManagePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueStatement().setVisible(true);
+        new AdminExecutiveFacilityManagement().setVisible(true);
     }//GEN-LAST:event_facilityManagePanelMouseClicked
 
     private void facilityManagePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityManagePanelMouseEntered
@@ -986,30 +961,25 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
 
     private void facBookManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facBookManageLabelMouseClicked
         // TODO add your handling code here:
+        dispose();
+        new AdminExecutiveFacilityBookingManagement().setVisible(true);
     }//GEN-LAST:event_facBookManageLabelMouseClicked
 
     private void facBookManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facBookManageLabelMouseEntered
         // TODO add your handling code here:
+        facBookManageLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_facBookManageLabelMouseEntered
 
     private void facBookManagePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facBookManagePanelMouseClicked
         // TODO add your handling code here:
+        dispose();
+        new AdminExecutiveFacilityBookingManagement().setVisible(true);
     }//GEN-LAST:event_facBookManagePanelMouseClicked
 
     private void facBookManagePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facBookManagePanelMouseEntered
         // TODO add your handling code here:
+        facBookManagePanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_facBookManagePanelMouseEntered
-
-    private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
-        // TODO add your handling code here:
-        jLabel1.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_jLabel1MouseEntered
-
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        // TODO add your handling code here:
-        dispose();
-        new AdminExecutiveResidentTManagementHistory().setVisible(true);
-    }//GEN-LAST:event_jLabel1MouseClicked
     
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
@@ -1613,9 +1583,7 @@ public class AdminExecutiveResidentTManagement extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;

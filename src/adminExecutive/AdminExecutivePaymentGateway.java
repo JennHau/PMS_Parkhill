@@ -5,6 +5,7 @@
 package adminExecutive;
 
 import java.awt.Toolkit;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -359,7 +360,7 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
                 newData.add(bookingID.toLowerCase() +";"+ facilityID.toLowerCase()
                         +";"+ facilityName +";"+ String.valueOf(unitNoCB.getSelectedItem())
                         +";"+ date +";"+ startTime +";"+ endTime +";"+ unitPrice
-                        +";"+ totalPrice);
+                        +";"+ totalPrice +";"+ String.valueOf(LocalDate.now()) +";");
             } fh.fileWrite("facilityBooking.txt", true, newData);
             JOptionPane.showMessageDialog (null, "Facility Booking has been made!", 
                             "FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
