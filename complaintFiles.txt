@@ -1,1 +1,0 @@
-complaintId;complainerId;complaintDetails;date;time;status;statusUpdateBy;lastUpdate;

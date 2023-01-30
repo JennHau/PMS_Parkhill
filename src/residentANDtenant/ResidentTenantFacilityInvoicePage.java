@@ -14,13 +14,13 @@ import pms_parkhill_residence.Users;
  *
  * @author wongj
  */
-public class ResidentTenantFacilityBookingReceipt extends javax.swing.JFrame {
+public class ResidentTenantFacilityInvoicePage extends javax.swing.JFrame {
     /**
      * Creates new form custReceipt
      * @param user
      * @param bookingID
      */
-    public ResidentTenantFacilityBookingReceipt(Users user, String bookingID) {
+    public ResidentTenantFacilityInvoicePage(Users user, String bookingID) {
         initComponents();
         this.bookingID = bookingID;
         setDefault();
@@ -339,14 +339,22 @@ public class ResidentTenantFacilityBookingReceipt extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ResidentTenantFacilityBookingReceipt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResidentTenantFacilityInvoicePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ResidentTenantFacilityBookingReceipt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResidentTenantFacilityInvoicePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ResidentTenantFacilityBookingReceipt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResidentTenantFacilityInvoicePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ResidentTenantFacilityBookingReceipt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResidentTenantFacilityInvoicePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -359,7 +367,7 @@ public class ResidentTenantFacilityBookingReceipt extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ResidentTenantFacilityBookingReceipt(null, null).setVisible(true);
+                new ResidentTenantFacilityInvoicePage(null, null).setVisible(true);
             }
         });
     }

@@ -54,7 +54,7 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
     }
     
     private void complaintTableSetUp() {
-        List<String> complaintsData = fh.fileRead(BE.complaintFiles);
+        List<String> complaintsData = fh.fileRead(BE.TF.complaintFiles);
         ArrayList<String> newComplaints = new ArrayList<>();
         ArrayList<String> actionedComplaints = new ArrayList<>();
         

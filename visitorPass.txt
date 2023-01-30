@@ -1,2 +1,2 @@
-visitorPassId;visitorIC:visitorName;carPlate;visitorContact;date;time;checkInStatus;checkedInAt;residentId;lastUpdate;
-vsp543211;010101101111;Andrew Siah;VZ 8888;012-3456789;2023-01-26;23:13:10;Registered;-;rsd450001;2023-01-26 23:13:10;
+visitorPassId;visitorIC;visitorName;carPlate;visitorContact;date;time;checkInStatus;checkedInAt;checkedOutAt;residentId;lastUpdate;
+vsp543211;010101101111;Andrew Siah;VZ 8888;012-3456789;2023-01-26;23:13:10;Registered;-;-;rsd450001;2023-01-26 23:13:10;

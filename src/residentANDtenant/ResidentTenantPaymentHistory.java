@@ -52,11 +52,30 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
         ArrayList<String> paymentHist = RT.getCurrentUnitPaymentHistory("S-01-01");
         ArrayList<String> facilityPay = RT.getCurrentUnitFacilityPayment("S-01-01");
         ArrayList<String> sortedList;
+        
         ArrayList<String> arrangedList = new ArrayList<>();
+        ArrayList<String> payment = new ArrayList<>();
         
-        paymentHist.addAll(facilityPay);
+        for (String eachHist : paymentHist) {
+            String[] histData = eachHist.split(RT.TF.sp);
+            
+            String toAdd = "";
+            
+            String invoiceNo = histData[0];
+            String feeType = histData[2];
+            String totalPrice = histData[7];
+            String paidDate = DTF.changeFormatDate(histData[10]);
+            String[] data = {invoiceNo, feeType, totalPrice, paidDate};
+            
+            for (String eachData : data) {
+                toAdd = toAdd + eachData + RT.TF.sp;
+            }
+            payment.add(toAdd);
+        }
         
-        String[] payHist = paymentHist.toArray(String[]::new);
+        payment.addAll(facilityPay);
+        
+        String[] payHist = payment.toArray(String[]::new);
         
         for (int compFirst = 0; compFirst < payHist.length - 1; compFirst++) {
             for (int compSec = compFirst+1; compSec < payHist.length; compSec++) {
@@ -628,8 +647,8 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
         
         String itemID = RT.validateTableSelectionAndGetValue(payHisTab, selectedCol, selectedRow, 5, 1);
         String itemDes = RT.validateTableSelectionAndGetValue(payHisTab, selectedCol, selectedRow, 5, 2);
-        String[] keyList = {itemID, itemDes};
         
+        String[] keyList = {itemID, itemDes};
         String concatenated = RT.concatenateKey(keyList);
         
         List<String> receiptFile = RT.fh.fileRead(RT.TF.receiptFile);
@@ -644,12 +663,21 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
             String recKey = RT.concatenateKey(keyComb);
             
             if (recKey.equals(concatenated)) {
+                notFound = false;
                 
+                // TODO: Add invoice receipt page
             }
         }
         
         if (notFound) {
-            
+            for (String eachBooking : bookingFile) {
+                String[] bookingDet = eachBooking.split(RT.TF.sp);
+                String bookingId = bookingDet[0];
+                
+                if (bookingId.equals(itemID)) {
+                    RT.toFacilityReceipt(user, bookingId);
+                }
+            }
         }
     }//GEN-LAST:event_paymentHistoryTableMouseClicked
 

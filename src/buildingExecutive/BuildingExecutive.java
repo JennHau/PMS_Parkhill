@@ -18,6 +18,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.PMS_DateTimeFormatter;
 import pms_parkhill_residence.TextFiles;
 import pms_parkhill_residence.Users;
 
@@ -26,6 +27,7 @@ import pms_parkhill_residence.Users;
  * @author Winson
  */
 public class BuildingExecutive extends Users{
+    PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
     TextFiles TF = new TextFiles();
     FileHandling fileHandling = new FileHandling();
     
@@ -62,9 +64,6 @@ public class BuildingExecutive extends Users{
     
     // job list link
     String jobListFile = "jobList.txt";
-    
-    // complaint files link
-    String complaintFiles = "complaintFiles.txt";
     
     // patrolling shcedule file
     String patrollingScheduleFile = "patrollingSchedule.txt";
@@ -166,7 +165,7 @@ public class BuildingExecutive extends Users{
                             String jobId = jobLineDetails[0];
                             String assignedJobCode = jobLineDetails[3];
 
-                            String jobDetails = findJobDescriptionORid(assignedJobCode, null);
+                            String jobDetails = findJobDetailsUsingDescriptionOrId(assignedJobCode, null);
                             String jobDesc = jobDetails.split(sp)[2];
 
                             assEmply.add(workingEmplyId + sp + workingEmplyName + sp + 
@@ -390,8 +389,9 @@ public class BuildingExecutive extends Users{
     
     public LocalTime getTimeCategory(LocalTime time) {
         int timeMin = time.getMinute();
-        if (timeMin < 30) {
+        if (timeMin > 30) {
             time = time.withMinute(00);
+            time = time.plusHours(1);
         }
         else {
             time = time.withMinute(30);
@@ -452,7 +452,7 @@ public class BuildingExecutive extends Users{
         return null;
     }
     
-    public String findJobDescriptionORid(String jobCode, String jobDesc) {
+    public String findJobDetailsUsingDescriptionOrId(String jobCode, String jobDesc) {
         List<String> jobList = fileHandling.fileRead(jobListFile);
         for (String eachJob : jobList) {
             String jobId = eachJob.split(sp)[1];
@@ -594,7 +594,7 @@ public class BuildingExecutive extends Users{
     }
     
     public String getComplaintDetails(String complaintId) {
-        List<String> complaintData = fileHandling.fileRead(complaintFiles);
+        List<String> complaintData = fileHandling.fileRead(TF.complaintFiles);
         
         boolean firstLine = true;
         for (String eachData : complaintData) {
@@ -628,7 +628,7 @@ public class BuildingExecutive extends Users{
         }
         
         CRUD crud = new CRUD();
-        crud.update(complaintFiles, complaintId, complaint, 0);
+        crud.update(TF.complaintFiles, complaintId, complaint, 0);
     }
     
     public ArrayList getAvailableBlock() {

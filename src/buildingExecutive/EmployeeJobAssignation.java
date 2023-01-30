@@ -4,6 +4,7 @@
  */
 package buildingExecutive;
 
+import com.github.lgooddatepicker.zinternaltools.TimeSpinnerTimer;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -129,28 +130,50 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             timePlace = (timePlace.equals("m")) ? "mins" : "hrs";
             hrsMinsComboBox.setSelectedItem(timePlace);
             
-            jobComboBox.setSelectedItem(jobToAssign);
+            String jobInfo = BE.findJobDetailsUsingDescriptionOrId(jobToAssign, null);
+            String jobDesc = jobInfo.split(BE.TF.sp)[2];
+            
+            if (jobToAssign.equals("PT")) {
+                jobComboBox.addItem("Patrolling");
+            }
+            
+            jobComboBox.setSelectedItem(jobDesc);
             timeNeededSpinner.setValue(Integer.valueOf(timeNeeded));
             dateTimePicker1.timePicker.setTime(startTime);
             remarksTA.setText(remarks);
             
-            if (repitition == BE.repititionON) {
-                repititionCheckBox.setSelected(true);
-                dateTimePicker1.datePicker.clear();
-                dateTimePicker1.datePicker.setEnabled(false);
-                dayCheckBoxAction(true, false);
-                String[] days = dayToRepeat.split(",");
-                dayCheckBox(days);
-            }
-            else if (repitition == BE.repititionOFF) {
-                repititionCheckBox.setSelected(false);
-                LocalDate startDate = BE.formatDate(jobDetails[6]);
-                dateTimePicker1.datePicker.setDate(startDate);
-                dateTimePicker1.datePicker.setEnabled(true);
+            if (!jobToAssign.equals("PT")) {
+                if (repitition == BE.repititionON) {
+                    repititionCheckBox.setSelected(true);
+                    dateTimePicker1.datePicker.clear();
+                    dateTimePicker1.datePicker.setEnabled(false);
+                    dayCheckBoxAction(true, false);
+                    String[] days = dayToRepeat.split(",");
+                    dayCheckBox(days);
+                }
+                else if (repitition == BE.repititionOFF) {
+                    repititionCheckBox.setSelected(false);
+                    LocalDate startDate = BE.formatDate(jobDetails[6]);
+                    dateTimePicker1.datePicker.setDate(startDate);
+                    dateTimePicker1.datePicker.setEnabled(true);
+                    dayCheckBoxAction(false, false);
+                }
+
+                repititionCheckBox.setEnabled(true);
+                timeNeededSpinner.setEnabled(true);
+                hrsMinsComboBox.setEnabled(true);
+                btnAction(false, true, true);
+            } 
+            else {
+                updateBTN.setEnabled(false);
+                deleteBTN.setEnabled(false);
+                repititionCheckBox.setEnabled(false);
+                timeNeededSpinner.setEnabled(false);
+                dateTimePicker1.setEnabled(false);
+                hrsMinsComboBox.setEnabled(false);
+                
                 dayCheckBoxAction(false, false);
             }
-            
-            btnAction(false, true, true);
         }
         else {
             jobComboBox.setSelectedIndex(0);
@@ -171,9 +194,6 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             complaintIdTF.setText(getComplaintsId());
             repititionCheckBox.setEnabled(false);
             jobComboBox.setEnabled(false);
-        }
-        else {
-            repititionCheckBox.setEnabled(true);
         }
     }
     
@@ -240,6 +260,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             for (String jobs : jobList) {
                 String[] jobDetails = jobs.split(BE.sp);
                 String jobItem = jobDetails[2];
+                
                 jobComboBox.addItem(jobItem);
             }
         }
@@ -537,6 +558,9 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         assignedJobTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 assignedJobTableMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                assignedJobTableMouseEntered(evt);
             }
         });
         jScrollPane1.setViewportView(assignedJobTable);
@@ -863,6 +887,10 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             setJobFormTable();
             messagesTF.setText("");
             jobComboBox.setEnabled(true);
+            jobComboBox.removeItem("Patrolling");
+            repititionCheckBox.setEnabled(true);
+            timeNeededSpinner.setEnabled(true);
+            hrsMinsComboBox.setEnabled(true);
         } catch (IOException ex) {
             Logger.getLogger(EmployeeJobAssignation.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -928,15 +956,19 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
 
     private void assignedJobTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_assignedJobTableMouseClicked
         // TODO add your handling code here:
+        jobComboBox.removeItem("Patrolling");
+
         int selectedCol = assignedJobTable.getSelectedColumn();
         int selectedRow = assignedJobTable.getSelectedRow();
         
         this.jobID = BE.validateTableSelectionAndGetValue(employeeJobTable, selectedCol, selectedRow, 4, 0);
         
-        try {
-            setJobFormTable();
-        } catch (IOException ex) {
-            Logger.getLogger(EmployeeJobAssignation.class.getName()).log(Level.SEVERE, null, ex);
+        if (this.jobID != null) {
+            try {
+                setJobFormTable();
+            } catch (IOException ex) {
+                Logger.getLogger(EmployeeJobAssignation.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_assignedJobTableMouseClicked
 
@@ -947,6 +979,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             if (selectedJob.equals("Patrolling")) {
                 addBTN.setEnabled(false);
                 jobComboBox.setEnabled(false);
+                hrsMinsComboBox.setEnabled(false);
                 
                 messagesTF.setText("Assign this job at Patrolling Management. Thank you.");
             }
@@ -969,6 +1002,9 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                             dateTimePicker1.timePicker.setTime(BE.formatTime(startTime));
                         }
                     }
+                    
+                    jobComboBox.setEnabled(true);
+                    hrsMinsComboBox.setEnabled(true);
                 }
                 
                 messagesTF.setText("");
@@ -983,6 +1019,10 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         }
         BE.toJobManagement(this, user, complaintsId, fromComplaintsPage);
     }//GEN-LAST:event_backBTNActionPerformed
+
+    private void assignedJobTableMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_assignedJobTableMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_assignedJobTableMouseEntered
 
     private void updateJobTextFile(String[] jobItems, int action) throws IOException {
         List<String> readJobFile = fileHandling.fileRead(BE.employeeJobFile);
@@ -1023,7 +1063,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
     
     private void updateComplaintsFile(int action){
         ArrayList<String> updateComFile = new ArrayList<>();
-        List<String> complaintFile = fileHandling.fileRead(BE.complaintFiles);
+        List<String> complaintFile = fileHandling.fileRead(BE.TF.complaintFiles);
         for (String eachComp : complaintFile) {
             String[] compDet = eachComp.split(BE.sp);
             String compId = compDet[0];
@@ -1054,7 +1094,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             }
         }
         
-        fileHandling.fileWrite(BE.complaintFiles, false, updateComFile);
+        fileHandling.fileWrite(BE.TF.complaintFiles, false, updateComFile);
     }
     
     private String[] getAllFields(int action) throws IOException {
@@ -1072,7 +1112,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         this.complaintsId = this.getComplaintsId();
         // job assigned
         String assignedJob = jobComboBox.getSelectedItem().toString();
-        String jobDet = BE.findJobDescriptionORid(null, assignedJob);
+        String jobDet = BE.findJobDetailsUsingDescriptionOrId(null, assignedJob);
         String jobId = jobDet.split(BE.sp)[1];
         
         // repitition on or off

@@ -1,5 +1,5 @@
 invoiceNo;unitNo;feeType;target;consumption;unit;unitPrice(RM);totalPrice(RM);period;issuedDate;deletedID;
-S-01-01112022;S-01-01;Gas;Commercial;6.76;kWh;0.13;0.88;11/2022;15/01/2023;-;
+S-01-01122022;S-01-01;Gas;Commercial;6.76;kWh;0.13;0.88;11/2022;15/01/2023;-;
 S-01-02112022;S-01-02;Gas;Commercial;70.18;kWh;0.13;9.12;11/2022;15/01/2023;-;
 S-01-03112022;S-01-03;Gas;Commercial;66.62;kWh;0.13;8.66;11/2022;15/01/2023;-;
 S-01-03A112022;S-01-03A;Gas;Commercial;124.22;kWh;0.13;16.15;11/2022;15/01/2023;-;

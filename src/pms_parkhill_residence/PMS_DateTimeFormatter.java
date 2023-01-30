@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -42,7 +43,7 @@ public class PMS_DateTimeFormatter {
     }
     
     public LocalTime formatTime(String time) {
-        java.time.format.DateTimeFormatter timeFormatter = java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss");
+        java.time.format.DateTimeFormatter timeFormatter = java.time.format.DateTimeFormatter.ofPattern("HH:mm");
         
         LocalTime localTime = LocalTime.parse(LocalTime.parse(time).format(timeFormatter)).withSecond(1);
         
@@ -76,4 +77,5 @@ public class PMS_DateTimeFormatter {
         
         return combinedLocalDT;
     }
+    
 }

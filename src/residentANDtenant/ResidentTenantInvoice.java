@@ -43,12 +43,40 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
     }
     
     private void invoiceTableSetUp() {
+        ArrayList<String> incompleteInvoice = new ArrayList<>();
+        ArrayList<String> completeInvoice = new ArrayList<>();
+        
         invoiceNoList = RT.getCurrentUnitInvoice("S-01-01");
         ArrayList<String> incompList = invoiceNoList.get(0);
         ArrayList<String> compList = invoiceNoList.get(1);
         
-        RT.setTableRow(invIncompTab, incompList);
-        RT.setTableRow(invCompTab, compList);
+        for (String eachIncomp : incompList) {
+            String[] invDet = eachIncomp.split(RT.TF.sp);
+            
+            String incompletedLine = "";
+            String[] tableData = {invDet[0], invDet[2], invDet[3], invDet[4], invDet[5], invDet[6], invDet[7]};
+            for (String eachData : tableData) {
+                incompletedLine = incompletedLine + eachData + RT.TF.sp;
+            }
+
+            incompleteInvoice.add(incompletedLine);
+        }
+        
+        for (String eachComp : compList) {
+            String[] payDet = eachComp.split(RT.TF.sp);
+            
+            String completedLine = "";
+                        
+            String[] tableData = {payDet[0], payDet[2], payDet[3], payDet[4], payDet[7], payDet[9], payDet[10]};
+            for (String eachData : tableData) {
+                completedLine = completedLine + eachData + RT.TF.sp;
+            }
+
+            completeInvoice.add(completedLine);
+        }
+        
+        RT.setTableRow(invIncompTab, incompleteInvoice);
+        RT.setTableRow(invCompTab, completeInvoice);
     }
     
     private void invoiceComboBoxSetUp() {

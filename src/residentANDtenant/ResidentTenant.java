@@ -161,26 +161,13 @@ public class ResidentTenant {
                     String paymentKey = concatenateKey(payCom);
                     
                     if (paymentKey.equals(invoiceKey)) {
-                        String completedLine = "";
-                        
-                        String[] tableData = {payDet[0], payDet[2], payDet[3], payDet[4], payDet[7], payDet[9], payDet[10]};
-                        for (String eachData : tableData) {
-                            completedLine = completedLine + eachData + TF.sp;
-                        }
-                        
-                        completeInvoice.add(completedLine);
+                        completeInvoice.add(eachPay);
                         unpaid = false;
                     }
                 }
                 
                 if (unpaid) {
-                    String incompletedLine = "";
-                    String[] tableData = {invDet[0], invDet[2], invDet[3], invDet[4], invDet[5], invDet[6], invDet[7]};
-                    for (String eachData : tableData) {
-                        incompletedLine = incompletedLine + eachData + TF.sp;
-                    }
-                    
-                    incompleteInvoice.add(incompletedLine);
+                    incompleteInvoice.add(eachInv);
                 }
             }
         }
@@ -191,7 +178,7 @@ public class ResidentTenant {
         return combineList;
     }
     
-    public ArrayList getCurrentUnitPaymentHistory(String unitNo) throws ParseException {
+    public ArrayList getCurrentUnitPaymentHistory(String unitNo) {
         ArrayList<String> paymentHistory = new ArrayList<>();
         List<String> paymentFile = fh.fileRead(TF.paymentFile);
         
@@ -199,16 +186,7 @@ public class ResidentTenant {
             String[] payDet = eachPay.split(TF.sp);
             String uNo = payDet[1];
             if (uNo.equals(unitNo)) {
-                String toAdd = "";
-                String invoiceNo = payDet[0];
-                String feeType = payDet[2];
-                String totalPrice = payDet[7];
-                String paidDate = DTF.changeFormatDate(payDet[10]);
-                String[] data = {invoiceNo, feeType, totalPrice, paidDate};
-                for (String eachData : data) {
-                    toAdd = toAdd + eachData + TF.sp;
-                }
-                paymentHistory.add(toAdd);
+                paymentHistory.add(eachPay);
             }
         }
         
@@ -218,22 +196,38 @@ public class ResidentTenant {
     public ArrayList getCurrentUnitFacilityPayment(String unitNo) {
         ArrayList<String> facilityPay = new ArrayList<>();
         List<String> facilityBooking = fh.fileRead(TF.facilityBookingFile);
+        List<String> facilityFile = fh.fileRead(TF.facilityFile);
+        ArrayList<String> reqPayFac = new ArrayList<>();
+        ArrayList<String> bookingList = new ArrayList<>();
+        
+        for (String eachFac : facilityFile) {
+            boolean paymentReq = Boolean.parseBoolean(eachFac.split(TF.sp)[3]);
+            if (paymentReq) {
+                reqPayFac.add(eachFac.split(TF.sp)[0]);
+            }
+        }
         
         for (String eachBooking : facilityBooking) {
             String[] bookDet = eachBooking.split(TF.sp);
             String uNo = bookDet[3];
             
             if (uNo.equals(unitNo)) {
-                String toAdd = "";
-                String bookId = bookDet[0];
-                String bookType = bookDet[2];
-                String totalPrice = bookDet[8];
-                String paidDate = bookDet[9];
-                String[] data = {bookId, bookType, totalPrice, paidDate};
-                for (String eachData : data) {
-                    toAdd = toAdd + eachData + TF.sp;
+                String facilityId = bookDet[1];
+                if (reqPayFac.contains(facilityId)) {
+                    String bookId = bookDet[0];
+                    if (!bookingList.contains(bookId)) {
+                        String toAdd = "";
+                        String bookType = bookDet[2];
+                        String totalPrice = bookDet[8];
+                        String paidDate = bookDet[9];
+                        String[] data = {bookId, bookType, totalPrice, paidDate};
+                        for (String eachData : data) {
+                            toAdd = toAdd + eachData + TF.sp;
+                        }
+                        facilityPay.add(toAdd);
+                        bookingList.add(bookId);
+                    }
                 }
-                facilityPay.add(toAdd);
             }
         }
         
@@ -253,6 +247,34 @@ public class ResidentTenant {
         if (selectedColumn == expectedColumn) {
             String data = (String) table.getValueAt(selectedRow, getValueColumn);
             return data;
+        }
+        
+        return null;
+    }
+    
+    public ArrayList getIssuedStatement(String unitNo) {
+        ArrayList<String> statement = new ArrayList<>();
+        
+        List<String> issuedStatement = fh.fileRead(TF.statementFile);
+        
+        for (String eachIssued : issuedStatement) {
+            String uNo = eachIssued.split(TF.sp)[1];
+            
+            if (uNo.equals(unitNo)) {
+                statement.add(eachIssued.split(TF.sp)[0]);
+            }
+        }
+        
+        return statement;
+    }
+    
+    public String getSpecificUser(String userId) {
+        List<String> userProfile = fh.fileRead(TF.userProfile);
+        for (String eachUser : userProfile) {
+            String uId = eachUser.split(TF.sp)[0];
+            if (uId.equals(userId)) {
+                return eachUser;
+            }
         }
         
         return null;
@@ -281,6 +303,11 @@ public class ResidentTenant {
     
     public void toStatement(Users user) {
         ResidentTenantStatement page = new ResidentTenantStatement(user);
+        page.setVisible(true);
+    }
+    
+    public void toFacilityReceipt(Users user, String bookingId) {
+        ResidentTenantFacilityBookingReceipt page = new ResidentTenantFacilityBookingReceipt(user, bookingId);
         page.setVisible(true);
     }
 }

@@ -855,10 +855,18 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         this.localDate = dateTimePicker.datePicker.getDate();
         this.localTime = dateTimePicker.timePicker.getTime();
         
-        try {
-            updateTable();
-        } catch (IOException ex) {
-           ex.printStackTrace();
+        LocalDateTime dateTimeSelected = BE.DTF.combineStringDateTime(String.valueOf(localDate), String.valueOf(localTime));
+        LocalDateTime dateTimeNow = LocalDateTime.now();
+        
+        if (dateTimeSelected.isAfter(dateTimeNow)) {
+            try {
+                updateTable();
+            } catch (IOException ex) {
+               ex.printStackTrace();
+            }
+        }
+        else {
+            System.out.println("error");
         }
     }//GEN-LAST:event_clearBTN1ActionPerformed
 

@@ -12,6 +12,9 @@ public class TextFiles {
     // Text file default splitter
     public String sp = ";";
     
+    // Empty data cell symbol
+    public String empty = "-";
+    
     // user profile text file link
     public String userProfile = "userProfile.txt";
     
@@ -31,7 +34,7 @@ public class TextFiles {
     public String jobListFile = "jobList.txt";
     
     // complaint files link
-    public String complaintFiles = "complaintFiles.txt";
+    public String complaintFiles = "complaints.txt";
     
     // patrolling shcedule file
     public String patrollingScheduleFile = "patrollingSchedule.txt";
@@ -59,6 +62,12 @@ public class TextFiles {
     
     // File to store invoice receipt
     public String receiptFile = "receipt.txt";
+    
+    // File to store issued statement
+    public String statementFile = "statements.txt";
+    
+    // File to store the available facilities
+    public String facilityFile = "facility.txt";
     
     // temporary usage file
     public String tempFile = "tempPatFile.txt";

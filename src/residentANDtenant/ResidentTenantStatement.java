@@ -6,7 +6,13 @@ package residentANDtenant;
 
 import java.awt.Cursor;
 import java.awt.Toolkit;
+import java.text.ParseException;
+import java.time.LocalDate;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.Users;
 
@@ -18,7 +24,8 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
     private Users user;
     ResidentTenant RT = new ResidentTenant();
     
-    DefaultTableModel penFeeTab; 
+    DefaultTableModel penFeeTab;
+    private String monthNyear;
     
     /**
      * Creates new form homePage
@@ -31,17 +38,174 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
     
     private void runDefaultSetUp(Users user) {
         penFeeTab = (DefaultTableModel) statementTableSetUp.getModel();
+        
         this.user = user;
         setWindowIcon();
-        statementTableSetUp();
-    }
-    
-    private void statementTableSetUp() {
         
+        try {
+            monthComboBoxSetUp();
+        } catch (ParseException ex) {
+            System.out.println(ex);
+        }
     }
     
-    private void setCurrentUserProfile() {
-        userNameLabel.setText(user.getFirstName() + " " + user.getLastName());
+    private void statementTableSetUp() throws ParseException {
+        ArrayList<String> statementList = new ArrayList<>();
+        ArrayList<String> monthStatement = new ArrayList<>();
+        
+        ArrayList<String> completedInvoice = RT.getCurrentUnitPaymentHistory("S-01-01");
+        ArrayList<String> facilityBooking = RT.getCurrentUnitFacilityPayment("S-01-01");
+        
+        for (String eachInv : completedInvoice) {
+            String[] invDet = eachInv.split(RT.TF.sp);
+            String date = RT.DTF.changeFormatDate(invDet[10]);
+            String id = invDet[0];
+            String type = invDet[2];
+            String amount = invDet[7];
+            String[] data = {date, id, type, amount};
+            
+            String line = "";
+            for (String eachData : data) {
+                line = line + eachData + RT.TF.sp;
+            }
+            
+            statementList.add(line);
+        }
+        
+        ArrayList<String> bookIdList = new ArrayList<>();
+        for (String eachBook : facilityBooking) {
+            String[] bookDet = eachBook.split(RT.TF.sp);
+            String id = bookDet[0];
+            
+            if (!bookIdList.contains(id)) {
+                String date = bookDet[3];
+                String type = bookDet[1];
+                String amount = bookDet[2];
+                String[] data = {date, id, type, amount};
+                
+                String line = "";
+                for (String eachData : data) {
+                    line = line + eachData + RT.TF.sp;
+                }
+
+                statementList.add(line);
+                bookIdList.add(id);
+            }
+        }
+        
+        
+        String month = monthNyear.split("/")[0];
+        String year = monthNyear.split("/")[1];
+        
+        if (month.length() != 2) {
+            month = "0" + month;
+        }
+        
+        LocalDate firstDay = RT.DTF.formatDate(year+"-"+month+"-01");
+        LocalDate lastDay = firstDay.with(lastDayOfMonth());
+        
+        for (String eachState : statementList) {
+            String[] stateDet = eachState.split(RT.TF.sp);
+            LocalDate paymentDate = RT.DTF.formatDate(stateDet[0]);
+            
+            if ((paymentDate.isAfter(firstDay) || paymentDate.isEqual(firstDay)) && (paymentDate.isBefore(lastDay) || paymentDate.isEqual(lastDay))) {
+                monthStatement.add(eachState);
+            }
+        }
+        
+        String[] monStateList = monthStatement.toArray(String[]::new);
+        
+        for (int count1 = 0; count1 < monStateList.length - 1; count1++) {
+            for (int count2 = count1+1; count2 < monStateList.length; count2++) {
+                String item1 = monStateList[count1];
+                String item2 = monStateList[count2];
+                
+                LocalDate date1 = RT.DTF.formatDate(item1.split(RT.TF.sp)[0]);
+                LocalDate date2 = RT.DTF.formatDate(item2.split(RT.TF.sp)[0]);
+                
+                if (date2.isBefore(date1)) {
+                    String tempItem = item1;
+                    monStateList[count1] = item2;
+                    monStateList[count2] = tempItem;
+                }
+            }
+        }
+        
+        ArrayList<String> dateList = new ArrayList<>();
+        monthStatement = new ArrayList<>();
+        
+        for (String eachState : monStateList) {
+            String[] stateDet = eachState.split(RT.TF.sp);
+            String date = stateDet[0];
+            if (!dateList.contains(date)) {
+                monthStatement.add(eachState);
+                dateList.add(date);
+            }
+            else {
+                String stateDate = "";
+                String stateId = stateDet[1];
+                String stateType = stateDet[2];
+                String stateAmount = stateDet[3];
+                String[] data = {stateDate, stateId, stateType, stateAmount};
+                
+                String stateItem = "";
+                for (String eachData : data) {
+                    stateItem = stateItem + eachData + RT.TF.sp;
+                }
+                monthStatement.add(stateItem);
+            }
+        }
+        
+        System.out.println(monthStatement);
+        
+        RT.setTableRow(penFeeTab, monthStatement);
+    }
+    
+    private void monthComboBoxSetUp() throws ParseException {
+        ArrayList<String> issuedMonth = new ArrayList<>();
+        
+        ArrayList<String> issuedInvoice = RT.getIssuedStatement("S-01-01");
+        ArrayList<ArrayList> invoice = RT.getCurrentUnitInvoice("S-01-01");
+        ArrayList<String> completedInv = invoice.get(1);
+        
+        for (String eachIssued : issuedInvoice) {
+            for (String eachComp : completedInv) {
+                String[] compData = eachComp.split(RT.TF.sp);
+                String invId = compData[0];
+                if (eachIssued.equals(invId)) {
+                    issuedMonth.add(compData[8]);
+                }
+            }
+        }
+        
+        String[] sortDate = issuedMonth.toArray(String[]::new);
+        
+        for (int count1 = 0; count1 < sortDate.length - 1; count1++) {
+            for (int count2 = count1+1; count2 < sortDate.length; count2++) {
+                String date1 = sortDate[count1];
+                String date2 = sortDate[count2];
+                
+                LocalDate conDate1 = RT.DTF.formatDate(RT.DTF.changeFormatDate("01/" + date1));
+                LocalDate conDate2 = RT.DTF.formatDate(RT.DTF.changeFormatDate("01/" + date2));
+                
+                if (conDate2.isAfter(conDate1)) {
+                    String tempDate = date1;
+                    sortDate[count1] = date2;
+                    sortDate[count2] = tempDate;
+                }
+            }
+        }
+        
+        issuedMonth = new ArrayList<>(Arrays.asList(sortDate));
+        
+        monthCB.removeAllItems();
+        for (String eachMonth : issuedMonth) {
+            monthCB.addItem(eachMonth);
+        }
+        
+        if (monthNyear != null) {
+            monthCB.setSelectedItem(monthNyear);
+        }
     }
 
     /**
@@ -86,7 +250,7 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
         paymentHistLabel = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel24 = new javax.swing.JLabel();
-        invoiceNoCB = new javax.swing.JComboBox<>();
+        monthCB = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -440,13 +604,13 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
 
         statementTableSetUp.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Date", "Item ID", "Payment Type", "Income (RM)", "Expenses (RM)"
+                "Date", "Item ID", "Payment Type", "Expenses (RM)"
             }
         ));
         jScrollPane1.setViewportView(statementTableSetUp);
@@ -464,16 +628,16 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Print");
+        jButton1.setText("View");
 
         jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel24.setText("Month: ");
+        jLabel24.setText("Month/Year: ");
 
-        invoiceNoCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        invoiceNoCB.addActionListener(new java.awt.event.ActionListener() {
+        monthCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        monthCB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                invoiceNoCBActionPerformed(evt);
+                monthCBActionPerformed(evt);
             }
         });
 
@@ -504,9 +668,9 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
                             .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 977, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(invoiceNoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(monthCB, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(449, 449, 449)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -532,7 +696,7 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel24)
-                    .addComponent(invoiceNoCB))
+                    .addComponent(monthCB))
                 .addGap(8, 8, 8)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -564,34 +728,6 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jPanel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPanel2MouseEntered
-
-    private void jobAssignationTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationTabMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jobAssignationTabMouseClicked
-
-    private void jobAssignationInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationInnerTabMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jobAssignationInnerTabMouseClicked
-
-    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel5MouseClicked
-
-    private void jPanel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPanel8MouseClicked
-
-    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel6MouseClicked
-
-    private void jPanel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPanel9MouseClicked
-
     private void pendingFeeLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pendingFeeLabelMouseEntered
         // TODO add your handling code here:
         pendingFeeLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -612,9 +748,44 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
         statementLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_statementLabelMouseEntered
 
-    private void invoiceNoCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_invoiceNoCBActionPerformed
+    private void monthCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthCBActionPerformed
+        if (monthCB.getSelectedItem() != null) {
+            try {
+                this.monthNyear = monthCB.getSelectedItem().toString();
+                statementTableSetUp();
+            } catch (ParseException ex) {
+                Logger.getLogger(ResidentTenantStatement.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_monthCBActionPerformed
+
+    private void jPanel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_invoiceNoCBActionPerformed
+    }//GEN-LAST:event_jPanel9MouseClicked
+
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel6MouseClicked
+
+    private void jPanel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPanel8MouseClicked
+
+    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel5MouseClicked
+
+    private void jobAssignationTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationTabMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jobAssignationTabMouseClicked
+
+    private void jobAssignationInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationInnerTabMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jobAssignationInnerTabMouseClicked
+
+    private void jPanel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPanel2MouseEntered
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
@@ -912,7 +1083,6 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel invoiceLabel;
-    private javax.swing.JComboBox<String> invoiceNoCB;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
@@ -939,6 +1109,7 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel jobAssignationInnerTab;
     private javax.swing.JPanel jobAssignationTab;
+    private javax.swing.JComboBox<String> monthCB;
     private javax.swing.JLabel paymentHistLabel;
     private javax.swing.JLabel pendingFeeLabel;
     private javax.swing.JLabel statementLabel;

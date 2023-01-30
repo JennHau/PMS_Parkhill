@@ -13,7 +13,6 @@ import java.awt.Toolkit;
  * @author wongj
  */
 public class SignInPage extends javax.swing.JFrame {
-
     /**
      * Creates new form HomePage
      */
