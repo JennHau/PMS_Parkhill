@@ -4,11 +4,13 @@
  */
 package residentANDtenant;
 
+import java.text.ParseException;
 import pms_parkhill_residence.CRUD;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.PMS_DateTimeFormatter;
 import pms_parkhill_residence.TextFiles;
 import pms_parkhill_residence.Users;
 
@@ -20,6 +22,7 @@ public class ResidentTenant {
     FileHandling fh = new FileHandling();
     TextFiles TF = new TextFiles();
     CRUD crud = new CRUD();
+    PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
     
     public String[] visitorPassStatus = {"Registered", "Checked-In", "Checked-Out"};
     
@@ -188,11 +191,10 @@ public class ResidentTenant {
         return combineList;
     }
     
-    public ArrayList getCurrentUnitPaymentHistory(String unitNo) {
+    public ArrayList getCurrentUnitPaymentHistory(String unitNo) throws ParseException {
         ArrayList<String> paymentHistory = new ArrayList<>();
         List<String> paymentFile = fh.fileRead(TF.paymentFile);
         
-        int itemNo = 1;
         for (String eachPay : paymentFile) {
             String[] payDet = eachPay.split(TF.sp);
             String uNo = payDet[1];
@@ -201,18 +203,41 @@ public class ResidentTenant {
                 String invoiceNo = payDet[0];
                 String feeType = payDet[2];
                 String totalPrice = payDet[7];
-                String paidBy = payDet[9];
-                String paidDate = payDet[10];
-                String[] data = {String.valueOf(itemNo), invoiceNo, feeType, totalPrice, paidBy, paidDate};
+                String paidDate = DTF.changeFormatDate(payDet[10]);
+                String[] data = {invoiceNo, feeType, totalPrice, paidDate};
                 for (String eachData : data) {
                     toAdd = toAdd + eachData + TF.sp;
                 }
                 paymentHistory.add(toAdd);
-                itemNo++;
             }
         }
         
         return paymentHistory;
+    }
+    
+    public ArrayList getCurrentUnitFacilityPayment(String unitNo) {
+        ArrayList<String> facilityPay = new ArrayList<>();
+        List<String> facilityBooking = fh.fileRead(TF.facilityBookingFile);
+        
+        for (String eachBooking : facilityBooking) {
+            String[] bookDet = eachBooking.split(TF.sp);
+            String uNo = bookDet[3];
+            
+            if (uNo.equals(unitNo)) {
+                String toAdd = "";
+                String bookId = bookDet[0];
+                String bookType = bookDet[2];
+                String totalPrice = bookDet[8];
+                String paidDate = bookDet[9];
+                String[] data = {bookId, bookType, totalPrice, paidDate};
+                for (String eachData : data) {
+                    toAdd = toAdd + eachData + TF.sp;
+                }
+                facilityPay.add(toAdd);
+            }
+        }
+        
+        return facilityPay;
     }
     
     public String concatenateKey(String[] keyList) {
@@ -222,6 +247,15 @@ public class ResidentTenant {
         }
         
         return concatenatedKey;
+    }
+    
+    public String validateTableSelectionAndGetValue(DefaultTableModel table, int selectedColumn, int selectedRow, int expectedColumn, int getValueColumn) {
+        if (selectedColumn == expectedColumn) {
+            String data = (String) table.getValueAt(selectedRow, getValueColumn);
+            return data;
+        }
+        
+        return null;
     }
     
     // Page Navigator

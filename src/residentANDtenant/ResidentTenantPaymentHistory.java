@@ -5,8 +5,15 @@
 package residentANDtenant;
 
 import java.awt.Toolkit;
+import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import pms_parkhill_residence.PMS_DateTimeFormatter;
 import pms_parkhill_residence.Users;
 
 /**
@@ -16,8 +23,10 @@ import pms_parkhill_residence.Users;
 public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
     private Users user;
     ResidentTenant RT = new ResidentTenant();
+    PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
     
     DefaultTableModel payHisTab;
+    
     
     /**
      * Creates new form homePage
@@ -32,12 +41,47 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
         payHisTab = (DefaultTableModel) paymentHistoryTable.getModel();
         this.user = user;
         setWindowIcon();
-        paymentHistoryTableSetUp();
+        try {
+            paymentHistoryTableSetUp();
+        } catch (ParseException ex) {
+            Logger.getLogger(ResidentTenantPaymentHistory.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
-    private void paymentHistoryTableSetUp() {
+    private void paymentHistoryTableSetUp() throws ParseException {
         ArrayList<String> paymentHist = RT.getCurrentUnitPaymentHistory("S-01-01");
-        RT.setTableRow(payHisTab, paymentHist);
+        ArrayList<String> facilityPay = RT.getCurrentUnitFacilityPayment("S-01-01");
+        ArrayList<String> sortedList;
+        ArrayList<String> arrangedList = new ArrayList<>();
+        
+        paymentHist.addAll(facilityPay);
+        
+        String[] payHist = paymentHist.toArray(String[]::new);
+        
+        for (int compFirst = 0; compFirst < payHist.length - 1; compFirst++) {
+            for (int compSec = compFirst+1; compSec < payHist.length; compSec++) {
+                String itemFirst = payHist[compFirst];
+                String itemSec = payHist[compSec];
+                LocalDate firstDate = DTF.formatDate(itemFirst.split(RT.TF.sp)[3]);
+                LocalDate secDate = DTF.formatDate(itemSec.split(RT.TF.sp)[3]);
+                
+                if (secDate.isAfter(firstDate)) {
+                    String tempLine = itemFirst;
+                    payHist[compFirst] = itemSec;
+                    payHist[compSec] = tempLine;
+                }
+            }
+        }
+        
+        sortedList = new ArrayList<>(Arrays.asList(payHist));
+        
+        int itemNo = 1;
+        for (String eachItem : sortedList) {
+            arrangedList.add(itemNo + RT.TF.sp + eachItem);
+            itemNo++;
+        }
+        
+        RT.setTableRow(payHisTab, arrangedList);
     }
     
     private void setCurrentUserProfile() {
@@ -423,15 +467,20 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
 
         paymentHistoryTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "No.", "Item ID", "Item Description", "Amount Paid", "Paid By", "Paid At", "Receipt"
+                "No.", "Item ID", "Item Description", "Amount Paid", "Paid Date", "Receipt"
             }
         ));
+        paymentHistoryTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                paymentHistoryTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(paymentHistoryTable);
 
         jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
@@ -448,6 +497,11 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
         paymentHistLine.setText("jTextField1");
 
         jButton1.setText("View Statement");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -561,6 +615,43 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
         ResidentTenantInvoice RTI = new ResidentTenantInvoice(user);
         RTI.setVisible(true);
     }//GEN-LAST:event_invoiceLabelMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        RT.toStatement(user);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void paymentHistoryTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentHistoryTableMouseClicked
+        // TODO add your handling code here:
+        int selectedCol = paymentHistoryTable.getSelectedColumn();
+        int selectedRow = paymentHistoryTable.getSelectedRow();
+        
+        String itemID = RT.validateTableSelectionAndGetValue(payHisTab, selectedCol, selectedRow, 5, 1);
+        String itemDes = RT.validateTableSelectionAndGetValue(payHisTab, selectedCol, selectedRow, 5, 2);
+        String[] keyList = {itemID, itemDes};
+        
+        String concatenated = RT.concatenateKey(keyList);
+        
+        List<String> receiptFile = RT.fh.fileRead(RT.TF.receiptFile);
+        List<String> bookingFile = RT.fh.fileRead(RT.TF.facilityBookingFile);
+        
+        boolean notFound = true;
+        for (String eachReceipt : receiptFile) {
+            String[] recDet = eachReceipt.split(RT.TF.sp);
+            String recInvNo = recDet[0];
+            String recInvType = recDet[2];
+            String[] keyComb = {recInvNo, recInvType};
+            String recKey = RT.concatenateKey(keyComb);
+            
+            if (recKey.equals(concatenated)) {
+                
+            }
+        }
+        
+        if (notFound) {
+            
+        }
+    }//GEN-LAST:event_paymentHistoryTableMouseClicked
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));

@@ -37,31 +37,7 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
     }
     
     private void statementTableSetUp() {
-        ArrayList<ArrayList> invoiceList = RT.getCurrentUnitInvoice("S-01-01");
-        ArrayList<String> incompleteInv = invoiceList.get(0);
-        ArrayList<String> toTable = new ArrayList<>();
         
-        float totalAmount = 0;
-        int itemNo = 1;
-        for (String eachIncomp : incompleteInv) {
-            String[] incompDet = eachIncomp.split(RT.TF.sp);
-            String itemID = incompDet[0];
-            String itemType = incompDet[1];
-            String amount = incompDet[6];
-            String[] list = {String.valueOf(itemNo), itemID, itemType, amount};
-            
-            String combined = "";
-            for (String data : list) {
-                combined = combined + data + RT.TF.sp;
-            }
-            
-            toTable.add(combined);
-            totalAmount += Double.valueOf(amount);
-            itemNo++;
-        }
-        
-        RT.setTableRow(penFeeTab, toTable);
-        totalPendingFeeTF.setText(String.format("%.02f", totalAmount));
     }
     
     private void setCurrentUserProfile() {
@@ -108,12 +84,9 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
         statementTableSetUp = new javax.swing.JTable();
         jLabel23 = new javax.swing.JLabel();
         paymentHistLabel = new javax.swing.JLabel();
-        jSeparator2 = new javax.swing.JSeparator();
-        jLabel24 = new javax.swing.JLabel();
-        totalPendingFeeTF = new javax.swing.JTextField();
-        jSeparator3 = new javax.swing.JSeparator();
-        jSeparator4 = new javax.swing.JSeparator();
         jButton1 = new javax.swing.JButton();
+        jLabel24 = new javax.swing.JLabel();
+        invoiceNoCB = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -491,14 +464,18 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
             }
         });
 
-        jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
-        jLabel24.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel24.setText("Total Fee (RM):");
-
-        totalPendingFeeTF.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        totalPendingFeeTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-
         jButton1.setText("Print");
+
+        jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        jLabel24.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel24.setText("Month: ");
+
+        invoiceNoCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        invoiceNoCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                invoiceNoCBActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -523,20 +500,17 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 977, Short.MAX_VALUE)
-                            .addComponent(jSeparator2)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 977, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(totalPendingFeeTF, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jSeparator3)
-                            .addComponent(jSeparator4)))
+                                .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(invoiceNoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(449, 449, 449)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 18, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -555,18 +529,12 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel23)
-                .addGap(4, 4, 4)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(totalPendingFeeTF, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                    .addComponent(jLabel24, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(3, 3, 3)
-                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel24)
+                    .addComponent(invoiceNoCB))
+                .addGap(8, 8, 8)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
                 .addGap(13, 13, 13))
@@ -643,6 +611,10 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
         // TODO add your handling code here:
         statementLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_statementLabelMouseEntered
+
+    private void invoiceNoCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_invoiceNoCBActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_invoiceNoCBActionPerformed
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
@@ -940,6 +912,7 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel invoiceLabel;
+    private javax.swing.JComboBox<String> invoiceNoCB;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
@@ -964,9 +937,6 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JSeparator jSeparator4;
     private javax.swing.JLabel jobAssignationInnerTab;
     private javax.swing.JPanel jobAssignationTab;
     private javax.swing.JLabel paymentHistLabel;
@@ -974,7 +944,6 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
     private javax.swing.JLabel statementLabel;
     private javax.swing.JTextField statementLine;
     private javax.swing.JTable statementTableSetUp;
-    private javax.swing.JTextField totalPendingFeeTF;
     private javax.swing.JLabel userNameLabel;
     // End of variables declaration//GEN-END:variables
 

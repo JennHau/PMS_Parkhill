@@ -54,6 +54,12 @@ public class TextFiles {
     // File for payment
     public String paymentFile = "payment.txt";
     
+    // File for storing facility booking (Including payment)
+    public String facilityBookingFile = "facilityBooking.txt";
+    
+    // File to store invoice receipt
+    public String receiptFile = "receipt.txt";
+    
     // temporary usage file
     public String tempFile = "tempPatFile.txt";
 }

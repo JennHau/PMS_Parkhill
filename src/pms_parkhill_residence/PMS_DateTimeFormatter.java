@@ -4,10 +4,13 @@
  */
 package pms_parkhill_residence;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 /**
  *
@@ -28,6 +31,14 @@ public class PMS_DateTimeFormatter {
         LocalDate localDate = LocalDate.parse(date, dateFormatter);
 
         return localDate;
+    }
+    
+    public String changeFormatDate(String dateString) throws ParseException {
+        SimpleDateFormat originalFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = originalFormat.parse(dateString);
+        
+        return targetFormat.format(date);
     }
     
     public LocalTime formatTime(String time) {
