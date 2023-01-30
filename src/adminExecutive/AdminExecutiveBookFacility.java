@@ -847,8 +847,12 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
             String endTime = (String)tableModel2.getValueAt(i, 2);
             String date = String.valueOf(datePicker1.getDate());
             
+            
+            String fctNameGen_temp = facilityTypeLabel.getText();
+            String fctNameGen = fctNameGen_temp.substring(fctNameGen_temp.indexOf("- ") + 1);
+            
             availableList.add(bkgID +";"+ fctID +";"+ fctName +";"+ startTime
-                    +";"+ endTime +";"+ date);
+                    +";"+ endTime +";"+ date +";"+ fctNameGen);
         }
         dispose();
         new AdminExecutivePaymentGateway(availableList).setVisible(true);

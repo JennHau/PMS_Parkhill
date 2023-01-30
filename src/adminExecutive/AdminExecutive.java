@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import accountExecutive.AccountExecutive;
-import com.sun.source.tree.NewArrayTree;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -686,7 +685,7 @@ public class AdminExecutive {
             String eUnitNo = userDetails[8];
             
             if (eUnitNo.equals(unitNo)) {
-                availableComplainer.add(userID +" - "+ name);
+                availableComplainer.add(userID.toUpperCase() +" - "+ name);
             }
         } return availableComplainer;
     }
@@ -922,6 +921,21 @@ public class AdminExecutive {
                 newData.add(employeeTypeList.get(i));
             }
         } fh.fileWrite("employeeList.txt", false, newData);
+        
+        if(employeeID.startsWith("scg")) {
+            List<String> userProfileList =  fh.fileRead("userProfile.txt");
+        
+            newData.clear();
+
+            for (int i = 0; i < userProfileList.size(); i++) {
+                String[] userDetails = userProfileList.get(i).split(";");
+                String id = userDetails[0];
+
+                if (!id.equals(employeeID)) {
+                    newData.add(userProfileList.get(i));
+                }
+            } fh.fileWrite("userProfile.txt", false, newData);
+        }
     }
     
     public boolean checkAddFacilityValidation(String facilityName, String fctID) {

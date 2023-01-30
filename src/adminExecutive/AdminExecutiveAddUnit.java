@@ -19,12 +19,10 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
-     * @param propertyType
      */
-    public AdminExecutiveAddUnit(String propertyType) {
+    public AdminExecutiveAddUnit() {
         initComponents();
         setWindowIcon();
-        this.type = propertyType;
         setTable();
     }
 
@@ -111,7 +109,12 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(102, 102, 102));
         jLabel4.setText("Property Type:");
 
-        typeCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-PLEASE SELECT-", "Residential", "Commercial" }));
+        typeCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Residential", "Commercial" }));
+        typeCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                typeCBActionPerformed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(102, 102, 102));
@@ -259,7 +262,6 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public String type;
     FileHandling fh = new FileHandling();
     
     private void unitNoTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unitNoTFActionPerformed
@@ -323,13 +325,19 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
         aei.setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
+    private void typeCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeCBActionPerformed
+        // TODO add your handling code here:
+        setTable();
+    }//GEN-LAST:event_typeCBActionPerformed
+
     private void setTable() {
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
         tableModel.setRowCount(0);
             
         AdminExecutive ae = new AdminExecutive();
         List<String> availableList = 
-                ae.extractAllProperties(type);
+                ae.extractAllProperties(String.valueOf(typeCB.getSelectedItem())
+                                    .toLowerCase());
         
         String[] propertiesArray = new String[availableList.size()];
         availableList.toArray(propertiesArray);
@@ -892,7 +900,7 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminExecutiveAddUnit(null).setVisible(true);
+                new AdminExecutiveAddUnit().setVisible(true);
             }
         });
     }

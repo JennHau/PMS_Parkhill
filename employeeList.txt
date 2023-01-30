@@ -1,2 +1,1 @@
 employeeID;email;name;phoneNo;position;identificationNo;gender;
-scg000001;ali@gmail.com;Ali Muhhamad;013-293-4367;Security Guard;937535-01-2743;Male;

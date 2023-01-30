@@ -735,7 +735,7 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
         // TODO add your handling code here:
         dispose();
         String propertyType = String.valueOf(typeCB.getSelectedItem()).toLowerCase();
-        new AdminExecutiveAddUnit(propertyType).setVisible(true);
+        new AdminExecutiveAddUnit().setVisible(true);
         
     }//GEN-LAST:event_addPanelMouseClicked
 
@@ -743,7 +743,7 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
         // TODO add your handling code here:
         dispose();
         String propertyType = String.valueOf(typeCB.getSelectedItem()).toLowerCase();
-        new AdminExecutiveAddUnit(propertyType).setVisible(true);
+        new AdminExecutiveAddUnit().setVisible(true);
     }//GEN-LAST:event_addLabelMouseClicked
 
     

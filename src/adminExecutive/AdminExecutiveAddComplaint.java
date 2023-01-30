@@ -247,7 +247,7 @@ public class AdminExecutiveAddComplaint extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
             
                 if(result == JOptionPane.YES_OPTION){
-                    ae.fileComplaint(complainerID, desc);
+                    ae.fileComplaint(complainerID.toLowerCase(), desc);
                     JOptionPane.showMessageDialog (null, "Complaint has been filed!", 
                                     "FILE COMPLAINT", JOptionPane.INFORMATION_MESSAGE);
                     dispose();

@@ -691,19 +691,21 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        if (statusCB.getSelectedItem() == "PENDING"){
-            
-            int result = JOptionPane.showConfirmDialog(null,"Are you sure to issue this receipt?",
-                        "ISSUE INVOICE",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE);
+        int column = jTable1.getSelectedColumn();
+        int row = jTable1.getSelectedRow();
+        if (column == 6) {
+            if (statusCB.getSelectedItem() == "PENDING"){
 
-            if(result == JOptionPane.YES_OPTION){
-                int column = jTable1.getSelectedColumn();
-                int row = jTable1.getSelectedRow();
-                List<String> receiptDetails = new ArrayList<>();
+                int result = JOptionPane.showConfirmDialog(null,"Are you sure to issue this receipt?",
+                            "ISSUE INVOICE",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
 
-                if (column == 6) {
+                if(result == JOptionPane.YES_OPTION){
+
+                    List<String> receiptDetails = new ArrayList<>();
+
+
                     String invoiceNo = String.valueOf(tableModel.getValueAt(row, 0));
                     String feeType = String.valueOf(tableModel.getValueAt(row, 2));
                     receiptDetails.add(invoiceNo +";"+ feeType +";");
@@ -713,7 +715,7 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog (null, "Receipt has been issued!", 
                                     "ISSUE RECEIPT", JOptionPane.INFORMATION_MESSAGE);
                 }
-            }
+                }
         }
     }//GEN-LAST:event_jTable1MouseClicked
 

@@ -456,6 +456,8 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
                     setTable();
                     JOptionPane.showMessageDialog (null, "Fee Type has been deleted!", 
                                 "DELETE FEE TYPE", JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
+                    new AccountExecutiveIssueInvoice().setVisible(true);
                 }
         } catch (Exception e) {
             e.printStackTrace();
