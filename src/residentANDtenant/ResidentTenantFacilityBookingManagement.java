@@ -4,7 +4,6 @@
  */
 package residentANDtenant;
 
-import adminExecutive.*;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -516,7 +515,7 @@ public class ResidentTenantFacilityBookingManagement extends javax.swing.JFrame 
             String facilityID = String.valueOf(tableModel.getValueAt(row, 0)).toUpperCase();
             String facilityName = String.valueOf(tableModel.getValueAt(row, 1));
             dispose();
-            new AdminExecutiveViewFacilityBooking(facilityID, facilityName).setVisible(true);
+            new ResidentTenantViewFacilityBooking(this.user, facilityID, facilityName).setVisible(true);
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
