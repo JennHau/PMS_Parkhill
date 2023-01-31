@@ -58,7 +58,10 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
             
             if (!invCode.contains(invNo)) {
                 String incompletedLine = "";
-                String[] tableData = {invNo, invDet[2], invDet[7]};
+                
+                double totalAmount = RT.getTotalPricePerInvoice(invNo);
+                
+                String[] tableData = {invNo, invDet[2], String.format("%.02f", totalAmount)};
                 for (String eachData : tableData) {
                     incompletedLine = incompletedLine + eachData + RT.TF.sp;
                 }
@@ -74,8 +77,10 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
             
             if (!invCode.contains(invNo)) {
                 String completedLine = "";
-                        
-                String[] tableData = {payDet[0], payDet[9], payDet[10]};
+                
+                double totalAmount = RT.getTotalPricePerInvoice(invNo);
+                
+                String[] tableData = {payDet[0], String.format("%.02f", totalAmount), payDet[9], payDet[10]};
                 for (String eachData : tableData) {
                     completedLine = completedLine + eachData + RT.TF.sp;
                 }
@@ -474,7 +479,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Invoice No.", "Unit", "Total Price (RM)", "Action"
+                "INVOICE NO.", "UNIT", "TOTAL PRICE (RM)", "ACTION"
             }
         ));
         invoiceIncompleteTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -508,13 +513,13 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
 
         invoiceCompleteTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Invoice No.", "Paid By", "Paid At", "Action"
+                "INVOICE NO.", "TOTAL PRICE (RM)", "PAID BY", "PAID AT", "ACTION"
             }
         ));
         jScrollPane2.setViewportView(invoiceCompleteTable);

@@ -4,11 +4,11 @@
  */
 package residentANDtenant;
 
-import java.text.ParseException;
 import pms_parkhill_residence.CRUD;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import pms_parkhill_residence.Facility;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.PMS_DateTimeFormatter;
 import pms_parkhill_residence.TextFiles;
@@ -240,6 +240,35 @@ public class ResidentTenant {
         return facilityPay;
     }
     
+    public ArrayList getCurrentUnitBookedFacility(String unitNo) {
+        ArrayList<String> bookedFacility = new ArrayList<>();
+        
+        List<String> facilityBookingFile = fh.fileRead(TF.facilityBookingFile);
+        
+        for (String eachBooked : facilityBookingFile) {
+            String[] bookedDet = eachBooked.split(TF.sp);
+            String uNo = bookedDet[3];
+            
+            if (uNo.equals(unitNo)) {
+                bookedFacility.add(eachBooked);
+            }
+        }
+        
+        return bookedFacility;
+    }
+    
+    public String getFacilityId(String bookingId) {
+        List<String> facilityBookingFile = fh.fileRead(TF.facilityBookingFile);
+        for (String eachBooking : facilityBookingFile) {
+            String bId = eachBooking.split(TF.sp)[0];
+            if (bId.equals(bookingId)) {
+                return eachBooking.split(TF.sp)[1];
+            }
+        }
+        
+        return null;
+    }
+    
     public String concatenateKey(String[] keyList) {
         String concatenatedKey = "";
         for (String eachKey : keyList) {
@@ -289,6 +318,23 @@ public class ResidentTenant {
         return null;
     }
     
+    public double getTotalPricePerInvoice(String invoiceId) {
+        List<String> invoiceFile = fh.fileRead(TF.invoiceFile);
+        
+        double totalAmount = 0;
+        for (String eachInv : invoiceFile) {
+            String[] invDet = eachInv.split(TF.sp);
+            String invNo = invDet[0];
+            
+            if (invNo.equals(invoiceId)) {
+                double eachPrice = Double.parseDouble(invDet[7]);
+                totalAmount += eachPrice;
+            }
+        }
+        
+        return totalAmount;
+    }
+    
     // Page Navigator
     public void toPaymentGateway(Users user, String totalAmount, ArrayList itemId) {
         ResidentTenantPaymentCredential page = new ResidentTenantPaymentCredential(user, totalAmount, itemId);
@@ -317,6 +363,31 @@ public class ResidentTenant {
     
     public void toFacilityReceipt(Users user, String bookingId) {
         ResidentTenantFacilityBookingReceipt page = new ResidentTenantFacilityBookingReceipt(user, bookingId);
+        page.setVisible(true);
+    }
+    
+    public void toBookedFacility(Users user) {
+        ResidentTenantBookedFacility page = new ResidentTenantBookedFacility(user);
+        page.setVisible(true);
+    }
+    
+    public void toFacilityBookingManagement(Users user) {
+        ResidentTenantFacilityBookingManagement page = new ResidentTenantFacilityBookingManagement(user);
+        page.setVisible(true);
+    }
+    
+    public void toFacilityPreview(Users user, String facilityID) {
+        ResidentTenantFacilityPreview page = new ResidentTenantFacilityPreview(user, facilityID);
+        page.setVisible(true);
+    }
+    
+    public void toBookingFacility(Users user, Facility fb) {
+        ResidentTenantBookFacility page = new ResidentTenantBookFacility(user, fb);
+        page.setVisible(true);
+    }
+    
+    public void toFacilityPaymentGateway(Users user, List<String> bookingList, Facility fb) {
+        ResidentTenantFacilityPaymentGateway page = new ResidentTenantFacilityPaymentGateway(user, bookingList, fb);
         page.setVisible(true);
     }
 }
