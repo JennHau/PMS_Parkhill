@@ -14,7 +14,7 @@ import pms_parkhill_residence.Users;
  *
  * @author Winson
  */
-public class ResidentTenantPaymentGateway extends javax.swing.JFrame {
+public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
 
     private Users user;
     private ArrayList<String> itemId;
@@ -27,7 +27,7 @@ public class ResidentTenantPaymentGateway extends javax.swing.JFrame {
      * @param totalAmount
      * @param itemId
      */
-    public ResidentTenantPaymentGateway(Users user, String totalAmount, ArrayList itemId) {
+    public ResidentTenantPaymentCredential(Users user, String totalAmount, ArrayList itemId) {
         initComponents();
         runDefaultSetUp(user, totalAmount, itemId);
     }
@@ -87,10 +87,10 @@ public class ResidentTenantPaymentGateway extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("PAYMENT GATEWAY");
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel2.setText("PAYMENT GATEWAY");
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/parkhillLogo.png"))); // NOI18N
@@ -436,20 +436,23 @@ public class ResidentTenantPaymentGateway extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ResidentTenantPaymentGateway.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResidentTenantPaymentCredential.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ResidentTenantPaymentGateway.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResidentTenantPaymentCredential.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ResidentTenantPaymentGateway.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResidentTenantPaymentCredential.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ResidentTenantPaymentGateway.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResidentTenantPaymentCredential.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ResidentTenantPaymentGateway(null, null, null).setVisible(true);
+                new ResidentTenantPaymentCredential(null, null, null).setVisible(true);
             }
         });
     }

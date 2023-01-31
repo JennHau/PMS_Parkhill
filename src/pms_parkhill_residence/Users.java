@@ -8,6 +8,7 @@ import buildingExecutive.BuildingExecutiveMainPage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import residentANDtenant.ResidentTenantMainPage;
 
 /**
  *
@@ -243,7 +244,7 @@ public class Users{
 //        }
 //    }
     
-    public boolean login(String email, String password) throws IOException {
+    public Users login(String email, String password) throws IOException {
         List<String> userProfile = fh.fileRead("userProfile.txt");
         for (String eachUser : userProfile){
             String[] userDet = eachUser.split(";");
@@ -252,12 +253,12 @@ public class Users{
                 String userPass = userDet[2];
                 if (userPass.equals(password)) {
                     user = new Users(userDet[0]);
-                    return true;
+                    return user;
                 }
             }
         }
         
-        return false;
+        return null;
     }
     
     public void userRole(String email) throws IOException {
@@ -287,14 +288,6 @@ public class Users{
         } else if(userID.startsWith("scg")) {
             
         } else if(userID.startsWith("vst")) {
-            
-        }
-    }
-    
-    public void userPage() {
-        String userCode = user.getUserID().substring(0, 3);
-        switch (userCode) {
-            case "bde" -> new BuildingExecutiveMainPage(this.user).setVisible(true);
             
         }
     }

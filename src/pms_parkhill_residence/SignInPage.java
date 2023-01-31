@@ -4,9 +4,11 @@
  */
 package pms_parkhill_residence;
 
+import buildingExecutive.BuildingExecutiveMainPage;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Toolkit;
+import residentANDtenant.ResidentTenantMainPage;
 
 /**
  *
@@ -238,10 +240,9 @@ public class SignInPage extends javax.swing.JFrame {
     private void signInBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signInBtActionPerformed
         // TODO add your handling code here:
         try{
-            Users users = new Users();
-            boolean valid = users.login(email.getText(), String.valueOf(password.getPassword()));
-            if (valid) {
-                users.userPage();
+            Users user = new Users().login(email.getText(), String.valueOf(password.getPassword()));
+            if (user != null) {
+                userPage(user);
                 dispose();
             } else {
                 warningMessage.setText("Invalid email address or password!");
@@ -251,6 +252,15 @@ public class SignInPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_signInBtActionPerformed
 
+    public void userPage(Users user) {
+        String userCode = user.getUserID().substring(0, 3);
+        switch (userCode) {
+            case "bde" -> new BuildingExecutiveMainPage(user).setVisible(true);
+            case "rsd" -> new ResidentTenantMainPage(user).setVisible(true);
+            case "tnt" -> new ResidentTenantMainPage(user).setVisible(true);
+        }
+    }
+    
     private void jLabel7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseEntered
         // TODO add your handling code here:
         jLabel7.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));

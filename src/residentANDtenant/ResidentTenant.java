@@ -149,25 +149,28 @@ public class ResidentTenant {
             String[] invDet = eachInv.split(TF.sp);
             String uNo = invDet[1];
             if (uNo.equals(unitNo)) {
-                String invNo = invDet[0];
-                String feeType = invDet[2];
-                String[] combine = {invNo, feeType};
-                String invoiceKey = concatenateKey(combine);
-                
-                boolean unpaid = true;
-                for (String eachPay : paymentFile) {
-                    String[] payDet = eachPay.split(TF.sp);
-                    String[] payCom = {payDet[0], payDet[2]};
-                    String paymentKey = concatenateKey(payCom);
-                    
-                    if (paymentKey.equals(invoiceKey)) {
-                        completeInvoice.add(eachPay);
-                        unpaid = false;
+                String deleteID = invDet[invDet.length-1];
+                if (deleteID.equals(TF.empty)) {
+                    String invNo = invDet[0];
+                    String feeType = invDet[2];
+                    String[] combine = {invNo, feeType};
+                    String invoiceKey = concatenateKey(combine);
+
+                    boolean unpaid = true;
+                    for (String eachPay : paymentFile) {
+                        String[] payDet = eachPay.split(TF.sp);
+                        String[] payCom = {payDet[0], payDet[2]};
+                        String paymentKey = concatenateKey(payCom);
+
+                        if (paymentKey.equals(invoiceKey)) {
+                            completeInvoice.add(eachPay);
+                            unpaid = false;
+                        }
                     }
-                }
-                
-                if (unpaid) {
-                    incompleteInvoice.add(eachInv);
+
+                    if (unpaid) {
+                        incompleteInvoice.add(eachInv);
+                    }
                 }
             }
         }
@@ -186,7 +189,10 @@ public class ResidentTenant {
             String[] payDet = eachPay.split(TF.sp);
             String uNo = payDet[1];
             if (uNo.equals(unitNo)) {
-                paymentHistory.add(eachPay);
+                String deleteID = payDet[payDet.length-1];
+                if (deleteID.equals(TF.empty)) {
+                    paymentHistory.add(eachPay);
+                }
             }
         }
         
@@ -261,7 +267,10 @@ public class ResidentTenant {
             String uNo = eachIssued.split(TF.sp)[1];
             
             if (uNo.equals(unitNo)) {
-                statement.add(eachIssued.split(TF.sp)[0]);
+                String deleteID = eachIssued.split(TF.sp)[3];
+                if (deleteID.equals(TF.empty)) {
+                    statement.add(eachIssued.split(TF.sp)[0]);                    
+                }
             }
         }
         
@@ -282,7 +291,7 @@ public class ResidentTenant {
     
     // Page Navigator
     public void toPaymentGateway(Users user, String totalAmount, ArrayList itemId) {
-        ResidentTenantPaymentGateway page = new ResidentTenantPaymentGateway(user, totalAmount, itemId);
+        ResidentTenantPaymentCredential page = new ResidentTenantPaymentCredential(user, totalAmount, itemId);
         page.setVisible(true);
     }
     

@@ -50,29 +50,39 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
         ArrayList<String> incompList = invoiceNoList.get(0);
         ArrayList<String> compList = invoiceNoList.get(1);
         
+        ArrayList<String> invCode = new ArrayList<>();
+        
         for (String eachIncomp : incompList) {
             String[] invDet = eachIncomp.split(RT.TF.sp);
+            String invNo = invDet[0];
             
-            String incompletedLine = "";
-            String[] tableData = {invDet[0], invDet[2], invDet[3], invDet[4], invDet[5], invDet[6], invDet[7]};
-            for (String eachData : tableData) {
-                incompletedLine = incompletedLine + eachData + RT.TF.sp;
-            }
+            if (!invCode.contains(invNo)) {
+                String incompletedLine = "";
+                String[] tableData = {invNo, invDet[2], invDet[7]};
+                for (String eachData : tableData) {
+                    incompletedLine = incompletedLine + eachData + RT.TF.sp;
+                }
 
-            incompleteInvoice.add(incompletedLine);
+                incompleteInvoice.add(incompletedLine);
+                invCode.add(invNo);
+            }
         }
         
         for (String eachComp : compList) {
             String[] payDet = eachComp.split(RT.TF.sp);
+            String invNo = payDet[0];
             
-            String completedLine = "";
+            if (!invCode.contains(invNo)) {
+                String completedLine = "";
                         
-            String[] tableData = {payDet[0], payDet[2], payDet[3], payDet[4], payDet[7], payDet[9], payDet[10]};
-            for (String eachData : tableData) {
-                completedLine = completedLine + eachData + RT.TF.sp;
-            }
+                String[] tableData = {payDet[0], payDet[9], payDet[10]};
+                for (String eachData : tableData) {
+                    completedLine = completedLine + eachData + RT.TF.sp;
+                }
 
-            completeInvoice.add(completedLine);
+                completeInvoice.add(completedLine);
+                invCode.add(invNo);
+            }
         }
         
         RT.setTableRow(invIncompTab, incompleteInvoice);
@@ -123,8 +133,6 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        jPanel11 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
         jPanel13 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jPanel14 = new javax.swing.JPanel();
@@ -280,30 +288,6 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel11.setBackground(new java.awt.Color(13, 24, 42));
-
-        jLabel9.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/notificationIcon.png"))); // NOI18N
-        jLabel9.setText(" NOTIFICATIONS");
-
-        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
-        jPanel11.setLayout(jPanel11Layout);
-        jPanel11Layout.setHorizontalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75))
-        );
-        jPanel11Layout.setVerticalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel11Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel9)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         jPanel13.setBackground(new java.awt.Color(13, 24, 42));
 
         jLabel11.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
@@ -399,7 +383,6 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
                             .addComponent(jobAssignationTab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -423,8 +406,6 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -487,20 +468,23 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
 
         invoiceIncompleteTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Invoice No.", "Fee Type", "Target", "Consumption", "Unit", "Unit Price (RM)", "Total Price (RM)", "Action"
+                "Invoice No.", "Unit", "Total Price (RM)", "Action"
             }
         ));
+        invoiceIncompleteTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                invoiceIncompleteTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(invoiceIncompleteTable);
         if (invoiceIncompleteTable.getColumnModel().getColumnCount() > 0) {
-            invoiceIncompleteTable.getColumnModel().getColumn(4).setHeaderValue("Unit");
-            invoiceIncompleteTable.getColumnModel().getColumn(5).setHeaderValue("Unit Price (RM)");
-            invoiceIncompleteTable.getColumnModel().getColumn(6).setResizable(false);
+            invoiceIncompleteTable.getColumnModel().getColumn(2).setResizable(false);
         }
 
         jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
@@ -524,19 +508,16 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
 
         invoiceCompleteTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Invoice No.", "Fee Type", "Target", "Consumption", "Total Price (RM)", "Paid By", "Paid At", "Action"
+                "Invoice No.", "Paid By", "Paid At", "Action"
             }
         ));
         jScrollPane2.setViewportView(invoiceCompleteTable);
-        if (invoiceCompleteTable.getColumnModel().getColumnCount() > 0) {
-            invoiceCompleteTable.getColumnModel().getColumn(4).setResizable(false);
-        }
 
         jLabel25.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(51, 51, 51));
@@ -597,10 +578,10 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
                 .addComponent(jLabel24)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
+                .addGap(14, 14, 14)
                 .addComponent(jLabel25)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
 
@@ -663,6 +644,16 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
             updateInvoiceTable(selectedNo);
         }
     }//GEN-LAST:event_invoiceNoCBActionPerformed
+
+    private void invoiceIncompleteTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_invoiceIncompleteTableMouseClicked
+        // TODO add your handling code here:
+        int selCol = invoiceIncompleteTable.getSelectedColumn();
+        int selRow = invoiceIncompleteTable.getSelectedRow();
+        
+        String invoiceNo = RT.validateTableSelectionAndGetValue(invIncompTab, selCol, selRow, 3, 0);
+        
+        
+    }//GEN-LAST:event_invoiceIncompleteTableMouseClicked
 
     private void updateInvoiceTable(String invoiceNo){
         ArrayList<String> newIncompList = new ArrayList<>();
@@ -1002,10 +993,8 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel2;

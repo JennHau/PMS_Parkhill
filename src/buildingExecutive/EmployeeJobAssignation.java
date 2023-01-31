@@ -938,10 +938,12 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         if (repititionCheckBox.isSelected()) {
             dayCheckBoxAction(true, false);
             dateTimePicker1.datePicker.setEnabled(false);
+            dateTimePicker1.datePicker.setDate(null);
         }
         else {
             dayCheckBoxAction(false, false);
             dateTimePicker1.datePicker.setEnabled(true);
+            dateTimePicker1.datePicker.setDate(LocalDate.now());
         }
     }//GEN-LAST:event_repititionCheckBoxActionPerformed
 
