@@ -794,9 +794,9 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                         String generatedDate = new AccountExecutive().todayDate();
                         String cDetails = invoiceNo +";"+ unitNo +";"+ feeType +";"+ target +";"+
                                 consumption +";"+ unit +";"+ unitPrice +";"+ totalPrice +";"+
-                                period +";"+ generatedDate+";";
+                                period +";"+ generatedDate+";"+ "-" +";";
                         invoiceDetails.add(cDetails);
-                        ae.createUserTransactionLink(invoiceNo, unitNo);
+                        ae.createUserTransactionLink(period, unitNo);
                     }
                         
                         ae.issueInvoice(invoiceDetails);
@@ -839,9 +839,9 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                     String generatedDate = new AccountExecutive().todayDate();
                     String cDetails = invoiceNo +";"+ unitNo +";"+ feeType +";"+ target +";"+
                             consumption +";"+ unit +";"+ unitPrice +";"+ totalPrice +";"+
-                            period +";"+ generatedDate+";";
+                            period +";"+ generatedDate +";"+ "-" +";";
                     invoiceDetails.add(cDetails);
-                    ae.createUserTransactionLink(invoiceNo, unitNo);
+                    ae.createUserTransactionLink(period, unitNo);
 
                     ae.issueInvoice(invoiceDetails);
                     setTable();

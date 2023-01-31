@@ -350,7 +350,7 @@ public class AdminExecutivePaymentGatewayModify extends javax.swing.JFrame {
     FileHandling fh = new FileHandling();
     List<String> bookingList = new ArrayList<>();
     String bookingID; String facilityID; String facilityName;
-    String unitPrice; String totalPrice; String date;
+    String unitPrice; String totalPrice; String date; String fctNameGen;
     
     private void setDefault() {
         
@@ -363,6 +363,7 @@ public class AdminExecutivePaymentGatewayModify extends javax.swing.JFrame {
             String startTime = bookingDetails[3];
             String endTime = bookingDetails[4];
             this.date = bookingDetails[5];
+            this.fctNameGen = bookingDetails[6];
             String[] tbData = {facilityName, startTime, endTime};
             tableModel.addRow(tbData);
         }
@@ -421,7 +422,7 @@ public class AdminExecutivePaymentGatewayModify extends javax.swing.JFrame {
             JOptionPane.showMessageDialog (null, "Facility Booking has been modified!", 
                             "MODIFY FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
             dispose();
-            new AdminExecutiveViewFacilityBooking(facilityID, facilityName).setVisible(true);
+            new AdminExecutiveViewFacilityBooking(facilityID, fctNameGen).setVisible(true);
         }
     }//GEN-LAST:event_bookBtActionPerformed
 

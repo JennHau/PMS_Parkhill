@@ -691,7 +691,7 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
                 if(result == JOptionPane.YES_OPTION){
                     warningMessage.setText("");
                     String deletionID = String.valueOf(tableModel.getValueAt(row, 1));
-                    ae.restoreUnit(deletionID);
+                    ae.restoreUnit(deletionID.toLowerCase());
                     setTable();
                     JOptionPane.showMessageDialog (null, "Property unit has been restored!", 
                          "RESTORE PROPERTY UNIT", JOptionPane.INFORMATION_MESSAGE);
@@ -940,7 +940,7 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
         
         for (int i = 0; i < availableList.size(); i++) {
             String[] propertyDetails = propertiesArray[i].split(";");
-            String deletionID = propertyDetails[0];
+            String deletionID = propertyDetails[0].toUpperCase();
             String unitNo = propertyDetails[1];
             String squareFoot = propertyDetails[2];
             String status = propertyDetails[3];

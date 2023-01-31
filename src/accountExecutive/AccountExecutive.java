@@ -280,7 +280,7 @@ public class AccountExecutive extends Users {
         fh.fileWrite("invoices.txt", true, newData);
     }
 
-    public void createUserTransactionLink(String invoiceNo, String unitNo) {
+    public void createUserTransactionLink(String period, String unitNo) {
         List<String> userList = fh.fileRead("userProfile.txt");
         String[] userArray = new String[userList.size()];
         userList.toArray(userArray);
@@ -308,14 +308,15 @@ public class AccountExecutive extends Users {
         boolean check = false;
         for (int i = 1; i < uTLinkList.size(); i++) {
             String[] uTDetails = uTLinkArray[i].split(";");
-            String eInvoiceNo = uTDetails[0];
-            if (eInvoiceNo.equals(invoiceNo)) {
+            String lPeriod = uTDetails[0];
+            String lUnitNo = uTDetails[1];
+            if (lPeriod.equals(period) && lUnitNo.equals(unitNo)) {
                 check = true;
             }
         }
         if (check == false) {
             List<String> cDetails = new ArrayList<>();
-            cDetails.add(invoiceNo + ";" + tenantID + ";" + residentID + ";");
+            cDetails.add(period +";"+ unitNo +";"+ tenantID +";"+ residentID +";");
             fh.fileWrite("userTransactionLink.txt", true, cDetails);
         }
     }
@@ -481,9 +482,11 @@ public class AccountExecutive extends Users {
 
                 if (einvoiceNo.equals(invoiceNo)) {
                     String todayDate = todayDate();
-                    newData.add(einvoiceNo + ";" + unitNo + ";" + feeType + ";" + target + ";"
-                            + consump + ";" + unit + ";" + unitPrice + ";" + totalPrice + ";"
-                            + period + ";" + userID + ";" + todayDate + ";" + generatedDate + ";");
+                    newData.add(einvoiceNo + ";" + unitNo + ";" + feeType + ";"
+                            + target + ";" + consump + ";" + unit + ";"
+                            + unitPrice + ";" + totalPrice + ";" + period + ";"
+                            + userID + ";" + todayDate + ";" + generatedDate
+                            + ";" + "-" + ";");
                 }
             }
             fh.fileWrite("payment.txt", true, newData);
@@ -652,8 +655,11 @@ public class AccountExecutive extends Users {
                     tIssuedDate = pendingPayment[1];
                 }
             }
+            DecimalFormat df = new DecimalFormat("0.00");
+            String totalOut = df.format(totalPrice);
+            
             String cDetials = tUnitNo + ";" + tInvoiceNo + ";" + tIssuedDate + ";"
-                    + String.valueOf(totalPrice) + ";";
+                    + String.valueOf(totalOut) + ";";
             availablePendingPayment.add(cDetials);
         }
         return availablePendingPayment;
@@ -793,59 +799,106 @@ public class AccountExecutive extends Users {
         }
     }
 
+//    public List<String> extractAllStatementUnit(String status, String monthYear) {
+//        List<String> availableInvoice = new ArrayList<>();
+//        List<String> availableStatements = new ArrayList<>();
+//        try {
+//            List<String> invoicesList = fh.fileRead("invoices.txt");
+//            String[] invoicesArray = new String[invoicesList.size()];
+//            invoicesList.toArray(invoicesArray);
+//            
+//            List<String> statementsList = fh.fileRead("statements.txt");
+//            String[] statementsArray = new String[statementsList.size()];
+//            statementsList.toArray(statementsArray);
+//
+//            if (status.equals("PENDING")) {
+//                for (int i = 1; i < invoicesList.size(); i++) {
+//                    String[] invoiceDetails = invoicesArray[i].split(";");
+//                    String eInvoiceNo = invoiceDetails[0];
+//                    String eIssuedDate = invoiceDetails[9];
+//                    String issuedDate_temp = eIssuedDate.substring(eIssuedDate.length() - 7);
+//                    String issuedDate;
+//                    if(issuedDate_temp.startsWith("0")) {
+//                        issuedDate = issuedDate_temp.substring(1);
+//                    } else {
+//                        issuedDate = issuedDate_temp;
+//                    }
+//
+//                    boolean check = false;
+//                    if (issuedDate.equals(monthYear)) {
+//                        for (int j = 1; j < statementsList.size(); j++) {
+//                            String[] statementDetails = statementsArray[j].split(";");
+//                            String sInvoiceNo = statementDetails[0];
+//                            if (sInvoiceNo.equals(eInvoiceNo)) {
+//                                check = true;
+//                            }
+//                        }
+//                        if (check == false && !availableInvoice.contains(eInvoiceNo)) {
+//                            availableInvoice.add(eInvoiceNo);
+//                            
+//                        }
+//                    }
+//                }
+//                availableStatements = extractStatementUnitDetails(availableInvoice);
+//
+//            } else if (status.equals("ISSUED")) {
+//                for (int i = 1; i < statementsList.size(); i++) {
+//                    String[] statementDetails = statementsArray[i].split(";");
+//                    String invoiceNo = statementDetails[0];
+//                    if (!availableInvoice.contains(invoiceNo)) {
+//                        availableInvoice.add(invoiceNo);
+//                    }
+//                }
+//                availableStatements = extractStatementUnitDetails(availableInvoice);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return availableStatements;
+//    }
     public List<String> extractAllStatementUnit(String status, String monthYear) {
-        List<String> availableInvoice = new ArrayList<>();
-        List<String> availableStatements = new ArrayList<>();
-        try {
-            List<String> invoicesList = fh.fileRead("invoices.txt");
-            String[] invoicesArray = new String[invoicesList.size()];
-            invoicesList.toArray(invoicesArray);
-            
-            List<String> statementsList = fh.fileRead("statements.txt");
-            String[] statementsArray = new String[statementsList.size()];
-            statementsList.toArray(statementsArray);
-
-            if (status.equals("PENDING")) {
-                for (int i = 1; i < invoicesList.size(); i++) {
-                    String[] invoiceDetails = invoicesArray[i].split(";");
-                    String eInvoiceNo = invoiceDetails[0];
-                    String eIssuedDate = invoiceDetails[9];
-                    String issuedDate = eIssuedDate.substring(eIssuedDate.length() - 7);
-
-                    boolean check = false;
-                    if (issuedDate.equals(monthYear)) {
-                        for (int j = 1; j < statementsList.size(); j++) {
-                            String[] statementDetails = statementsArray[j].split(";");
-                            String sInvoiceNo = statementDetails[0];
-                            if (sInvoiceNo.equals(eInvoiceNo)) {
-                                check = true;
-                            }
-                        }
-                        if (check == false && !availableInvoice.contains(eInvoiceNo)) {
-                            availableInvoice.add(eInvoiceNo);
-                            
+        List<String> transList = fh.fileRead("userTransactionLink.txt");
+        List<String> statementList = fh.fileRead("statements.txt");
+        
+        List<String> availableStatement = new ArrayList<>();
+        if(status.equals("PENDING")) {
+            for (int i = 1; i < transList.size(); i++) {
+                String[] unitDetails = transList.get(i).split(";");
+                String uPeriod = unitDetails[0];
+                String uUnitNo = unitDetails[1];
+                
+                if(uPeriod.equals(monthYear)) {
+                    boolean check = true;
+                    for (int j = 1; j < statementList.size(); j++) {
+                        String[] statementDetails = statementList.get(j).split(";");
+                        String period = statementDetails[0];
+                        String sUnitNo = statementDetails[1];
+                        if(uPeriod.equals(period) && uUnitNo.equals(sUnitNo)) {
+                            check = false;
                         }
                     }
-                }
-                availableStatements = extractStatementUnitDetails(availableInvoice);
-
-            } else if (status.equals("ISSUED")) {
-                for (int i = 1; i < statementsList.size(); i++) {
-                    String[] statementDetails = statementsArray[i].split(";");
-                    String invoiceNo = statementDetails[0];
-                    if (!availableInvoice.contains(invoiceNo)) {
-                        availableInvoice.add(invoiceNo);
+                    if(check) {
+                        availableStatement.add(monthYear +";"+ uUnitNo +";");
                     }
                 }
-                availableStatements = extractStatementUnitDetails(availableInvoice);
+                
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else if(status.equals("ISSUED")) {
+            for (int i = 1; i < statementList.size(); i++) {
+                    String[] statementDetails = transList.get(i).split(";");
+                    String period = statementDetails[0];
+                    String sUnitNo = statementDetails[1];
+                    availableStatement.add(period +";"+ sUnitNo +";");
+                    
+                }
         }
-        return availableStatements;
+        List<String> fullStatement = extractStatementUnitDetails
+                                        (availableStatement);
+        return fullStatement;
     }
+    
 
-    public List<String> extractStatementUnitDetails(List<String> availableInvoice) {
+    public List<String> extractStatementUnitDetails(List<String> statementUnit) {
         List<String> availableStatements = new ArrayList<>();
         
         List<String> usernameList = new ArrayList<>();
@@ -874,27 +927,34 @@ public class AccountExecutive extends Users {
         }
         
         
-        for (String invoiceNo : availableInvoice) {
+        for (int j = 0; j<statementUnit.size(); j++) {
+            String[] statementDetails = statementUnit.get(j).split(";");
+            String sPeriod = statementDetails[0];
+            String sUnitNo = statementDetails[1];
+            
             String owner = "-";
             String resident = "-";
             String target = "";
+            
             List<String> uTLinkList = fh.fileRead("userTransactionLink.txt");
             String[] uTLinkArray = new String[uTLinkList.size()];
             uTLinkList.toArray(uTLinkArray);
 
             for (int i = 1; i < uTLinkList.size(); i++) {
                 String[] uTLinkDetails = uTLinkArray[i].split(";");
-                String einvoiceNo = uTLinkDetails[0];
-                String eTenantID = uTLinkDetails[1];
-                String eResidentID = uTLinkDetails[2];
-
-                if (einvoiceNo.equals(invoiceNo) && einvoiceNo.startsWith("S")) {
+                String ePeriod = uTLinkDetails[0];
+                String eUnitNo = uTLinkDetails[1];
+                String eTenantID = uTLinkDetails[2];
+                String eResidentID = uTLinkDetails[3];
+                
+                if (sPeriod.equals(ePeriod) && sUnitNo.equals(eUnitNo) &&
+                        eUnitNo.startsWith("S")) {
                     target = "Commercial";
                     owner = usernameList.get(userIDList.indexOf(eTenantID.toUpperCase()));
                     if(!eResidentID.equals("-")) {
                         resident = usernameList.get(userIDList.indexOf(eResidentID.toUpperCase()));
                     }   
-                } else if (einvoiceNo.equals(invoiceNo)) {
+                } else if (sPeriod.equals(ePeriod) && sUnitNo.equals(eUnitNo)) {
                     target = "Residential";
                     owner = usernameList.get(userIDList.indexOf(eTenantID.toUpperCase()));
                     if(!eResidentID.equals("-")) {
@@ -902,8 +962,7 @@ public class AccountExecutive extends Users {
                     }
                 }
             }
-            String unitNo = invoiceNo.substring(0, invoiceNo.length()-6);
-            availableStatements.add(unitNo + ";" + target + ";" + owner + ";" + resident + ";");
+            availableStatements.add(sUnitNo + ";" + target + ";" + owner + ";" + resident + ";");
         }
         return availableStatements;
     }
@@ -913,11 +972,221 @@ public class AccountExecutive extends Users {
             List<String> newData = new ArrayList<>();
             String todayDate = todayDate();
             for (String statements : availableStatement) {
-                newData.add(statements + todayDate);
+                newData.add(statements + todayDate +";"+ "-" +";");
             }
             fh.fileWrite("statements.txt", true, newData);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public void deleteTrans(String unitNo, String deleteID) {
+        List<String> newData = new ArrayList<>();
+        
+        List<String> transList1 = fh.fileRead("invoices.txt");
+        for(int i = 0; i<transList1.size(); i++) {
+            String[] transDetails = transList1.get(i).split(";");
+            String invoiceNo = transDetails[0];
+            String eUnitNo = transDetails[1];
+            String feeType = transDetails[2];
+            String target = transDetails[3];
+            String consumption = transDetails[4];
+            String unit = transDetails[5];
+            String unitPrice = transDetails[6];
+            String totalPrice = transDetails[7];
+            String period = transDetails[8];
+            String generatedDate = transDetails[9];
+            String eDeleteID = transDetails[10];
+            
+            if(unitNo.equals(eUnitNo) && eDeleteID.equals("-")) {
+                String cDetails = invoiceNo +";"+ unitNo +";"+ feeType +";"+ target +";"+
+                    consumption +";"+ unit +";"+ unitPrice +";"+ totalPrice +";"+
+                    period +";"+ generatedDate +";"+ deleteID +";";
+                newData.add(cDetails);
+            } else {
+                newData.add(transList1.get(i));
+            }
+        } fh.fileWrite("invoices.txt", false, newData);
+        
+        List<String> transList2 = fh.fileRead("payment.txt");
+        newData.clear();
+        for(int i = 0; i<transList2.size(); i++) {
+            String[] transDetails = transList2.get(i).split(";");
+            String invoiceNo = transDetails[0];
+            String eUnitNo = transDetails[1];
+            String feeType = transDetails[2];
+            String target = transDetails[3];
+            String consumption = transDetails[4];
+            String unit = transDetails[5];
+            String unitPrice = transDetails[6];
+            String totalPrice = transDetails[7];
+            String period = transDetails[8];
+            String payee = transDetails[9];
+            String paymentDate = transDetails[10];
+            String generatedDate = transDetails[11];
+            String eDeleteID = transDetails[12];
+            
+            if(unitNo.equals(eUnitNo) && eDeleteID.equals("-")) {
+                String cDetails = invoiceNo +";"+ unitNo +";"+ feeType +";"+ target +";"+
+                    consumption +";"+ unit +";"+ unitPrice +";"+ totalPrice +";"+
+                    period +";"+ payee +";"+ paymentDate +";"+ generatedDate +";"+
+                        deleteID +";";
+                newData.add(cDetails);
+            } else {
+                newData.add(transList2.get(i));
+            }
+        } fh.fileWrite("payment.txt", false, newData);
+        
+        List<String> transList3 = fh.fileRead("receipt.txt");
+        newData.clear();
+        for(int i = 0; i<transList3.size(); i++) {
+            String[] transDetails = transList3.get(i).split(";");
+            String invoiceNo = transDetails[0];
+            String eUnitNo = transDetails[1];
+            String feeType = transDetails[2];
+            String target = transDetails[3];
+            String consumption = transDetails[4];
+            String unit = transDetails[5];
+            String unitPrice = transDetails[6];
+            String totalPrice = transDetails[7];
+            String period = transDetails[8];
+            String payee = transDetails[9];
+            String paymentDate = transDetails[10];
+            String generatedDate = transDetails[11];
+            String eDeleteID = transDetails[12];
+            
+            if(unitNo.equals(eUnitNo) && eDeleteID.equals("-")) {
+                String cDetails = invoiceNo +";"+ unitNo +";"+ feeType +";"+ target +";"+
+                    consumption +";"+ unit +";"+ unitPrice +";"+ totalPrice +";"+
+                    period +";"+ payee +";"+ paymentDate +";"+ generatedDate +";"+
+                        deleteID +";";
+                newData.add(cDetails);
+            } else {
+                newData.add(transList3.get(i));
+            }
+        } fh.fileWrite("receipt.txt", false, newData);
+        
+        List<String> transList4 = fh.fileRead("statements.txt");
+        newData.clear();
+        for(int i = 0; i<transList4.size(); i++) {
+            String[] transDetails = transList4.get(i).split(";");
+            String period = transDetails[0];
+            String eUnitNo = transDetails[1];
+            String issuedDate = transDetails[2];
+            String eDeleteID = transDetails[3];
+            
+            if(unitNo.equals(eUnitNo) && eDeleteID.equals("-")) {
+                String cDetails = period +";"+ eUnitNo +";"+ issuedDate +";"+
+                        deleteID +";";
+                newData.add(cDetails);
+            } else {
+                newData.add(transList4.get(i));
+            }
+        } fh.fileWrite("statements.txt", false, newData);
+    }
+    
+    public void restoreTrans(String deleteID) {
+        List<String> newData = new ArrayList<>();
+        
+        List<String> transList1 = fh.fileRead("invoices.txt");
+        for(int i = 0; i<transList1.size(); i++) {
+            String[] transDetails = transList1.get(i).split(";");
+            String invoiceNo = transDetails[0];
+            String eUnitNo = transDetails[1];
+            String feeType = transDetails[2];
+            String target = transDetails[3];
+            String consumption = transDetails[4];
+            String unit = transDetails[5];
+            String unitPrice = transDetails[6];
+            String totalPrice = transDetails[7];
+            String period = transDetails[8];
+            String generatedDate = transDetails[9];
+            String eDeleteID = transDetails[10];
+            
+            if(eDeleteID.equals(deleteID)) {
+                String cDetails = invoiceNo +";"+ eUnitNo +";"+ feeType +";"+ target +";"+
+                    consumption +";"+ unit +";"+ unitPrice +";"+ totalPrice +";"+
+                    period +";"+ generatedDate +";"+ "-" +";";
+                newData.add(cDetails);
+            } else {
+                newData.add(transList1.get(i));
+            }
+        } fh.fileWrite("invoices.txt", false, newData);
+        
+        List<String> transList2 = fh.fileRead("payment.txt");
+        newData.clear();
+        for(int i = 0; i<transList2.size(); i++) {
+            String[] transDetails = transList2.get(i).split(";");
+            String invoiceNo = transDetails[0];
+            String eUnitNo = transDetails[1];
+            String feeType = transDetails[2];
+            String target = transDetails[3];
+            String consumption = transDetails[4];
+            String unit = transDetails[5];
+            String unitPrice = transDetails[6];
+            String totalPrice = transDetails[7];
+            String period = transDetails[8];
+            String payee = transDetails[9];
+            String paymentDate = transDetails[10];
+            String generatedDate = transDetails[11];
+            String eDeleteID = transDetails[12];
+            
+            if(eDeleteID.equals(deleteID)) {
+                String cDetails = invoiceNo +";"+ eUnitNo +";"+ feeType +";"+ target +";"+
+                    consumption +";"+ unit +";"+ unitPrice +";"+ totalPrice +";"+
+                    period +";"+ payee +";"+ paymentDate +";"+ generatedDate +";"+
+                        "-" +";";
+                newData.add(cDetails);
+            } else {
+                newData.add(transList2.get(i));
+            }
+        } fh.fileWrite("payment.txt", false, newData);
+        
+        List<String> transList3 = fh.fileRead("receipt.txt");
+        newData.clear();
+        for(int i = 0; i<transList3.size(); i++) {
+            String[] transDetails = transList3.get(i).split(";");
+            String invoiceNo = transDetails[0];
+            String eUnitNo = transDetails[1];
+            String feeType = transDetails[2];
+            String target = transDetails[3];
+            String consumption = transDetails[4];
+            String unit = transDetails[5];
+            String unitPrice = transDetails[6];
+            String totalPrice = transDetails[7];
+            String period = transDetails[8];
+            String payee = transDetails[9];
+            String paymentDate = transDetails[10];
+            String generatedDate = transDetails[11];
+            String eDeleteID = transDetails[12];
+            
+            if(eDeleteID.equals(deleteID)) {
+                String cDetails = invoiceNo +";"+ eUnitNo +";"+ feeType +";"+ target +";"+
+                    consumption +";"+ unit +";"+ unitPrice +";"+ totalPrice +";"+
+                    period +";"+ payee +";"+ paymentDate +";"+ generatedDate +";"+
+                        "-" +";";
+                newData.add(cDetails);
+            } else {
+                newData.add(transList3.get(i));
+            }
+        } fh.fileWrite("receipt.txt", false, newData);
+        
+        List<String> transList4 = fh.fileRead("statements.txt");
+        newData.clear();
+        for(int i = 0; i<transList4.size(); i++) {
+            String[] transDetails = transList4.get(i).split(";");
+            String period = transDetails[0];
+            String eUnitNo = transDetails[1];
+            String issuedDate = transDetails[2];
+            String eDeleteID = transDetails[3];
+            
+            if(eDeleteID.equals(deleteID)) {
+                String cDetails = period +";"+ eUnitNo +";"+ issuedDate +";"+
+                        "-" +";";
+                newData.add(cDetails);
+            } else {
+                newData.add(transList4.get(i));
+            }
+        } fh.fileWrite("statements.txt", false, newData);
     }
 }

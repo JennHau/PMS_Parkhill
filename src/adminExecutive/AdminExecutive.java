@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import accountExecutive.AccountExecutive;
-import com.sun.source.tree.NewArrayTree;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -248,6 +247,9 @@ public class AdminExecutive {
         fh.fileWrite("userProfile.txt", false, newData1);
         fh.fileWrite("inactiveUserProfile.txt", true, newData2);
         updatePropertySoldStatus(unitNo, "unsold");
+        
+        AccountExecutive acce = new AccountExecutive();
+        acce.deleteTrans(unitNo, currentDeleteID);
     }
     
     public void deleteResident(String unitNo) {
@@ -379,6 +381,9 @@ public class AdminExecutive {
             
         fh.fileWrite("userProfile.txt", true, newData1);
         fh.fileWrite("inactiveUserProfile.txt", false, newData2);
+        
+        AccountExecutive acce = new AccountExecutive();
+        acce.restoreTrans(deletionID);
     }
     
     public void removeDefaultUserAccount(String unitNo) {
@@ -686,7 +691,7 @@ public class AdminExecutive {
             String eUnitNo = userDetails[8];
             
             if (eUnitNo.equals(unitNo)) {
-                availableComplainer.add(userID +" - "+ name);
+                availableComplainer.add(userID.toUpperCase() +" - "+ name);
             }
         } return availableComplainer;
     }
@@ -922,6 +927,21 @@ public class AdminExecutive {
                 newData.add(employeeTypeList.get(i));
             }
         } fh.fileWrite("employeeList.txt", false, newData);
+        
+        if(employeeID.startsWith("scg")) {
+            List<String> userProfileList =  fh.fileRead("userProfile.txt");
+        
+            newData.clear();
+
+            for (int i = 0; i < userProfileList.size(); i++) {
+                String[] userDetails = userProfileList.get(i).split(";");
+                String id = userDetails[0];
+
+                if (!id.equals(employeeID)) {
+                    newData.add(userProfileList.get(i));
+                }
+            } fh.fileWrite("userProfile.txt", false, newData);
+        }
     }
     
     public boolean checkAddFacilityValidation(String facilityName, String fctID) {
@@ -940,7 +960,6 @@ public class AdminExecutive {
     }
     
     public void deleteFacility(String facilityID, String facilityName) {
-        System.out.println(facilityID +" "+ facilityName);
         List<String> facilityList =  fh.fileRead("facility.txt");
         
         List<String> newData = new ArrayList<>();
