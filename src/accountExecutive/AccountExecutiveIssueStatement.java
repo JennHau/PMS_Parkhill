@@ -749,12 +749,12 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
 
                     for (int i=0; i<tableModel.getRowCount(); i++) {
                         String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
-                        String cMonthYear = monthYear.substring(0, monthYear.indexOf("/")) 
-                                + monthYear.substring(monthYear.indexOf("/") + 1);
-                        String invoiceNo = String.valueOf(tableModel.getValueAt(i, 1)) + cMonthYear;
+//                        String cMonthYear = monthYear.substring(0, monthYear.indexOf("/")) 
+//                                + monthYear.substring(monthYear.indexOf("/") + 1);
+//                        String invoiceNo = String.valueOf(tableModel.getValueAt(i, 1)) + cMonthYear;
                         String unitNo = String.valueOf(tableModel.getValueAt(i, 1));
                         
-                        String cDetails = invoiceNo +";"+ unitNo +";";
+                        String cDetails = monthYear +";"+ unitNo +";";
                         statementDetails.add(cDetails);
                     }
                         AccountExecutive ae = new AccountExecutive();
@@ -786,12 +786,12 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
 
                     if(result == JOptionPane.YES_OPTION){
                         String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
-                        String cMonthYear = monthYear.substring(0, monthYear.indexOf("/")) 
-                                + monthYear.substring(monthYear.indexOf("/") + 1);
-                        String invoiceNo = String.valueOf(tableModel.getValueAt(row, 1)) + cMonthYear;
+//                        String cMonthYear = monthYear.substring(0, monthYear.indexOf("/")) 
+//                                + monthYear.substring(monthYear.indexOf("/") + 1);
+//                        String invoiceNo = String.valueOf(tableModel.getValueAt(row, 1)) + cMonthYear;
                         String unitNo = String.valueOf(tableModel.getValueAt(row, 1));
 
-                        String cDetails = invoiceNo +";"+ unitNo +";";
+                        String cDetails = monthYear +";"+ unitNo +";";
                         statementDetails.add(cDetails);
 
                         AccountExecutive ae = new AccountExecutive();

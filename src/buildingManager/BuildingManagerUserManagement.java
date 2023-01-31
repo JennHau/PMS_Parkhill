@@ -4,8 +4,6 @@
  */
 package buildingManager;
 
-import adminExecutive.AdminExecutive;
-import adminExecutive.AdminExecutiveModifyResidentTenant;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.util.List;

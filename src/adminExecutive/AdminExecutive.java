@@ -247,6 +247,9 @@ public class AdminExecutive {
         fh.fileWrite("userProfile.txt", false, newData1);
         fh.fileWrite("inactiveUserProfile.txt", true, newData2);
         updatePropertySoldStatus(unitNo, "unsold");
+        
+        AccountExecutive acce = new AccountExecutive();
+        acce.deleteTrans(unitNo, currentDeleteID);
     }
     
     public void deleteResident(String unitNo) {
@@ -378,6 +381,9 @@ public class AdminExecutive {
             
         fh.fileWrite("userProfile.txt", true, newData1);
         fh.fileWrite("inactiveUserProfile.txt", false, newData2);
+        
+        AccountExecutive acce = new AccountExecutive();
+        acce.restoreTrans(deletionID);
     }
     
     public void removeDefaultUserAccount(String unitNo) {
@@ -954,7 +960,6 @@ public class AdminExecutive {
     }
     
     public void deleteFacility(String facilityID, String facilityName) {
-        System.out.println(facilityID +" "+ facilityName);
         List<String> facilityList =  fh.fileRead("facility.txt");
         
         List<String> newData = new ArrayList<>();

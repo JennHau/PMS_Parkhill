@@ -677,7 +677,8 @@ public class AdminExecutiveResidentTManagementHistory extends javax.swing.JFrame
         AdminExecutive ae = new AdminExecutive();
         
         if (column == 7) {
-            String deletionID = String.valueOf(tableModel.getValueAt(row, 1));
+            String deletionID = String.valueOf(tableModel.getValueAt(row, 1))
+                                .toLowerCase();
             String unitNo = String.valueOf(tableModel.getValueAt(row, 2));
             String type = String.valueOf(tableModel.getValueAt(row, 5));
             
@@ -975,8 +976,8 @@ public class AdminExecutiveResidentTManagementHistory extends javax.swing.JFrame
             
             String deleteDT = userDetails[4];
             
-            String[] tbData = {String.valueOf(i+1), deleteID, unitNo, userID,
-                name, type, deleteDT, "RESTORE"};
+            String[] tbData = {String.valueOf(i+1), deleteID.toUpperCase(),
+                unitNo, userID, name, type, deleteDT, "RESTORE"};
             tableModel.addRow(tbData);
         }
     }

@@ -650,13 +650,17 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
         int column = jTable1.getSelectedColumn();
         int row = jTable1.getSelectedRow();
+        String action = (String)tableModel.getValueAt(row, column);
         
-        if (column == 6) {
+        if (column == 6 && action.equals("MAKE PAYMENT")) {
             String invoiceNo = String.valueOf(tableModel.getValueAt(row, 0));
             String unitNo = String.valueOf(tableModel.getValueAt(row, 2));
             AccountExecutiveMakePayment ae = new AccountExecutiveMakePayment(invoiceNo, unitNo);
             ae.setVisible(true);
             dispose();
+        } else if (column == 6 && action.equals("ISSUE RECEIPT")) {
+            dispose();
+            new AccountExecutiveIssueReceipt().setVisible(true);
         }
     }//GEN-LAST:event_jTable1MouseClicked
 

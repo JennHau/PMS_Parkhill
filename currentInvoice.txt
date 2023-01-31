@@ -1,1 +1,1 @@
-Gas;Residential;
+Management Fee;Commercial;
