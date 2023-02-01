@@ -4,6 +4,7 @@
  */
 package residentANDtenant;
 
+import java.time.LocalTime;
 import pms_parkhill_residence.CRUD;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +95,7 @@ public class ResidentTenant {
         
         List<String> visitorFiles = fh.fileRead(TF.visitorPass);
         for (String eachVis : visitorFiles) {
-            String rtID = eachVis.split(TF.sp)[7];
+            String rtID = eachVis.split(TF.sp)[10];
             if (rtID.equals(currentRTid)) {
                 registeredVisitor.add(eachVis);
             }
@@ -269,6 +270,37 @@ public class ResidentTenant {
         return null;
     }
     
+    public String[] getBookedStartAndEndTime(String bookingId) {
+        String[] startEndTime = {"", ""};
+        List<String> facilityBooking = fh.fileRead(TF.facilityBookingFile);
+        
+        for (String eachBooking : facilityBooking) {
+            String[] bookingDet = eachBooking.split(TF.sp);
+            String bookingID = bookingDet[0];
+            
+            if (bookingID.equals(bookingId)) {
+                String startTime = bookingDet[5];
+                String endTime = bookingDet[6];
+                
+                if (startEndTime[0].equals("")) {
+                    startEndTime[0] = startTime;
+                }
+                if (startEndTime[1].equals("")) {
+                    startEndTime[1] = endTime;
+                }
+                
+                if (LocalTime.parse(startTime).isBefore(LocalTime.parse(startEndTime[0]))) {
+                    startEndTime[0] = startTime;
+                }
+                if (LocalTime.parse(endTime).isAfter(LocalTime.parse(startEndTime[1]))) {
+                    startEndTime[1] = endTime;
+                }
+            }
+        }
+        
+        return startEndTime;
+    }
+    
     public String concatenateKey(String[] keyList) {
         String concatenatedKey = "";
         for (String eachKey : keyList) {
@@ -341,8 +373,8 @@ public class ResidentTenant {
         page.setVisible(true);
     }
     
-    public void toPaymentCredential(Users user, String totalAmount, ArrayList itemId, boolean forFacility) {
-        ResidentTenantPaymentCredential page = new ResidentTenantPaymentCredential(user, totalAmount, itemId, forFacility);
+    public void toPaymentCredential(Users user, String totalAmount, ArrayList itemId, boolean forFacility, boolean modifyBooking) {
+        ResidentTenantPaymentCredential page = new ResidentTenantPaymentCredential(user, totalAmount, itemId, forFacility, modifyBooking);
         page.setVisible(true);
     }
     
@@ -361,6 +393,11 @@ public class ResidentTenant {
         page.setVisible(true);
     }
     
+    public void toInvoicePayment(String invoiceNo, Users user) {
+        ResidentTenantInvoicePayment page = new ResidentTenantInvoicePayment(invoiceNo, user);
+        page.setVisible(true);
+    }
+    
     public void toStatement(Users user) {
         ResidentTenantStatement page = new ResidentTenantStatement(user);
         page.setVisible(true);
@@ -376,8 +413,13 @@ public class ResidentTenant {
         page.setVisible(true);
     }
     
+    public void toManageBookedFacility(Users user, Facility fb, String bookingID, String date) {
+        ResidentTenantManageBookedFacility page = new ResidentTenantManageBookedFacility(user, fb, bookingID, date);
+        page.setVisible(true);
+    }
+    
     public void toFacilityBookingManagement(Users user) {
-        ResidentTenantFacilityBookingManagement page = new ResidentTenantFacilityBookingManagement(user);
+        ResidentTenantFacilityBooking page = new ResidentTenantFacilityBooking(user);
         page.setVisible(true);
     }
     

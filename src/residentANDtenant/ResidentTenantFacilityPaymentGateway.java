@@ -20,12 +20,15 @@ import pms_parkhill_residence.Users;
  * @author wongj
  */
 public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
+    public static ResidentTenantFacilityPaymentGateway rtFacPay;
     ResidentTenant RT = new ResidentTenant();
     private final Users user;
     private final Facility fb;
     /**
      * Creates new form homePage
+     * @param user
      * @param bookingList
+     * @param fb
      */
     public ResidentTenantFacilityPaymentGateway(Users user, List<String> bookingList, Facility fb) {
         this.user = user;
@@ -34,6 +37,8 @@ public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
         setWindowIcon();
         this.bookingList = bookingList;
         setDefault();
+        
+        rtFacPay = this;
     }
 
     /**
@@ -314,7 +319,6 @@ public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
     String unitPrice; String totalPrice; String date;
     
     private void setDefault() {
-        
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
         for(int i = 0; i<bookingList.size(); i++) {
             String[] bookingDetails = bookingList.get(i).split(";");
@@ -342,13 +346,13 @@ public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
         
         bookingIDLabel.setText(bookingID); facilityIDLabel.setText(facilityID);
         totalLabel.setText("TOTAL: RM " + totalPrice); dateLabel.setText(date);
-        unitNoLabel.setText(this.user.getUnitNo());
+//        unitNoLabel.setText(this.user.getUnitNo());
+        unitNoLabel.setText("OKOK");
     }
     
     private void cancelBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBTActionPerformed
         // TODO add your handling code here:
-        dispose();
-        RT.toBookFacility(user, fb);
+        this.dispose();
     }//GEN-LAST:event_cancelBTActionPerformed
 
     private void bookBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookBtActionPerformed
@@ -369,10 +373,7 @@ public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
                         +";"+ totalPrice +";"+ String.valueOf(LocalDate.now()) +";");
             } 
             
-            RT.toPaymentCredential(user, totalPrice, newData, rootPaneCheckingEnabled);
-            
-            dispose();
-            RT.toBookedFacility(user);
+            RT.toPaymentCredential(user, totalPrice, newData, true, false);
         }
     }//GEN-LAST:event_bookBtActionPerformed
 

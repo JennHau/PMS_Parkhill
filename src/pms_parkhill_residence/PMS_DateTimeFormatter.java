@@ -41,6 +41,14 @@ public class PMS_DateTimeFormatter {
         return targetFormat.format(date);
     }
     
+    public String changeFormatDate2(String dateString) throws ParseException {
+        SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat targetFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = originalFormat.parse(dateString);
+        
+        return targetFormat.format(date);
+    }
+    
     public LocalTime formatTime(String time) {
         java.time.format.DateTimeFormatter timeFormatter = java.time.format.DateTimeFormatter.ofPattern("HH:mm");
         

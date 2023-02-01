@@ -5,8 +5,11 @@
 package residentANDtenant;
 
 import java.awt.Toolkit;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.PMS_DateTimeFormatter;
 import pms_parkhill_residence.Users;
@@ -18,30 +21,33 @@ import pms_parkhill_residence.Users;
 public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
 
     private Users user;
-    private ArrayList<String> itemId;
+    private ArrayList<String> itemList;
     private boolean forFacility;
+    private boolean modifyBooking;
     
     ResidentTenant RT = new ResidentTenant();
     PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
+
     /**
      * Creates new form ResidentTenantPaymentGateway
      * @param user
      * @param totalAmount
-     * @param itemId
+     * @param itemList
      * @param forFacility
      */
-    public ResidentTenantPaymentCredential(Users user, String totalAmount, ArrayList itemId, boolean forFacility) {
+    public ResidentTenantPaymentCredential(Users user, String totalAmount, ArrayList itemList, boolean forFacility, boolean modify) {
         initComponents();
-        runDefaultSetUp(user, totalAmount, itemId, forFacility);
+        runDefaultSetUp(user, totalAmount, itemList, forFacility, modify);
     }
     
-    private void runDefaultSetUp(Users user, String totalAmount, ArrayList itemId, boolean forFacility) {
+    private void runDefaultSetUp(Users user, String totalAmount, ArrayList itemList, boolean forFacility, boolean modify) {
         setWindowIcon();
         amountSetUp(totalAmount);
         
         this.setUser(user);
         this.forFacility = forFacility;
-        this.setItemId(itemId);
+        this.modifyBooking = modify;
+        this.setItemList(itemList);
     }
     
     private void amountSetUp(String totalAmount) {
@@ -87,6 +93,7 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
         cancelBTN = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("PARKHILL RESIDENCE");
 
         jPanel1.setBackground(new java.awt.Color(13, 24, 42));
 
@@ -295,12 +302,21 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
         }
         
         if (payable) {
-            if (!itemId.isEmpty()) {
+            if (!itemList.isEmpty()) {
                 if (forFacility) {
-                    RT.fh.fileWrite("facilityBooking.txt", true, itemId);
-
-                    JOptionPane.showMessageDialog (null, "Facility Booking has been made!", 
-                                    "FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
+                    if (modifyBooking) {
+                        String bookingId = itemList.get(0).split(RT.TF.sp)[0];
+                        
+                        RT.crud.delete(RT.TF.facilityBookingFile, bookingId, 0);
+                        RT.fh.fileWrite("facilityBooking.txt", true, itemList);
+                        JOptionPane.showMessageDialog (null, "Facility Booking has been modified!", 
+                                        "MODIFY FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else {
+                        RT.fh.fileWrite("facilityBooking.txt", true, itemList);
+                        JOptionPane.showMessageDialog (null, "Facility Booking has been made!", 
+                                        "FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
                 else {
                     ArrayList<String> paidInv = new ArrayList<>();
@@ -310,20 +326,25 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
                         String[] invDet = eachInv.split(RT.TF.sp);
                         String invNo = invDet[0];
 
-                        for (String eachId : itemId) {
+                        for (String eachId : itemList) {
                             if (eachId.equals(invNo)) {
                                 String deletedID = invDet[invDet.length-1];
                                 String issuedDate = invDet[invDet.length-2];
 
                                 invDet[invDet.length-2] = user.getUserID();
-                                invDet[invDet.length-1] = DTF.formatDate2(LocalDate.now().toString()).toString();
-                                invDet[invDet.length] = issuedDate;
-                                invDet[invDet.length] = deletedID;
+                                
+                                try {
+                                    invDet[invDet.length-1] = DTF.changeFormatDate2(LocalDate.now().toString());
+                                } catch (ParseException ex) {
+                                    Logger.getLogger(ResidentTenantPaymentCredential.class.getName()).log(Level.SEVERE, null, ex);
+                                }
 
                                 String toPay = "";
                                 for (String eachData : invDet) {
                                     toPay = toPay + eachData + RT.TF.sp;
                                 }
+                                
+                                toPay = toPay + issuedDate + RT.TF.sp + deletedID + RT.TF.sp;
 
                                 paidInv.add(toPay);
                             }
@@ -338,14 +359,31 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
 
                 if (ResidentTenantPaymentManagement.rtPayMan != null) {
                     ResidentTenantPaymentManagement.rtPayMan.dispose();
-                    this.dispose();
+                }
+                
+                if (ResidentTenantFacilityPaymentGateway.rtFacPay != null) {
+                    ResidentTenantFacilityPaymentGateway.rtFacPay.dispose();
+                }
+                
+                if (ResidentTenantBookFacility.rtBookFacility != null) {
+                    ResidentTenantBookFacility.rtBookFacility.dispose();
+                }
+                
+                if (ResidentTenantPaymentGatewayModifyFacilityBooking.rtPayFacMod != null) {
+                    ResidentTenantPaymentGatewayModifyFacilityBooking.rtPayFacMod.dispose();
+                }
+                
+                if (ResidentTenantManageBookedFacility.rtManageBooked != null) {
+                    ResidentTenantManageBookedFacility.rtManageBooked.dispose();
+                }
+                
+                this.dispose();
                     
-                    if (forFacility) {
-                        RT.toBookedFacility(user);
-                    }
-                    else {
-                        RT.toPaymentManagement(user);
-                    }
+                if (forFacility) {
+                    RT.toBookedFacility(user);
+                }
+                else {
+                    RT.toPaymentManagement(user);
                 }
             }
         }
@@ -460,7 +498,7 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ResidentTenantPaymentCredential(null, null, null, false).setVisible(true);
+                new ResidentTenantPaymentCredential(null, null, null, false, false).setVisible(true);
             }
         });
     }
@@ -493,17 +531,17 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     /**
-     * @return the itemId
+     * @return the itemList
      */
-    public ArrayList<String> getItemId() {
-        return itemId;
+    public ArrayList<String> getItemList() {
+        return itemList;
     }
 
     /**
-     * @param itemId the itemId to set
+     * @param itemList the itemList to set
      */
-    public void setItemId(ArrayList<String> itemId) {
-        this.itemId = itemId;
+    public void setItemList(ArrayList<String> itemList) {
+        this.itemList = itemList;
     }
 
     /**

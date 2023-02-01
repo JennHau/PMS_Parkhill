@@ -15,7 +15,8 @@ import pms_parkhill_residence.Users;
  * @author wongj
  */
 public class ResidentTenantInvoicePaymentGateway extends javax.swing.JFrame {
-
+    ResidentTenant RT = new ResidentTenant();
+    
     /**
      * Creates new form homePage
      * @param invoiceNo
@@ -428,8 +429,8 @@ public class ResidentTenantInvoicePaymentGateway extends javax.swing.JFrame {
 
     private void cancelBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBTActionPerformed
         // TODO add your handling code here:
+        RT.toInvoice(user);
         dispose();
-        new AccountExecutiveMakePayment(invoiceNo, unitNo).setVisible(true);
     }//GEN-LAST:event_cancelBTActionPerformed
 
     private void emailTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailTFKeyTyped
@@ -447,7 +448,7 @@ public class ResidentTenantInvoicePaymentGateway extends javax.swing.JFrame {
         if(result == JOptionPane.YES_OPTION){
             ArrayList<String> itemId = new ArrayList<>();
             itemId.add(invoiceNo);
-            new ResidentTenantPaymentCredential(user, total, itemId, false).setVisible(true);
+            RT.toPaymentCredential(user, total, itemId, false, false);
         }
         
     }//GEN-LAST:event_payBTActionPerformed
