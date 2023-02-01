@@ -81,7 +81,7 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
                 String date = bookDet[3];
                 String type = bookDet[1];
                 String amount = bookDet[2];
-                String[] data = {date, id, type, amount};
+                String[] data = {date, id.toUpperCase(), type, amount};
                 
                 String line = "";
                 for (String eachData : data) {
@@ -94,14 +94,14 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
         }
         
         
-        String month = monthNyear.split("/")[0];
-        String year = monthNyear.split("/")[1];
+//        String month = monthNyear.split("/")[0];
+//        String year = monthNyear.split("/")[1];
+//        
+//        if (month.length() != 2) {
+//            month = "0" + month;
+//        }
         
-        if (month.length() != 2) {
-            month = "0" + month;
-        }
-        
-        LocalDate firstDay = RT.DTF.formatDate(year+"-"+month+"-01");
+        LocalDate firstDay = RT.DTF.formatDate(RT.DTF.changeFormatDate("01/" + monthNyear));
         LocalDate lastDay = firstDay.with(lastDayOfMonth());
         
         for (String eachState : statementList) {
@@ -156,34 +156,18 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
             }
         }
         
-        System.out.println(monthStatement);
-        
         RT.setTableRow(penFeeTab, monthStatement);
     }
     
     private void monthComboBoxSetUp() throws ParseException {
-        ArrayList<String> issuedMonth = new ArrayList<>();
-        
         ArrayList<String> issuedInvoice = RT.getIssuedStatement("S-01-01");
-        ArrayList<ArrayList> invoice = RT.getCurrentUnitInvoice("S-01-01");
-        ArrayList<String> completedInv = invoice.get(1);
         
-        for (String eachIssued : issuedInvoice) {
-            for (String eachComp : completedInv) {
-                String[] compData = eachComp.split(RT.TF.sp);
-                String invId = compData[0];
-                if (eachIssued.equals(invId)) {
-                    issuedMonth.add(compData[8]);
-                }
-            }
-        }
-        
-        String[] sortDate = issuedMonth.toArray(String[]::new);
+        String[] sortDate = issuedInvoice.toArray(String[]::new);
         
         for (int count1 = 0; count1 < sortDate.length - 1; count1++) {
             for (int count2 = count1+1; count2 < sortDate.length; count2++) {
-                String date1 = sortDate[count1];
-                String date2 = sortDate[count2];
+                String date1 = RT.DTF.formatStatementMonth(sortDate[count1]);
+                String date2 = RT.DTF.formatStatementMonth(sortDate[count2]);
                 
                 LocalDate conDate1 = RT.DTF.formatDate(RT.DTF.changeFormatDate("01/" + date1));
                 LocalDate conDate2 = RT.DTF.formatDate(RT.DTF.changeFormatDate("01/" + date2));
@@ -196,7 +180,7 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
             }
         }
         
-        issuedMonth = new ArrayList<>(Arrays.asList(sortDate));
+        ArrayList<String> issuedMonth = new ArrayList<>(Arrays.asList(sortDate));
         
         monthCB.removeAllItems();
         for (String eachMonth : issuedMonth) {
@@ -227,8 +211,6 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        jPanel11 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
         jPanel13 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jPanel14 = new javax.swing.JPanel();
@@ -382,30 +364,6 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel11.setBackground(new java.awt.Color(13, 24, 42));
-
-        jLabel9.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/notificationIcon.png"))); // NOI18N
-        jLabel9.setText(" NOTIFICATIONS");
-
-        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
-        jPanel11.setLayout(jPanel11Layout);
-        jPanel11Layout.setHorizontalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75))
-        );
-        jPanel11Layout.setVerticalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel11Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel9)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         jPanel13.setBackground(new java.awt.Color(13, 24, 42));
 
         jLabel11.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
@@ -501,7 +459,6 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
                             .addComponent(jobAssignationTab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -525,8 +482,6 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -751,7 +706,7 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
     private void monthCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthCBActionPerformed
         if (monthCB.getSelectedItem() != null) {
             try {
-                this.monthNyear = monthCB.getSelectedItem().toString();
+                this.monthNyear = RT.DTF.formatStatementMonth(monthCB.getSelectedItem().toString());
                 statementTableSetUp();
             } catch (ParseException ex) {
                 Logger.getLogger(ResidentTenantStatement.class.getName()).log(Level.SEVERE, null, ex);
@@ -1094,10 +1049,8 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel2;

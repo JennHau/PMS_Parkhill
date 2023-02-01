@@ -611,7 +611,7 @@ public class ResidentTenantFacilityPreview extends javax.swing.JFrame {
     private void bookBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        RT.toBookingFacility(user, fb);
+        RT.toBookFacility(user, fb);
     }//GEN-LAST:event_bookBtActionPerformed
 
     private void cancelBt2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBt2ActionPerformed

@@ -43,23 +43,31 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
         ArrayList<String> incompleteInv = invoiceList.get(0);
         ArrayList<String> toTable = new ArrayList<>();
         
+        ArrayList<String> itemIdList = new ArrayList<>();
+        
         float totalAmount = 0;
         int itemNo = 1;
         for (String eachIncomp : incompleteInv) {
             String[] incompDet = eachIncomp.split(RT.TF.sp);
             String itemID = incompDet[0];
-            String itemType = incompDet[1];
-            String amount = incompDet[6];
-            String[] list = {String.valueOf(itemNo), itemID, itemType, amount};
             
-            String combined = "";
-            for (String data : list) {
-                combined = combined + data + RT.TF.sp;
+            if (!itemIdList.contains(itemID)) {
+                String itemType = incompDet[1];
+                
+                double amount = RT.getTotalPricePerInvoice(itemID);
+                
+                String[] list = {String.valueOf(itemNo), itemID, itemType, String.format("%.02f", amount)};
+
+                String combined = "";
+                for (String data : list) {
+                    combined = combined + data + RT.TF.sp;
+                }
+
+                toTable.add(combined);
+                itemIdList.add(itemID);
+                totalAmount += amount;
+                itemNo++;
             }
-            
-            toTable.add(combined);
-            totalAmount += Double.valueOf(amount);
-            itemNo++;
         }
         
         RT.setTableRow(penFeeTab, toTable);
@@ -470,13 +478,13 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
 
         pendingFeeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "No.", "Item ID", "Item Type", "Amount (RM)"
+                "NO.", "ITEM ID", "AMOUNT (RM)"
             }
         ));
         jScrollPane1.setViewportView(pendingFeeTable);
@@ -534,26 +542,30 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
                         .addGap(7, 7, 7)
                         .addComponent(statementLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
-            .addGroup(jPanel6Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 977, Short.MAX_VALUE)
-                            .addComponent(jSeparator2)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(totalPendingFeeTF, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jSeparator3)
-                            .addComponent(jSeparator4)))
+                        .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(380, 380, 380)
                         .addComponent(payOneBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(28, 28, 28)
                         .addComponent(payAllBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 18, Short.MAX_VALUE))
+                .addContainerGap(413, Short.MAX_VALUE))
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jSeparator4, javax.swing.GroupLayout.DEFAULT_SIZE, 927, Short.MAX_VALUE)
+                    .addComponent(jSeparator3)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel6Layout.createSequentialGroup()
+                            .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 476, Short.MAX_VALUE)
+                            .addComponent(totalPendingFeeTF, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jSeparator2)
+                        .addComponent(jScrollPane1)))
+                .addGap(0, 43, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -572,16 +584,16 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel23)
-                .addGap(4, 4, 4)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(totalPendingFeeTF, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                    .addComponent(jLabel24, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(totalPendingFeeTF, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(3, 3, 3)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15)
@@ -669,17 +681,12 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
         int tableSize = pendingFeeTable.getRowCount();
         for (int count = 0; count < tableSize; count++) {
             String invNo = pendingFeeTable.getValueAt(count, 1).toString();
-            String invType = pendingFeeTable.getValueAt(count, 2).toString();
-            
-            String[] toConcatenate = {invNo, invType};
-            
-            String data = RT.concatenateKey(toConcatenate);
-            itemId.add(data);
+            itemId.add(invNo);
         }
         
         String totalAmount = totalPendingFeeTF.getText();
         
-        RT.toPaymentGateway(user, totalAmount, itemId);
+        RT.toPaymentCredential(user, totalAmount, itemId, false);
     }//GEN-LAST:event_payAllBTNActionPerformed
 
     private void payOneBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payOneBTNActionPerformed

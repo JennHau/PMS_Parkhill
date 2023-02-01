@@ -336,8 +336,13 @@ public class ResidentTenant {
     }
     
     // Page Navigator
-    public void toPaymentGateway(Users user, String totalAmount, ArrayList itemId) {
-        ResidentTenantPaymentCredential page = new ResidentTenantPaymentCredential(user, totalAmount, itemId);
+    public void toResidentTenantDashboard(Users user) {
+        ResidentTenantMainPage page = new ResidentTenantMainPage(user);
+        page.setVisible(true);
+    }
+    
+    public void toPaymentCredential(Users user, String totalAmount, ArrayList itemId, boolean forFacility) {
+        ResidentTenantPaymentCredential page = new ResidentTenantPaymentCredential(user, totalAmount, itemId, forFacility);
         page.setVisible(true);
     }
     
@@ -381,13 +386,28 @@ public class ResidentTenant {
         page.setVisible(true);
     }
     
-    public void toBookingFacility(Users user, Facility fb) {
+    public void toBookFacility(Users user, Facility fb) {
         ResidentTenantBookFacility page = new ResidentTenantBookFacility(user, fb);
         page.setVisible(true);
     }
     
     public void toFacilityPaymentGateway(Users user, List<String> bookingList, Facility fb) {
         ResidentTenantFacilityPaymentGateway page = new ResidentTenantFacilityPaymentGateway(user, bookingList, fb);
+        page.setVisible(true);
+    }
+    
+    public void toViewProfile(Users user) {
+        ResidentTenantProfile page = new ResidentTenantProfile(user);
+        page.setVisible(true);
+    }
+    
+    public void toVisitorPass(Users user) {
+        ResidentTenantVisitorPass page = new ResidentTenantVisitorPass(user);
+        page.setVisible(true);
+    }
+    
+    public void toComplaints(Users user) {
+        ResidentTenantComplaints page = new ResidentTenantComplaints(user);
         page.setVisible(true);
     }
 }

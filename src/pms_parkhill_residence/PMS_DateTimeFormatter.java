@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -78,4 +77,12 @@ public class PMS_DateTimeFormatter {
         return combinedLocalDT;
     }
     
+    public String formatStatementMonth(String monthYear) {
+        String[] splitted = monthYear.split("/");
+        if (splitted[0].length() != 2) {
+            monthYear = "0" + monthYear;
+        }
+        
+        return monthYear;
+    }
 }

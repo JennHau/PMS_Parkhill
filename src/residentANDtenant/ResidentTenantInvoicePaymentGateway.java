@@ -6,7 +6,7 @@ package residentANDtenant;
 
 import accountExecutive.*;
 import java.awt.Toolkit;
-import java.util.List;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.Users;
 
@@ -445,12 +445,9 @@ public class ResidentTenantInvoicePaymentGateway extends javax.swing.JFrame {
         JOptionPane.QUESTION_MESSAGE);
 
         if(result == JOptionPane.YES_OPTION){
-            AccountExecutive ae = new AccountExecutive();
-            ae.storePayment(invoiceNo, userIDTF.getText());
-            JOptionPane.showMessageDialog (null, "Payment has been made successfully!", 
-                "PAYMENT", JOptionPane.INFORMATION_MESSAGE);
-            dispose();
-            new AccountExecutivePayment().setVisible(true);
+            ArrayList<String> itemId = new ArrayList<>();
+            itemId.add(invoiceNo);
+            new ResidentTenantPaymentCredential(user, total, itemId, false).setVisible(true);
         }
         
     }//GEN-LAST:event_payBTActionPerformed

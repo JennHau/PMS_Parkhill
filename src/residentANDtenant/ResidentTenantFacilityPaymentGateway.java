@@ -33,7 +33,6 @@ public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
         initComponents();
         setWindowIcon();
         this.bookingList = bookingList;
-        setUnitNoCB();
         setDefault();
     }
 
@@ -59,7 +58,6 @@ public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
         totalLabel = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel5 = new javax.swing.JLabel();
-        unitNoCB = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         bookingIDLabel = new javax.swing.JLabel();
@@ -67,6 +65,7 @@ public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
         facilityIDLabel = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         dateLabel = new javax.swing.JLabel();
+        unitNoLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -166,12 +165,6 @@ public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(102, 102, 102));
         jLabel5.setText("Booking Unit No:");
 
-        unitNoCB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                unitNoCBActionPerformed(evt);
-            }
-        });
-
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -218,6 +211,11 @@ public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
         dateLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         dateLabel.setText("0000-00-00");
 
+        unitNoLabel.setFont(new java.awt.Font("Yu Gothic", 1, 14)); // NOI18N
+        unitNoLabel.setForeground(new java.awt.Color(153, 153, 153));
+        unitNoLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        unitNoLabel.setText("A-01-01");
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -244,9 +242,9 @@ public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
                             .addComponent(jLabel7)
                             .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(71, 71, 71)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(unitNoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(unitNoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(23, Short.MAX_VALUE))
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(289, 289, 289)
@@ -270,12 +268,12 @@ public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
                             .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(unitNoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(bookingIDLabel)
                             .addComponent(facilityIDLabel)
-                            .addComponent(dateLabel)))
+                            .addComponent(dateLabel)
+                            .addComponent(unitNoLabel)))
                     .addComponent(jLabel7))
-                .addGap(25, 25, 25)
+                .addGap(26, 26, 26)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel14)
@@ -287,7 +285,7 @@ public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bookBt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cancelBT, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -344,12 +342,13 @@ public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
         
         bookingIDLabel.setText(bookingID); facilityIDLabel.setText(facilityID);
         totalLabel.setText("TOTAL: RM " + totalPrice); dateLabel.setText(date);
+        unitNoLabel.setText(this.user.getUnitNo());
     }
     
     private void cancelBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBTActionPerformed
         // TODO add your handling code here:
         dispose();
-        RT.toBookingFacility(user, fb);
+        RT.toBookFacility(user, fb);
     }//GEN-LAST:event_cancelBTActionPerformed
 
     private void bookBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookBtActionPerformed
@@ -359,49 +358,28 @@ public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
         JOptionPane.QUESTION_MESSAGE);
 
         if(result == JOptionPane.YES_OPTION){
-            List<String> newData = new ArrayList<>();
+            ArrayList<String> newData = new ArrayList<>();
             for(int i = 0; i<bookingList.size(); i++) {
                 String[] bookingDetails = bookingList.get(i).split(";");
                 String startTime = bookingDetails[3];
                 String endTime = bookingDetails[4];
                 newData.add(bookingID.toLowerCase() +";"+ facilityID.toLowerCase()
-                        +";"+ facilityName +";"+ String.valueOf(unitNoCB.getSelectedItem())
+                        +";"+ facilityName +";"+ this.user.getUnitNo()
                         +";"+ date +";"+ startTime +";"+ endTime +";"+ unitPrice
                         +";"+ totalPrice +";"+ String.valueOf(LocalDate.now()) +";");
-            } fh.fileWrite("facilityBooking.txt", true, newData);
-            JOptionPane.showMessageDialog (null, "Facility Booking has been made!", 
-                            "FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
+            } 
+            
+            RT.toPaymentCredential(user, totalPrice, newData, rootPaneCheckingEnabled);
+            
             dispose();
             RT.toBookedFacility(user);
         }
     }//GEN-LAST:event_bookBtActionPerformed
 
-    private void unitNoCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unitNoCBActionPerformed
-        // TODO add your handling code here:
-        if(!unitNoCB.getSelectedItem().equals("-PLEASE SELECT-")) {
-            bookBt.setEnabled(true);
-        } else {
-            bookBt.setEnabled(false);
-        }
-    }//GEN-LAST:event_unitNoCBActionPerformed
-
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseClicked
 
-    private void setUnitNoCB() {
-        List<String> availableUnit = ae.extractAllProperties("residential");
-        unitNoCB.addItem("-PLEASE SELECT-");
-        for(int i = 0; i<availableUnit.size(); i++) {
-            String[] unitDetails = availableUnit.get(i).split(";");
-            String unitNo = unitDetails[0];
-            String status = unitDetails[2];
-            if(status.equals("sold")) {
-                unitNoCB.addItem(unitNo);
-            }
-        }
-    }
-    
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
@@ -460,7 +438,7 @@ public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel totalLabel;
-    private javax.swing.JComboBox<String> unitNoCB;
+    private javax.swing.JLabel unitNoLabel;
     private javax.swing.JLabel warningLabel;
     // End of variables declaration//GEN-END:variables
 }
