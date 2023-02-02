@@ -697,7 +697,6 @@ public class AdminExecutiveFacilityPreview extends javax.swing.JFrame {
         // locate image directory
         ImageIcon imageicon = new ImageIcon(getClass().getResource
                                     ("/images/"+fb.getFacilityName()+".jpg"));
-        System.out.println("/images/"+fb.getFacilityName()+".jpg");
         // set image to assign size
         Image image = (imageicon).getImage().getScaledInstance(1020, 307, Image.SCALE_SMOOTH);
         // replace variable to new resized image

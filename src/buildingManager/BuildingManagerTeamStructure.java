@@ -4,7 +4,14 @@
  */
 package buildingManager;
 
+import java.awt.Cursor;
+import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -18,6 +25,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
     public BuildingManagerTeamStructure() {
         initComponents();
         setWindowIcon();
+        setImage();
     }
 
     /**
@@ -54,6 +62,40 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        icon1 = new javax.swing.JLabel();
+        titleLabel1 = new javax.swing.JLabel();
+        headBMNameLabel = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        icon3 = new javax.swing.JLabel();
+        titleLabel3 = new javax.swing.JLabel();
+        aceNameLabel = new javax.swing.JLabel();
+        jPanel15 = new javax.swing.JPanel();
+        icon5 = new javax.swing.JLabel();
+        titleLabel5 = new javax.swing.JLabel();
+        adeNameLabel = new javax.swing.JLabel();
+        jPanel16 = new javax.swing.JPanel();
+        icon2 = new javax.swing.JLabel();
+        titleLabel2 = new javax.swing.JLabel();
+        assistBMNameLabel = new javax.swing.JLabel();
+        jPanel17 = new javax.swing.JPanel();
+        icon6 = new javax.swing.JLabel();
+        titleLabel6 = new javax.swing.JLabel();
+        secNameLabel = new javax.swing.JLabel();
+        jPanel18 = new javax.swing.JPanel();
+        icon4 = new javax.swing.JLabel();
+        titleLabel4 = new javax.swing.JLabel();
+        beNameLabel = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jSeparator2 = new javax.swing.JSeparator();
+        jSeparator3 = new javax.swing.JSeparator();
+        jSeparator4 = new javax.swing.JSeparator();
+        jSeparator5 = new javax.swing.JSeparator();
+        jSeparator6 = new javax.swing.JSeparator();
+        jSeparator7 = new javax.swing.JSeparator();
+        jPanel19 = new javax.swing.JPanel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -359,7 +401,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
         jPanel3Layout.setVerticalGroup(
@@ -372,28 +414,332 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
                 .addContainerGap(9, Short.MAX_VALUE))
         );
 
-        jPanel6.setBackground(new java.awt.Color(226, 226, 226));
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setText("TEAM STRUCTURE MANAGEMENT");
+        jPanel6.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 15, 1001, 57));
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel14)
-                .addGap(246, 246, 246))
+        jPanel4.setBackground(new java.awt.Color(13, 50, 79));
+
+        icon1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/orgChart_default.jpg"))); // NOI18N
+
+        titleLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        titleLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        titleLabel1.setText("Head of Building Manager");
+
+        headBMNameLabel.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        headBMNameLabel.setForeground(new java.awt.Color(255, 255, 255));
+        headBMNameLabel.setText("-");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(icon1)
+                .addGap(8, 8, 8)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(titleLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                    .addComponent(headBMNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(icon1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(headBMNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(titleLabel1)
+                        .addGap(15, 15, 15))))
         );
+
+        jPanel6.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 84, -1, -1));
+
+        jPanel5.setBackground(new java.awt.Color(13, 50, 79));
+
+        icon3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/orgChart_default.jpg"))); // NOI18N
+
+        titleLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        titleLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        titleLabel3.setText("Head of Account Executive");
+
+        aceNameLabel.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        aceNameLabel.setForeground(new java.awt.Color(255, 255, 255));
+        aceNameLabel.setText("-");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(icon3)
+                .addGap(8, 8, 8)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(titleLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                    .addComponent(aceNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(aceNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(titleLabel3)
+                        .addGap(15, 15, 15))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(icon3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
+        );
+
+        jPanel6.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 327, -1, -1));
+
+        jPanel15.setBackground(new java.awt.Color(13, 50, 79));
+
+        icon5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/orgChart_default.jpg"))); // NOI18N
+
+        titleLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        titleLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        titleLabel5.setText("Head of Admin Executive");
+
+        adeNameLabel.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        adeNameLabel.setForeground(new java.awt.Color(255, 255, 255));
+        adeNameLabel.setText("-");
+
+        javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
+        jPanel15.setLayout(jPanel15Layout);
+        jPanel15Layout.setHorizontalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel15Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(icon5)
+                .addGap(8, 8, 8)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(titleLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                    .addComponent(adeNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel15Layout.setVerticalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel15Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel15Layout.createSequentialGroup()
+                        .addComponent(adeNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(titleLabel5)
+                        .addGap(15, 15, 15))
+                    .addGroup(jPanel15Layout.createSequentialGroup()
+                        .addComponent(icon5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
+        );
+
+        jPanel6.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(696, 327, -1, -1));
+
+        jPanel16.setBackground(new java.awt.Color(13, 50, 79));
+
+        icon2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/orgChart_default.jpg"))); // NOI18N
+
+        titleLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        titleLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        titleLabel2.setText("Assistant Building Manager");
+
+        assistBMNameLabel.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        assistBMNameLabel.setForeground(new java.awt.Color(255, 255, 255));
+        assistBMNameLabel.setText("-");
+
+        javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
+        jPanel16.setLayout(jPanel16Layout);
+        jPanel16Layout.setHorizontalGroup(
+            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel16Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(icon2)
+                .addGap(8, 8, 8)
+                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(titleLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                    .addComponent(assistBMNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel16Layout.setVerticalGroup(
+            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel16Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel16Layout.createSequentialGroup()
+                        .addComponent(icon2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(jPanel16Layout.createSequentialGroup()
+                        .addComponent(assistBMNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(titleLabel2)
+                        .addGap(15, 15, 15))))
+        );
+
+        jPanel6.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 170, -1, -1));
+
+        jPanel17.setBackground(new java.awt.Color(13, 50, 79));
+
+        icon6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/orgChart_default.jpg"))); // NOI18N
+
+        titleLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        titleLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        titleLabel6.setText("Head of Security Guard");
+
+        secNameLabel.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        secNameLabel.setForeground(new java.awt.Color(255, 255, 255));
+        secNameLabel.setText("-");
+
+        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
+        jPanel17.setLayout(jPanel17Layout);
+        jPanel17Layout.setHorizontalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel17Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(icon6)
+                .addGap(8, 8, 8)
+                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(titleLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                    .addComponent(secNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel17Layout.setVerticalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel17Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel17Layout.createSequentialGroup()
+                        .addComponent(secNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(titleLabel6)
+                        .addGap(15, 15, 15))
+                    .addGroup(jPanel17Layout.createSequentialGroup()
+                        .addComponent(icon6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
+        );
+
+        jPanel6.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 479, -1, -1));
+
+        jPanel18.setBackground(new java.awt.Color(13, 50, 79));
+
+        icon4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/orgChart_default.jpg"))); // NOI18N
+
+        titleLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        titleLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        titleLabel4.setText("Head of Building Executive");
+
+        beNameLabel.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        beNameLabel.setForeground(new java.awt.Color(255, 255, 255));
+        beNameLabel.setText("-");
+
+        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
+        jPanel18.setLayout(jPanel18Layout);
+        jPanel18Layout.setHorizontalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel18Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(icon4)
+                .addGap(8, 8, 8)
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(titleLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                    .addComponent(beNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel18Layout.setVerticalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel18Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel18Layout.createSequentialGroup()
+                        .addComponent(beNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(titleLabel4)
+                        .addGap(15, 15, 15))
+                    .addGroup(jPanel18Layout.createSequentialGroup()
+                        .addComponent(icon4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
+        );
+
+        jPanel6.add(jPanel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 327, -1, -1));
+
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jPanel6.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(503, 177, -1, 144));
+
+        jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jPanel6.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 280, 20, 40));
+        jPanel6.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(512, 216, 178, 10));
+
+        jSeparator4.setPreferredSize(new java.awt.Dimension(55, 10));
+        jPanel6.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 280, 310, 10));
+        jPanel6.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(177, 280, 320, 10));
+
+        jSeparator6.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jPanel6.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(507, 418, -1, 55));
+
+        jSeparator7.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jPanel6.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 280, 20, 40));
+
+        jPanel19.setBackground(new java.awt.Color(13, 24, 42));
+        jPanel19.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jPanel19MouseEntered(evt);
+            }
+        });
+
+        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/settingIcon.jpg"))); // NOI18N
+        jLabel17.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel17MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel17MouseEntered(evt);
+            }
+        });
+
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel13.setText("EDIT");
+        jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel13MouseEntered(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
+        jPanel19.setLayout(jPanel19Layout);
+        jPanel19Layout.setHorizontalGroup(
+            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel19Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel17)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(7, Short.MAX_VALUE))
+        );
+        jPanel19Layout.setVerticalGroup(
+            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel19Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
+        );
+
+        jPanel6.add(jPanel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 90, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -419,9 +765,59 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void setImage() {
+        String[] iconName = {"Head of Building Manager", "Assistant Building Manager",
+        "Head of Account Executive", "Head of Building Executive",
+        "Head of Admin Executive", "Head of Security Guard"};
+        int i = 0;
+        while(i<6) {
+            String imageFile = "src//images//"+iconName[i]+".jpg";
+            File f = new File(imageFile);
+            File imagePath = new File(f.getAbsolutePath());
+            
+            if (imagePath.exists()) {
+                // locate image directory
+                ImageIcon imageicon = new ImageIcon(getClass().getResource
+        ("/images/"+ iconName[i] +".jpg"));
+                // set image to assign size
+                Image image = (imageicon).getImage().getScaledInstance(78, 81, Image.SCALE_SMOOTH);
+                // replace variable to new resized image
+                imageicon = new ImageIcon(image);
+                switch (i) {
+                    case 0 -> icon1.setIcon(imageicon);
+                    case 1 -> icon2.setIcon(imageicon);
+                    case 2 -> icon3.setIcon(imageicon);
+                    case 3 -> icon4.setIcon(imageicon);
+                    case 4 -> icon5.setIcon(imageicon);
+                    case 5 -> icon6.setIcon(imageicon);
+                    default -> {
+                    }
+                } 
+            } 
+        i++;
+        }
+    }
+    
     private void jPanel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_jPanel2MouseEntered
+
+    private void jLabel17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel17MouseClicked
+
+    private void jLabel17MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel17MouseEntered
+
+    private void jLabel13MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel13MouseEntered
+
+    private void jPanel19MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel19MouseEntered
+        // TODO add your handling code here:
+        jPanel19.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jPanel19MouseEntered
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
@@ -1486,11 +1882,24 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel aceNameLabel;
+    private javax.swing.JLabel adeNameLabel;
+    private javax.swing.JLabel assistBMNameLabel;
+    private javax.swing.JLabel beNameLabel;
+    private javax.swing.JLabel headBMNameLabel;
+    private javax.swing.JLabel icon1;
+    private javax.swing.JLabel icon2;
+    private javax.swing.JLabel icon3;
+    private javax.swing.JLabel icon4;
+    private javax.swing.JLabel icon5;
+    private javax.swing.JLabel icon6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1505,11 +1914,32 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
+    private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
+    private javax.swing.JSeparator jSeparator7;
+    private javax.swing.JLabel secNameLabel;
+    private javax.swing.JLabel titleLabel1;
+    private javax.swing.JLabel titleLabel2;
+    private javax.swing.JLabel titleLabel3;
+    private javax.swing.JLabel titleLabel4;
+    private javax.swing.JLabel titleLabel5;
+    private javax.swing.JLabel titleLabel6;
     // End of variables declaration//GEN-END:variables
 }
