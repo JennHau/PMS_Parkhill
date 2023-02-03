@@ -4,6 +4,7 @@
  */
 package buildingManager;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -96,6 +97,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
         jPanel19 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -741,6 +743,19 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
 
         jPanel6.add(jPanel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 90, 40));
 
+        jLabel15.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(31, 109, 196));
+        jLabel15.setText("VIEW OTHER COMMITTEE");
+        jLabel15.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel15MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel15MouseExited(evt);
+            }
+        });
+        jPanel6.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 588, -1, 30));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -818,6 +833,17 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
         // TODO add your handling code here:
         jPanel19.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_jPanel19MouseEntered
+
+    private void jLabel15MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseEntered
+        // TODO add your handling code here:
+        jLabel15.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+        jLabel15.setForeground(new Color(14,56,95));
+    }//GEN-LAST:event_jLabel15MouseEntered
+
+    private void jLabel15MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseExited
+        // TODO add your handling code here:
+        jLabel15.setForeground(new Color(31,109,196));
+    }//GEN-LAST:event_jLabel15MouseExited
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
@@ -1899,6 +1925,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
