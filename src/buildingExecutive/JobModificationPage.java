@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import pms_parkhill_residence.Complaints;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.Users;
 
@@ -23,8 +24,9 @@ import pms_parkhill_residence.Users;
 public class JobModificationPage extends javax.swing.JFrame {
     private Users user;
     private String currentBEid;
+    private Complaints complaint;
+    
     DefaultTableModel jobTable;
-    String jobListFile = "jobList.txt";
     BuildingExecutive BE = new BuildingExecutive();
     FileHandling fileHandling = new FileHandling();
     CRUD crud = new CRUD();
@@ -41,22 +43,22 @@ public class JobModificationPage extends javax.swing.JFrame {
      * @param user
      * @param positionCode employee position code
      * @param jobID
-     * @param complaintID
+     * @param complaint
      * @param employeeID
      * @throws java.io.IOException
      */
-    public JobModificationPage(Users user, String positionCode, String jobID, String complaintID, String employeeID) throws IOException {
+    public JobModificationPage(Users user, String positionCode, String jobID, Complaints complaint, String employeeID) throws IOException {
         initComponents();
         jobTable = (DefaultTableModel) jobsTableUI.getModel();
-        runDefaultSetUp(user, positionCode, jobID, complaintID, employeeID);
+        runDefaultSetUp(user, positionCode, jobID, complaint, employeeID);
     }
     
-    private void runDefaultSetUp(Users user, String positionCode, String jobID, String complaintID, String employeeID) throws IOException {
+    private void runDefaultSetUp(Users user, String positionCode, String jobID, Complaints complaint, String employeeID) throws IOException {
         this.user = user;
         this.setCurrentBEid(this.user.getUserID());
         
         this.setJobId(jobID);
-        this.setComplaintId(complaintID);
+        this.setComplaintId(complaint.getComplaintID());
         this.setEmployeeId(employeeID);
         this.setPositionCode(positionCode);
         
@@ -71,16 +73,16 @@ public class JobModificationPage extends javax.swing.JFrame {
     }
     
     private void tableJobSetUp(String positionCode) throws IOException {
-        List<String> readJobLists = fileHandling.fileRead(jobListFile);
+        List<String> readJobLists = fileHandling.fileRead(BE.TF.jobListFile);
         ArrayList<String> jobList = new ArrayList<>();
         
         int numberOfItem = 1;
         for (String readLine : readJobLists) {
-            String[] jobDetails = readLine.split(BE.sp);
+            String[] jobDetails = readLine.split(BE.TF.sp);
             String roleCode = jobDetails[0];
             
             if (roleCode.equals(positionCode)) {
-                jobList.add(numberOfItem + BE.sp + jobDetails[2] + BE.sp + jobDetails[3] + BE.sp + jobDetails[4]);
+                jobList.add(numberOfItem + BE.TF.sp + jobDetails[2] + BE.TF.sp + jobDetails[3] + BE.TF.sp + jobDetails[4]);
                 numberOfItem++;
             }
         }
@@ -104,7 +106,7 @@ public class JobModificationPage extends javax.swing.JFrame {
         dataField.add(this.positionCode);
         
         if (add) {
-            dataField.add(BE.getNewId(BE.jobListFile, 1));
+            dataField.add(BE.getNewId(BE.TF.jobListFile, 1));
         }
         else {
             dataField.add(this.selectedId);
@@ -123,7 +125,7 @@ public class JobModificationPage extends javax.swing.JFrame {
                         dataField.add(BE.formatTime(startTimePicker.getTime().toString()).toString());
 
                         for (String eachData :  dataField) {
-                            toLine = toLine + eachData + BE.sp;
+                            toLine = toLine + eachData + BE.TF.sp;
                         }
                         
                         return toLine;
@@ -136,9 +138,9 @@ public class JobModificationPage extends javax.swing.JFrame {
     }
     
     private boolean jobTitleExist(String jobTitle) {
-        List<String> jobFile = fileHandling.fileRead(BE.jobListFile);
+        List<String> jobFile = fileHandling.fileRead(BE.TF.jobListFile);
         for (String eachJob : jobFile) {
-            String title = eachJob.split(BE.sp)[2];
+            String title = eachJob.split(BE.TF.sp)[2];
             if (title.equals(jobTitle)) {
                 return true;
             }
@@ -231,8 +233,6 @@ public class JobModificationPage extends javax.swing.JFrame {
         jLabel17.setText(" Job Title: ");
         jLabel17.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(51, 51, 51));
-
-        jobTF.setText("jTextField1");
 
         jLabel18.setText("Time Needed: ");
         jLabel18.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
@@ -431,9 +431,9 @@ public class JobModificationPage extends javax.swing.JFrame {
         
         String jobDesc = BE.validateTableSelectionAndGetValue(jobTable, selectedCol, selectedRow, 4, 1);
         
-        List<String> readJobList = fileHandling.fileRead(jobListFile);
+        List<String> readJobList = fileHandling.fileRead(BE.TF.jobListFile);
         for (String jobLine : readJobList) {
-            String[] jobDetails = jobLine.split(BE.sp);
+            String[] jobDetails = jobLine.split(BE.TF.sp);
             String jobTitle = jobDetails[2];
             String jobID = jobDetails[1];
             
@@ -490,17 +490,17 @@ public class JobModificationPage extends javax.swing.JFrame {
         // TODO add your handling code here:
 //        ArrayList<String> removedItem = new ArrayList<>();
 //
-//        List<String> oldVer = fileHandling.fileRead(BE.jobListFile);
+//        List<String> oldVer = fileHandling.fileRead(BE.TF.jobListFile);
 //        for (String eachJob : oldVer) {
-//            String taskId = eachJob.split(BE.sp)[1];
+//            String taskId = eachJob.split(BE.TF.sp)[1];
 //            if (!taskId.equals(this.selectedId)) {
 //                removedItem.add(eachJob);
 //            }
 //        }
 //        
-//        fileHandling.fileWrite(BE.jobListFile, false, removedItem);
+//        fileHandling.fileWrite(BE.TF.jobListFile, false, removedItem);
 
-        crud.delete(BE.jobListFile, this.selectedId, 1);
+        crud.delete(BE.TF.jobListFile, this.selectedId, 1);
         
         clearField();
         
@@ -515,11 +515,11 @@ public class JobModificationPage extends javax.swing.JFrame {
         // TODO add your handling code here:
 //        ArrayList<String> itemUpdate = new ArrayList<>();
         
-//        String[] eachData = dataLine.split(BE.sp);
+//        String[] eachData = dataLine.split(BE.TF.sp);
 //        
-//        List<String> oldVer = fileHandling.fileRead(BE.jobListFile);
+//        List<String> oldVer = fileHandling.fileRead(BE.TF.jobListFile);
 //        for (String eachJob : oldVer) {
-//            String taskId = eachJob.split(BE.sp)[1];
+//            String taskId = eachJob.split(BE.TF.sp)[1];
 //            if (taskId.equals(eachData[1])) {
 //                itemUpdate.add(dataLine);
 //            }
@@ -528,11 +528,11 @@ public class JobModificationPage extends javax.swing.JFrame {
 //            }
 //        }
 //        
-//        fileHandling.fileWrite(BE.jobListFile, false, itemUpdate);
+//        fileHandling.fileWrite(BE.TF.jobListFile, false, itemUpdate);
 
         String dataLine = this.getAllField(false);
 
-        crud.update(BE.jobListFile, this.selectedId, dataLine, 1);
+        crud.update(BE.TF.jobListFile, this.selectedId, dataLine, 1);
         
         clearField();
         
@@ -550,7 +550,7 @@ public class JobModificationPage extends javax.swing.JFrame {
         List<String> addItem = new ArrayList<>();
         addItem.add(dataLine);
         
-        crud.create(BE.jobListFile, addItem);
+        crud.create(BE.TF.jobListFile, addItem);
         clearField();
         
         try {
@@ -570,7 +570,7 @@ public class JobModificationPage extends javax.swing.JFrame {
             EmployeeJobAssignation.employeeJobAssignation.dispose();
         }
         
-        BE.toEmployeeJobAssignation(this.user, this.employeeId, this.jobId, this.complaintId, false);
+        BE.toEmployeeJobAssignation(this.user, this.employeeId, this.jobId, this.complaint, false);
         this.dispose();
     }//GEN-LAST:event_backBTNActionPerformed
     

@@ -16,7 +16,7 @@ import java.util.Date;
  *
  * @author Winson
  */
-public class PMS_DateTimeFormatter {
+public class PMS_DateTimeFormatter{
     public LocalDate formatDate(String date) {
         java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd");
         
@@ -31,6 +31,13 @@ public class PMS_DateTimeFormatter {
         LocalDate localDate = LocalDate.parse(date, dateFormatter);
 
         return localDate;
+    }
+    
+    public String currentDateTime() {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDateTime dateTimeNow = LocalDateTime.parse(String.valueOf(LocalDateTime.now()), dateTimeFormatter);
+        String dateTime = String.valueOf(dateTimeNow);
+        return dateTime;
     }
     
     public String changeFormatDate(String dateString) throws ParseException {

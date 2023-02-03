@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
+import pms_parkhill_residence.Complaints;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.PMS_DateTimeFormatter;
 import pms_parkhill_residence.TextFiles;
@@ -30,9 +31,7 @@ public class BuildingExecutive extends Users{
     PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
     TextFiles TF = new TextFiles();
     FileHandling fileHandling = new FileHandling();
-    
-    // text file seperator
-    String sp = ";";
+    Complaints CP = new Complaints();
     
     // Employee position
     final String technician = "tcn";
@@ -47,41 +46,8 @@ public class BuildingExecutive extends Users{
     final int assignedEmployee = 1;
     final int unassignedEmployee = 0;
     
-    // user profile text file link
-    String userProfile = "userProfile.txt";
-    
-    // inactivated account text file link
-    String inactiveAcc = "inactiveAcc.txt";
-    
-    // employee name list link
-    String fullEmployeeList = "employeeList.txt";
-    
-    // employee job file link
-    String employeeJobFile = "employeeJobFile.txt";
-    
-    // selected Employee record
-    String recordSelectedEmployee = "recordSelectedEmployee.txt";
-    
-    // job list link
-    String jobListFile = "jobList.txt";
-    
-    // patrolling shcedule file
-    String patrollingScheduleFile = "patrollingSchedule.txt";
-    
-    // File schedule patrolling default time table
-    String fixFile = "patrollingDefaultSchedule.txt";
-    
-    // File each date schedule setting file
-    String patScheduleModRec = "patScheduleModRec.txt";
-    
-    // File to store history file
-    String jobFileHistory = "jobFileHistory.txt";
-    
-    // temporary usage file
-    String tempFile = "tempPatFile.txt";
-    
     private ArrayList getEmployeeJobList(LocalDate localDate, LocalTime localTime) throws IOException {
-        List<String> employeeList = fileHandling.fileRead(fullEmployeeList);
+        List<String> employeeList = fileHandling.fileRead(TF.fullEmployeeList);
         
         ArrayList<String> workingList = new ArrayList<>();
         ArrayList<String> assEmply = new ArrayList<>();
@@ -93,21 +59,35 @@ public class BuildingExecutive extends Users{
         
         ArrayList<String> historyList = new ArrayList<>();
         ArrayList<String> updateJobList = new ArrayList<>();
-        List<String> oldVer = fileHandling.fileRead(employeeJobFile);
+        List<String> oldVer = fileHandling.fileRead(TF.employeeJobFile);
         boolean firstLine = true;
         for (String eachLine : oldVer) {
             if (firstLine) {
                 updateJobList.add(eachLine);
             }
             else {
-                String[] eachData = eachLine.split(sp);
+                String[] eachData = eachLine.split(TF.sp
+                );
                 String[] endDateTime = eachData[8].split(" ");
                 if (!endDateTime[0].equals("null")) {
                     if (combineStringDateTime(endDateTime[0], endDateTime[1]).isBefore(LocalDateTime.now())){
                         String emplyId = eachData[1];
                         String emplyName = getEmployeeDetails(emplyId)[2];
-                        historyList.add(eachData[0] + sp + eachData[1] + sp  + emplyName + sp + eachData[2] + sp + eachData[3] + sp + eachData[4] + sp + eachData[5] + sp + eachData[6]
-                                        + sp + eachData[7] + sp + eachData[8] + sp + eachData[9] + sp + eachData[10] + sp + eachData[11] + sp + eachData[12] + sp + eachData[13] + sp);
+                        historyList.add(eachData[0] + TF.sp
+                                + eachData[1] + TF.sp
+                                + emplyName + TF.sp
+                                + eachData[2] + TF.sp
+                                + eachData[3] + TF.sp
+                                + eachData[4] + TF.sp
+                                + eachData[5] + TF.sp
+                                + eachData[6] + TF.sp
+                                + eachData[7] + TF.sp
+                                + eachData[8] + TF.sp
+                                + eachData[9] + TF.sp
+                                + eachData[10] + TF.sp
+                                + eachData[11] + TF.sp
+                                + eachData[12] + TF.sp
+                                + eachData[13] + TF.sp);
                     }
                     else {
                         updateJobList.add(eachLine);
@@ -121,14 +101,14 @@ public class BuildingExecutive extends Users{
             firstLine = false;
         }
         
-        fileHandling.fileWrite(jobFileHistory, true, historyList);
-        fileHandling.fileWrite(employeeJobFile, false, updateJobList);
+        fileHandling.fileWrite(TF.jobFileHistory, true, historyList);
+        fileHandling.fileWrite(TF.employeeJobFile, false, updateJobList);
         
-        List<String> jobFile = fileHandling.fileRead(employeeJobFile);
+        List<String> jobFile = fileHandling.fileRead(TF.employeeJobFile);
         firstLine = true;
         for (String jobFileLine : jobFile) {
             if (!firstLine) {
-                String[] jobLineDetails = jobFileLine.split(sp);
+                String[] jobLineDetails = jobFileLine.split(TF.sp);
                 int repitition = Integer.valueOf(jobLineDetails[4]);
                 String workingEmplyId = jobLineDetails[1];
                 
@@ -166,11 +146,14 @@ public class BuildingExecutive extends Users{
                             String assignedJobCode = jobLineDetails[3];
 
                             String jobDetails = findJobDetailsUsingDescriptionOrId(assignedJobCode, null);
-                            String jobDesc = jobDetails.split(sp)[2];
+                            String jobDesc = jobDetails.split(TF.sp)[2];
 
-                            assEmply.add(workingEmplyId + sp + workingEmplyName + sp + 
-                                         workingEmplyPos + sp + jobId + sp + 
-                                         jobDesc + sp + "View" + sp);
+                            assEmply.add(workingEmplyId + TF.sp
+                                    + workingEmplyName + TF.sp
+                                    + workingEmplyPos + TF.sp
+                                    + jobId + TF.sp
+                                    + jobDesc + TF.sp
+                                    + "View" + TF.sp);
                         }
                     }
                 }
@@ -182,13 +165,17 @@ public class BuildingExecutive extends Users{
         firstLine = true;
         for (String eachEmployee : employeeList) {
             if (!firstLine) {
-                String[] employeeInfo = eachEmployee.split(sp);
+                String[] employeeInfo = eachEmployee.split(TF.sp
+                );
                 String emplyId = employeeInfo[0];
                 String emplyName = employeeInfo[2];
                 String emplyPos = employeeInfo[4];
                 
                 if (!workingList.contains(emplyId)) {
-                    unassEmply.add(emplyId + sp + emplyName + sp + emplyPos + sp + "Assign" + sp);
+                    unassEmply.add(emplyId + TF.sp
+                            + emplyName + TF.sp
+                            + emplyPos + TF.sp
+                            + "Assign" + TF.sp);
                 }
             }
             
@@ -303,7 +290,7 @@ public class BuildingExecutive extends Users{
         ArrayList<String> specificRoleList = new ArrayList<>();
         
         for (String employeeInfo : employeeList) {
-            String[] employeeDetails = employeeInfo.split(sp);
+            String[] employeeDetails = employeeInfo.split(TF.sp);
             
             if (employeeDetails[2].equals(role)) {
                 specificRoleList.add(employeeInfo);
@@ -317,7 +304,7 @@ public class BuildingExecutive extends Users{
         ArrayList<String> searchedList = new ArrayList<>();
         
         for (String employeeInfo : employeeList) {
-            String[] employeeDetails = employeeInfo.split(sp);
+            String[] employeeDetails = employeeInfo.split(TF.sp);
             
             if (employeeDetails[0].contains(searchText)) {
                 searchedList.add(employeeInfo);
@@ -401,12 +388,12 @@ public class BuildingExecutive extends Users{
     }
     
     public String[] getEmployeeDetails(String employeeID) throws IOException {
-        List<String> readEmployeeList = fileHandling.fileRead(fullEmployeeList);
+        List<String> readEmployeeList = fileHandling.fileRead(TF.fullEmployeeList);
         
         boolean firstLine = true;
         for (String employeeList : readEmployeeList) {
             if (!firstLine) {
-                String[] employeeInfo = employeeList.split(sp);
+                String[] employeeInfo = employeeList.split(TF.sp);
                 String emplyId = employeeInfo[0];
                 
                 if (emplyId.equals(employeeID)) {
@@ -421,11 +408,11 @@ public class BuildingExecutive extends Users{
     }
     
     public ArrayList getAssignedJobForSpecificEmployee(String employeeId) throws IOException {
-        List<String> readJobFile = fileHandling.fileRead(employeeJobFile);
+        List<String> readJobFile = fileHandling.fileRead(TF.employeeJobFile);
         ArrayList<String> employeeJobList = new ArrayList<>();
         
         for (String jobLine : readJobFile) {
-            String[] jobDetails = jobLine.split(sp);
+            String[] jobDetails = jobLine.split(TF.sp);
             String emplyID = jobDetails[1];
             
             if (emplyID.equals(employeeId)) {
@@ -437,10 +424,10 @@ public class BuildingExecutive extends Users{
     }
     
     public String[] getSpecificJobDetails(String employeeId, String jobId) throws IOException {
-        List<String> readJobFile = fileHandling.fileRead(employeeJobFile);
+        List<String> readJobFile = fileHandling.fileRead(TF.employeeJobFile);
         
         for (String jobLine : readJobFile) {
-            String[] jobDetails = jobLine.split(sp);
+            String[] jobDetails = jobLine.split(TF.sp);
             String jobID = jobDetails[0];
             String emplyID = jobDetails[1];
             
@@ -453,10 +440,10 @@ public class BuildingExecutive extends Users{
     }
     
     public String findJobDetailsUsingDescriptionOrId(String jobCode, String jobDesc) {
-        List<String> jobList = fileHandling.fileRead(jobListFile);
+        List<String> jobList = fileHandling.fileRead(TF.jobListFile);
         for (String eachJob : jobList) {
-            String jobId = eachJob.split(sp)[1];
-            String description = eachJob.split(sp)[2];
+            String jobId = eachJob.split(TF.sp)[1];
+            String description = eachJob.split(TF.sp)[2];
             
             if (jobCode != null) {
                 if (jobId.equals(jobCode)) {
@@ -476,13 +463,13 @@ public class BuildingExecutive extends Users{
     }
     
     public ArrayList getAvailableJobs(String employeeId, String complaintId) throws IOException {
-        List<String> readJobList = fileHandling.fileRead(jobListFile);
+        List<String> readJobList = fileHandling.fileRead(TF.jobListFile);
         ArrayList<String> jobLists = new ArrayList<>();
         
         boolean firstLine = true;
         for (String jobLine : readJobList) {
             if (!firstLine) {
-                String[] jobDetails = jobLine.split(sp);
+                String[] jobDetails = jobLine.split(TF.sp);
                 String roleCode = jobDetails[0];
                 String role = employeeId.substring(0, 3);
 
@@ -510,7 +497,7 @@ public class BuildingExecutive extends Users{
         boolean firstLine = true;
         for (String fileLine : readFile){
             if (!firstLine) {
-                String[] lineDetails = fileLine.split(sp);
+                String[] lineDetails = fileLine.split(TF.sp);
                 String id = lineDetails[idColumn];
 
                 id = id.replace(jobIdCode, "");
@@ -537,11 +524,11 @@ public class BuildingExecutive extends Users{
         boolean firstLine = true;
         for (String eachRec : scheRec) {
             if (!firstLine) {
-                String checkId = eachRec.split(sp)[idColumn];
+                String checkId = eachRec.split(TF.sp)[idColumn];
                 
                 for (int check = 0; check < checkId.length(); check++) {
                     if (Character.isDigit(checkId.charAt(check))) {
-                        int id = Integer.valueOf(eachRec.split(sp)[idColumn]);
+                        int id = Integer.valueOf(eachRec.split(TF.sp)[idColumn]);
                         largestId = (id > largestId) ? id : largestId;
                     }
                 }
@@ -588,28 +575,10 @@ public class BuildingExecutive extends Users{
         table.setRowCount(0);
         
         for (int rowCount = 0; rowCount < arrayList.size(); rowCount++) {
-            String[] rowDetails = String.valueOf(arrayList.get(rowCount)).split(sp);
+            String[] rowDetails = String.valueOf(arrayList.get(rowCount)).split(TF.sp
+            );
             table.addRow(rowDetails);
         }
-    }
-    
-    public String getComplaintDetails(String complaintId) {
-        List<String> complaintData = fileHandling.fileRead(TF.complaintFiles);
-        
-        boolean firstLine = true;
-        for (String eachData : complaintData) {
-            if (!firstLine) {
-                String cmpId = (eachData.split(sp))[0];
-            
-                if (cmpId.equals(complaintId)) {
-                    return eachData;
-                }
-            }
-            
-            firstLine = false;
-        }
-        
-        return null;
     }
     
     public void fileCleaner(File fileName) throws IOException {
@@ -617,18 +586,16 @@ public class BuildingExecutive extends Users{
         pw.flush();
     }
     
-    public void updateComplaintStatusFile(String complaintId, String status) throws IOException {
+    public void updateComplaintStatus(Complaints complaints) {
+        String[] complaintDetails = complaints.toString().split(TF.sp);
+        
         String complaint = "";
-        
-        String[] complaintDetails = getComplaintDetails(complaintId).split(sp);
-        complaintDetails[5] = status;
-        
         for (String eachData : complaintDetails) {
-            complaint += eachData + sp;
+            complaint += eachData + TF.sp;
         }
         
         CRUD crud = new CRUD();
-        crud.update(TF.complaintFiles, complaintId, complaint, 0);
+        crud.update(TF.complaintFiles, complaintDetails[0], complaint, 0);
     }
     
     public ArrayList getAvailableBlock() {
@@ -638,7 +605,7 @@ public class BuildingExecutive extends Users{
         boolean firstLine = true;
         for (String eachLine : getBlock) {
             if (!firstLine) {
-                String unitCode = eachLine.split(sp)[0];
+                String unitCode = eachLine.split(TF.sp)[0];
                 unitCode = unitCode.substring(0, 1);
                 if (!blockList.contains(unitCode)) {
                     blockList.add(unitCode);
@@ -665,7 +632,7 @@ public class BuildingExecutive extends Users{
     
         ArrayList<String> levelSequence = getLevelSequence(Integer.valueOf(levelIntervalSet));
         
-        List<String> toGetHeader = fileHandling.fileRead(fixFile);
+        List<String> toGetHeader = fileHandling.fileRead(TF.fixFile);
         newSched.add(toGetHeader.get(0));
         
         int newNo = 1;
@@ -674,33 +641,47 @@ public class BuildingExecutive extends Users{
             for (int block = 0; block < blockList.size(); block++) {
                 String currentBlock = blockList.get(block);
                 for (String eachSeq : levelSequence) {
-                    String[] levelANDcheck = eachSeq.split(sp);
-                    newSched.add(newNo + sp + thisTime + sp + currentBlock + sp +
-                                 levelANDcheck[0] + sp + levelANDcheck[1] + sp + 
-                                 formatTime(thisTime).plusHours(1).toString() + sp +
-                                 " " + sp + " " + sp + " " + sp + " " + sp + " " +
-                                 sp + " " + sp);
+                    String[] levelANDcheck = eachSeq.split(TF.sp);
+                    newSched.add(newNo + TF.sp
+                            + thisTime + TF.sp
+                            + currentBlock + TF.sp
+                            + levelANDcheck[0] + TF.sp
+                            + levelANDcheck[1] + TF.sp
+                            + formatTime(thisTime).plusHours(1).toString() + TF.sp
+                            + " " + TF.sp
+                            + " " + TF.sp
+                            + " " + TF.sp
+                            + " " + TF.sp
+                            + " " + TF.sp
+                            + " " + TF.sp);
                     newNo++;
                 }
             }
             
-            newSched.add(newNo++ + sp + thisTime + sp + "S" + sp +
-                                 "Level 1-2" + sp + "Level 2" + sp + 
-                                 formatTime(thisTime).plusHours(1).toString() + sp +
-                                 " " + sp + " " + sp + " " + sp + " " + sp + " " +
-                                 sp + " " + sp);
+            newSched.add(newNo++ + TF.sp
+                    + thisTime + TF.sp
+                    + "S" + TF.sp
+                    + "Level 1-2" + TF.sp
+                    + "Level 2" + TF.sp
+                    + formatTime(thisTime).plusHours(1).toString() + TF.sp
+                    + " " + TF.sp
+                    + " " + TF.sp
+                    + " " + TF.sp
+                    + " " + TF.sp
+                    + " " + TF.sp
+                    + " " + TF.sp);
             
             tempTime = tempTime.plusHours(Integer.valueOf(timeIntervalSet));
         }
         
-        fileHandling.fileWrite(tempFile, false, newSched);
+        fileHandling.fileWrite(TF.tempFile, false, newSched);
         
         if (resetDefault) {
-            File rename = new File(tempFile);
-            if (new File(fixFile).exists()) {
-                new File(fixFile).delete();
+            File rename = new File(TF.tempFile);
+            if (new File(TF.fixFile).exists()) {
+                new File(TF.fixFile).delete();
             }
-            rename.renameTo(new File(fixFile));
+            rename.renameTo(new File(TF.fixFile));
         }
     }
     
@@ -732,10 +713,10 @@ public class BuildingExecutive extends Users{
             frame.dispose();
     }
     
-    public void toJobManagement(JFrame frame, Users user, String complaintId, boolean fromComplaintPage) {
+    public void toJobManagement(JFrame frame, Users user, Complaints complaint, boolean fromComplaintPage) {
         try {
             BuildingExecutiveJobManagement page;
-            page = new BuildingExecutiveJobManagement(user, complaintId, fromComplaintPage);
+            page = new BuildingExecutiveJobManagement(user, complaint, fromComplaintPage);
             page.setVisible(true);
             frame.dispose();
         } catch (IOException ex) {
@@ -768,23 +749,23 @@ public class BuildingExecutive extends Users{
         frame.dispose();
     }
     
-    public void toEmployeeJobAssignation(Users user, String employeeID, String jobID, String complaintID, boolean fromComplaintPage) {
+    public void toEmployeeJobAssignation(Users user, String employeeID, String jobID, Complaints complaint, boolean fromComplaintPage) {
         EmployeeJobAssignation EJA;
         try {
-            EJA = new EmployeeJobAssignation(user, employeeID, jobID, complaintID, fromComplaintPage);
+            EJA = new EmployeeJobAssignation(user, employeeID, jobID, complaint, fromComplaintPage);
             EJA.setVisible(true);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
     
-    public void toJobModificationPage(Users users, String positionCode, String jobID, String complaintID, String employeeID) throws IOException {
-        JobModificationPage page = new JobModificationPage(users, positionCode, jobID, complaintID, employeeID);
+    public void toJobModificationPage(Users users, String positionCode, String jobID, Complaints complaint, String employeeID) throws IOException {
+        JobModificationPage page = new JobModificationPage(users, positionCode, jobID, complaint, employeeID);
         page.setVisible(true);
     }
     
-    public void toComplaintDetailsPage(Users users, String complaintId) throws IOException {
-        ComplaintsDetails page = new ComplaintsDetails(users, complaintId);
+    public void toComplaintDetailsPage(Users users, Complaints complaint) {
+        ComplaintsDetails page = new ComplaintsDetails(users, complaint);
         page.setVisible(true);
     }
     

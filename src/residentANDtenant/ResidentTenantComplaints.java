@@ -11,6 +11,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import pms_parkhill_residence.Complaints;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.Users;
 
@@ -22,6 +23,7 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
     private Users user;
     ResidentTenant RT = new ResidentTenant();
     FileHandling fh = new FileHandling();
+    Complaints CP = new Complaints();
     
     DefaultTableModel pendingProgressTable;
     DefaultTableModel completedTable;
@@ -42,6 +44,8 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
         completedTable = (DefaultTableModel) completedCompTable.getModel();
         
         this.user = user;
+        setCurrentUserProfile();
+        
         setWindowIcon();
         complaintsTableSetUp();
         
@@ -60,7 +64,7 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
     }
     
     private void complaintsTableSetUp() {
-        ArrayList<ArrayList> currentRTcomplaints = RT.getCurrentRTcomplaints(user.getUserID());
+        ArrayList<ArrayList> currentRTcomplaints = CP.getComplaints(user.getUserID());
         
         ArrayList<String> pendingComp = currentRTcomplaints.get(0);
         ArrayList<String> completedComp = currentRTcomplaints.get(1);
@@ -192,7 +196,7 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(penProgCompTable);
 
-        registerBTN.setText("Register");
+        registerBTN.setText("Add New");
         registerBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 registerBTNActionPerformed(evt);
@@ -774,7 +778,7 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
         complaintID = RT.getNewCompId();
         complaintIdTF.setText(complaintID);
         compDetTA.setText("");
-        compStatusTF.setText(cptStatus.Pending.toString());
+        compStatusTF.setText(Complaints.cptStatus.Pending.toString());
         
         compDetTA.setEnabled(true);
         saveBTN.setEnabled(true);
@@ -974,12 +978,12 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
             compDetTA.setText(complaintDet);
             compStatusTF.setText(compStatus);
             
-            if (compStatus.equals(cptStatus.Pending.toString())) {
+            if (compStatus.equals(Complaints.cptStatus.Pending.toString())) {
                 saveBTN.setEnabled(true);
                 deleteBTN.setEnabled(true);
                 compDetTA.setEnabled(true);
             }
-            else if (compStatus.equals(cptStatus.Progressing.toString())) {
+            else if (compStatus.equals(Complaints.cptStatus.Progressing.toString())) {
                 saveBTN.setEnabled(false);
                 deleteBTN.setEnabled(true);
                 compDetTA.setEnabled(false);

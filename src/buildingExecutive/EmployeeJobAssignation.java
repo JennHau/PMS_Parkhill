@@ -4,7 +4,6 @@
  */
 package buildingExecutive;
 
-import com.github.lgooddatepicker.zinternaltools.TimeSpinnerTimer;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -17,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import pms_parkhill_residence.Complaints;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.Users;
 
@@ -28,7 +28,9 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
     public static EmployeeJobAssignation employeeJobAssignation;
     BuildingExecutive BE = new BuildingExecutive();
     FileHandling fileHandling = new FileHandling();
+    
     private Users user;
+    private Complaints complaint;
     
     // Remove unnecessary data
     private String jobID;
@@ -49,24 +51,25 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
      * @param user
      * @param employeeID
      * @param jobId
-     * @param complaintId
+     * @param complaint
      * @param complaintsPage
      * @throws java.io.IOException
      */
-    public EmployeeJobAssignation(Users user, String employeeID, String jobId, String complaintId, boolean complaintsPage) throws IOException {
+    public EmployeeJobAssignation(Users user, String employeeID, String jobId, Complaints complaint, boolean complaintsPage) throws IOException {
         employeeJobAssignation = this;
         initComponents();
-        runDefaultSetUp(user, employeeID, jobId, complaintId, complaintsPage);
+        runDefaultSetUp(user, employeeID, jobId, complaint, complaintsPage);
     }
 
-    private void runDefaultSetUp(Users user, String employeeID, String jobId, String complaintId, boolean complaintsPage) throws IOException {
+    private void runDefaultSetUp(Users user, String employeeID, String jobId, Complaints complaint, boolean complaintsPage) throws IOException {
         this.user = user;
+        this.complaint = complaint;
         employeeJobTable = (DefaultTableModel) assignedJobTable.getModel();
         
         setWindowIcon();
         setSelectedEmployee(employeeID, jobId);
         setCurrentBE();
-        setComplaintsId(complaintId);
+        setComplaintsId(complaint.getComplaintID());
         setFromComplaintsPage(complaintsPage);
         jobComboBoxSetUp();
         setJobFormTable();
@@ -204,7 +207,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         String combineDate;
         
         for (String eachJob : jobList) {
-            String[] jobDetails = eachJob.split(BE.sp);
+            String[] jobDetails = eachJob.split(BE.TF.sp);
             String jobId = jobDetails[0];
             String jobDesc = jobDetails[3];
             int repitition = Integer.valueOf(jobDetails[4]);
@@ -244,7 +247,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             }
             
             if (add) {
-                listForTable.add(jobId + BE.sp + jobDesc + BE.sp + combineDate + BE.sp + assigneeId + BE.sp);
+                listForTable.add(jobId + BE.TF.sp + jobDesc + BE.TF.sp + combineDate + BE.TF.sp + assigneeId + BE.TF.sp);
             }
         }
         
@@ -258,7 +261,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         
         if (jobList!=null) {
             for (String jobs : jobList) {
-                String[] jobDetails = jobs.split(BE.sp);
+                String[] jobDetails = jobs.split(BE.TF.sp);
                 String jobItem = jobDetails[2];
                 
                 jobComboBox.addItem(jobItem);
@@ -903,6 +906,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             if (fromComplaintsPage) {
                 fromComplaintsPage = false;
                 complaintsId = null;
+                complaint = null;
             }
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -950,7 +954,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
     private void editJobBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editJobBTNActionPerformed
         try {
             // TODO add your handling code here:
-            BE.toJobModificationPage(this.user, selectedEmployeePosCode, this.jobID, this.complaintsId, this.selectedEmployeeId);
+            BE.toJobModificationPage(this.user, selectedEmployeePosCode, this.jobID, this.complaint, this.selectedEmployeeId);
         } catch (IOException ex) {
             Logger.getLogger(EmployeeJobAssignation.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -987,9 +991,9 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             }
             else {
                 if (jobID!=null) {
-                    List<String> jobFile = fileHandling.fileRead(BE.jobListFile);
+                    List<String> jobFile = fileHandling.fileRead(BE.TF.jobListFile);
                     for (String eachJob : jobFile) {
-                        String[] jobDet = eachJob.split(BE.sp);
+                        String[] jobDet = eachJob.split(BE.TF.sp);
                         if  (jobDet[2].equals(selectedJob)) {
                             String timeNeeded = jobDet[3];
                             String timePlace = timeNeeded.substring(timeNeeded.length()-1);
@@ -1019,7 +1023,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         if (BuildingExecutiveJobManagement.BEjobManagement != null) {
             BuildingExecutiveJobManagement.BEjobManagement.dispose();
         }
-        BE.toJobManagement(this, user, complaintsId, fromComplaintsPage);
+        BE.toJobManagement(this, user, this.complaint, fromComplaintsPage);
     }//GEN-LAST:event_backBTNActionPerformed
 
     private void assignedJobTableMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_assignedJobTableMouseEntered
@@ -1027,7 +1031,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
     }//GEN-LAST:event_assignedJobTableMouseEntered
 
     private void updateJobTextFile(String[] jobItems, int action) throws IOException {
-        List<String> readJobFile = fileHandling.fileRead(BE.employeeJobFile);
+        List<String> readJobFile = fileHandling.fileRead(BE.TF.employeeJobFile);
         List<String> newItemLists = new ArrayList<>();
         
         String itemID = jobItems[0];
@@ -1035,11 +1039,11 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         // make the string[] to an array list
         String specificItem = "";
         for (String arrayItem : jobItems) {
-            specificItem += arrayItem + BE.sp;
+            specificItem += arrayItem + BE.TF.sp;
         }
         
         for (String fileLine : readJobFile) {
-            String[] jobLine = fileLine.split(BE.sp);
+            String[] jobLine = fileLine.split(BE.TF.sp);
             String jobID = jobLine[0];
 
             if (jobID.equals(itemID)) {
@@ -1056,7 +1060,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             newItemLists.add(specificItem);
         }
         
-        fileHandling.fileWrite(BE.employeeJobFile, false, newItemLists);
+        fileHandling.fileWrite(BE.TF.employeeJobFile, false, newItemLists);
         
         if (complaintsId!=null) {
             updateComplaintsFile(action);
@@ -1067,7 +1071,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         ArrayList<String> updateComFile = new ArrayList<>();
         List<String> complaintFile = fileHandling.fileRead(BE.TF.complaintFiles);
         for (String eachComp : complaintFile) {
-            String[] compDet = eachComp.split(BE.sp);
+            String[] compDet = eachComp.split(BE.TF.sp);
             String compId = compDet[0];
             
             if (compId.equals(this.complaintsId)) {
@@ -1082,10 +1086,10 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                             status = cptStatus.Pending.toString();
                         }
                         
-                        updateLine = updateLine + status + BE.sp;
+                        updateLine = updateLine + status + BE.TF.sp;
                     }
                     else {
-                        updateLine = updateLine + compDet[data] + BE.sp;
+                        updateLine = updateLine + compDet[data] + BE.TF.sp;
                     }
                 }
                 
@@ -1105,7 +1109,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         // job Id
         String fieldJobId = this.jobID;
         if (action == this.addItem) {
-            fieldJobId = BE.getNewTaskId(BE.employeeJobFile, 0);
+            fieldJobId = BE.getNewTaskId(BE.TF.employeeJobFile, 0);
         }
         
         // employeeId
@@ -1115,7 +1119,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         // job assigned
         String assignedJob = jobComboBox.getSelectedItem().toString();
         String jobDet = BE.findJobDetailsUsingDescriptionOrId(null, assignedJob);
-        String jobId = jobDet.split(BE.sp)[1];
+        String jobId = jobDet.split(BE.TF.sp)[1];
         
         // repitition on or off
         String repitition;
@@ -1256,7 +1260,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         
         // loop for all assigned job
         for (String eachJob : employeeJobList) {
-            String[] jobDetails = eachJob.split(BE.sp);
+            String[] jobDetails = eachJob.split(BE.TF.sp);
             // get the details of the job
             int repitition = Integer.valueOf(jobDetails[4]);
             LocalDate jobStartDate = null;
@@ -1266,9 +1270,9 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             String timeNeeded = jobDetails[5];
             
             String jobCode = null;
-            List<String> jobList = fileHandling.fileRead(BE.jobListFile);
+            List<String> jobList = fileHandling.fileRead(BE.TF.jobListFile);
             for (String job : jobList) {
-                String[] jobInfo = job.split(BE.sp);
+                String[] jobInfo = job.split(BE.TF.sp);
                 if (jobInfo[2].equals(jobDesc)) {
                     jobCode = jobInfo[1];
                 }

@@ -88,7 +88,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         boolean firstLine = true;
         for (String slots : patrollingSchedule) {
             if (!firstLine) {
-                String[] slotDetails = slots.split(BE.sp);
+                String[] slotDetails = slots.split(BE.TF.sp);
                 String patSlot = slotDetails[1];
                 String patBlock = slotDetails[2];
                 String patLevel = slotDetails[3];
@@ -99,11 +99,11 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                 String patStatus = slotDetails[8];
                 String assignee = slotDetails[9];
                 
-                forTableSetup.add(patSlot + BE.sp + patBlock + BE.sp + 
-                                  patLevel + BE.sp + patCheckPoints + BE.sp + 
-                                  patCheckBef + BE.sp + securityID + BE.sp + 
-                                  securityName + BE.sp + patStatus + BE.sp +
-                                  assignee + BE.sp);
+                forTableSetup.add(patSlot + BE.TF.sp + patBlock + BE.TF.sp + 
+                                  patLevel + BE.TF.sp + patCheckPoints + BE.TF.sp + 
+                                  patCheckBef + BE.TF.sp + securityID + BE.TF.sp + 
+                                  securityName + BE.TF.sp + patStatus + BE.TF.sp +
+                                  assignee + BE.TF.sp);
             }
             
             firstLine = false;
@@ -118,11 +118,11 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         
         File file = new File(patrollingScheduleFile);
         if (!file.exists()) {
-            List<String> defaultSchedule = fh.fileRead(BE.fixFile);
+            List<String> defaultSchedule = fh.fileRead(BE.TF.fixFile);
             fh.fileWrite(patrollingScheduleFile, false, defaultSchedule);
             
-            addNewRec.add(BE.getNewId(BE.patScheduleModRec, 0) + BE.sp + inputDate + BE.sp + "8" + BE.sp + 5 + BE.sp + getCurrentBEid() + BE.sp + BE.formatTime(LocalTime.now().toString()) + BE.sp);
-            fh.fileWrite(BE.patScheduleModRec, true, addNewRec);
+            addNewRec.add(BE.getNewId(BE.TF.patScheduleModRec, 0) + BE.TF.sp + inputDate + BE.TF.sp + "8" + BE.TF.sp + 5 + BE.TF.sp + getCurrentBEid() + BE.TF.sp + BE.formatTime(LocalTime.now().toString()) + BE.TF.sp);
+            fh.fileWrite(BE.TF.patScheduleModRec, true, addNewRec);
         }
     }
     
@@ -946,8 +946,8 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         
         if (correctSel) {
             List<String> scheduleFile = fh.fileRead(patrollingScheduleFile);
-            patID = scheduleFile.get(selectedRow+1).split(BE.sp)[0];
-            String checkedAt = scheduleFile.get(selectedRow+1).split(BE.sp)[10];
+            patID = scheduleFile.get(selectedRow+1).split(BE.TF.sp)[0];
+            String checkedAt = scheduleFile.get(selectedRow+1).split(BE.TF.sp)[10];
             
             for (int data = 0; data < scheduleTable.getColumnCount(); data++) {
                 rowData[data] = scheduleTable.getValueAt(selectedRow, data);
@@ -1014,15 +1014,15 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         
         String checkBef = null;
         for (String eachSched : scheduleList) {
-            String[] schedules = eachSched.split(BE.sp);
+            String[] schedules = eachSched.split(BE.TF.sp);
             String id = schedules[0];
             checkBef = schedules[5];
             
             if (id.equals(patID)) {
-                toUpdateList.add(id + BE.sp + schedules[1] + BE.sp + schedules[2] + BE.sp + schedules[3] + BE.sp +
-                        checkpoint + BE.sp + checkBef + BE.sp + securityId + BE.sp + securityName + BE.sp + 
-                        remarks + BE.sp + schedules[8] + BE.sp + " " + BE.sp + this.getCurrentBEid() + BE.sp + 
-                        BE.combineStringDateTime(LocalDate.now().toString(), LocalTime.now().toString()) + BE.sp);
+                toUpdateList.add(id + BE.TF.sp + schedules[1] + BE.TF.sp + schedules[2] + BE.TF.sp + schedules[3] + BE.TF.sp +
+                        checkpoint + BE.TF.sp + checkBef + BE.TF.sp + securityId + BE.TF.sp + securityName + BE.TF.sp + 
+                        remarks + BE.TF.sp + schedules[8] + BE.TF.sp + " " + BE.TF.sp + this.getCurrentBEid() + BE.TF.sp + 
+                        BE.combineStringDateTime(LocalDate.now().toString(), LocalTime.now().toString()) + BE.TF.sp);
             }
             else {
                 toUpdateList.add(eachSched);
@@ -1040,7 +1040,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         
         String newTaskId = null;
         try {
-            newTaskId = BE.getNewTaskId(BE.employeeJobFile, 0);
+            newTaskId = BE.getNewTaskId(BE.TF.employeeJobFile, 0);
         } catch (IOException ex) {
             Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1057,13 +1057,13 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         
         ArrayList<String> addJob = new ArrayList<>();
         if (newTaskId != null) {
-            addJob.add(newTaskId + BE.sp + securityId + BE.sp + "null" + BE.sp + 
-                    "PT" + BE.sp + 0 + BE.sp + timeNeeded+"h" + BE.sp + this.inputDate + BE.sp + slot + BE.sp + this.inputDate + " " + checkBef + 
-                    BE.sp + "null" + BE.sp + remarks + BE.sp + "null" + BE.sp + 
+            addJob.add(newTaskId + BE.TF.sp + securityId + BE.TF.sp + "null" + BE.TF.sp + 
+                    "PT" + BE.TF.sp + 0 + BE.TF.sp + timeNeeded+"h" + BE.TF.sp + this.inputDate + BE.TF.sp + slot + BE.TF.sp + this.inputDate + " " + checkBef + 
+                    BE.TF.sp + "null" + BE.TF.sp + remarks + BE.TF.sp + "null" + BE.TF.sp + 
                     BE.combineStringDateTime(LocalDate.now().toString(), LocalTime.now().toString()) + 
-                    BE.sp + inputDate + " " + patID + BE.sp);
+                    BE.TF.sp + inputDate + " " + patID + BE.TF.sp);
         }
-        fh.fileWrite(BE.employeeJobFile, true, addJob);
+        fh.fileWrite(BE.TF.employeeJobFile, true, addJob);
     }//GEN-LAST:event_updateBTNActionPerformed
     
     private void deleteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBTNActionPerformed
@@ -1072,14 +1072,14 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         List<String> oldSchedule = fh.fileRead(patrollingScheduleFile);
         
         for (String eachSche : oldSchedule) {
-            String[] scheDet = eachSche.split(BE.sp);
+            String[] scheDet = eachSche.split(BE.TF.sp);
             String slotId = scheDet[0];
             if (slotId.equals(patID)) {
-                toRemove.add(scheDet[0] + BE.sp + scheDet[1] + BE.sp + scheDet[2] + BE.sp + 
-                             scheDet[3] + BE.sp + scheDet[4] + BE.sp + scheDet[5] + BE.sp + 
-                             " " + BE.sp + " " + BE.sp + " " + BE.sp + " " + BE.sp + " " + BE.sp + 
+                toRemove.add(scheDet[0] + BE.TF.sp + scheDet[1] + BE.TF.sp + scheDet[2] + BE.TF.sp + 
+                             scheDet[3] + BE.TF.sp + scheDet[4] + BE.TF.sp + scheDet[5] + BE.TF.sp + 
+                             " " + BE.TF.sp + " " + BE.TF.sp + " " + BE.TF.sp + " " + BE.TF.sp + " " + BE.TF.sp + 
                              BE.combineStringDateTime(LocalDate.now().toString(), LocalTime.now().toString()) + 
-                             BE.sp + " ");
+                             BE.TF.sp + " ");
             }
             else {
                 toRemove.add(eachSche);
@@ -1136,7 +1136,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         ArrayList<String> updatedSched = new ArrayList<>();
         List<String> allSlots = fh.fileRead(patrollingScheduleFile);
         for (String eachSlot : allSlots) {
-            String slotId = eachSlot.split(BE.sp)[0];
+            String slotId = eachSlot.split(BE.TF.sp)[0];
             if (!slotId.equals(patID)) {
                 updatedSched.add(eachSlot);
             }
@@ -1186,9 +1186,9 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         
         String dayCode  = inputDate + " " + patID;
         
-        List<String> getEmployeeList = fh.fileRead(BE.employeeJobFile);
+        List<String> getEmployeeList = fh.fileRead(BE.TF.employeeJobFile);
         for (String eachJob : getEmployeeList) {
-            String[] jobDet = eachJob.split(BE.sp);
+            String[] jobDet = eachJob.split(BE.TF.sp);
             String patCode = jobDet[jobDet.length - 1];
             
             if (!patCode.equals(dayCode)) {
@@ -1196,7 +1196,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             }
         }
         
-        fh.fileWrite(BE.employeeJobFile, false, removeFromJobFile);
+        fh.fileWrite(BE.TF.employeeJobFile, false, removeFromJobFile);
         
         deleteBTN.setEnabled(false);
         updateBTN.setEnabled(false);
@@ -1213,14 +1213,14 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         }
         
         for (String allEmp : assignedEmployee) {
-            String empId = allEmp.split(BE.sp)[0];
+            String empId = allEmp.split(BE.TF.sp)[0];
             
             ArrayList<String> jobList = BE.getAssignedJobForSpecificEmployee(empId);
             
             boolean cannotPatroll = false;
             if (!jobList.isEmpty()) {
                 for (String eachJob : jobList) {
-                    String[] jobDetails = eachJob.split(BE.sp);
+                    String[] jobDetails = eachJob.split(BE.TF.sp);
                     String assignedJobCode = jobDetails[3];
                     if (assignedJobCode.equals("NS") || assignedJobCode.equals("MS") || assignedJobCode.equals("PT")) {
                         int repitition = Integer.valueOf(jobDetails[4]);

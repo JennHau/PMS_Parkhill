@@ -59,37 +59,6 @@ public class ResidentTenant {
         return compCode + (minimumId + 1);
     }
     
-    public ArrayList getCurrentRTcomplaints(String currentRTid) {
-        ArrayList<ArrayList> combinedComp = new ArrayList<>();
-        ArrayList<String> pendingComp = new ArrayList<>();
-        ArrayList<String> progressingComp = new ArrayList<>();
-        ArrayList<String> completedComp = new ArrayList<>();
-        
-        List<String> complaints = fh.fileRead(TF.complaintFiles);
-        for (String eachComp : complaints) {
-            String[] compDet = eachComp.split(TF.sp);
-            String complainerId = compDet[1];
-            if (complainerId.equals(currentRTid)) {
-                String status = compDet[5];
-                String tableLine = compDet[0] + TF.sp + compDet[2] + TF.sp + compDet[3] + TF.sp + compDet[4] + TF.sp + compDet[5] + TF.sp;
-                switch (status) {
-                    case "Pending" -> pendingComp.add(tableLine);
-                    case "Progressing" -> progressingComp.add(tableLine);
-                    case "Completed" -> completedComp.add(tableLine);
-                }
-            }
-        }
-        
-        for (String progress : progressingComp) {
-            pendingComp.add(progress);
-        }
-        
-        combinedComp.add(pendingComp);
-        combinedComp.add(completedComp);
-        
-        return combinedComp;
-    }
-    
     public ArrayList getCurrentRTvisitor(String currentRTid) {
         ArrayList<String> registeredVisitor = new ArrayList<>();
         
@@ -366,7 +335,7 @@ public class ResidentTenant {
         
         return totalAmount;
     }
-    
+  
     // Page Navigator
     public void toResidentTenantDashboard(Users user) {
         ResidentTenantMainPage page = new ResidentTenantMainPage(user);
@@ -452,10 +421,4 @@ public class ResidentTenant {
         ResidentTenantComplaints page = new ResidentTenantComplaints(user);
         page.setVisible(true);
     }
-}
-
-enum cptStatus{
-    Pending,
-    Progressing,
-    Complete,
 }

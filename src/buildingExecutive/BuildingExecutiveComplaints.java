@@ -6,12 +6,14 @@ package buildingExecutive;
 
 import java.awt.Toolkit;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import pms_parkhill_residence.Complaints;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.Users;
 
@@ -57,31 +59,65 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         List<String> complaintsData = fh.fileRead(BE.TF.complaintFiles);
         ArrayList<String> newComplaints = new ArrayList<>();
         ArrayList<String> actionedComplaints = new ArrayList<>();
+        ArrayList<String> statusComplaints = new ArrayList<>();
         
         boolean firstLine = true;
         for (String eachData : complaintsData) {
             if (!firstLine) {
-                String[] dataDetails = eachData.split(BE.sp);
+                String[] dataDetails = eachData.split(BE.TF.sp);
                 String complaintId = dataDetails[0];
                 String complainerId = dataDetails[1];
                 String complaintStatus = dataDetails[5];
-
+                
                 if (complaintStatus.equals(cptStatus.Pending.name())){
                     String issueDate = dataDetails[3];
-                    newComplaints.add(complaintId + BE.sp + complainerId + BE.sp + issueDate + BE.sp + complaintStatus + BE.sp);
+                    newComplaints.add(complaintId + BE.TF.sp + complainerId + BE.TF.sp + issueDate + BE.TF.sp + complaintStatus + BE.TF.sp);
                 }
                 else {
                     String updatedBy = dataDetails[6];
                     String updateTime = dataDetails[7];
-                    actionedComplaints.add(complaintId + BE.sp + complainerId + BE.sp + complaintStatus + BE.sp + updatedBy + BE.sp + updateTime + BE.sp);
+                    actionedComplaints.add(complaintId + BE.TF.sp + complainerId + BE.TF.sp + complaintStatus + BE.TF.sp + updatedBy + BE.TF.sp + updateTime + BE.TF.sp);
                 }
             }
             
             firstLine = false;
         }
         
+        String selectedSort = sortCB.getSelectedItem().toString();
+        String selectedStatus = statusCB.getSelectedItem().toString();
+        
+        for (int first = 0; first < newComplaints.size()-1; first++) {
+            for (int next = first + 1; next < newComplaints.size(); next++) {
+                String item1 = newComplaints.get(first);
+                String item2 = newComplaints.get(next);
+                
+                LocalDate date1 = BE.DTF.formatDate(item1.split(BE.TF.sp)[2]);
+                LocalDate date2 = BE.DTF.formatDate(item2.split(BE.TF.sp)[2]);
+                
+                if (selectedSort.equals("Latest")) {
+                    if (date2.isAfter(date1)) {
+                        newComplaints.set(first, item2);
+                        newComplaints.set(next, item1);
+                    }
+                }
+                else {
+                    if (date2.isBefore(date1)) {
+                        newComplaints.set(first, item2);
+                        newComplaints.set(next, item1);
+                    }
+                }
+            }
+        }
+        
+        for (String eachComp : actionedComplaints) {
+            String compStatus = eachComp.split(BE.TF.sp)[2];
+            if (compStatus.equals(selectedStatus)) {
+                statusComplaints.add(eachComp);
+            }
+        }
+        
         BE.setTableRow(newComplaintsTab, newComplaints);
-        BE.setTableRow(actionedComplaintsTab, actionedComplaints);
+        BE.setTableRow(actionedComplaintsTab, statusComplaints);
     }
     
     /**
@@ -119,10 +155,10 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        sortCB = new javax.swing.JComboBox<>();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        statusCB = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         newComplaintsTable = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -130,7 +166,8 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         jLabel18 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jTextField1 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        searchTextField = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -489,9 +526,14 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
 
         jLabel15.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel15.setText("  Filter: ");
+        jLabel15.setText("Sort By: ");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        sortCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Latest", "Earliest" }));
+        sortCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sortCBActionPerformed(evt);
+            }
+        });
 
         jLabel16.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(51, 51, 51));
@@ -501,7 +543,12 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         jLabel17.setForeground(new java.awt.Color(51, 51, 51));
         jLabel17.setText("  Status: ");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        statusCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Progressing", "Completed" }));
+        statusCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                statusCBActionPerformed(evt);
+            }
+        });
 
         newComplaintsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -597,7 +644,23 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         jTextField1.setForeground(new java.awt.Color(13, 24, 42));
         jTextField1.setText("jTextField1");
 
-        jTextField3.setText("jTextField3");
+        searchTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchTextFieldActionPerformed(evt);
+            }
+        });
+        searchTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchTextFieldKeyReleased(evt);
+            }
+        });
+
+        jButton1.setText("CLEAR");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -609,19 +672,22 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 1060, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(jPanel6Layout.createSequentialGroup()
                             .addComponent(jLabel18)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jButton1)
                             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(jPanel6Layout.createSequentialGroup()
                             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel14)
                                 .addGroup(jPanel6Layout.createSequentialGroup()
+                                    .addGap(6, 6, 6)
                                     .addComponent(jLabel15)
-                                    .addGap(4, 4, 4)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(sortCB, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -630,7 +696,7 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
                                 .addGroup(jPanel6Layout.createSequentialGroup()
                                     .addComponent(jLabel17)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(statusCB, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(jLabel16)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 584, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGap(6, 6, 6)))))
@@ -643,7 +709,9 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButton1)))
                         .addGap(7, 7, 7)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
@@ -653,7 +721,7 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(sortCB, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(7, 7, 7)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel6Layout.createSequentialGroup()
@@ -661,7 +729,7 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(statusCB, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(7, 7, 7)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(19, 19, 19))
@@ -699,21 +767,12 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel2MouseEntered
 
     private void newComplaintsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newComplaintsTableMouseClicked
-        try {
-            // TODO add your handling code here:
-            tableSelectedAction(newComplaintsTable, newComplaintsTab, 4);
-        } catch (IOException ex) {
-            Logger.getLogger(BuildingExecutiveComplaints.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        tableSelectedAction(newComplaintsTable, newComplaintsTab, 4);
     }//GEN-LAST:event_newComplaintsTableMouseClicked
 
     private void actionedComplaintsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionedComplaintsTableMouseClicked
-        try {
-            // TODO add your handling code here:
-            tableSelectedAction(actionedComplaintsTable, actionedComplaintsTab, 5);
-        } catch (IOException ex) {
-            Logger.getLogger(BuildingExecutiveComplaints.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        // TODO add your handling code here:
+        tableSelectedAction(actionedComplaintsTable, actionedComplaintsTab, 5);
     }//GEN-LAST:event_actionedComplaintsTableMouseClicked
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
@@ -755,13 +814,73 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jPanel9MouseClicked
 
-    private void tableSelectedAction(JTable jTable, DefaultTableModel tableModel, int expectedCol) throws IOException {
+    private void sortCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortCBActionPerformed
+        // TODO add your handling code here:
+        complaintTableSetUp();
+    }//GEN-LAST:event_sortCBActionPerformed
+
+    private void statusCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusCBActionPerformed
+        // TODO add your handling code here:
+        complaintTableSetUp();
+    }//GEN-LAST:event_statusCBActionPerformed
+
+    private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextFieldActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_searchTextFieldActionPerformed
+
+    private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
+        // TODO add your handling code here:
+        newComplaintsTab.setRowCount(0);
+        actionedComplaintsTab.setRowCount(0);
+        
+        complaintTableSetUp();
+        
+        if (!"".equals(searchTextField.getText().toUpperCase())) {
+            String complaintCode = searchTextField.getText().toUpperCase();
+            removeRow(newComplaintsTable, newComplaintsTab, complaintCode);
+            removeRow(actionedComplaintsTable, actionedComplaintsTab, complaintCode);
+        } 
+        else {
+            newComplaintsTab.setRowCount(0);
+            actionedComplaintsTab.setRowCount(0);
+            complaintTableSetUp();
+        }
+    }//GEN-LAST:event_searchTextFieldKeyReleased
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        searchTextField.setText("");
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    public void removeRow(JTable jTable, DefaultTableModel tableModel, String complaintCode) {
+        for (int i=0; i<tableModel.getRowCount(); i++) {
+            // get module code from table
+            String tmodule_code = String.valueOf(jTable.getValueAt(i, 1)).toUpperCase();
+            // if module code not contain in search bar
+            if (!tmodule_code.contains(complaintCode)) {
+                // remove module from table
+                tableModel.removeRow(i);
+                i--;
+            }
+        }
+    }
+    
+    private void tableSelectedAction(JTable jTable, DefaultTableModel tableModel, int expectedCol) {
         int selectedCol = jTable.getSelectedColumn();
         int selectedRow = jTable.getSelectedRow();
         
         this.complaintID = BE.validateTableSelectionAndGetValue(tableModel, selectedCol, selectedRow, expectedCol, 0);
         
-        BE.toComplaintDetailsPage(this.user, complaintID);
+        if (this.complaintID != null) {
+            Complaints complaint = new Complaints(this.complaintID);
+        
+            BE.toComplaintDetailsPage(this.user, complaint);
+        }
+    }
+    
+    private void statusComboBoxSetUp() {
+        
     }
     
     private void setWindowIcon() {
@@ -872,8 +991,7 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable actionedComplaintsTable;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -907,8 +1025,10 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JTable newComplaintsTable;
+    private javax.swing.JTextField searchTextField;
+    private javax.swing.JComboBox<String> sortCB;
+    private javax.swing.JComboBox<String> statusCB;
     // End of variables declaration//GEN-END:variables
 
     /**

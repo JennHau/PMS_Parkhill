@@ -5,11 +5,10 @@
 package buildingExecutive;
 
 import java.awt.Toolkit;
-import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import pms_parkhill_residence.Complaints;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.Users;
 
@@ -19,6 +18,8 @@ import pms_parkhill_residence.Users;
  */
 public class ComplaintsDetails extends javax.swing.JFrame {
     private Users user;
+    private Users complainer;
+    private Complaints complaint;
     FileHandling fh = new FileHandling();
     BuildingExecutive BE = new BuildingExecutive();
     
@@ -29,20 +30,22 @@ public class ComplaintsDetails extends javax.swing.JFrame {
     /**
      * Creates new form EmployeeJobAssignation
      * @param users
-     * @param complaintId
-     * @throws java.io.IOException
+     * @param complaint
      */
-    public ComplaintsDetails(Users users, String complaintId) throws IOException {
+    public ComplaintsDetails(Users users, Complaints complaint) {
         initComponents();
-        runDefaultSetUp(users, complaintId);
+        runDefaultSetUp(users, complaint);
     }
     
-    private void runDefaultSetUp(Users users, String complaintId) throws IOException {
+    private void runDefaultSetUp(Users users, Complaints complaint) {
         this.user = users;
+        this.complaint = complaint;
+        
         this.setCurrentBEid(this.user.getUserID());
         
         setWindowIcon();
-        setComplaintId(complaintId);
+        setComplaintId(complaint.getComplaintID());
+        
         complaintFormSetUp();
     }
     
@@ -50,23 +53,28 @@ public class ComplaintsDetails extends javax.swing.JFrame {
         this.setComplaintID(complaintId);
     }
     
-    private void complaintFormSetUp() throws IOException {
-        String[] complaintDetails = (BE.getComplaintDetails(complaintID)).split(BE.sp);
+    private void complaintFormSetUp() {
+        this.setComplainerID(complaint.getComplainerID());
+        complainer = new Users(this.complainerID);
         
-        this.setComplainerID(complaintDetails[1]);
-        String description = complaintDetails[2];
-        LocalDate issueDate = BE.formatDate(complaintDetails[3]);
-        LocalTime issueTime = BE.formatTime(complaintDetails[4]);
-        String complaintStatus = complaintDetails[5];
+        String description = complaint.getComplaintDetails();
+        LocalDate issueDate = BE.DTF.formatDate(complaint.getComplaintDate());
+        LocalTime issueTime = BE.DTF.formatTime(complaint.getComplaintTime());
+        String complaintStatus = complaint.getComplaintStatus();
         
-        String complainerName = user.getFirstName() + " " + user.getLastName();
-        String unitNo = user.getUnitNo();
-        String contactNo = user.getPhoneNo();
-        String email = user.getEmail();
+        String complainerName = complainer.getFirstName() + " " + complainer.getLastName();
+        String unitNo = (complainer.getUnitNo() != null) ? complainer.getUnitNo() : "-";
+        String contactNo = complainer.getPhoneNo();
+        String email = complainer.getEmail();
         
-        complaintIdTF.setText(this.complaintID);
-        complainerIdTF.setText(this.complainerID);
+        complaintIdTF.setText(this.getComplaintID());
+        complainerIdTF.setText(this.getComplainerID());
         unitNoTF.setText(unitNo);
+        
+        if (complaintStatus.equals("Pending")) {
+            statusComboBox.addItem("Pending");
+        }
+        
         statusComboBox.setSelectedItem(complaintStatus);
         statusComboBox.setEnabled(true);
         complainerNameTF.setText(complainerName);
@@ -103,8 +111,6 @@ public class ComplaintsDetails extends javax.swing.JFrame {
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
-    
-    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -221,7 +227,12 @@ public class ComplaintsDetails extends javax.swing.JFrame {
 
         contactNoTF.setEnabled(false);
 
-        statusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pending", "Progressing", "Completed" }));
+        statusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Progressing", "Completed" }));
+        statusComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                statusComboBoxActionPerformed(evt);
+            }
+        });
 
         statusBTN.setText("Progressing");
         statusBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -248,7 +259,7 @@ public class ComplaintsDetails extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 92, Short.MAX_VALUE)
+                                    .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
                                     .addComponent(complaintIdTF, javax.swing.GroupLayout.Alignment.LEADING))
                                 .addGap(30, 30, 30)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -405,13 +416,13 @@ public class ComplaintsDetails extends javax.swing.JFrame {
         if (BuildingExecutiveComplaints.BEcomplaints != null) {
             BuildingExecutiveComplaints.BEcomplaints.dispose();
         }
-        BE.toJobManagement(this, user, this.complaintID, true);
+        BE.toJobManagement(this, user, complaint, true);
     }//GEN-LAST:event_assignBTNActionPerformed
 
     private void statusBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusBTNActionPerformed
         // TODO add your handling code here:
-        String status = statusBTN.getText();
-        switch (status) {
+        complaint.setComplaintStatus(statusBTN.getText());
+        switch (complaint.getComplaintStatus()) {
             case "Progressing" -> {
                 statusComboBox.setSelectedItem("Progressing");
                 statusBTN.setText("Complete");
@@ -421,15 +432,30 @@ public class ComplaintsDetails extends javax.swing.JFrame {
                 statusBTN.setText("Completed");
                 statusBTN.setEnabled(false);
                 statusComboBox.setEnabled(true);
+                statusComboBox.removeItem("Pending");
             }
         }
         
-        try {
-            BE.updateComplaintStatusFile(complaintID, status);
-        } catch (IOException ex) {
-            Logger.getLogger(ComplaintsDetails.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        complaint.setStatusUpdatedBy(this.user.getUserID());
+        complaint.setLastUpdateDateTime(BE.DTF.getDateTimeNow());
+        
+        BE.updateComplaintStatus(this.complaint);
     }//GEN-LAST:event_statusBTNActionPerformed
+
+    private void statusComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusComboBoxActionPerformed
+        // TODO add your handling code here:
+        if (statusComboBox.getSelectedItem() != null) {
+            String selectedStatus = statusComboBox.getSelectedItem().toString();
+            
+            switch(selectedStatus) {
+                case "Progressing" -> {
+                    statusBTN.setText("Complete");
+                    statusComboBox.setEnabled(false);
+                    assignBTN.setEnabled(false);
+                }
+            }
+        }
+    }//GEN-LAST:event_statusComboBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -462,11 +488,7 @@ public class ComplaintsDetails extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                try {
-                    new ComplaintsDetails(null, null).setVisible(true);
-                } catch (IOException ex) {
-                    Logger.getLogger(ComplaintsDetails.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                new ComplaintsDetails(null, null).setVisible(true);
             }
         });
     }
