@@ -527,6 +527,11 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
         unitNoTF.setEnabled(false);
 
         backBTN.setText("Back");
+        backBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backBTNActionPerformed(evt);
+            }
+        });
 
         updateBTN.setText("Update");
         updateBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -822,6 +827,10 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
         // TODO add your handling code here:
         emailTF.setEnabled(true);
     }//GEN-LAST:event_editEmailBTNActionPerformed
+
+    private void backBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBTNActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_backBTNActionPerformed
 
     private boolean replaceFile(String fileLocation, String destination) throws IOException {
         File dest = new File(destination);

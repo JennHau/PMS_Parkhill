@@ -4,6 +4,7 @@
  */
 package buildingManager;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import pms_parkhill_residence.FileHandling;
@@ -111,5 +112,87 @@ public class BuildingManager extends Users{
                 newData.add(employeeTypeList.get(i));
             }
         } fh.fileWrite("userProfile.txt", false, newData);
+    }
+    
+    public boolean checkImageFile(String imageRPath) {
+        String imageFile = "src//images//"+imageRPath+".jpg";
+        File f = new File(imageFile);
+        File imagePath = new File(f.getAbsolutePath());
+        return(imagePath.exists());
+    }
+    
+    public void modifyTeamStructureSlot(String role, String name) {
+        List<String> roleList = fh.fileRead("teamStructure.txt");
+        List<String> newData = new ArrayList<>();
+        
+        for(int i=0; i<roleList.size(); i++){
+            String[] roleDetails = roleList.get(i).split(";");
+            String type = roleDetails[0];
+            String eRole = roleDetails[1];
+            
+            if(type.equals("slot") && eRole.equals(role)) {
+                newData.add(type +";"+ eRole +";"+ name +";");
+            } else {
+                newData.add(roleList.get(i));
+            }
+        } fh.fileWrite("teamStructure.txt", false, newData);
+    }
+    
+    public void deleteTeamStructureSlot(String role) {
+        List<String> roleList = fh.fileRead("teamStructure.txt");
+        List<String> newData = new ArrayList<>();
+        
+        for(int i=0; i<roleList.size(); i++){
+            String[] roleDetails = roleList.get(i).split(";");
+            String type = roleDetails[0];
+            String eRole = roleDetails[1];
+            
+            if(type.equals("slot") && eRole.equals(role)) {
+                newData.add(type +";"+ eRole +";"+ "-" +";");
+            } else {
+                newData.add(roleList.get(i));
+            }
+        } fh.fileWrite("teamStructure.txt", false, newData);
+        String imageFile = "src\\images\\"+role+".jpg";
+        File image = new File(imageFile);
+        image.delete();
+    }
+    
+    public void deleteTeamStructureOther(String role, String name) {
+        List<String> roleList = fh.fileRead("teamStructure.txt");
+        List<String> newData = new ArrayList<>();
+        
+        for(int i=0; i<roleList.size(); i++){
+            String[] roleDetails = roleList.get(i).split(";");
+            String type = roleDetails[0];
+            String eRole = roleDetails[1];
+            String eName = roleDetails[2];
+            
+            if(type.equals("other") && eRole.equals(role) && eName.equals(name)) {
+            } else {
+                newData.add(roleList.get(i));
+            }
+        } fh.fileWrite("teamStructure.txt", false, newData);
+    }
+    
+    public void addTeamStructureOther(String role, String name) {
+        List<String> newData = new ArrayList<>();
+        newData.add("other" +";"+ role +";"+ name +";");
+        fh.fileWrite("teamStructure.txt", true, newData);
+    }
+    
+    public boolean addTeamStructureOtherValidate(String role, String name) {
+        List<String> roleList = fh.fileRead("teamStructure.txt");
+        
+        for(int i=1; i<roleList.size(); i++){
+            String[] roleDetails = roleList.get(i).split(";");
+            String type = roleDetails[0];
+            String eRole = roleDetails[1].toLowerCase();
+            String eName = roleDetails[2].toLowerCase();
+            
+            if(type.equals("other") && eRole.equals(role) && eName.equals(name)) {
+                return false;
+            } 
+        } return true;
     }
 }

@@ -12,7 +12,9 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import javax.swing.ImageIcon;
+import pms_parkhill_residence.FileHandling;
 
 /**
  *
@@ -26,7 +28,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
     public BuildingManagerTeamStructure() {
         initComponents();
         setWindowIcon();
-        setImage();
+        setImage(); setName();
     }
 
     /**
@@ -66,27 +68,27 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         icon1 = new javax.swing.JLabel();
         titleLabel1 = new javax.swing.JLabel();
-        headBMNameLabel = new javax.swing.JLabel();
+        name1 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         icon3 = new javax.swing.JLabel();
         titleLabel3 = new javax.swing.JLabel();
-        aceNameLabel = new javax.swing.JLabel();
+        name3 = new javax.swing.JLabel();
         jPanel15 = new javax.swing.JPanel();
         icon5 = new javax.swing.JLabel();
         titleLabel5 = new javax.swing.JLabel();
-        adeNameLabel = new javax.swing.JLabel();
+        name5 = new javax.swing.JLabel();
         jPanel16 = new javax.swing.JPanel();
         icon2 = new javax.swing.JLabel();
         titleLabel2 = new javax.swing.JLabel();
-        assistBMNameLabel = new javax.swing.JLabel();
+        name2 = new javax.swing.JLabel();
         jPanel17 = new javax.swing.JPanel();
         icon6 = new javax.swing.JLabel();
         titleLabel6 = new javax.swing.JLabel();
-        secNameLabel = new javax.swing.JLabel();
+        name6 = new javax.swing.JLabel();
         jPanel18 = new javax.swing.JPanel();
         icon4 = new javax.swing.JLabel();
         titleLabel4 = new javax.swing.JLabel();
-        beNameLabel = new javax.swing.JLabel();
+        name4 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
@@ -433,9 +435,9 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
         titleLabel1.setForeground(new java.awt.Color(255, 255, 255));
         titleLabel1.setText("Head of Building Manager");
 
-        headBMNameLabel.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
-        headBMNameLabel.setForeground(new java.awt.Color(255, 255, 255));
-        headBMNameLabel.setText("-");
+        name1.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        name1.setForeground(new java.awt.Color(255, 255, 255));
+        name1.setText("-");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -447,7 +449,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
                 .addGap(8, 8, 8)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(titleLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                    .addComponent(headBMNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(name1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -459,7 +461,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
                         .addComponent(icon1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(headBMNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(name1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(titleLabel1)
                         .addGap(15, 15, 15))))
@@ -475,9 +477,9 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
         titleLabel3.setForeground(new java.awt.Color(255, 255, 255));
         titleLabel3.setText("Head of Account Executive");
 
-        aceNameLabel.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
-        aceNameLabel.setForeground(new java.awt.Color(255, 255, 255));
-        aceNameLabel.setText("-");
+        name3.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        name3.setForeground(new java.awt.Color(255, 255, 255));
+        name3.setText("-");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -489,7 +491,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
                 .addGap(8, 8, 8)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(titleLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                    .addComponent(aceNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(name3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -498,7 +500,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(aceNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(name3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(titleLabel3)
                         .addGap(15, 15, 15))
@@ -517,9 +519,9 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
         titleLabel5.setForeground(new java.awt.Color(255, 255, 255));
         titleLabel5.setText("Head of Admin Executive");
 
-        adeNameLabel.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
-        adeNameLabel.setForeground(new java.awt.Color(255, 255, 255));
-        adeNameLabel.setText("-");
+        name5.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        name5.setForeground(new java.awt.Color(255, 255, 255));
+        name5.setText("-");
 
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
@@ -531,7 +533,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
                 .addGap(8, 8, 8)
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(titleLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                    .addComponent(adeNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(name5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel15Layout.setVerticalGroup(
@@ -540,7 +542,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel15Layout.createSequentialGroup()
-                        .addComponent(adeNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(name5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(titleLabel5)
                         .addGap(15, 15, 15))
@@ -559,9 +561,9 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
         titleLabel2.setForeground(new java.awt.Color(255, 255, 255));
         titleLabel2.setText("Assistant Building Manager");
 
-        assistBMNameLabel.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
-        assistBMNameLabel.setForeground(new java.awt.Color(255, 255, 255));
-        assistBMNameLabel.setText("-");
+        name2.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        name2.setForeground(new java.awt.Color(255, 255, 255));
+        name2.setText("-");
 
         javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
         jPanel16.setLayout(jPanel16Layout);
@@ -573,7 +575,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
                 .addGap(8, 8, 8)
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(titleLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                    .addComponent(assistBMNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(name2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel16Layout.setVerticalGroup(
@@ -585,7 +587,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
                         .addComponent(icon2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(jPanel16Layout.createSequentialGroup()
-                        .addComponent(assistBMNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(name2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(titleLabel2)
                         .addGap(15, 15, 15))))
@@ -601,9 +603,9 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
         titleLabel6.setForeground(new java.awt.Color(255, 255, 255));
         titleLabel6.setText("Head of Security Guard");
 
-        secNameLabel.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
-        secNameLabel.setForeground(new java.awt.Color(255, 255, 255));
-        secNameLabel.setText("-");
+        name6.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        name6.setForeground(new java.awt.Color(255, 255, 255));
+        name6.setText("-");
 
         javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
         jPanel17.setLayout(jPanel17Layout);
@@ -615,7 +617,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
                 .addGap(8, 8, 8)
                 .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(titleLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                    .addComponent(secNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(name6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel17Layout.setVerticalGroup(
@@ -624,7 +626,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel17Layout.createSequentialGroup()
-                        .addComponent(secNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(name6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(titleLabel6)
                         .addGap(15, 15, 15))
@@ -643,9 +645,9 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
         titleLabel4.setForeground(new java.awt.Color(255, 255, 255));
         titleLabel4.setText("Head of Building Executive");
 
-        beNameLabel.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
-        beNameLabel.setForeground(new java.awt.Color(255, 255, 255));
-        beNameLabel.setText("-");
+        name4.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        name4.setForeground(new java.awt.Color(255, 255, 255));
+        name4.setText("-");
 
         javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
         jPanel18.setLayout(jPanel18Layout);
@@ -657,7 +659,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
                 .addGap(8, 8, 8)
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(titleLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                    .addComponent(beNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(name4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel18Layout.setVerticalGroup(
@@ -666,7 +668,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel18Layout.createSequentialGroup()
-                        .addComponent(beNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(name4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(titleLabel4)
                         .addGap(15, 15, 15))
@@ -696,6 +698,9 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
 
         jPanel19.setBackground(new java.awt.Color(13, 24, 42));
         jPanel19.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel19MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jPanel19MouseEntered(evt);
             }
@@ -779,18 +784,18 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    BuildingManager bm = new BuildingManager();
+    FileHandling fh = new FileHandling();
+    
     private void setImage() {
         String[] iconName = {"Head of Building Manager", "Assistant Building Manager",
         "Head of Account Executive", "Head of Building Executive",
         "Head of Admin Executive", "Head of Security Guard"};
         int i = 0;
         while(i<6) {
-            String imageFile = "src//images//"+iconName[i]+".jpg";
-            File f = new File(imageFile);
-            File imagePath = new File(f.getAbsolutePath());
-            
-            if (imagePath.exists()) {
+            boolean exist = bm.checkImageFile(iconName[i]);
+            if (exist) {
                 // locate image directory
                 ImageIcon imageicon = new ImageIcon(getClass().getResource
         ("/images/"+ iconName[i] +".jpg"));
@@ -810,6 +815,36 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
                 } 
             } 
         i++;
+        }
+    }
+    
+    private void setName() {
+        List<String> roleList = fh.fileRead("teamStructure.txt");
+        
+        for(int i=1; i<roleList.size(); i++){
+            String[] roleDetails = roleList.get(i).split(";");
+            String type = roleDetails[0];
+            String role = roleDetails[1];
+            String name = roleDetails[2];
+            
+            if(type.equals("slot")) {
+                switch (role) {
+                    case "Head of Building Manager" -> 
+                        name1.setText(name);
+                    case "Assistant Building Manager" -> 
+                        name2.setText(name);
+                    case "Head of Account Executive" -> 
+                        name3.setText(name);
+                    case "Head of Building Executive" -> 
+                        name4.setText(name);
+                    case "Head of Admin Executive" -> 
+                        name5.setText(name);
+                    case "Head of Security Guard" -> 
+                        name6.setText(name);
+                    default -> {
+                    }
+                } 
+            }
         }
     }
     
@@ -844,6 +879,12 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
         // TODO add your handling code here:
         jLabel15.setForeground(new Color(31,109,196));
     }//GEN-LAST:event_jLabel15MouseExited
+
+    private void jPanel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel19MouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new BuildingManagerModifyTeamStructure().setVisible(true);
+    }//GEN-LAST:event_jPanel19MouseClicked
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
@@ -1908,11 +1949,6 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel aceNameLabel;
-    private javax.swing.JLabel adeNameLabel;
-    private javax.swing.JLabel assistBMNameLabel;
-    private javax.swing.JLabel beNameLabel;
-    private javax.swing.JLabel headBMNameLabel;
     private javax.swing.JLabel icon1;
     private javax.swing.JLabel icon2;
     private javax.swing.JLabel icon3;
@@ -1961,7 +1997,12 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
-    private javax.swing.JLabel secNameLabel;
+    private javax.swing.JLabel name1;
+    private javax.swing.JLabel name2;
+    private javax.swing.JLabel name3;
+    private javax.swing.JLabel name4;
+    private javax.swing.JLabel name5;
+    private javax.swing.JLabel name6;
     private javax.swing.JLabel titleLabel1;
     private javax.swing.JLabel titleLabel2;
     private javax.swing.JLabel titleLabel3;

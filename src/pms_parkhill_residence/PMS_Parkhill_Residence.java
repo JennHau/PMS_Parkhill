@@ -4,6 +4,9 @@
  */
 package pms_parkhill_residence;
 
+import adminExecutive.AdminExecutiveFacilityManagement;
+import buildingManager.BuildingManagerTeamStructure;
+
 /**
  *
  * @author wongj
@@ -14,7 +17,8 @@ public class PMS_Parkhill_Residence {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        HomePage.main(new String[0]);
+        AdminExecutiveFacilityManagement ae = new AdminExecutiveFacilityManagement();
+        ae.main(new String[0]);
     }
     
 }
