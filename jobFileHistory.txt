@@ -1,0 +1,2 @@
+jobId;userId;userName;complaintId;assignedJob;repitition;expectedTimeRequired;startDate;startTime;expectedEndDateTime;dayToRepeat;remarks;updatedBy;updatedTime;patrolCode;
+tsk114563;scg184573;qwer qwer;null;PT;0;1h;2023-01-20;00:00;2023-01-20 01:00;null; ;null;2023-01-19T19:31:01;2023-01-20 1;

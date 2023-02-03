@@ -45,7 +45,6 @@ public class FileHandling {
     } 
     
     public void fileWrite (String filename, boolean append, List<String> newData) {
-        
         try {
             FileWriter fw = new FileWriter(filename, append);
             BufferedWriter bw = new BufferedWriter(fw);
@@ -139,5 +138,4 @@ public class FileHandling {
             tempimage.renameTo(newImageName);  
         }
     }
-    
 }
