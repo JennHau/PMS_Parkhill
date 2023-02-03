@@ -21,7 +21,7 @@ import pms_parkhill_residence.Complaints;
 import pms_parkhill_residence.Users;
 
 /**
- *  
+ * 
  * @author wongj
  */
 public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
@@ -745,7 +745,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addComponent(jLabel15)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane2))))
                 .addGap(10, 10, 10))
         );

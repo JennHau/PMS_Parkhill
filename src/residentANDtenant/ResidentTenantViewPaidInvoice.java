@@ -4,14 +4,10 @@
  */
 package residentANDtenant;
 
+import accountExecutive.*;
 import java.awt.Cursor;
 import java.awt.Toolkit;
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.Users;
 
@@ -19,80 +15,22 @@ import pms_parkhill_residence.Users;
  *
  * @author wongj
  */
-public class ResidentTenantStatement extends javax.swing.JFrame {
-    private Users user;
+public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
     ResidentTenant RT = new ResidentTenant();
-    
-    DefaultTableModel stateTab;
-    private String monthNyear;
     
     /**
      * Creates new form homePage
+     * @param invoiceNo
      * @param user
      */
-    public ResidentTenantStatement(Users user) {
+    public ResidentTenantViewPaidInvoice(String invoiceNo, Users user) {
         initComponents();
-        runDefaultSetUp(user);
-    }
-    
-    private void runDefaultSetUp(Users user) {
-        stateTab = (DefaultTableModel) statementTableSetUp.getModel();
-        
-        this.user = user;
         setWindowIcon();
-        
-        try {
-            monthComboBoxSetUp();
-        } catch (ParseException ex) {
-            System.out.println(ex);
-        }
-    }
-    
-    private void statementTableSetUp() throws ParseException {
-        stateTab.setRowCount(0);
-        
-        ArrayList<String> monthStatement = RT.getCurrentUnitMonthStatement(user, monthNyear);
-        
-        // Set table row
-        RT.setTableRow(stateTab, monthStatement);
-    }
-    
-    private void monthComboBoxSetUp() throws ParseException {
-        ArrayList<String> issuedInvoice = RT.getIssuedStatement(this.user.getUnitNo());
-        
-        String[] sortDate = issuedInvoice.toArray(String[]::new);
-        
-        for (int count1 = 0; count1 < sortDate.length - 1; count1++) {
-            for (int count2 = count1+1; count2 < sortDate.length; count2++) {
-                String date1 = RT.DTF.formatStatementMonth(sortDate[count1]);
-                String date2 = RT.DTF.formatStatementMonth(sortDate[count2]);
-                
-                LocalDate conDate1 = RT.DTF.formatDate(RT.DTF.changeFormatDate("01/" + date1));
-                LocalDate conDate2 = RT.DTF.formatDate(RT.DTF.changeFormatDate("01/" + date2));
-                
-                if (conDate2.isAfter(conDate1)) {
-                    String tempDate = date1;
-                    sortDate[count1] = date2;
-                    sortDate[count2] = tempDate;
-                }
-            }
-        }
-        
-        ArrayList<String> issuedMonth = new ArrayList<>(Arrays.asList(sortDate));
-        
-        monthCB.removeAllItems();
-        if (!issuedMonth.isEmpty()) {
-            for (String eachMonth : issuedMonth) {
-                monthCB.addItem(eachMonth);
-            }
-        }
-        else {
-            monthCB.addItem("- NO DATA -");
-        }
-        
-        if (monthNyear != null) {
-            monthCB.setSelectedItem(monthNyear);
-        }
+        this.invoiceNo = invoiceNo;
+        this.user = user;
+        this.unitNo = this.user.getUnitNo();
+        setFixData();
+        setTable();
     }
 
     /**
@@ -106,20 +44,21 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
 
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        userNameLabel = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        jSeparator1 = new javax.swing.JSeparator();
-        pendingFeeLabel = new javax.swing.JLabel();
-        statementLabel = new javax.swing.JLabel();
-        invoiceLabel = new javax.swing.JLabel();
-        statementLine = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        statementTableSetUp = new javax.swing.JTable();
-        jLabel23 = new javax.swing.JLabel();
-        paymentHistLabel = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jLabel24 = new javax.swing.JLabel();
-        monthCB = new javax.swing.JComboBox<>();
+        jTable1 = new javax.swing.JTable();
+        jLabel16 = new javax.swing.JLabel();
+        invoiceNoLabel = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        unitNoLabel = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        totalLabel = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        unitNoLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         dashboardOuterTab = new javax.swing.JPanel();
@@ -152,13 +91,13 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(13, 24, 42));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("PARKHILL RESIDENCE RESIDENT & TENANT");
+        jLabel2.setText("ACCOUNT EXECUTIVE");
 
-        userNameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        userNameLabel.setForeground(new java.awt.Color(102, 102, 102));
-        userNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        userNameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
-        userNameLabel.setText("USERNAME");
+        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
+        jLabel7.setText("USERNAME");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -168,7 +107,7 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(userNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
         jPanel3Layout.setVerticalGroup(
@@ -177,158 +116,177 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(userNameLabel))
+                    .addComponent(jLabel7))
                 .addContainerGap(9, Short.MAX_VALUE))
         );
 
         jPanel6.setBackground(new java.awt.Color(226, 226, 226));
 
-        pendingFeeLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
-        pendingFeeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        pendingFeeLabel.setText("Pending Fee");
-        pendingFeeLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                pendingFeeLabelMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                pendingFeeLabelMouseEntered(evt);
-            }
-        });
+        jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel14.setText("PAID INVOICE");
 
-        statementLabel.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        statementLabel.setForeground(new java.awt.Color(13, 24, 42));
-        statementLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        statementLabel.setText("Statement");
-        statementLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                statementLabelMouseEntered(evt);
-            }
-        });
-
-        invoiceLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
-        invoiceLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        invoiceLabel.setText("Invoice");
-        invoiceLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                invoiceLabelMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                invoiceLabelMouseEntered(evt);
-            }
-        });
-
-        statementLine.setBackground(new java.awt.Color(13, 24, 42));
-        statementLine.setForeground(new java.awt.Color(13, 24, 42));
-        statementLine.setText("jTextField1");
-
-        statementTableSetUp.setModel(new javax.swing.table.DefaultTableModel(
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
-                "DATE", "TRANSACTIONS", "DETAILS", "AMOUNT", "PAYMENT"
+                "FEE TYPE", "ISSUE DATE", "CONSUMPTION", "UNIT", "UNIT PRICE (RM)", "TOTAL PRICE (RM)"
             }
-        ));
-        jScrollPane1.setViewportView(statementTableSetUp);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
 
-        jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
-        jLabel23.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel23.setText("Statement: ");
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
 
-        paymentHistLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
-        paymentHistLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        paymentHistLabel.setText("Payment History");
-        paymentHistLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabel16.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel16.setText("INVOICE NO:");
+
+        invoiceNoLabel.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
+        invoiceNoLabel.setForeground(new java.awt.Color(153, 153, 153));
+        invoiceNoLabel.setText("INVOICE NO");
+
+        jLabel17.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel17.setText("UNIT NO:");
+
+        unitNoLabel.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
+        unitNoLabel.setForeground(new java.awt.Color(153, 153, 153));
+        unitNoLabel.setText("UNIT NO");
+
+        jPanel4.setBackground(new java.awt.Color(0, 130, 165));
+
+        totalLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
+        totalLabel.setForeground(new java.awt.Color(255, 255, 255));
+        totalLabel.setText("TOTAL: RM0.00");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(totalLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(totalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanel5.setBackground(new java.awt.Color(13, 50, 79));
+        jPanel5.setToolTipText("");
+        jPanel5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                paymentHistLabelMouseClicked(evt);
+                jPanel5MouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                paymentHistLabelMouseEntered(evt);
+                jPanel5MouseEntered(evt);
             }
         });
 
-        jButton1.setText("View");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel18.setText("BACK");
+        jLabel18.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel18MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel18MouseEntered(evt);
             }
         });
 
-        jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel24.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel24.setText("Month/Year: ");
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
-        monthCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        monthCB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                monthCBActionPerformed(evt);
-            }
-        });
+        jLabel19.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel19.setText("ISSUED DATE:");
+
+        unitNoLabel1.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
+        unitNoLabel1.setForeground(new java.awt.Color(153, 153, 153));
+        unitNoLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        unitNoLabel1.setText("2022-12-30");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(pendingFeeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(paymentHistLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(invoiceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(statementLine, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(statementLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))))
-            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 977, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(monthCB, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(449, 449, 449)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 18, Short.MAX_VALUE))
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel6Layout.createSequentialGroup()
+                                    .addComponent(jLabel16)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(invoiceNoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel17)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(unitNoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(106, 106, 106)
+                                    .addComponent(jLabel19)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(unitNoLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(25, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(443, 443, 443))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(12, 12, 12)
+                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(paymentHistLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(pendingFeeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(statementLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(invoiceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, 0)
-                        .addComponent(statementLine, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 0, 0)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel17)
+                        .addComponent(unitNoLabel))
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel19)
+                        .addComponent(unitNoLabel1))
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel16)
+                        .addComponent(invoiceNoLabel)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel23)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel24)
-                    .addComponent(monthCB))
-                .addGap(8, 8, 8)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
-                .addGap(13, 13, 13))
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(13, 24, 42));
@@ -697,36 +655,32 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void pendingFeeLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pendingFeeLabelMouseEntered
+    private final String invoiceNo;
+    private final String unitNo;
+    private final Users user;
+    private String total;
+    
+    private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
         // TODO add your handling code here:
-        pendingFeeLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_pendingFeeLabelMouseEntered
+        RT.toInvoice(user);
+        this.dispose();
+    }//GEN-LAST:event_jLabel18MouseClicked
 
-    private void paymentHistLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentHistLabelMouseEntered
+    private void jLabel18MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseEntered
         // TODO add your handling code here:
-        paymentHistLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_paymentHistLabelMouseEntered
+        jLabel18.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jLabel18MouseEntered
 
-    private void invoiceLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_invoiceLabelMouseEntered
+    private void jPanel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseClicked
         // TODO add your handling code here:
-        invoiceLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_invoiceLabelMouseEntered
+        new ResidentTenantInvoicePaymentGateway(invoiceNo, user, total).setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jPanel5MouseClicked
 
-    private void statementLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statementLabelMouseEntered
+    private void jPanel5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseEntered
         // TODO add your handling code here:
-        statementLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_statementLabelMouseEntered
-
-    private void monthCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthCBActionPerformed
-        if (monthCB.getSelectedItem() != null && monthCB.getSelectedItem() != "- NO DATA -") {
-            try {
-                this.monthNyear = RT.DTF.formatStatementMonth(monthCB.getSelectedItem().toString());
-                statementTableSetUp();
-            } catch (ParseException ex) {
-                Logger.getLogger(ResidentTenantStatement.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }//GEN-LAST:event_monthCBActionPerformed
+        jPanel5.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jPanel5MouseEntered
 
     private void dashBoardInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashBoardInnerTabMouseClicked
         // TODO add your handling code here:
@@ -860,30 +814,37 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
         visitorPassOuterTab.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_visitorPassOuterTabMouseEntered
 
-    private void pendingFeeLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pendingFeeLabelMouseClicked
-        // TODO add your handling code here:
-        RT.toPaymentManagement(user);
-        this.dispose();
+    private void setFixData() {
+        invoiceNoLabel.setText(invoiceNo);
+        unitNoLabel.setText(unitNo);
+    }
+    
+    private void setTable() {
+        AccountExecutive ae = new AccountExecutive();
+        List<String> paymentFeesDetails = ae.extractPaymentFees(invoiceNo);
+        String[] feesDetailsArray = new String[paymentFeesDetails.size()];
+        paymentFeesDetails.toArray(feesDetailsArray);
+        float subTotal = 0.00f;
+        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
         
-    }//GEN-LAST:event_pendingFeeLabelMouseClicked
+        for (int i=0; i<paymentFeesDetails.size(); i++) {
+            String[] paymentDetails = feesDetailsArray[i].split(";");
+            String feeType = paymentDetails[0];
+            String issueDate = paymentDetails[1];
+            String consump = paymentDetails[2];
+            String unit = paymentDetails[3];
+            String unitPrice = paymentDetails[4];
+            String totalPrice = paymentDetails[5];
 
-    private void paymentHistLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentHistLabelMouseClicked
-        // TODO add your handling code here:
-        RT.toPaymentHistory(user);
-        this.dispose();
-    }//GEN-LAST:event_paymentHistLabelMouseClicked
-
-    private void invoiceLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_invoiceLabelMouseClicked
-        // TODO add your handling code here:
-        RT.toInvoice(user);
-        this.dispose();
-    }//GEN-LAST:event_invoiceLabelMouseClicked
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        RT.toStatementReport(user, monthNyear);
-    }//GEN-LAST:event_jButton1ActionPerformed
-
+            subTotal += Float.valueOf(totalPrice);
+            String tbData[] = {feeType, issueDate, consump, unit, unitPrice, 
+                totalPrice};
+            tableModel.addRow(tbData);
+        } 
+        totalLabel.setText("Total: RM" + subTotal);
+        total = String.valueOf(subTotal);
+    }
+    
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
@@ -905,19 +866,19 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ResidentTenantStatement.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResidentTenantViewPaidInvoice.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ResidentTenantStatement.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResidentTenantViewPaidInvoice.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ResidentTenantStatement.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResidentTenantViewPaidInvoice.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ResidentTenantStatement.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResidentTenantViewPaidInvoice.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ResidentTenantStatement(null).setVisible(true);
+                new ResidentTenantViewPaidInvoice(null, null).setVisible(true);
             }
         });
     }
@@ -929,34 +890,34 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
     private javax.swing.JPanel dashboardOuterTab;
     private javax.swing.JLabel facilityBookingInnerTab;
     private javax.swing.JPanel facilityBookingOuterTab;
-    private javax.swing.JLabel invoiceLabel;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel invoiceNoLabel;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JComboBox<String> monthCB;
-    private javax.swing.JLabel paymentHistLabel;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel paymentManagementInnerTab;
     private javax.swing.JPanel paymentManagementOuterTab;
-    private javax.swing.JLabel pendingFeeLabel;
-    private javax.swing.JLabel statementLabel;
-    private javax.swing.JTextField statementLine;
-    private javax.swing.JTable statementTableSetUp;
-    private javax.swing.JLabel userNameLabel;
+    private javax.swing.JLabel totalLabel;
+    private javax.swing.JLabel unitNoLabel;
+    private javax.swing.JLabel unitNoLabel1;
     private javax.swing.JLabel visitorPassInnerTab;
     private javax.swing.JPanel visitorPassOuterTab;
     // End of variables declaration//GEN-END:variables
-
 }

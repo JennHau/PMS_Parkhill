@@ -712,10 +712,6 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
         int selectedRow = paymentHistoryTable.getSelectedRow();
         
         String itemID = RT.validateTableSelectionAndGetValue(payHisTab, selectedCol, selectedRow, 5, 1);
-        String itemDes = RT.validateTableSelectionAndGetValue(payHisTab, selectedCol, selectedRow, 5, 2);
-        
-        String[] keyList = {itemID, itemDes};
-        String concatenated = RT.concatenateKey(keyList);
         
         List<String> receiptFile = RT.fh.fileRead(RT.TF.receiptFile);
         List<String> bookingFile = RT.fh.fileRead(RT.TF.facilityBookingFile);
@@ -724,14 +720,11 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
         for (String eachReceipt : receiptFile) {
             String[] recDet = eachReceipt.split(RT.TF.sp);
             String recInvNo = recDet[0];
-            String recInvType = recDet[2];
-            String[] keyComb = {recInvNo, recInvType};
-            String recKey = RT.concatenateKey(keyComb);
             
-            if (recKey.equals(concatenated)) {
+            if (recInvNo.equals(itemID)) {
                 notFound = false;
                 
-                // TODO: Add invoice receipt page
+                RT.toInvoiceReceipt(user, recInvNo);
             }
         }
         

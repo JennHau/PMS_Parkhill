@@ -57,6 +57,8 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
         totalLabel = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        unitNoLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         dashboardOuterTab = new javax.swing.JPanel();
@@ -123,7 +125,7 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(102, 102, 102));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel14.setText("MAKE PAYMENT");
+        jLabel14.setText("INVOICE");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -218,6 +220,15 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
                 .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
+        jLabel19.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel19.setText("ISSUED DATE:");
+
+        unitNoLabel1.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
+        unitNoLabel1.setForeground(new java.awt.Color(153, 153, 153));
+        unitNoLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        unitNoLabel1.setText("2022-12-30");
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -230,18 +241,22 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addGroup(jPanel6Layout.createSequentialGroup()
                                     .addComponent(jLabel16)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addComponent(invoiceNoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(189, 189, 189)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel17)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(unitNoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(unitNoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(106, 106, 106)
+                                    .addComponent(jLabel19)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(unitNoLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(25, Short.MAX_VALUE))))
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(424, 424, 424)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -256,15 +271,19 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
                     .addComponent(invoiceNoLabel)
-                    .addComponent(jLabel17)
-                    .addComponent(unitNoLabel))
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel19)
+                        .addComponent(unitNoLabel1)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel17)
+                            .addComponent(unitNoLabel))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(10, 10, 10)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(13, 24, 42));
@@ -1900,6 +1919,7 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
@@ -1917,6 +1937,7 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
     private javax.swing.JPanel paymentManagementOuterTab;
     private javax.swing.JLabel totalLabel;
     private javax.swing.JLabel unitNoLabel;
+    private javax.swing.JLabel unitNoLabel1;
     private javax.swing.JLabel visitorPassInnerTab;
     private javax.swing.JPanel visitorPassOuterTab;
     // End of variables declaration//GEN-END:variables

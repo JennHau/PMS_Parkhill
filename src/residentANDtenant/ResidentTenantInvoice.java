@@ -62,7 +62,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
                 
                 double totalAmount = RT.getTotalPricePerInvoice(invNo);
                 
-                String[] tableData = {invNo, invDet[2], String.format("%.02f", totalAmount)};
+                String[] tableData = {invNo, invDet[1], invDet[9], String.format("%.02f", totalAmount), "PAY"};
                 for (String eachData : tableData) {
                     incompletedLine = incompletedLine + eachData + RT.TF.sp;
                 }
@@ -81,7 +81,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
                 
                 double totalAmount = RT.getTotalPricePerInvoice(invNo);
                 
-                String[] tableData = {payDet[0], String.format("%.02f", totalAmount), payDet[9], payDet[10]};
+                String[] tableData = {payDet[0], String.format("%.02f", totalAmount), payDet[9], payDet[10], "VIEW"};
                 for (String eachData : tableData) {
                     completedLine = completedLine + eachData + RT.TF.sp;
                 }
@@ -245,13 +245,13 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
 
         invoiceIncompleteTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "INVOICE NO.", "UNIT", "TOTAL PRICE (RM)", "ACTION"
+                "INVOICE NO.", "UNIT", "ISSUED DATE", "TOTAL PRICE (RM)", "ACTION"
             }
         ));
         invoiceIncompleteTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -261,7 +261,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(invoiceIncompleteTable);
         if (invoiceIncompleteTable.getColumnModel().getColumnCount() > 0) {
-            invoiceIncompleteTable.getColumnModel().getColumn(2).setResizable(false);
+            invoiceIncompleteTable.getColumnModel().getColumn(3).setResizable(false);
         }
 
         jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
@@ -302,6 +302,11 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
                 "INVOICE NO.", "TOTAL PRICE (RM)", "PAID BY", "PAID AT", "ACTION"
             }
         ));
+        invoiceCompleteTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                invoiceCompleteTableMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(invoiceCompleteTable);
 
         jLabel25.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
@@ -752,9 +757,11 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
         int selCol = invoiceIncompleteTable.getSelectedColumn();
         int selRow = invoiceIncompleteTable.getSelectedRow();
         
-        String invoiceNo = RT.validateTableSelectionAndGetValue(invIncompTab, selCol, selRow, 3, 0);
-        
-        RT.toInvoicePayment(invoiceNo, user);
+        String invoiceNo = RT.validateTableSelectionAndGetValue(invIncompTab, selCol, selRow, 4, 0);
+        if (invoiceNo != null) {
+            RT.toInvoicePayment(invoiceNo, user);
+            this.dispose();
+        }
     }//GEN-LAST:event_invoiceIncompleteTableMouseClicked
 
     private void dashBoardInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashBoardInnerTabMouseClicked
@@ -922,6 +929,18 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
         statementLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_statementLabelMouseEntered
 
+    private void invoiceCompleteTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_invoiceCompleteTableMouseClicked
+        // TODO add your handling code here:
+        int selCol = invoiceCompleteTable.getSelectedColumn();
+        int selRow = invoiceCompleteTable.getSelectedRow();
+        
+        String invoiceNo = RT.validateTableSelectionAndGetValue(invCompTab, selCol, selRow, 4, 0);
+        if (invoiceNo != null) {
+            RT.toViewPaidInvoice(user, invoiceNo);
+            this.dispose();
+        }
+    }//GEN-LAST:event_invoiceCompleteTableMouseClicked
+
     private void updateInvoiceTable(String invoiceNo){
         invoiceTableSetUp();
         
@@ -940,31 +959,6 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
                 invCompTab.removeRow(rowCount);
             }
         }
-        
-//        ArrayList<String> newIncompList = new ArrayList<>();
-//        ArrayList<String> newCompList = new ArrayList<>();
-//        
-//        int arrayNo = 1;
-//        for (ArrayList eachList : invoiceNoList) {
-//            ArrayList<String> loopList = eachList;
-//            for (String eachInv : loopList) {
-//                String[] compDet = eachInv.split(RT.TF.sp);
-//                String invNo = compDet[0];
-//                if (invNo.equals(invoiceNo)) {
-//                    switch (arrayNo) {
-//                        case 1 -> newIncompList.add(eachInv);
-//                        case 2 -> newCompList.add(eachInv);
-//                    }
-//                }
-//            }
-//            
-//            arrayNo++;
-//        }
-//        invIncompTab.setRowCount(0);
-//        RT.setTableRow(invIncompTab, newIncompList);
-//        
-//        invCompTab.setRowCount(0);
-//        RT.setTableRow(invCompTab, newCompList);
     }
     
     private void setWindowIcon() {

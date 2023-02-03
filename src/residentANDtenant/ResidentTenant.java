@@ -4,7 +4,10 @@
  */
 package residentANDtenant;
 
+import java.text.ParseException;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import pms_parkhill_residence.CRUD;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,6 +109,20 @@ public class ResidentTenant {
         }
         
         return passCode + (minimumId + 1);
+    }
+    
+    public ArrayList getCurrentUnitIssuedInvoice(String unitNo) {
+        ArrayList<String> issuedInvoice = new ArrayList<>();
+        
+        List<String> invoiceList = fh.fileRead(TF.invoiceFile);
+        for (String eachInv : invoiceList) {
+            String uNo = eachInv.split(TF.sp)[1];
+            if (uNo.equals(unitNo)) {
+                issuedInvoice.add(eachInv);
+            }
+        }
+        
+        return issuedInvoice;
     }
     
     public ArrayList getCurrentUnitInvoice(String unitNo) {
@@ -225,6 +242,147 @@ public class ResidentTenant {
         }
         
         return bookedFacility;
+    }
+    
+    public ArrayList getCurrentUnitMonthStatement(Users user, String monthNyear) throws ParseException{
+        ArrayList<String> statementList = new ArrayList<>();
+        ArrayList<String> monthStatement = new ArrayList<>();
+        
+        // Get all issued invoice
+        ArrayList<String> invoiceList = getCurrentUnitIssuedInvoice(user.getUnitNo());
+        
+        // get all paid invoice
+        ArrayList<String> completedInvoice = getCurrentUnitPaymentHistory(user.getUnitNo());
+        
+        // get all facility payment
+        ArrayList<String> facilityBooking = getCurrentUnitFacilityPayment(user.getUnitNo());
+        
+        // Data Structure = Date, Transaction, Details, Amount, Payments
+        // to change the issued invoice list to same data structure
+        for (String eachInv : invoiceList) {
+            String[] invDet = eachInv.split(TF.sp);
+            String issuedDate = DTF.changeFormatDate(invDet[9]);
+            String id = invDet[0];
+            String type = invDet[2];
+            String amount = invDet[7];
+            String[] data = {issuedDate, "Invoice", id + " " + type, amount, "-"};
+            
+            String line = "";
+            for (String eachData : data) {
+                line = line + eachData + TF.sp;
+            }
+            
+            statementList.add(line);
+        }
+        
+        // change the paid invoice list to same data structure
+        for (String eachInv : completedInvoice) {
+            String[] invDet = eachInv.split(TF.sp);
+            String date = DTF.changeFormatDate(invDet[10]);
+            String id = invDet[0];
+            String type = invDet[2];
+            String amount = invDet[7];
+            String[] data = {date, "Invoice Payment", id + " " + type + " - " + amount + " in excess payments.", "-", amount};
+            
+            String line = "";
+            for (String eachData : data) {
+                line = line + eachData + TF.sp;
+            }
+            
+            statementList.add(line);
+        }
+        
+        // Change the facility booking to same data structure
+        ArrayList<String> bookIdList = new ArrayList<>();
+        for (String eachBook : facilityBooking) {
+            String[] bookDet = eachBook.split(TF.sp);
+            String id = bookDet[0];
+            
+            if (!bookIdList.contains(id)) {
+                String date = bookDet[3];
+                String type = bookDet[1];
+                String amount = bookDet[2];
+                String[] data = {date, "Facility Booking", id + "-" + type, amount, "-"};
+                String[] data2 = {date, "Booking Payment", id + " - " + amount + " in excess payments.", "-", amount};
+                
+                String line = "";
+                for (String eachData : data) {
+                    line = line + eachData + TF.sp;
+                }
+                statementList.add(line);
+
+                line = "";
+                for (String eachData : data2) {
+                    line = line + eachData + TF.sp;
+                }
+                statementList.add(line);
+
+                bookIdList.add(id);
+            }
+        }
+        
+        
+        LocalDate firstDay = DTF.formatDate(DTF.changeFormatDate("01/" + monthNyear));
+        LocalDate lastDay = firstDay.with(lastDayOfMonth());
+        
+        // Retrieve only the data that is between the selected month
+        for (String eachState : statementList) {
+            String[] stateDet = eachState.split(TF.sp);
+            LocalDate paymentDate = DTF.formatDate(stateDet[0]);
+            
+            if ((paymentDate.isAfter(firstDay) || paymentDate.isEqual(firstDay)) && (paymentDate.isBefore(lastDay) || paymentDate.isEqual(lastDay))) {
+                monthStatement.add(eachState);
+            }
+        }
+        
+        // change list to array
+        String[] monStateList = monthStatement.toArray(String[]::new);
+        
+        // sorting date method for the array
+        for (int count1 = 0; count1 < monStateList.length - 1; count1++) {
+            for (int count2 = count1+1; count2 < monStateList.length; count2++) {
+                String item1 = monStateList[count1];
+                String item2 = monStateList[count2];
+                
+                LocalDate date1 = DTF.formatDate(item1.split(TF.sp)[0]);
+                LocalDate date2 = DTF.formatDate(item2.split(TF.sp)[0]);
+                
+                if (date2.isBefore(date1)) {
+                    String tempItem = item1;
+                    monStateList[count1] = item2;
+                    monStateList[count2] = tempItem;
+                }
+            }
+        }
+        
+        ArrayList<String> dateList = new ArrayList<>();
+        monthStatement = new ArrayList<>();
+        
+        // if have the same date as previous, make the particular row to have empty data for "Date" column
+        for (String eachState : monStateList) {
+            String[] stateDet = eachState.split(TF.sp);
+            String date = stateDet[0];
+            if (!dateList.contains(date)) {
+                monthStatement.add(eachState);
+                dateList.add(date);
+            }
+            else {
+                String stateDate = "";
+                String stateId = stateDet[1];
+                String stateType = stateDet[2];
+                String stateAmount = stateDet[3];
+                String statePayment = stateDet[4];
+                String[] data = {stateDate, stateId, stateType, stateAmount, statePayment};
+                
+                String stateItem = "";
+                for (String eachData : data) {
+                    stateItem = stateItem + eachData + TF.sp;
+                }
+                monthStatement.add(stateItem);
+            }
+        }
+        
+        return monthStatement;
     }
     
     public String getFacilityId(String bookingId) {
@@ -419,6 +577,21 @@ public class ResidentTenant {
     
     public void toComplaints(Users user) {
         ResidentTenantComplaints page = new ResidentTenantComplaints(user);
+        page.setVisible(true);
+    }
+    
+    public void toInvoiceReceipt(Users user, String invoiceNo) {
+        ResidentTenantInvoiceReceipt page = new ResidentTenantInvoiceReceipt(user, invoiceNo);
+        page.setVisible(true);
+    }
+    
+    public void toViewPaidInvoice(Users user, String invoiceNo) {
+        ResidentTenantViewPaidInvoice page = new ResidentTenantViewPaidInvoice(invoiceNo, user);
+        page.setVisible(true);
+    }
+    
+    public void toStatementReport(Users user, String monthNyear) {
+        ResidentTenantStatementReport page = new ResidentTenantStatementReport(user, monthNyear);
         page.setVisible(true);
     }
 }

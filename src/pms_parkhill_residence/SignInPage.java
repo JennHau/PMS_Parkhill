@@ -257,10 +257,11 @@ public class SignInPage extends javax.swing.JFrame {
         switch (userCode) {
             case "bde" -> new BuildingExecutiveMainPage(user).setVisible(true);
             case "rsd" -> new ResidentTenantMainPage(user).setVisible(true);
+            case "vdr" -> new ResidentTenantMainPage(user).setVisible(true);
             case "tnt" -> new ResidentTenantMainPage(user).setVisible(true);
         }
     }
-    
+
     private void jLabel7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseEntered
         // TODO add your handling code here:
         jLabel7.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
