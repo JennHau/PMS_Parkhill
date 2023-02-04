@@ -9,6 +9,8 @@ import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.awt.Color;
 import java.awt.Image;
+import java.io.File;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import pms_parkhill_residence.HomePage;
 
@@ -695,14 +697,21 @@ public class AdminExecutiveFacilityPreview extends javax.swing.JFrame {
     
     private void setImage() {
         // locate image directory
-        ImageIcon imageicon = new ImageIcon(getClass().getResource
-                                    ("/images/"+fb.getFacilityName()+".jpg"));
-        // set image to assign size
-        Image image = (imageicon).getImage().getScaledInstance(1020, 307, Image.SCALE_SMOOTH);
-        // replace variable to new resized image
-        imageicon = new ImageIcon(image);
-        // set Jlabel to with the image as icon
-        imageLabel.setIcon(imageicon);
+//        ImageIcon imageicon = new ImageIcon(getClass().getResource
+//                                    ("/images/"+fb.getFacilityName()+".jpg"));
+        try {
+            File imagePath = new File("src\\images\\"+ fb.getFacilityName() + ".jpg");
+            ImageIcon imageicon = new ImageIcon(ImageIO.read(imagePath));
+            // set image to assign size
+            Image image = (imageicon).getImage().getScaledInstance(1020, 307, Image.SCALE_SMOOTH);
+            // replace variable to new resized image
+            imageicon = new ImageIcon(image);
+            // set Jlabel to with the image as icon
+            imageLabel.setIcon(imageicon);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
     }
     
     private void setDefault() {

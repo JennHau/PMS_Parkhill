@@ -118,7 +118,7 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel7.setBackground(new java.awt.Color(13, 50, 79));
+        jPanel7.setBackground(new java.awt.Color(13, 24, 42));
 
         jLabel4.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
@@ -188,7 +188,7 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel10.setBackground(new java.awt.Color(13, 24, 42));
+        jPanel10.setBackground(new java.awt.Color(13, 50, 79));
 
         jLabel8.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
@@ -674,10 +674,6 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
         }
     }
     
-    private void jPanel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPanel2MouseEntered
-
     private void clearbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearbtActionPerformed
         searchTextField.setText("");
         setTable();
@@ -818,6 +814,10 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
         deleteBt.setEnabled(false); oldRoleTitle = null; oldName = null;
         warningMessage.setText(""); setTable();
     }//GEN-LAST:event_clearBtActionPerformed
+
+    private void jPanel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPanel2MouseEntered
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));

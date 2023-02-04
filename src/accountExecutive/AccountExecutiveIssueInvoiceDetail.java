@@ -1085,6 +1085,7 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
             String target = feeTypeNTarget.substring(feeTypeNTarget.indexOf(",") + 2);
             AccountExecutive ae = new AccountExecutive();
             List<String> monthNYear = ae.rangeOfMonthNYear(feeTypeName, target);
+            
             for (int i=0; i<monthNYear.size(); i++) {
                 monthNYearCB.addItem(monthNYear.get(i));
             } monthNYearCB.setSelectedIndex(monthNYear.size() -1);
@@ -1094,42 +1095,46 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
     }
     
     private void setTable() {
-        String feeTypeNTarget = feeTypeNameLabel.getText();
-        String feeTypeName = feeTypeNTarget.substring(0, feeTypeNTarget.indexOf(", "));
-        String target = feeTypeNTarget.substring(feeTypeNTarget.indexOf(",") + 2);
-        String status = String.valueOf(statusCB.getSelectedItem());
-        String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
-        AccountExecutive ae = new AccountExecutive();
-        List<String> invoiceDetails = ae.extractInvoiceDetails(feeTypeName,
-                target, status, monthYear);
+        if(monthNYearCB.getItemCount() > 0) {
+            String feeTypeNTarget = feeTypeNameLabel.getText();
+            String feeTypeName = feeTypeNTarget.substring(0, feeTypeNTarget.indexOf(", "));
+            String target = feeTypeNTarget.substring(feeTypeNTarget.indexOf(",") + 2);
+            String status = String.valueOf(statusCB.getSelectedItem());
+            String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
+            
+            AccountExecutive ae = new AccountExecutive();
+            List<String> invoiceDetails = ae.extractInvoiceDetails(feeTypeName,
+                    target, status, monthYear);
 
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        tableModel.setRowCount(0);
+            DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+            tableModel.setRowCount(0);
 
-        String[] invoiceDetailsArray = new String[invoiceDetails.size()];
-        invoiceDetails.toArray(invoiceDetailsArray);
-        for (int i=0; i<invoiceDetails.size(); i++) {
-            String[] invoiceData = invoiceDetailsArray[i].split(";");
-            String unitNo = invoiceData[0];
-            String consumption = invoiceData[1];
-            String unit = invoiceData[2];
-            String unitPrice = invoiceData[3];
-            String totalPrice = invoiceData[4];
-            if (status.equals("PENDING")) {
-                String tbData[] = {String.valueOf(i+1), unitNo, consumption, unit,
-                    unitPrice, totalPrice, "ISSUE INVOICE"};
-                tableModel.addRow(tbData);
-            } else if (status.equals("ISSUED")) {
-                String tbData[] = {String.valueOf(i+1), unitNo, consumption, unit,
-                    unitPrice, totalPrice, "VIEW"};
-                tableModel.addRow(tbData);
+            String[] invoiceDetailsArray = new String[invoiceDetails.size()];
+            invoiceDetails.toArray(invoiceDetailsArray);
+            for (int i=0; i<invoiceDetails.size(); i++) {
+                String[] invoiceData = invoiceDetailsArray[i].split(";");
+                String unitNo = invoiceData[0];
+                String consumption = invoiceData[1];
+                String unit = invoiceData[2];
+                String unitPrice = invoiceData[3];
+                String totalPrice = invoiceData[4];
+                if (status.equals("PENDING")) {
+                    String tbData[] = {String.valueOf(i+1), unitNo, consumption, unit,
+                        unitPrice, totalPrice, "ISSUE INVOICE"};
+                    tableModel.addRow(tbData);
+                } else if (status.equals("ISSUED")) {
+                    String tbData[] = {String.valueOf(i+1), unitNo, consumption, unit,
+                        unitPrice, totalPrice, "VIEW"};
+                    tableModel.addRow(tbData);
+                }
+            }
+            if (tableModel.getRowCount() == 0) {
+                issueAllPanel.setBackground(Color.GRAY);
+            } else {
+                issueAllPanel.setBackground(new Color(13,50,79));
             }
         }
-        if (tableModel.getRowCount() == 0) {
-            issueAllPanel.setBackground(Color.GRAY);
-        } else {
-            issueAllPanel.setBackground(new Color(13,50,79));
-        }
+        
         
     }
 

@@ -5,6 +5,8 @@
 package buildingManager;
 
 import java.io.File;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import pms_parkhill_residence.FileHandling;
@@ -194,5 +196,109 @@ public class BuildingManager extends Users{
                 return false;
             } 
         } return true;
+    }
+    
+    public String currencyFormat(float amount) {
+        DecimalFormat df = new DecimalFormat("0.00");
+        String unitPrice = df.format(amount);
+        return unitPrice;
+    }
+    
+    public String calculateTotalCapital() {
+        List<String> financialCapital = fh.fileRead("financialCapital.txt");
+        Float totalCapital = 0.00f;
+        for (int i = 1; i < financialCapital.size(); i++) {
+            String[] capitalDetails = financialCapital.get(i).split(";");
+            float capital = Float.parseFloat(capitalDetails[0]);
+            totalCapital = totalCapital + capital;
+        }
+        String tCapital = currencyFormat(totalCapital);
+        return tCapital;
+    }
+    
+    public String calculateTotalMothlyIncome() {
+        List<String> facilityPayment = fh.fileRead("payment.txt");
+        Float total = 0.00f;
+        
+        
+        for (int i = 1; i < facilityPayment.size(); i++) {
+            String[] facilityDetails = facilityPayment.get(i).split(";");
+            Float price = Float.parseFloat(facilityDetails[7]);
+            total = total + price;
+        }
+        String tCapital = currencyFormat(total);
+        return tCapital;
+    }
+    
+    public String calculateTotalFacilityIncome() {
+        List<String> payment = fh.fileRead("facilityBooking.txt");
+        Float total = 0.00f;
+        
+        List<String> addedBooking = new ArrayList<>();
+        
+        for (int i = 1; i < payment.size(); i++) {
+            String[] paymentDetails = payment.get(i).split(";");
+            String bookingID = paymentDetails[0];
+            String temp_price = paymentDetails[8];
+            
+            if(!addedBooking.contains(bookingID) && !temp_price.equals("-")) {
+                Float price = Float.parseFloat(temp_price);
+                total = total + price;
+                addedBooking.add(bookingID);
+            }
+        }
+        String tCapital = currencyFormat(total);
+        return tCapital;
+    }
+    
+    public String calculateAllocatedBudget() {
+        List<String> allocationList = fh.fileRead("budgetAllocation.txt");
+        Float total = 0.00f;
+        
+        for (int i = 1; i < allocationList.size(); i++) {
+            String[] allocationDetails = allocationList.get(i).split(";");
+            Float price = Float.parseFloat(allocationDetails[3]);
+            total = total + price;
+        }
+        String tCapital = currencyFormat(total);
+        return tCapital;
+    }
+    
+    public void deleteFinancialCapital(String amount, String date) {
+        List<String> allocationList = fh.fileRead("financialCapital.txt");
+        List<String> newData = new ArrayList<>();
+        
+        int check = 0;
+        for (int i = 0; i < allocationList.size(); i++) {
+            String[] allocationDetails = allocationList.get(i).split(";");
+            String eAmount = allocationDetails[0];
+            String eDate = allocationDetails[1];
+            
+            if(amount.equals(eAmount) && date.equals(eDate) && check==0) {
+                check++;
+            } else {
+                newData.add(allocationList.get(i));
+            }
+        } fh.fileWrite("financialCapital.txt", false, newData);
+    }
+    
+    public void addFinancialCapital(String amount) {
+        List<String> newData = new ArrayList<>();
+        newData.add(amount +";"+ String.valueOf(LocalDate.now()) +";");
+        fh.fileWrite("financialCapital.txt", true, newData);
+    }
+    
+    public void deleteBudgetAllocation(String allocationID) {
+        List<String> allocationList = fh.fileRead("budgetAllocation.txt");
+        List<String> newData = new ArrayList<>();
+        
+        for (int i = 0; i < allocationList.size(); i++) {
+            String[] allocationDetails = allocationList.get(i).split(";");
+            String eAllocationID = allocationDetails[0];
+            
+            if(!eAllocationID.equals(allocationID)) {
+                newData.add(allocationList.get(i));
+            }
+        } fh.fileWrite("budgetAllocation.txt", false, newData);
     }
 }

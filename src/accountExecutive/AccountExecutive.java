@@ -37,7 +37,7 @@ public class AccountExecutive extends Users {
     }
 
     public boolean storeNewFeeTypes(String feeTypesName, String target, String unit,
-            String unitPrice) {
+            String unitPrice, String category) {
         List<String> feeTypesList = fh.fileRead("feeTypes.txt");
         String[] feeTypesArray = new String[feeTypesList.size()];
         feeTypesList.toArray(feeTypesArray);
@@ -53,13 +53,14 @@ public class AccountExecutive extends Users {
         }
         List<String> newData = new ArrayList<>();
         String date = todayDate();
-        newData.add(feeTypesName + ";" + target + ";" + unit + ";" + unitPrice + ";" + date + ";");
+        newData.add(feeTypesName + ";" + target + ";" + unit + ";" + unitPrice
+                + ";" + date + ";"+ category + ";");
         fh.fileWrite("feeTypes.txt", true, newData);
         return true;
     }
 
     public void modifyFeeTypes(String feeTypesName, String target, String unit,
-            String unitPrice) {
+            String unitPrice, String category) {
         List<String> feeTypesList = fh.fileRead("feeTypes.txt");
         String[] feeTypesArray = new String[feeTypesList.size()];
         feeTypesList.toArray(feeTypesArray);
@@ -73,7 +74,7 @@ public class AccountExecutive extends Users {
             String createdDate = feeTypes[4];
             if (eFeeTypesName.equals(feeTypesName) && eTarget.equals(target)) {
                 newData.add(eFeeTypesName + ";" + eTarget + ";" + unit + ";"
-                        + unitPrice + ";" + createdDate + ";");
+                        + unitPrice + ";" + createdDate + ";"+ category + ";");
             } else {
                 newData.add(feeTypesArray[i]);
             }
@@ -185,7 +186,6 @@ public class AccountExecutive extends Users {
             List<String> propertyDetailsList = fh.fileRead("propertyDetails.txt");
             String[] propertyDetailsArray = new String[propertyDetailsList.size()];
             propertyDetailsList.toArray(propertyDetailsArray);
-
             String cMonthYear = monthYear.substring(0, monthYear.indexOf("/"))
                     + monthYear.substring(monthYear.indexOf("/") + 1);
 

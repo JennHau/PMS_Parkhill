@@ -9,10 +9,12 @@ import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import pms_parkhill_residence.FileHandling;
 
@@ -720,6 +722,9 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("EDIT");
         jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel13MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jLabel13MouseEntered(evt);
             }
@@ -752,6 +757,9 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
         jLabel15.setForeground(new java.awt.Color(31, 109, 196));
         jLabel15.setText("VIEW OTHER COMMITTEE");
         jLabel15.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel15MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jLabel15MouseEntered(evt);
             }
@@ -796,23 +804,30 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
         while(i<6) {
             boolean exist = bm.checkImageFile(iconName[i]);
             if (exist) {
-                // locate image directory
-                ImageIcon imageicon = new ImageIcon(getClass().getResource
-        ("/images/"+ iconName[i] +".jpg"));
-                // set image to assign size
-                Image image = (imageicon).getImage().getScaledInstance(78, 81, Image.SCALE_SMOOTH);
-                // replace variable to new resized image
-                imageicon = new ImageIcon(image);
-                switch (i) {
-                    case 0 -> icon1.setIcon(imageicon);
-                    case 1 -> icon2.setIcon(imageicon);
-                    case 2 -> icon3.setIcon(imageicon);
-                    case 3 -> icon4.setIcon(imageicon);
-                    case 4 -> icon5.setIcon(imageicon);
-                    case 5 -> icon6.setIcon(imageicon);
-                    default -> {
-                    }
-                } 
+                try {
+                    // locate image directory
+    //                ImageIcon imageicon = new ImageIcon(getClass().getResource
+    //                        ("/images/"+ iconName[i] +".jpg"));
+                    File imagePath = new File("src\\images\\"+ iconName[i] + ".jpg");
+                    ImageIcon imageicon = new ImageIcon(ImageIO.read(imagePath));
+                    // set image to assign size
+                    Image image = (imageicon).getImage().getScaledInstance(78, 81, Image.SCALE_SMOOTH);
+                    // replace variable to new resized image
+                    imageicon = new ImageIcon(image);
+                    switch (i) {
+                        case 0 -> icon1.setIcon(imageicon);
+                        case 1 -> icon2.setIcon(imageicon);
+                        case 2 -> icon3.setIcon(imageicon);
+                        case 3 -> icon4.setIcon(imageicon);
+                        case 4 -> icon5.setIcon(imageicon);
+                        case 5 -> icon6.setIcon(imageicon);
+                        default -> {
+                        }
+                    } 
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                
             } 
         i++;
         }
@@ -854,6 +869,8 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
 
     private void jLabel17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseClicked
         // TODO add your handling code here:
+        dispose();
+        new BuildingManagerModifyTeamStructure().setVisible(true);
     }//GEN-LAST:event_jLabel17MouseClicked
 
     private void jLabel17MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseEntered
@@ -885,6 +902,18 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
         dispose();
         new BuildingManagerModifyTeamStructure().setVisible(true);
     }//GEN-LAST:event_jPanel19MouseClicked
+
+    private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new BuildingManagerModifyTeamStructure().setVisible(true);
+    }//GEN-LAST:event_jLabel13MouseClicked
+
+    private void jLabel15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new BuildingManagerTeamStructureComm().setVisible(true);
+    }//GEN-LAST:event_jLabel15MouseClicked
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
