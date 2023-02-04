@@ -71,20 +71,20 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
                 
                 if (complaintStatus.equals(cptStatus.Pending.name())){
                     String issueDate = dataDetails[3];
-                    newComplaints.add(complaintId + BE.TF.sp + complainerId + BE.TF.sp + issueDate + BE.TF.sp + complaintStatus + BE.TF.sp);
+                    newComplaints.add(complaintId.toUpperCase() + BE.TF.sp + complainerId.toUpperCase() + BE.TF.sp + issueDate + BE.TF.sp + complaintStatus.toUpperCase() + BE.TF.sp + "VIEW" + BE.TF.sp);
                 }
                 else {
                     String updatedBy = dataDetails[6];
                     String updateTime = dataDetails[7];
-                    actionedComplaints.add(complaintId + BE.TF.sp + complainerId + BE.TF.sp + complaintStatus + BE.TF.sp + updatedBy + BE.TF.sp + updateTime + BE.TF.sp);
+                    actionedComplaints.add(complaintId.toUpperCase() + BE.TF.sp + complainerId.toUpperCase() + BE.TF.sp + complaintStatus.toUpperCase() + BE.TF.sp + updatedBy.toUpperCase() + BE.TF.sp + updateTime + BE.TF.sp + "VIEW" + BE.TF.sp);
                 }
             }
             
             firstLine = false;
         }
         
-        String selectedSort = sortCB.getSelectedItem().toString();
-        String selectedStatus = statusCB.getSelectedItem().toString();
+        String selectedSort = sortCB.getSelectedItem().toString().toUpperCase();
+        String selectedStatus = statusCB.getSelectedItem().toString().toUpperCase();
         
         for (int first = 0; first < newComplaints.size()-1; first++) {
             for (int next = first + 1; next < newComplaints.size(); next++) {
@@ -94,7 +94,7 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
                 LocalDate date1 = BE.DTF.formatDate(item1.split(BE.TF.sp)[2]);
                 LocalDate date2 = BE.DTF.formatDate(item2.split(BE.TF.sp)[2]);
                 
-                if (selectedSort.equals("Latest")) {
+                if (selectedSort.equals("LATEST")) {
                     if (date2.isAfter(date1)) {
                         newComplaints.set(first, item2);
                         newComplaints.set(next, item1);
@@ -558,7 +558,7 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Complaint ID", "Complainer ID", "Issue Date", "Status", "Action"
+                "COMPLAINT ID", "COMPLAINER ID", "ISSUE DATE", "STATUS", "ACTION"
             }
         ) {
             Class[] types = new Class [] {
@@ -598,7 +598,7 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Complaint ID", "Complainer ID", "Status", "Update By", "Last Update", "Action"
+                "COMPLAINT ID", "COMPLAINER ID", "STATUS", "UPDATE BY", "LAST UPDATE", "ACTION"
             }
         ) {
             Class[] types = new Class [] {

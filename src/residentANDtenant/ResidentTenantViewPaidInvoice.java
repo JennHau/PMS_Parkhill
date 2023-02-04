@@ -654,7 +654,7 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private final String invoiceNo;
     private final String unitNo;
     private final Users user;

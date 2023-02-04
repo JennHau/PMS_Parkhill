@@ -244,6 +244,7 @@
             <Property name="text" type="java.lang.String" value="Pending Fee"/>
           </Properties>
           <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="pendingFeeLabelMouseClicked"/>
             <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="pendingFeeLabelMouseEntered"/>
           </Events>
         </Component>

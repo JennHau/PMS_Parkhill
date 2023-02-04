@@ -164,11 +164,11 @@
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="5" rowCount="4">
-                    <Column editable="false" title="No." type="java.lang.Object"/>
-                    <Column editable="false" title="Task" type="java.lang.Object"/>
-                    <Column editable="false" title="Time Required" type="java.lang.Object"/>
-                    <Column editable="false" title="Start Time" type="java.lang.Object"/>
-                    <Column editable="false" title="Action" type="java.lang.Object"/>
+                    <Column editable="false" title="NO." type="java.lang.Object"/>
+                    <Column editable="false" title="TASK" type="java.lang.Object"/>
+                    <Column editable="false" title="TIME REQUIRED" type="java.lang.Object"/>
+                    <Column editable="false" title="START TIME" type="java.lang.Object"/>
+                    <Column editable="false" title="ACTION" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">

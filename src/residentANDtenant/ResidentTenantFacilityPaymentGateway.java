@@ -21,6 +21,7 @@ import pms_parkhill_residence.Users;
  */
 public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
     public static ResidentTenantFacilityPaymentGateway rtFacPay;
+    
     ResidentTenant RT = new ResidentTenant();
     private final Users user;
     private final Facility fb;

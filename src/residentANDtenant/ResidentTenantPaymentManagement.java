@@ -174,6 +174,9 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
         pendingFeeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pendingFeeLabel.setText("Pending Fee");
         pendingFeeLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pendingFeeLabelMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 pendingFeeLabelMouseEntered(evt);
             }
@@ -892,6 +895,12 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
         RT.toStatement(user);
         this.dispose();
     }//GEN-LAST:event_statementLabelMouseClicked
+
+    private void pendingFeeLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pendingFeeLabelMouseClicked
+        // TODO add your handling code here:
+        RT.toPaymentManagement(user);
+        this.dispose();
+    }//GEN-LAST:event_pendingFeeLabelMouseClicked
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));

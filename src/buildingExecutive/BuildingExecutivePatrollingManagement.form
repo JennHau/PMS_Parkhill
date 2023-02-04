@@ -628,7 +628,7 @@
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="removeSlotBTN" min="-2" pref="105" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="deleteBTN" min="-2" pref="136" max="-2" attributes="0"/>
+                          <Component id="removeEmpBTN" min="-2" pref="136" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="updateBTN" min="-2" pref="85" max="-2" attributes="0"/>
                       </Group>
@@ -647,11 +647,11 @@
                               <Component id="blockTF" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <Component id="jLabel36" min="-2" pref="95" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="statusTF" pref="118" max="32767" attributes="0"/>
+                                  <Component id="statusTF" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="1" attributes="0">
@@ -660,8 +660,8 @@
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="checkpointsTF" max="32767" attributes="0"/>
                                       <Component id="timeCheckedPicker" max="32767" attributes="0"/>
+                                      <Component id="checkpointsTF" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -810,7 +810,7 @@
                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="backBTN" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
-                      <Component id="deleteBTN" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                      <Component id="removeEmpBTN" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                       <Component id="updateBTN" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                       <Component id="removeSlotBTN" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                   </Group>
@@ -842,16 +842,16 @@
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="10" rowCount="4">
-                    <Column editable="false" title="Slot" type="java.lang.Object"/>
-                    <Column editable="false" title="Block" type="java.lang.Object"/>
-                    <Column editable="false" title="Level" type="java.lang.Object"/>
-                    <Column editable="false" title="Checkpoints" type="java.lang.Object"/>
-                    <Column editable="false" title="Check Before" type="java.lang.Object"/>
-                    <Column editable="false" title="Security ID" type="java.lang.Object"/>
-                    <Column editable="false" title="Security Name" type="java.lang.Object"/>
-                    <Column editable="false" title="Status" type="java.lang.Object"/>
-                    <Column editable="false" title="Assignee ID" type="java.lang.Object"/>
-                    <Column editable="false" title="Action" type="java.lang.Object"/>
+                    <Column editable="false" title="SLOT" type="java.lang.Object"/>
+                    <Column editable="false" title="BLOCK" type="java.lang.Object"/>
+                    <Column editable="false" title="LEVEL" type="java.lang.Object"/>
+                    <Column editable="false" title="CHECKPOINT" type="java.lang.Object"/>
+                    <Column editable="false" title="CHECK BEFORE" type="java.lang.Object"/>
+                    <Column editable="false" title="SECURITY ID" type="java.lang.Object"/>
+                    <Column editable="false" title="SECURITY NAME" type="java.lang.Object"/>
+                    <Column editable="false" title="STATUS" type="java.lang.Object"/>
+                    <Column editable="false" title="ASSIGNEE ID" type="java.lang.Object"/>
+                    <Column editable="false" title="ACTION" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -937,12 +937,12 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backBTNActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="deleteBTN">
+        <Component class="javax.swing.JButton" name="removeEmpBTN">
           <Properties>
             <Property name="text" type="java.lang.String" value="Remove Employee"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteBTNActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeEmpBTNActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel30">
@@ -971,7 +971,6 @@
         </Component>
         <Component class="javax.swing.JTextField" name="contactNoTF">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jTextField1"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
@@ -1015,19 +1014,16 @@
         </Component>
         <Component class="javax.swing.JTextField" name="blockTF">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jTextField1"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="slotTF">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jTextField1"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="levelTF">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jTextField1"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
@@ -1044,18 +1040,14 @@
         </Component>
         <Component class="javax.swing.JTextField" name="securityNameTF">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jTextField1"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="securityIdComboBox">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
+              <StringArray count="1">
+                <StringItem index="0" value="EMPTY"/>
               </StringArray>
             </Property>
           </Properties>
@@ -1079,7 +1071,6 @@
         </Component>
         <Component class="javax.swing.JTextField" name="checkpointsTF">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jTextField1"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
@@ -1092,12 +1083,6 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="33" green="33" red="33" type="rgb"/>
             </Property>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="statusTF">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="jTextField1"/>
-            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel35">
@@ -1218,6 +1203,11 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeSlotBTNActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JTextField" name="statusTF">
+          <Properties>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

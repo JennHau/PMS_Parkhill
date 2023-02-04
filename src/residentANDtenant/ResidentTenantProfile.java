@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -44,20 +47,27 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
     public void runDefaultSetUp(Users user) {
         this.user = user;
         setWindowIcon();
+        profileFormSetUp();
+        setCurrentUserProfile();
     }
     
     private void profileFormSetUp() {
         previousProfilePicPath = defaultFilePath + this.user.getUserID() + "." + defaultFileExtension;
         
-        setImageIcon(previousProfilePicPath);
-        rsdIdTF.setText(this.user.getUserID());
-        unitNoTF.setText(this.user.getUnitNo());
-        firstNameTF.setText(this.user.getFirstName());
-        lastNameTF.setText(this.user.getLastName());
-        contactTF.setText(this.user.getPhoneNo());
-        emailTF.setText(this.user.getEmail());
-        icTF.setText(this.user.getIdentificationNo());
-        genderCB.setSelectedItem(this.user.getGender());
+        try {
+            setImageIcon(previousProfilePicPath);
+            
+            rsdIdTF.setText(this.user.getUserID());
+            unitNoTF.setText(this.user.getUnitNo());
+            firstNameTF.setText(this.user.getFirstName());
+            lastNameTF.setText(this.user.getLastName());
+            contactTF.setText(this.user.getPhoneNo());
+            emailTF.setText(this.user.getEmail());
+            icTF.setText(this.user.getIdentificationNo());
+            genderCB.setSelectedItem(this.user.getGender());
+        } catch (IOException ex) {
+            Logger.getLogger(ResidentTenantProfile.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void setCurrentUserProfile() {
@@ -767,8 +777,12 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
                 String fileExtension = file[1];
                 
                 if (fileExtension.equals(this.defaultFileExtension)) {
-                    //Display the image in the jLabel
-                    setImageIcon(filePath);
+                    try {
+                        //Display the image in the jLabel
+                        setImageIcon(filePath);
+                    } catch (IOException ex) {
+                        Logger.getLogger(ResidentTenantProfile.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
                 else {
                     profilePicLabel.setText("Invalid File Selected");
@@ -973,9 +987,10 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
         return dest.exists();
     }
     
-    private void setImageIcon(String fileLocation) {
+    private void setImageIcon(String fileLocation) throws IOException {
         profilePicLabel.setText("");
-        ImageIcon profilePic = new ImageIcon(fileLocation);
+        File imagePath = new File(fileLocation);
+        ImageIcon profilePic = new ImageIcon(ImageIO.read(imagePath));
         Image imageSize = (profilePic).getImage().getScaledInstance(158, 168, Image.SCALE_SMOOTH);
         profilePic = new ImageIcon(imageSize);
         profilePicLabel.setIcon(profilePic);

@@ -30,8 +30,9 @@ import pms_parkhill_residence.Users;
 public class BuildingExecutive extends Users{
     PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
     TextFiles TF = new TextFiles();
-    FileHandling fileHandling = new FileHandling();
+    FileHandling fh = new FileHandling();
     Complaints CP = new Complaints();
+    CRUD crud = new CRUD();
     
     // Employee position
     final String technician = "tcn";
@@ -47,7 +48,7 @@ public class BuildingExecutive extends Users{
     final int unassignedEmployee = 0;
     
     private ArrayList getEmployeeJobList(LocalDate localDate, LocalTime localTime) throws IOException {
-        List<String> employeeList = fileHandling.fileRead(TF.fullEmployeeList);
+        List<String> employeeList = fh.fileRead(TF.fullEmployeeList);
         
         ArrayList<String> workingList = new ArrayList<>();
         ArrayList<String> assEmply = new ArrayList<>();
@@ -59,7 +60,7 @@ public class BuildingExecutive extends Users{
         
         ArrayList<String> historyList = new ArrayList<>();
         ArrayList<String> updateJobList = new ArrayList<>();
-        List<String> oldVer = fileHandling.fileRead(TF.employeeJobFile);
+        List<String> oldVer = fh.fileRead(TF.employeeJobFile);
         boolean firstLine = true;
         for (String eachLine : oldVer) {
             if (firstLine) {
@@ -69,11 +70,11 @@ public class BuildingExecutive extends Users{
                 String[] eachData = eachLine.split(TF.sp
                 );
                 String[] endDateTime = eachData[8].split(" ");
-                if (!endDateTime[0].equals("null")) {
+                if (!endDateTime[0].equals(TF.empty)) {
                     if (combineStringDateTime(endDateTime[0], endDateTime[1]).isBefore(LocalDateTime.now())){
                         String emplyId = eachData[1];
                         String emplyName = getEmployeeDetails(emplyId)[2];
-                        historyList.add(eachData[0] + TF.sp
+                        historyList.add(eachData[0].toUpperCase() + TF.sp
                                 + eachData[1] + TF.sp
                                 + emplyName + TF.sp
                                 + eachData[2] + TF.sp
@@ -101,10 +102,10 @@ public class BuildingExecutive extends Users{
             firstLine = false;
         }
         
-        fileHandling.fileWrite(TF.jobFileHistory, true, historyList);
-        fileHandling.fileWrite(TF.employeeJobFile, false, updateJobList);
+        fh.fileWrite(TF.jobFileHistory, true, historyList);
+        fh.fileWrite(TF.employeeJobFile, false, updateJobList);
         
-        List<String> jobFile = fileHandling.fileRead(TF.employeeJobFile);
+        List<String> jobFile = fh.fileRead(TF.employeeJobFile);
         firstLine = true;
         for (String jobFileLine : jobFile) {
             if (!firstLine) {
@@ -148,12 +149,12 @@ public class BuildingExecutive extends Users{
                             String jobDetails = findJobDetailsUsingDescriptionOrId(assignedJobCode, null);
                             String jobDesc = jobDetails.split(TF.sp)[2];
 
-                            assEmply.add(workingEmplyId + TF.sp
+                            assEmply.add(workingEmplyId.toUpperCase() + TF.sp
                                     + workingEmplyName + TF.sp
                                     + workingEmplyPos + TF.sp
-                                    + jobId + TF.sp
+                                    + jobId.toUpperCase() + TF.sp
                                     + jobDesc + TF.sp
-                                    + "View" + TF.sp);
+                                    + "MODIFY" + TF.sp);
                         }
                     }
                 }
@@ -172,10 +173,10 @@ public class BuildingExecutive extends Users{
                 String emplyPos = employeeInfo[4];
                 
                 if (!workingList.contains(emplyId)) {
-                    unassEmply.add(emplyId + TF.sp
+                    unassEmply.add(emplyId.toUpperCase() + TF.sp
                             + emplyName + TF.sp
                             + emplyPos + TF.sp
-                            + "Assign" + TF.sp);
+                            + "ASSIGN" + TF.sp);
                 }
             }
             
@@ -388,7 +389,7 @@ public class BuildingExecutive extends Users{
     }
     
     public String[] getEmployeeDetails(String employeeID) throws IOException {
-        List<String> readEmployeeList = fileHandling.fileRead(TF.fullEmployeeList);
+        List<String> readEmployeeList = fh.fileRead(TF.fullEmployeeList);
         
         boolean firstLine = true;
         for (String employeeList : readEmployeeList) {
@@ -408,7 +409,7 @@ public class BuildingExecutive extends Users{
     }
     
     public ArrayList getAssignedJobForSpecificEmployee(String employeeId) throws IOException {
-        List<String> readJobFile = fileHandling.fileRead(TF.employeeJobFile);
+        List<String> readJobFile = fh.fileRead(TF.employeeJobFile);
         ArrayList<String> employeeJobList = new ArrayList<>();
         
         for (String jobLine : readJobFile) {
@@ -424,7 +425,7 @@ public class BuildingExecutive extends Users{
     }
     
     public String[] getSpecificJobDetails(String employeeId, String jobId) throws IOException {
-        List<String> readJobFile = fileHandling.fileRead(TF.employeeJobFile);
+        List<String> readJobFile = fh.fileRead(TF.employeeJobFile);
         
         for (String jobLine : readJobFile) {
             String[] jobDetails = jobLine.split(TF.sp);
@@ -440,7 +441,7 @@ public class BuildingExecutive extends Users{
     }
     
     public String findJobDetailsUsingDescriptionOrId(String jobCode, String jobDesc) {
-        List<String> jobList = fileHandling.fileRead(TF.jobListFile);
+        List<String> jobList = fh.fileRead(TF.jobListFile);
         for (String eachJob : jobList) {
             String jobId = eachJob.split(TF.sp)[1];
             String description = eachJob.split(TF.sp)[2];
@@ -463,7 +464,7 @@ public class BuildingExecutive extends Users{
     }
     
     public ArrayList getAvailableJobs(String employeeId, String complaintId) throws IOException {
-        List<String> readJobList = fileHandling.fileRead(TF.jobListFile);
+        List<String> readJobList = fh.fileRead(TF.jobListFile);
         ArrayList<String> jobLists = new ArrayList<>();
         
         boolean firstLine = true;
@@ -489,7 +490,7 @@ public class BuildingExecutive extends Users{
     }
     
     public String getNewTaskId(String fileName, int idColumn) throws IOException {
-        List<String> readFile = fileHandling.fileRead(fileName);
+        List<String> readFile = fh.fileRead(fileName);
         
         String jobIdCode = "tsk";
         int largestId = 114560;        
@@ -517,7 +518,7 @@ public class BuildingExecutive extends Users{
     }
     
     public String getNewId(String fileName, int idColumn) {
-        List<String> scheRec = fileHandling.fileRead(fileName);
+        List<String> scheRec = fh.fileRead(fileName);
         
         int largestId = 0;
         
@@ -600,7 +601,7 @@ public class BuildingExecutive extends Users{
     
     public ArrayList getAvailableBlock() {
         ArrayList<String> blockList = new ArrayList<>();
-        List<String> getBlock = fileHandling.fileRead("propertyDetails.txt");
+        List<String> getBlock = fh.fileRead("propertyDetails.txt");
         
         boolean firstLine = true;
         for (String eachLine : getBlock) {
@@ -632,7 +633,7 @@ public class BuildingExecutive extends Users{
     
         ArrayList<String> levelSequence = getLevelSequence(Integer.valueOf(levelIntervalSet));
         
-        List<String> toGetHeader = fileHandling.fileRead(TF.fixFile);
+        List<String> toGetHeader = fh.fileRead(TF.fixFile);
         newSched.add(toGetHeader.get(0));
         
         int newNo = 1;
@@ -674,7 +675,7 @@ public class BuildingExecutive extends Users{
             tempTime = tempTime.plusHours(Integer.valueOf(timeIntervalSet));
         }
         
-        fileHandling.fileWrite(TF.tempFile, false, newSched);
+        fh.fileWrite(TF.tempFile, false, newSched);
         
         if (resetDefault) {
             File rename = new File(TF.tempFile);
@@ -703,6 +704,26 @@ public class BuildingExecutive extends Users{
         }
         
         return levelValue;
+    }
+    
+    public List getAllAssignedJob() {
+        List<String> jobList = fh.fileRead(TF.employeeJobFile);
+        List<String> completedJobList = fh.fileRead(TF.jobFileHistory);
+        
+        for (String completedJob : completedJobList) {
+            String[] jobDet = completedJob.split(TF.sp);
+            
+            String line = "";
+            for (int item = 0; item < jobDet.length; item++) {
+                if (item != 2) {
+                    line = line + jobDet[item] + TF.sp;
+                }
+            }
+            
+            jobList.add(line);
+        }
+        
+        return jobList;
     }
     
     // Change Page Method
@@ -742,11 +763,21 @@ public class BuildingExecutive extends Users{
         frame.dispose();
     }
     
-    public void toBEreports(JFrame frame) {
-        BuildingExecutiveReports page;
-        page = new BuildingExecutiveReports();
+    public void toPatrollingReports(JFrame frame, Users user) {
+        BuildingExecutivePatrollingReports page;
+        page = new BuildingExecutivePatrollingReports(user);
         page.setVisible(true);
         frame.dispose();
+    }
+    
+    public void toComplaintsReports(Users user) {
+        BuildingExecutiveComplaintsReports page = new BuildingExecutiveComplaintsReports(user);
+        page.setVisible(true);
+    }
+    
+    public void toJobReports(Users user) {
+        BuildingExecutiveJobReports page = new BuildingExecutiveJobReports(user);
+        page.setVisible(true);
     }
     
     public void toEmployeeJobAssignation(Users user, String employeeID, String jobID, Complaints complaint, boolean fromComplaintPage) {
@@ -773,6 +804,8 @@ public class BuildingExecutive extends Users{
         PatrollingScheduleModification page = new PatrollingScheduleModification(users, file, inputDate);
         page.setVisible(true);
     }
+    
+    
 }
 
 enum cptStatus{

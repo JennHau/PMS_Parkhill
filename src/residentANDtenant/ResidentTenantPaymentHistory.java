@@ -261,6 +261,14 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
         paymentHistLabel.setForeground(new java.awt.Color(13, 24, 42));
         paymentHistLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         paymentHistLabel.setText("Payment History");
+        paymentHistLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                paymentHistLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                paymentHistLabelMouseEntered(evt);
+            }
+        });
 
         paymentHistLine.setBackground(new java.awt.Color(13, 24, 42));
         paymentHistLine.setForeground(new java.awt.Color(13, 24, 42));
@@ -898,6 +906,17 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
         // TODO add your handling code here:
         statementLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_statementLabelMouseEntered
+
+    private void paymentHistLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentHistLabelMouseClicked
+        // TODO add your handling code here:
+        RT.toPaymentHistory(user);
+        this.dispose();
+    }//GEN-LAST:event_paymentHistLabelMouseClicked
+
+    private void paymentHistLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentHistLabelMouseEntered
+        // TODO add your handling code here:
+        pendingFeeLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_paymentHistLabelMouseEntered
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));

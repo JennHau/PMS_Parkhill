@@ -67,9 +67,9 @@ public class ComplaintsDetails extends javax.swing.JFrame {
         String contactNo = complainer.getPhoneNo();
         String email = complainer.getEmail();
         
-        complaintIdTF.setText(this.getComplaintID());
-        complainerIdTF.setText(this.getComplainerID());
-        unitNoTF.setText(unitNo);
+        complaintIdTF.setText(this.getComplaintID().toUpperCase());
+        complainerIdTF.setText(this.getComplainerID().toUpperCase());
+        unitNoTF.setText(unitNo.toUpperCase());
         
         if (complaintStatus.equals("Pending")) {
             statusComboBox.addItem("Pending");

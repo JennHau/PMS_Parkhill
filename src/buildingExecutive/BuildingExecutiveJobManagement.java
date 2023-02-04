@@ -15,6 +15,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.Complaints;
@@ -79,11 +80,29 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         setFromComplaintPage(fromComplaintsPage);
         
         // set complaint ID
-        setComplaintId(complaint.getComplaintID());
+        if (complaint!=null) {
+            setComplaintId(complaint.getComplaintID());
+        }
         
-        // if from complaint page (Cannot access assigned job table)
-        assignedEmplyTable.setEnabled(!fromComplaintsPage);
+        // if is from complaint page (run this action)
+        fromComplaintPageAction(fromComplaintsPage);
     }
+    
+    private void fromComplaintPageAction(boolean fromComplaintsPage) {
+        if (fromComplaintsPage) {
+            // if from complaint page (Cannot access assigned job table)
+            assignedEmplyTable.setEnabled(!fromComplaintsPage);
+            
+            if (this.complaint != null) {
+                complaintIdTF.setText(complaint.getComplaintID());
+            }
+        }
+        else {
+            assignedEmplyTable.setEnabled(!fromComplaintsPage);
+            complaintIdTF.setText("-");
+        }
+    }
+        
     
     // To set the window Icon
     private void setWindowIcon() {
@@ -133,8 +152,6 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        jPanel11 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
         jPanel13 = new javax.swing.JPanel();
@@ -189,7 +206,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         clearBTN = new javax.swing.JButton();
         clearBTN1 = new javax.swing.JButton();
         dateTimePicker = new com.github.lgooddatepicker.components.DateTimePicker();
-        jLabel19 = new javax.swing.JLabel();
+        complaintIdTF = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
@@ -367,30 +384,6 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel11.setBackground(new java.awt.Color(13, 24, 42));
-
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/notificationIcon.png"))); // NOI18N
-        jLabel9.setText(" NOTIFICATIONS");
-        jLabel9.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
-        jPanel11.setLayout(jPanel11Layout);
-        jPanel11Layout.setHorizontalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75))
-        );
-        jPanel11Layout.setVerticalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel11Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel9)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         jPanel12.setBackground(new java.awt.Color(13, 24, 42));
 
         jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
@@ -477,7 +470,6 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -502,9 +494,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 308, Short.MAX_VALUE)
-                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -574,7 +564,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Employee ID", "Employee Name", "Position", "Action"
+                "EMPLOYEE ID", "EMPLOYEE NAME", "POSITION", "ACTION"
             }
         ) {
             Class[] types = new Class [] {
@@ -623,7 +613,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Employee ID", "Employee Name", "Position", "Job ID", "Job Assigned", "View"
+                "EMPLOYEE ID", "EMPLOYEE NAME", "POSITION", "JOB ID", "JOB ASSIGNED", "ACTION"
             }
         ) {
             Class[] types = new Class [] {
@@ -691,15 +681,15 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
             }
         });
 
-        jLabel19.setBackground(new java.awt.Color(51, 51, 51));
-        jLabel19.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
-        jLabel19.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        complaintIdTF.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        complaintIdTF.setBackground(new java.awt.Color(51, 51, 51));
+        complaintIdTF.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
+        complaintIdTF.setForeground(new java.awt.Color(51, 51, 51));
 
+        jLabel20.setText("Complaint ID:");
         jLabel20.setBackground(new java.awt.Color(51, 51, 51));
         jLabel20.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel20.setText("Complaint ID:");
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel1.setText("jLabel1");
@@ -736,7 +726,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel20)
                                 .addGap(0, 0, 0)
-                                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(complaintIdTF, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -770,7 +760,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(complaintIdTF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 565, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -858,10 +848,12 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
 
     private void jobAssignationInnerPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationInnerPanelMouseClicked
         // TODO add your handling code here:
+        BE.toJobManagement(this, user, null, false);
     }//GEN-LAST:event_jobAssignationInnerPanelMouseClicked
 
     private void jobAssignationOuterPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationOuterPanelMouseClicked
         // TODO add your handling code here:
+        BE.toJobManagement(this, user, null, false);
     }//GEN-LAST:event_jobAssignationOuterPanelMouseClicked
 
     private void BEdashboardInnerPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BEdashboardInnerPanelMouseClicked
@@ -887,7 +879,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         String employeeData = BE.validateTableSelectionAndGetValue(unassignedEmployeeTable, selectedCol, selectedRow, 3, 0);
         
         if (employeeData != null) {
-            setSelectedEmployee(employeeData);
+            setSelectedEmployee(employeeData.toLowerCase());
             BE.toEmployeeJobAssignation(this.user, selectedEmployeeId, jobId, complaint, fromComplaintPage);
         }
     }//GEN-LAST:event_unassignedEmplyTableMouseClicked
@@ -908,7 +900,8 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
             }
         }
         else {
-            System.out.println("error");
+            JOptionPane.showMessageDialog (null, "The selected date and time is past... Please select a new date and time", 
+                                        "JOB ASSIGNATION ERROR", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_clearBTN1ActionPerformed
 
@@ -1033,6 +1026,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
     private javax.swing.JTable assignedEmplyTable;
     private javax.swing.JButton clearBTN;
     private javax.swing.JButton clearBTN1;
+    private javax.swing.JLabel complaintIdTF;
     private com.github.lgooddatepicker.components.DateTimePicker dateTimePicker;
     private javax.swing.JTextField employeeIdTF;
     private javax.swing.JLabel jLabel1;
@@ -1044,17 +1038,14 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;

@@ -198,7 +198,7 @@ public class JobModificationPage extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "No.", "Task", "Time Required", "Start Time", "Action"
+                "NO.", "TASK", "TIME REQUIRED", "START TIME", "ACTION"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -488,17 +488,6 @@ public class JobModificationPage extends javax.swing.JFrame {
 
     private void deleteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBTNActionPerformed
         // TODO add your handling code here:
-//        ArrayList<String> removedItem = new ArrayList<>();
-//
-//        List<String> oldVer = fileHandling.fileRead(BE.TF.jobListFile);
-//        for (String eachJob : oldVer) {
-//            String taskId = eachJob.split(BE.TF.sp)[1];
-//            if (!taskId.equals(this.selectedId)) {
-//                removedItem.add(eachJob);
-//            }
-//        }
-//        
-//        fileHandling.fileWrite(BE.TF.jobListFile, false, removedItem);
 
         crud.delete(BE.TF.jobListFile, this.selectedId, 1);
         
@@ -513,22 +502,6 @@ public class JobModificationPage extends javax.swing.JFrame {
 
     private void updateBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBTNActionPerformed
         // TODO add your handling code here:
-//        ArrayList<String> itemUpdate = new ArrayList<>();
-        
-//        String[] eachData = dataLine.split(BE.TF.sp);
-//        
-//        List<String> oldVer = fileHandling.fileRead(BE.TF.jobListFile);
-//        for (String eachJob : oldVer) {
-//            String taskId = eachJob.split(BE.TF.sp)[1];
-//            if (taskId.equals(eachData[1])) {
-//                itemUpdate.add(dataLine);
-//            }
-//            else {
-//                itemUpdate.add(eachJob);
-//            }
-//        }
-//        
-//        fileHandling.fileWrite(BE.TF.jobListFile, false, itemUpdate);
 
         String dataLine = this.getAllField(false);
 
