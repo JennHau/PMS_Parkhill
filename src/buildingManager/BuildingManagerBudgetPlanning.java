@@ -9,6 +9,7 @@ import java.awt.Toolkit;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
 
@@ -648,9 +649,9 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
                             .addComponent(totalFacilityIncomeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel15)
-                                .addComponent(jLabel19))
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel15))
                             .addComponent(jLabel21)
                             .addComponent(jLabel20))
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -767,10 +768,21 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
         int row = jTable1.getSelectedRow();
 
         if (column == 5) {
-            String userID = String.valueOf(tableModel.getValueAt(row, 0));
+            int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
+                    + "delete this budget allocation?",
+                    "DELETE BUDGET ALLOCATION",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
+
+            if(result == JOptionPane.YES_OPTION){
+                String allocationID = String.valueOf(tableModel.getValueAt(row, 1));
+                bm.deleteBudgetAllocation(allocationID);
+                setDefault();
+                setTable();
+                JOptionPane.showMessageDialog (null, "Budget allocation has been deleted!", 
+                        "DELETE BUDGET ALLOCATION", JOptionPane.INFORMATION_MESSAGE);
+            }
             
-            dispose();
-            new BuildingManagerModifyUser(userID).setVisible(true);
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -1364,7 +1376,6 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
@@ -1390,7 +1401,6 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
