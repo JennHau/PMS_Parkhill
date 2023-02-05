@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.Users;
@@ -57,11 +58,14 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         scheduleTable = (DefaultTableModel) scheduleJT.getModel();
         setWindowIcon();
         this.setInputDate(inputDate);
+        
         fileSetUp(file);
         tableSetUp();
         getIntervalSet();
         cleanField();
-//        setEachComboBox();
+        
+        setEachComboBox();
+        
         patrollingSchedule = this;
     }
     
@@ -69,19 +73,19 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         this.patrollingScheduleFile = file;
         List<String> currentFile = fh.fileRead(this.patrollingScheduleFile);
         
-        if (!new File(BE.tempFile).exists()) {
-            fh.fileWrite(BE.tempFile, false, currentFile);
+        if (!new File(BE.TF.tempFile).exists()) {
+            fh.fileWrite(BE.TF.tempFile, false, currentFile);
         }
     }
     
     private void tableSetUp() {
         ArrayList<String> toTable = new ArrayList<>();
-        List<String> fileDet = fh.fileRead(BE.tempFile);
+        List<String> fileDet = fh.fileRead(BE.TF.tempFile);
         boolean firstLine = true;
         for (String eachSche : fileDet) {
             if (!firstLine) {
-                String[] sche = eachSche.split(BE.sp);
-                toTable.add(sche[1] + BE.sp + sche[2] + BE.sp + sche[3] + BE.sp + sche[4] + BE.sp + sche[5] + BE.sp);
+                String[] sche = eachSche.split(BE.TF.sp);
+                toTable.add(sche[1] + BE.TF.sp + sche[2] + BE.TF.sp + sche[3] + BE.TF.sp + sche[4] + BE.TF.sp + sche[5] + BE.TF.sp);
             }
             
             firstLine = false;
@@ -90,19 +94,14 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
     }
     
     private void getIntervalSet() {
-        List<String> getSchedSetting = fh.fileRead(BE.patScheduleModRec);
+        List<String> getSchedSetting = fh.fileRead(BE.TF.patScheduleModRec);
         for (String eachSet : getSchedSetting) {
-            String getDate = eachSet.split(BE.sp)[1];
+            String getDate = eachSet.split(BE.TF.sp)[0];
             if (getDate.equals(inputDate.toString())) {
-                timeIntervalSet = eachSet.split(BE.sp)[2];
-                levelIntervalSet = eachSet.split(BE.sp)[3];
+                timeIntervalSet = eachSet.split(BE.TF.sp)[1];
+                levelIntervalSet = eachSet.split(BE.TF.sp)[2];
             }
         }
-    }
-    
-    private void setEachComboBox() {
-        hourComboBox.setSelectedItem(timeIntervalSet);
-        levelIntervalComboBox.setSelectedItem(levelIntervalSet);
     }
     
     private void blockComboBoxSetUp() {
@@ -134,6 +133,11 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         }
     }
     
+    private void setEachComboBox() {
+        hourComboBox.setSelectedItem(timeIntervalSet);
+        levelIntervalComboBox.setSelectedItem(levelIntervalSet);
+    }
+    
     private void checkPointSetUp(String lvSelected) {
         checkPTF.removeAllItems();
         String[] splitLv = lvSelected.split(" ");
@@ -156,9 +160,9 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
     }
     
     private void formSetUp() {
-        List<String> getRec = fh.fileRead(BE.tempFile);
+        List<String> getRec = fh.fileRead(BE.TF.tempFile);
         for (String eachRec : getRec) {
-            String[] recDet = eachRec.split(BE.sp);
+            String[] recDet = eachRec.split(BE.TF.sp);
             String recID = recDet[0];
             if (recID.equals(scheduleID)) {
                 String slot = recDet[1];
@@ -292,7 +296,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Slot", "Block", "Level", "Checkpoints", "Check Before", "Action"
+                "SLOT", "BLOCK", "LEVEL", "CHECKPOINTS", "CHECK BEFORE", "ACTION"
             }
         ));
         scheduleJT.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -641,44 +645,63 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
 
     private void saveBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBTNActionPerformed
         // TODO add your handling code here:
-        File patFile = new File(patrollingScheduleFile);
-        if (patFile.exists()) {
-            patFile.delete();
-        }
-        
-        File temp = new File(BE.tempFile);
-        temp.renameTo(patFile);
-        
-        ArrayList<String> removePat = new ArrayList<>();
-        List<String> jobFile = fh.fileRead(BE.employeeJobFile);
-        boolean firstLine = true;
-        for (String eachJob : jobFile) {
-            if (!firstLine) {
-                String[] jobDet = eachJob.split(BE.sp);
-                String patCode = jobDet[jobDet.length-1];
-                if (!patCode.equals("null")) {
-                    String[] patDate = patCode.split(" ");
-                    if (!BE.formatDate(patDate[0]).equals(inputDate)) {
+        int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
+                + "change the format of this patrolling schedule?", "PATROLLING SCHEDULE",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE);
+
+        if(result == JOptionPane.YES_OPTION){
+            String timeGap = hourComboBox.getSelectedItem().toString();
+            String levelInterval = levelIntervalComboBox.getSelectedItem().toString();
+            
+            String[] item = {inputDate.toString(), timeGap, levelInterval, this.currentBEid, BE.DTF.currentDateTime()};
+            
+            String data = "";
+            for (String eachItem : item) {
+                data = data + eachItem + BE.TF.sp;
+            }
+            
+            BE.crud.update(BE.TF.patScheduleModRec, this.inputDate.toString(), data, 0);
+            
+            File patFile = new File(patrollingScheduleFile);
+            if (patFile.exists()) {
+                patFile.delete();
+            }
+
+            File temp = new File(BE.TF.tempFile);
+            temp.renameTo(patFile);
+
+            ArrayList<String> removePat = new ArrayList<>();
+            List<String> jobFile = fh.fileRead(BE.TF.employeeJobFile);
+            boolean firstLine = true;
+            for (String eachJob : jobFile) {
+                if (!firstLine) {
+                    String[] jobDet = eachJob.split(BE.TF.sp);
+                    String patCode = jobDet[jobDet.length-1];
+                    if (!patCode.equals(BE.TF.empty)) {
+                        String[] patDate = patCode.split(" ");
+                        if (!BE.formatDate(patDate[0]).equals(inputDate)) {
+                            removePat.add(eachJob);
+                        }
+                    }
+                    else {
                         removePat.add(eachJob);
                     }
                 }
                 else {
                     removePat.add(eachJob);
                 }
-            }
-            else {
-                removePat.add(eachJob);
+
+                firstLine = false;
             }
             
-            firstLine = false;
-        }
-        
-        fh.fileWrite(BE.employeeJobFile, false, removePat);
-        
-        try {
-            BE.toPatrollingManagement(this, user);
-        } catch (IOException ex) {
-            java.util.logging.Logger.getLogger(PatrollingScheduleModification.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            fh.fileWrite(BE.TF.employeeJobFile, false, removePat);
+
+            try {
+                BE.toPatrollingManagement(this, user);
+            } catch (IOException ex) {
+                java.util.logging.Logger.getLogger(PatrollingScheduleModification.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_saveBTNActionPerformed
 
@@ -691,9 +714,16 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
 
     private void defaultBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultBTNActionPerformed
         // TODO add your handling code here:
-        List<String> defaultSetting = fh.fileRead(BE.fixFile);
-        fh.fileWrite(BE.tempFile, false, defaultSetting);
-        tableSetUp();
+        int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
+                + "reset the schedule to default?", "PATROLLING SCHEDULE",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE);
+
+        if(result == JOptionPane.YES_OPTION){
+            List<String> defaultSetting = fh.fileRead(BE.TF.fixFile);
+            fh.fileWrite(BE.TF.tempFile, false, defaultSetting);
+            tableSetUp();
+        }
     }//GEN-LAST:event_defaultBTNActionPerformed
 
     private void levelIntervalComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_levelIntervalComboBoxActionPerformed
@@ -715,8 +745,8 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
             checkPTF.setEnabled(true);
             timeSpinner.setEnabled(true);
             
-            List<String> getSchedule = fh.fileRead(BE.tempFile);
-            scheduleID = getSchedule.get(selectedRow+1).split(BE.sp)[0];
+            List<String> getSchedule = fh.fileRead(BE.TF.tempFile);
+            scheduleID = getSchedule.get(selectedRow+1).split(BE.TF.sp)[0];
             
             blockComboBoxSetUp();
             formSetUp();
@@ -728,7 +758,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
 
     private void addRowBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRowBTNActionPerformed
         // TODO add your handling code here:
-        scheduleID = BE.getNewId(BE.tempFile, 0);
+        scheduleID = BE.getNewId(BE.TF.tempFile, 0);
         deleteBTN.setEnabled(false);
         updateBTN.setEnabled(true);
         
@@ -766,15 +796,15 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         // TODO add your handling code here:
         ArrayList<String> updatedList = new ArrayList<>();
 
-        List<String> scheduleFile = fh.fileRead(BE.tempFile);
+        List<String> scheduleFile = fh.fileRead(BE.TF.tempFile);
         for (String eachLine : scheduleFile) {
-            String id = eachLine.split(BE.sp)[0];
+            String id = eachLine.split(BE.TF.sp)[0];
             if (!id.equals(scheduleID)) {
                 updatedList.add(eachLine);
             }
         }
         
-        fh.fileWrite(BE.tempFile, false, updatedList);
+        fh.fileWrite(BE.TF.tempFile, false, updatedList);
         
         tableSetUp();
         cleanField();
@@ -789,19 +819,19 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         ArrayList<String> updatedList = new ArrayList<>();
         ArrayList<String> code = new ArrayList<>();
 
-        List<String> scheduleFile = fh.fileRead(BE.tempFile);
+        List<String> scheduleFile = fh.fileRead(BE.TF.tempFile);
         for (String eachLine : scheduleFile) {
-            String id = eachLine.split(BE.sp)[0];
+            String id = eachLine.split(BE.TF.sp)[0];
             code.add(id);
             if (id.equals(scheduleID)) {
-                updatedList.add(eachLine.split(BE.sp)[0] + BE.sp + 
-                                eachLine.split(BE.sp)[1] + BE.sp +
-                                eachLine.split(BE.sp)[2] + BE.sp +
-                                eachLine.split(BE.sp)[3] + BE.sp +
-                                eachField[3] + BE.sp + eachField[5] + BE.sp +
-                                " " + BE.sp + " " + BE.sp + " " +
-                                BE.sp + " " + BE.sp + " " + BE.sp + 
-                                " " + BE.sp);
+                updatedList.add(eachLine.split(BE.TF.sp)[0] + BE.TF.sp + 
+                                eachLine.split(BE.TF.sp)[1] + BE.TF.sp +
+                                eachLine.split(BE.TF.sp)[2] + BE.TF.sp +
+                                eachLine.split(BE.TF.sp)[3] + BE.TF.sp +
+                                eachField[3] + BE.TF.sp + eachField[5] + BE.TF.sp +
+                                BE.TF.empty + BE.TF.sp + BE.TF.empty + BE.TF.sp + BE.TF.empty +
+                                BE.TF.sp + BE.TF.empty + BE.TF.sp + BE.TF.empty + BE.TF.sp + 
+                                BE.TF.empty + BE.TF.sp + BE.TF.empty + BE.TF.sp);
             }
             else {
                 updatedList.add(eachLine);
@@ -809,15 +839,15 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         }
         
         if (!code.contains(scheduleID)){
-            updatedList.add(scheduleID + BE.sp + eachField[0] + BE.sp +
-                            eachField[1] + BE.sp + eachField[2] + BE.sp +
-                            eachField[3] + BE.sp + eachField[5] + BE.sp +
-                            " " + BE.sp + " " + BE.sp + " " +
-                            BE.sp + " " + BE.sp + " " + BE.sp + 
-                            " " + BE.sp);
+            updatedList.add(scheduleID + BE.TF.sp + eachField[0] + BE.TF.sp +
+                            eachField[1] + BE.TF.sp + eachField[2] + BE.TF.sp +
+                            eachField[3] + BE.TF.sp + eachField[5] + BE.TF.sp +
+                            BE.TF.empty + BE.TF.sp + BE.TF.empty + BE.TF.sp + BE.TF.empty +
+                            BE.TF.sp + BE.TF.empty + BE.TF.sp + BE.TF.empty + BE.TF.sp + 
+                            BE.TF.empty + BE.TF.sp + BE.TF.empty + BE.TF.sp);
         }
         
-        fh.fileWrite(BE.tempFile, false, updatedList);
+        fh.fileWrite(BE.TF.tempFile, false, updatedList);
         
         tableSetUp();
         cleanField();
@@ -840,14 +870,21 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
 
     private void backBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBTNActionPerformed
         // TODO add your handling code here:
-        if (new File(BE.tempFile).exists()) {
-            new File(BE.tempFile).delete();
-        }
-        
-        try {
-            BE.toPatrollingManagement(this, user);
-        } catch (IOException ex) {
-            java.util.logging.Logger.getLogger(PatrollingScheduleModification.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        int result = JOptionPane.showConfirmDialog(null,"Your changes are not saved. Are you sure to"
+                + "discard the changes?", "PATROLLING SCHEDULE",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE);
+
+        if(result == JOptionPane.YES_OPTION){
+            if (new File(BE.TF.tempFile).exists()) {
+                new File(BE.TF.tempFile).delete();
+            }
+
+            try {
+                BE.toPatrollingManagement(this, user);
+            } catch (IOException ex) {
+                java.util.logging.Logger.getLogger(PatrollingScheduleModification.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_backBTNActionPerformed
 

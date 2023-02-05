@@ -6,7 +6,7 @@ package residentANDtenant;
 
 import accountExecutive.*;
 import java.awt.Toolkit;
-import java.util.List;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.Users;
 
@@ -15,7 +15,8 @@ import pms_parkhill_residence.Users;
  * @author wongj
  */
 public class ResidentTenantInvoicePaymentGateway extends javax.swing.JFrame {
-
+    ResidentTenant RT = new ResidentTenant();
+    
     /**
      * Creates new form homePage
      * @param invoiceNo
@@ -428,8 +429,8 @@ public class ResidentTenantInvoicePaymentGateway extends javax.swing.JFrame {
 
     private void cancelBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBTActionPerformed
         // TODO add your handling code here:
+        RT.toInvoice(user);
         dispose();
-        new AccountExecutiveMakePayment(invoiceNo, unitNo).setVisible(true);
     }//GEN-LAST:event_cancelBTActionPerformed
 
     private void emailTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailTFKeyTyped
@@ -445,12 +446,9 @@ public class ResidentTenantInvoicePaymentGateway extends javax.swing.JFrame {
         JOptionPane.QUESTION_MESSAGE);
 
         if(result == JOptionPane.YES_OPTION){
-            AccountExecutive ae = new AccountExecutive();
-            ae.storePayment(invoiceNo, userIDTF.getText());
-            JOptionPane.showMessageDialog (null, "Payment has been made successfully!", 
-                "PAYMENT", JOptionPane.INFORMATION_MESSAGE);
-            dispose();
-            new AccountExecutivePayment().setVisible(true);
+            ArrayList<String> itemId = new ArrayList<>();
+            itemId.add(invoiceNo);
+            RT.toPaymentCredential(user, total, itemId, false, false);
         }
         
     }//GEN-LAST:event_payBTActionPerformed

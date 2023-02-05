@@ -4,6 +4,10 @@
  */
 package residentANDtenant;
 
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import pms_parkhill_residence.CRUD;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,43 +62,12 @@ public class ResidentTenant {
         return compCode + (minimumId + 1);
     }
     
-    public ArrayList getCurrentRTcomplaints(String currentRTid) {
-        ArrayList<ArrayList> combinedComp = new ArrayList<>();
-        ArrayList<String> pendingComp = new ArrayList<>();
-        ArrayList<String> progressingComp = new ArrayList<>();
-        ArrayList<String> completedComp = new ArrayList<>();
-        
-        List<String> complaints = fh.fileRead(TF.complaintFiles);
-        for (String eachComp : complaints) {
-            String[] compDet = eachComp.split(TF.sp);
-            String complainerId = compDet[1];
-            if (complainerId.equals(currentRTid)) {
-                String status = compDet[5];
-                String tableLine = compDet[0] + TF.sp + compDet[2] + TF.sp + compDet[3] + TF.sp + compDet[4] + TF.sp + compDet[5] + TF.sp;
-                switch (status) {
-                    case "Pending" -> pendingComp.add(tableLine);
-                    case "Progressing" -> progressingComp.add(tableLine);
-                    case "Completed" -> completedComp.add(tableLine);
-                }
-            }
-        }
-        
-        for (String progress : progressingComp) {
-            pendingComp.add(progress);
-        }
-        
-        combinedComp.add(pendingComp);
-        combinedComp.add(completedComp);
-        
-        return combinedComp;
-    }
-    
     public ArrayList getCurrentRTvisitor(String currentRTid) {
         ArrayList<String> registeredVisitor = new ArrayList<>();
         
         List<String> visitorFiles = fh.fileRead(TF.visitorPass);
         for (String eachVis : visitorFiles) {
-            String rtID = eachVis.split(TF.sp)[7];
+            String rtID = eachVis.split(TF.sp)[10];
             if (rtID.equals(currentRTid)) {
                 registeredVisitor.add(eachVis);
             }
@@ -136,6 +109,20 @@ public class ResidentTenant {
         }
         
         return passCode + (minimumId + 1);
+    }
+    
+    public ArrayList getCurrentUnitIssuedInvoice(String unitNo) {
+        ArrayList<String> issuedInvoice = new ArrayList<>();
+        
+        List<String> invoiceList = fh.fileRead(TF.invoiceFile);
+        for (String eachInv : invoiceList) {
+            String uNo = eachInv.split(TF.sp)[1];
+            if (uNo.equals(unitNo)) {
+                issuedInvoice.add(eachInv);
+            }
+        }
+        
+        return issuedInvoice;
     }
     
     public ArrayList getCurrentUnitInvoice(String unitNo) {
@@ -257,6 +244,147 @@ public class ResidentTenant {
         return bookedFacility;
     }
     
+    public ArrayList getCurrentUnitMonthStatement(Users user, String monthNyear) throws ParseException{
+        ArrayList<String> statementList = new ArrayList<>();
+        ArrayList<String> monthStatement = new ArrayList<>();
+        
+        // Get all issued invoice
+        ArrayList<String> invoiceList = getCurrentUnitIssuedInvoice(user.getUnitNo());
+        
+        // get all paid invoice
+        ArrayList<String> completedInvoice = getCurrentUnitPaymentHistory(user.getUnitNo());
+        
+        // get all facility payment
+        ArrayList<String> facilityBooking = getCurrentUnitFacilityPayment(user.getUnitNo());
+        
+        // Data Structure = Date, Transaction, Details, Amount, Payments
+        // to change the issued invoice list to same data structure
+        for (String eachInv : invoiceList) {
+            String[] invDet = eachInv.split(TF.sp);
+            String issuedDate = DTF.changeFormatDate(invDet[9]);
+            String id = invDet[0];
+            String type = invDet[2];
+            String amount = invDet[7];
+            String[] data = {issuedDate, "Invoice", id + " " + type, amount, "-"};
+            
+            String line = "";
+            for (String eachData : data) {
+                line = line + eachData + TF.sp;
+            }
+            
+            statementList.add(line);
+        }
+        
+        // change the paid invoice list to same data structure
+        for (String eachInv : completedInvoice) {
+            String[] invDet = eachInv.split(TF.sp);
+            String date = DTF.changeFormatDate(invDet[10]);
+            String id = invDet[0];
+            String type = invDet[2];
+            String amount = invDet[7];
+            String[] data = {date, "Invoice Payment", id + " " + type + " - " + amount + " in excess payments.", "-", amount};
+            
+            String line = "";
+            for (String eachData : data) {
+                line = line + eachData + TF.sp;
+            }
+            
+            statementList.add(line);
+        }
+        
+        // Change the facility booking to same data structure
+        ArrayList<String> bookIdList = new ArrayList<>();
+        for (String eachBook : facilityBooking) {
+            String[] bookDet = eachBook.split(TF.sp);
+            String id = bookDet[0];
+            
+            if (!bookIdList.contains(id)) {
+                String date = bookDet[3];
+                String type = bookDet[1];
+                String amount = bookDet[2];
+                String[] data = {date, "Facility Booking", id + "-" + type, amount, "-"};
+                String[] data2 = {date, "Booking Payment", id + " - " + amount + " in excess payments.", "-", amount};
+                
+                String line = "";
+                for (String eachData : data) {
+                    line = line + eachData + TF.sp;
+                }
+                statementList.add(line);
+
+                line = "";
+                for (String eachData : data2) {
+                    line = line + eachData + TF.sp;
+                }
+                statementList.add(line);
+
+                bookIdList.add(id);
+            }
+        }
+        
+        
+        LocalDate firstDay = DTF.formatDate(DTF.changeFormatDate("01/" + monthNyear));
+        LocalDate lastDay = firstDay.with(lastDayOfMonth());
+        
+        // Retrieve only the data that is between the selected month
+        for (String eachState : statementList) {
+            String[] stateDet = eachState.split(TF.sp);
+            LocalDate paymentDate = DTF.formatDate(stateDet[0]);
+            
+            if ((paymentDate.isAfter(firstDay) || paymentDate.isEqual(firstDay)) && (paymentDate.isBefore(lastDay) || paymentDate.isEqual(lastDay))) {
+                monthStatement.add(eachState);
+            }
+        }
+        
+        // change list to array
+        String[] monStateList = monthStatement.toArray(String[]::new);
+        
+        // sorting date method for the array
+        for (int count1 = 0; count1 < monStateList.length - 1; count1++) {
+            for (int count2 = count1+1; count2 < monStateList.length; count2++) {
+                String item1 = monStateList[count1];
+                String item2 = monStateList[count2];
+                
+                LocalDate date1 = DTF.formatDate(item1.split(TF.sp)[0]);
+                LocalDate date2 = DTF.formatDate(item2.split(TF.sp)[0]);
+                
+                if (date2.isBefore(date1)) {
+                    String tempItem = item1;
+                    monStateList[count1] = item2;
+                    monStateList[count2] = tempItem;
+                }
+            }
+        }
+        
+        ArrayList<String> dateList = new ArrayList<>();
+        monthStatement = new ArrayList<>();
+        
+        // if have the same date as previous, make the particular row to have empty data for "Date" column
+        for (String eachState : monStateList) {
+            String[] stateDet = eachState.split(TF.sp);
+            String date = stateDet[0];
+            if (!dateList.contains(date)) {
+                monthStatement.add(eachState);
+                dateList.add(date);
+            }
+            else {
+                String stateDate = "";
+                String stateId = stateDet[1];
+                String stateType = stateDet[2];
+                String stateAmount = stateDet[3];
+                String statePayment = stateDet[4];
+                String[] data = {stateDate, stateId, stateType, stateAmount, statePayment};
+                
+                String stateItem = "";
+                for (String eachData : data) {
+                    stateItem = stateItem + eachData + TF.sp;
+                }
+                monthStatement.add(stateItem);
+            }
+        }
+        
+        return monthStatement;
+    }
+    
     public String getFacilityId(String bookingId) {
         List<String> facilityBookingFile = fh.fileRead(TF.facilityBookingFile);
         for (String eachBooking : facilityBookingFile) {
@@ -267,6 +395,37 @@ public class ResidentTenant {
         }
         
         return null;
+    }
+    
+    public String[] getBookedStartAndEndTime(String bookingId) {
+        String[] startEndTime = {"", ""};
+        List<String> facilityBooking = fh.fileRead(TF.facilityBookingFile);
+        
+        for (String eachBooking : facilityBooking) {
+            String[] bookingDet = eachBooking.split(TF.sp);
+            String bookingID = bookingDet[0];
+            
+            if (bookingID.equals(bookingId)) {
+                String startTime = bookingDet[5];
+                String endTime = bookingDet[6];
+                
+                if (startEndTime[0].equals("")) {
+                    startEndTime[0] = startTime;
+                }
+                if (startEndTime[1].equals("")) {
+                    startEndTime[1] = endTime;
+                }
+                
+                if (LocalTime.parse(startTime).isBefore(LocalTime.parse(startEndTime[0]))) {
+                    startEndTime[0] = startTime;
+                }
+                if (LocalTime.parse(endTime).isAfter(LocalTime.parse(startEndTime[1]))) {
+                    startEndTime[1] = endTime;
+                }
+            }
+        }
+        
+        return startEndTime;
     }
     
     public String concatenateKey(String[] keyList) {
@@ -334,10 +493,15 @@ public class ResidentTenant {
         
         return totalAmount;
     }
-    
+  
     // Page Navigator
-    public void toPaymentGateway(Users user, String totalAmount, ArrayList itemId) {
-        ResidentTenantPaymentCredential page = new ResidentTenantPaymentCredential(user, totalAmount, itemId);
+    public void toResidentTenantDashboard(Users user) {
+        ResidentTenantMainPage page = new ResidentTenantMainPage(user);
+        page.setVisible(true);
+    }
+    
+    public void toPaymentCredential(Users user, String totalAmount, ArrayList itemId, boolean forFacility, boolean modifyBooking) {
+        ResidentTenantPaymentCredential page = new ResidentTenantPaymentCredential(user, totalAmount, itemId, forFacility, modifyBooking);
         page.setVisible(true);
     }
     
@@ -356,6 +520,11 @@ public class ResidentTenant {
         page.setVisible(true);
     }
     
+    public void toInvoicePayment(String invoiceNo, Users user) {
+        ResidentTenantInvoicePayment page = new ResidentTenantInvoicePayment(invoiceNo, user);
+        page.setVisible(true);
+    }
+    
     public void toStatement(Users user) {
         ResidentTenantStatement page = new ResidentTenantStatement(user);
         page.setVisible(true);
@@ -371,8 +540,13 @@ public class ResidentTenant {
         page.setVisible(true);
     }
     
+    public void toManageBookedFacility(Users user, Facility fb, String bookingID, String date) {
+        ResidentTenantManageBookedFacility page = new ResidentTenantManageBookedFacility(user, fb, bookingID, date);
+        page.setVisible(true);
+    }
+    
     public void toFacilityBookingManagement(Users user) {
-        ResidentTenantFacilityBookingManagement page = new ResidentTenantFacilityBookingManagement(user);
+        ResidentTenantFacilityBooking page = new ResidentTenantFacilityBooking(user);
         page.setVisible(true);
     }
     
@@ -381,7 +555,7 @@ public class ResidentTenant {
         page.setVisible(true);
     }
     
-    public void toBookingFacility(Users user, Facility fb) {
+    public void toBookFacility(Users user, Facility fb) {
         ResidentTenantBookFacility page = new ResidentTenantBookFacility(user, fb);
         page.setVisible(true);
     }
@@ -390,10 +564,34 @@ public class ResidentTenant {
         ResidentTenantFacilityPaymentGateway page = new ResidentTenantFacilityPaymentGateway(user, bookingList, fb);
         page.setVisible(true);
     }
-}
-
-enum cptStatus{
-    Pending,
-    Progressing,
-    Complete,
+    
+    public void toViewProfile(Users user) {
+        ResidentTenantProfile page = new ResidentTenantProfile(user);
+        page.setVisible(true);
+    }
+    
+    public void toVisitorPass(Users user) {
+        ResidentTenantVisitorPass page = new ResidentTenantVisitorPass(user);
+        page.setVisible(true);
+    }
+    
+    public void toComplaints(Users user) {
+        ResidentTenantComplaints page = new ResidentTenantComplaints(user);
+        page.setVisible(true);
+    }
+    
+    public void toInvoiceReceipt(Users user, String invoiceNo) {
+        ResidentTenantInvoiceReceipt page = new ResidentTenantInvoiceReceipt(user, invoiceNo);
+        page.setVisible(true);
+    }
+    
+    public void toViewPaidInvoice(Users user, String invoiceNo) {
+        ResidentTenantViewPaidInvoice page = new ResidentTenantViewPaidInvoice(invoiceNo, user);
+        page.setVisible(true);
+    }
+    
+    public void toStatementReport(Users user, String monthNyear) {
+        ResidentTenantStatementReport page = new ResidentTenantStatementReport(user, monthNyear);
+        page.setVisible(true);
+    }
 }

@@ -8,11 +8,13 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.Users;
@@ -61,7 +63,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         patrollingScheduleTableSetUp();
         fieldAction(false);
         
-        deleteBTN.setEnabled(false);
+        removeEmpBTN.setEnabled(false);
         updateBTN.setEnabled(false);
         removeSlotBTN.setEnabled(false);
         securityIdComboBox.removeAllItems();
@@ -88,22 +90,34 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         boolean firstLine = true;
         for (String slots : patrollingSchedule) {
             if (!firstLine) {
-                String[] slotDetails = slots.split(BE.sp);
+                String[] slotDetails = slots.split(BE.TF.sp);
                 String patSlot = slotDetails[1];
                 String patBlock = slotDetails[2];
                 String patLevel = slotDetails[3];
                 String patCheckPoints = slotDetails[4];
                 String patCheckBef = slotDetails[5];
-                String securityID = slotDetails[6];
+                String securityID = slotDetails[6].toUpperCase();
                 String securityName = slotDetails[7];
                 String patStatus = slotDetails[8];
-                String assignee = slotDetails[9];
+                String assignee = slotDetails[9].toUpperCase();
                 
-                forTableSetup.add(patSlot + BE.sp + patBlock + BE.sp + 
-                                  patLevel + BE.sp + patCheckPoints + BE.sp + 
-                                  patCheckBef + BE.sp + securityID + BE.sp + 
-                                  securityName + BE.sp + patStatus + BE.sp +
-                                  assignee + BE.sp);
+                
+                LocalTime slotTime = BE.DTF.formatTime(patSlot);
+                
+                LocalDateTime inputDateTime = LocalDateTime.of(inputDate, slotTime);
+                LocalDateTime dateTimeNow = LocalDateTime.now();
+                
+                String action = "ASSIGN";
+                
+                if (inputDateTime.isBefore(dateTimeNow)) {
+                    action = "PAST";
+                }
+                    
+                forTableSetup.add(patSlot + BE.TF.sp + patBlock + BE.TF.sp + 
+                                  patLevel + BE.TF.sp + patCheckPoints + BE.TF.sp + 
+                                  patCheckBef + BE.TF.sp + securityID + BE.TF.sp + 
+                                  securityName + BE.TF.sp + patStatus + BE.TF.sp +
+                                  assignee + BE.TF.sp + action + BE.TF.sp);
             }
             
             firstLine = false;
@@ -118,11 +132,11 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         
         File file = new File(patrollingScheduleFile);
         if (!file.exists()) {
-            List<String> defaultSchedule = fh.fileRead(BE.fixFile);
+            List<String> defaultSchedule = fh.fileRead(BE.TF.fixFile);
             fh.fileWrite(patrollingScheduleFile, false, defaultSchedule);
             
-            addNewRec.add(BE.getNewId(BE.patScheduleModRec, 0) + BE.sp + inputDate + BE.sp + "8" + BE.sp + 5 + BE.sp + getCurrentBEid() + BE.sp + BE.formatTime(LocalTime.now().toString()) + BE.sp);
-            fh.fileWrite(BE.patScheduleModRec, true, addNewRec);
+            addNewRec.add(inputDate + BE.TF.sp + "8" + BE.TF.sp + 5 + BE.TF.sp + getCurrentBEid() + BE.TF.sp + BE.DTF.currentDateTime() + BE.TF.sp);
+            fh.fileWrite(BE.TF.patScheduleModRec, true, addNewRec);
         }
     }
     
@@ -182,7 +196,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         patrollingScheduleTable = new javax.swing.JTable();
         jLabel26 = new javax.swing.JLabel();
         backBTN = new javax.swing.JButton();
-        deleteBTN = new javax.swing.JButton();
+        removeEmpBTN = new javax.swing.JButton();
         jLabel30 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel28 = new javax.swing.JLabel();
@@ -200,7 +214,6 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         jLabel34 = new javax.swing.JLabel();
         checkpointsTF = new javax.swing.JTextField();
         jLabel36 = new javax.swing.JLabel();
-        statusTF = new javax.swing.JTextField();
         jLabel35 = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -215,6 +228,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         selectDateBTN = new javax.swing.JButton();
         addSlotBTN = new javax.swing.JButton();
         removeSlotBTN = new javax.swing.JButton();
+        statusTF = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -569,7 +583,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Slot", "Block", "Level", "Checkpoints", "Check Before", "Security ID", "Security Name", "Status", "Assignee ID", "Action"
+                "SLOT", "BLOCK", "LEVEL", "CHECKPOINT", "CHECK BEFORE", "SECURITY ID", "SECURITY NAME", "STATUS", "ASSIGNEE ID", "ACTION"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -610,10 +624,10 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             }
         });
 
-        deleteBTN.setText("Remove Employee");
-        deleteBTN.addActionListener(new java.awt.event.ActionListener() {
+        removeEmpBTN.setText("Remove Employee");
+        removeEmpBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteBTNActionPerformed(evt);
+                removeEmpBTNActionPerformed(evt);
             }
         });
 
@@ -625,7 +639,6 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         jLabel28.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(51, 51, 51));
 
-        contactNoTF.setText("jTextField1");
         contactNoTF.setEnabled(false);
 
         jLabel32.setText("Block: ");
@@ -650,23 +663,19 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             }
         });
 
-        blockTF.setText("jTextField1");
         blockTF.setEnabled(false);
 
-        slotTF.setText("jTextField1");
         slotTF.setEnabled(false);
 
-        levelTF.setText("jTextField1");
         levelTF.setEnabled(false);
 
         jLabel31.setText("Security Name: ");
         jLabel31.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel31.setForeground(new java.awt.Color(51, 51, 51));
 
-        securityNameTF.setText("jTextField1");
         securityNameTF.setEnabled(false);
 
-        securityIdComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        securityIdComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "EMPTY" }));
         securityIdComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 securityIdComboBoxActionPerformed(evt);
@@ -677,15 +686,11 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         jLabel34.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel34.setForeground(new java.awt.Color(51, 51, 51));
 
-        checkpointsTF.setText("jTextField1");
         checkpointsTF.setEnabled(false);
 
         jLabel36.setText("Status: ");
         jLabel36.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel36.setForeground(new java.awt.Color(51, 51, 51));
-
-        statusTF.setText("jTextField1");
-        statusTF.setEnabled(false);
 
         jLabel35.setText("Checked At: ");
         jLabel35.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
@@ -742,6 +747,8 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             }
         });
 
+        statusTF.setEnabled(false);
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -754,7 +761,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(removeSlotBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(deleteBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(removeEmpBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(updateBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jSeparator1)
@@ -770,19 +777,19 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                             .addComponent(levelTF, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(blockTF, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(32, 32, 32)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(statusTF, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
+                                .addComponent(statusTF))
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(checkpointsTF)
-                                    .addComponent(timeCheckedPicker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(timeCheckedPicker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(checkpointsTF))))
                         .addGap(32, 32, 32)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(jPanel6Layout.createSequentialGroup()
@@ -895,7 +902,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                 .addGap(5, 5, 5)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(backBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(deleteBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(removeEmpBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(updateBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(removeSlotBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(7, 7, 7))
@@ -940,160 +947,184 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         
         boolean correctSel = (selectedCol == 9);
         
-        String securityID = (!patrollingScheduleTable.getValueAt(selectedRow, 5).equals(" ")) ? (patrollingScheduleTable.getValueAt(selectedRow, 5)).toString() : null;
+        String securityID = (!patrollingScheduleTable.getValueAt(selectedRow, 5).equals("-")) ? (patrollingScheduleTable.getValueAt(selectedRow, 5)).toString() : null;
         
         Object[] rowData = new Object[scheduleTable.getColumnCount()];
         
         if (correctSel) {
-            List<String> scheduleFile = fh.fileRead(patrollingScheduleFile);
-            patID = scheduleFile.get(selectedRow+1).split(BE.sp)[0];
-            String checkedAt = scheduleFile.get(selectedRow+1).split(BE.sp)[10];
+            String actionText = patrollingScheduleTable.getValueAt(selectedRow, selectedCol).toString();
             
-            for (int data = 0; data < scheduleTable.getColumnCount(); data++) {
-                rowData[data] = scheduleTable.getValueAt(selectedRow, data);
-            }
-            
-            inputTime = BE.formatTime(rowData[0].toString());
-            slotTF.setText((String) rowData[0]);
-            blockTF.setText((String) rowData[1]);
-            levelTF.setText((String) rowData[2]);
-            checkpointsTF.setText((String) rowData[3]);
-            if (!checkedAt.equals(" ")) {
-                timeCheckedPicker.setTime(BE.formatTime(checkedAt));
-            }
-            else {
-                timeCheckedPicker.setText("");
-            }
-            statusTF.setText((String) rowData[7]);
-        
-            try {
-                comboBoxSetUp();
-            } catch (IOException ex) {
-                Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            if (securityID != null) {
-                try {
-                    String[] empDet = BE.getEmployeeDetails(securityID);
+            if (actionText.equals("ASSIGN")) {
+                List<String> scheduleFile = fh.fileRead(patrollingScheduleFile);
+                patID = scheduleFile.get(selectedRow+1).split(BE.TF.sp)[0];
+                String checkedAt = scheduleFile.get(selectedRow+1).split(BE.TF.sp)[10];
 
-                    securityIdComboBox.addItem(securityID);
-                    securityIdComboBox.setSelectedItem(rowData[5]);
-                    securityNameTF.setText((String) rowData[6]);
-                    contactNoTF.setText(empDet[3]);
+                for (int data = 0; data < scheduleTable.getColumnCount(); data++) {
+                    rowData[data] = scheduleTable.getValueAt(selectedRow, data);
+                }
+
+                inputTime = BE.formatTime(rowData[0].toString());
+                slotTF.setText((String) rowData[0]);
+                blockTF.setText((String) rowData[1]);
+                levelTF.setText((String) rowData[2]);
+                checkpointsTF.setText((String) rowData[3]);
+
+                statusTF.setText(rowData[7].toString());
+
+
+                if (!checkedAt.equals("-")) {
+                    timeCheckedPicker.setTime(BE.formatTime(checkedAt));
+                }
+                else {
+                    timeCheckedPicker.setText("-");
+                }
+
+
+                try {
+                    comboBoxSetUp();
                 } catch (IOException ex) {
                     Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                deleteBTN.setEnabled(true);
+
+                if (securityID != null) {
+                    try {
+                        String[] empDet = BE.getEmployeeDetails(securityID);
+
+                        securityIdComboBox.addItem(securityID);
+                        securityIdComboBox.setSelectedItem(rowData[5]);
+                        securityNameTF.setText((String) rowData[6]);
+                        contactNoTF.setText(empDet[3]);
+                    } catch (IOException ex) {
+                        Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    removeEmpBTN.setEnabled(true);
+                }
+                else {
+                    removeEmpBTN.setEnabled(false);
+                    securityIdComboBox.setSelectedIndex(0);
+                    securityNameTF.setText("");
+                    contactNoTF.setText("");
+                    remarksTA.setText("");
+                }
+
+                fieldAction(true);
+                removeSlotBTN.setEnabled(true);
+                updateBTN.setEnabled(false);
+            } else {
+                JOptionPane.showMessageDialog (null, "The time slot has pass the time now... Please choose another slot.", 
+                                        "PATROLLING ASSIGNATION ERROR", JOptionPane.INFORMATION_MESSAGE);
             }
-            else {
-                deleteBTN.setEnabled(false);
-                securityIdComboBox.setSelectedIndex(0);
-                securityNameTF.setText("");
-                contactNoTF.setText("");
-                remarksTA.setText("");
-                statusTF.setText("");
-            }
-            
-            fieldAction(true);
-            removeSlotBTN.setEnabled(true);
-            updateBTN.setEnabled(false);
         }
     }//GEN-LAST:event_patrollingScheduleTableMouseClicked
     
     private void updateBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBTNActionPerformed
         // TODO add your handling code here:
-        ArrayList<String> toUpdateList = new ArrayList<>();
+        int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
+                + "update this slot?", "PATROLLING SCHEDULE",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE);
         
-        String slot = slotTF.getText();
-        String checkpoint = checkpointsTF.getText();
-        String securityId = securityIdComboBox.getSelectedItem().toString();
-        String securityName = securityNameTF.getText();
-        String remarks = (!remarksTA.getText().equals("")) ? remarksTA.getText() : " ";
-        
-        List<String> scheduleList = fh.fileRead(patrollingScheduleFile);
-        
-        String checkBef = null;
-        for (String eachSched : scheduleList) {
-            String[] schedules = eachSched.split(BE.sp);
-            String id = schedules[0];
-            checkBef = schedules[5];
-            
-            if (id.equals(patID)) {
-                toUpdateList.add(id + BE.sp + schedules[1] + BE.sp + schedules[2] + BE.sp + schedules[3] + BE.sp +
-                        checkpoint + BE.sp + checkBef + BE.sp + securityId + BE.sp + securityName + BE.sp + 
-                        remarks + BE.sp + schedules[8] + BE.sp + " " + BE.sp + this.getCurrentBEid() + BE.sp + 
-                        BE.combineStringDateTime(LocalDate.now().toString(), LocalTime.now().toString()) + BE.sp);
+        if(result == JOptionPane.YES_OPTION){
+            ArrayList<String> toUpdateList = new ArrayList<>();
+
+            String slot = slotTF.getText();
+            String checkpoint = checkpointsTF.getText();
+            String securityId = securityIdComboBox.getSelectedItem().toString();
+            String securityName = securityNameTF.getText();
+            String remarks = (!remarksTA.getText().equals("")) ? remarksTA.getText() : " ";
+
+            List<String> scheduleList = fh.fileRead(patrollingScheduleFile);
+
+            String checkBef = null;
+            for (String eachSched : scheduleList) {
+                String[] schedules = eachSched.split(BE.TF.sp);
+                String id = schedules[0];
+                checkBef = schedules[5];
+
+                if (id.equals(patID)) {
+                    toUpdateList.add(id + BE.TF.sp + schedules[1] + BE.TF.sp + schedules[2] + BE.TF.sp + schedules[3] + BE.TF.sp +
+                            checkpoint + BE.TF.sp + checkBef + BE.TF.sp + securityId + BE.TF.sp + securityName + BE.TF.sp + 
+                            remarks + BE.TF.sp + schedules[8] + BE.TF.sp + " " + BE.TF.sp + this.getCurrentBEid() + BE.TF.sp + 
+                            BE.DTF.currentDateTime() + BE.TF.sp);
+                }
+                else {
+                    toUpdateList.add(eachSched);
+                }
             }
-            else {
-                toUpdateList.add(eachSched);
+
+            fh.fileWrite(patrollingScheduleFile, false, toUpdateList);
+
+            String timeNeeded = String.valueOf(BE.formatTime(checkBef).compareTo(BE.formatTime(slot)));
+
+            patrollingScheduleTableSetUp();
+            fieldAction(false);
+
+            deletePatScheduleFromJobFile();
+
+            String newTaskId = null;
+            try {
+                newTaskId = BE.getNewTaskId(BE.TF.employeeJobFile, 0);
+            } catch (IOException ex) {
+                Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+            try {
+                comboBoxSetUp();
+                updateBTN.setEnabled(false);
+                removeSlotBTN.setEnabled(false);
+                removeEmpBTN.setEnabled(false);
+                cleanField();
+            } catch (IOException ex) {
+                Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            ArrayList<String> addJob = new ArrayList<>();
+            if (newTaskId != null) {
+                addJob.add(newTaskId + BE.TF.sp + securityId + BE.TF.sp + "null" + BE.TF.sp + 
+                        "PT" + BE.TF.sp + 0 + BE.TF.sp + timeNeeded+"h" + BE.TF.sp + this.inputDate + BE.TF.sp + slot + BE.TF.sp + this.inputDate + " " + checkBef + 
+                        BE.TF.sp + "null" + BE.TF.sp + remarks + BE.TF.sp + "null" + BE.TF.sp + 
+                        BE.DTF.currentDateTime() + 
+                        BE.TF.sp + inputDate + " " + patID + BE.TF.sp);
+            }
+            fh.fileWrite(BE.TF.employeeJobFile, true, addJob);
         }
-        
-        fh.fileWrite(patrollingScheduleFile, false, toUpdateList);
-        
-        String timeNeeded = String.valueOf(BE.formatTime(checkBef).compareTo(BE.formatTime(slot)));
-        
-        patrollingScheduleTableSetUp();
-        fieldAction(false);
-        
-        deletePatScheduleFromJobFile();
-        
-        String newTaskId = null;
-        try {
-            newTaskId = BE.getNewTaskId(BE.employeeJobFile, 0);
-        } catch (IOException ex) {
-            Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        try {
-            comboBoxSetUp();
-            updateBTN.setEnabled(false);
-            removeSlotBTN.setEnabled(false);
-            deleteBTN.setEnabled(false);
-            cleanField();
-        } catch (IOException ex) {
-            Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        ArrayList<String> addJob = new ArrayList<>();
-        if (newTaskId != null) {
-            addJob.add(newTaskId + BE.sp + securityId + BE.sp + "null" + BE.sp + 
-                    "PT" + BE.sp + 0 + BE.sp + timeNeeded+"h" + BE.sp + this.inputDate + BE.sp + slot + BE.sp + this.inputDate + " " + checkBef + 
-                    BE.sp + "null" + BE.sp + remarks + BE.sp + "null" + BE.sp + 
-                    BE.combineStringDateTime(LocalDate.now().toString(), LocalTime.now().toString()) + 
-                    BE.sp + inputDate + " " + patID + BE.sp);
-        }
-        fh.fileWrite(BE.employeeJobFile, true, addJob);
     }//GEN-LAST:event_updateBTNActionPerformed
     
-    private void deleteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBTNActionPerformed
+    private void removeEmpBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeEmpBTNActionPerformed
         // TODO add your handling code here:
-        ArrayList<String> toRemove = new ArrayList<>();
-        List<String> oldSchedule = fh.fileRead(patrollingScheduleFile);
+        int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
+                + "remove this employee?", "PATROLLING SCHEDULE",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE);
         
-        for (String eachSche : oldSchedule) {
-            String[] scheDet = eachSche.split(BE.sp);
-            String slotId = scheDet[0];
-            if (slotId.equals(patID)) {
-                toRemove.add(scheDet[0] + BE.sp + scheDet[1] + BE.sp + scheDet[2] + BE.sp + 
-                             scheDet[3] + BE.sp + scheDet[4] + BE.sp + scheDet[5] + BE.sp + 
-                             " " + BE.sp + " " + BE.sp + " " + BE.sp + " " + BE.sp + " " + BE.sp + 
-                             BE.combineStringDateTime(LocalDate.now().toString(), LocalTime.now().toString()) + 
-                             BE.sp + " ");
+        if(result == JOptionPane.YES_OPTION){
+            ArrayList<String> toRemove = new ArrayList<>();
+            List<String> oldSchedule = fh.fileRead(patrollingScheduleFile);
+
+            for (String eachSche : oldSchedule) {
+                String[] scheDet = eachSche.split(BE.TF.sp);
+                String slotId = scheDet[0];
+                if (slotId.equals(patID)) {
+                    toRemove.add(scheDet[0] + BE.TF.sp + scheDet[1] + BE.TF.sp + scheDet[2] + BE.TF.sp + 
+                                 scheDet[3] + BE.TF.sp + scheDet[4] + BE.TF.sp + scheDet[5] + BE.TF.sp + 
+                                 " " + BE.TF.sp + " " + BE.TF.sp + " " + BE.TF.sp + " " + BE.TF.sp + " " + BE.TF.sp + 
+                                 BE.combineStringDateTime(LocalDate.now().toString(), LocalTime.now().toString()) + 
+                                 BE.TF.sp + " ");
+                }
+                else {
+                    toRemove.add(eachSche);
+                }
             }
-            else {
-                toRemove.add(eachSche);
-            }
+
+            fh.fileWrite(patrollingScheduleFile, false, toRemove);
+
+            patrollingScheduleTableSetUp();
+
+            deletePatScheduleFromJobFile();
+
+            cleanField();
         }
-        
-        fh.fileWrite(patrollingScheduleFile, false, toRemove);
-        
-        patrollingScheduleTableSetUp();
-        
-        deletePatScheduleFromJobFile();
-        
-        cleanField();
-    }//GEN-LAST:event_deleteBTNActionPerformed
+    }//GEN-LAST:event_removeEmpBTNActionPerformed
     
     private void securityIdComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_securityIdComboBoxActionPerformed
         // TODO add your handling code here:
@@ -1133,26 +1164,33 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
     private void removeSlotBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeSlotBTNActionPerformed
         // TODO add your handling code here:
-        ArrayList<String> updatedSched = new ArrayList<>();
-        List<String> allSlots = fh.fileRead(patrollingScheduleFile);
-        for (String eachSlot : allSlots) {
-            String slotId = eachSlot.split(BE.sp)[0];
-            if (!slotId.equals(patID)) {
-                updatedSched.add(eachSlot);
+        int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
+                + "remove this slot?", "PATROLLING SCHEDULE",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE);
+
+        if(result == JOptionPane.YES_OPTION){
+            ArrayList<String> updatedSched = new ArrayList<>();
+            List<String> allSlots = fh.fileRead(patrollingScheduleFile);
+            for (String eachSlot : allSlots) {
+                String slotId = eachSlot.split(BE.TF.sp)[0];
+                if (!slotId.equals(patID)) {
+                    updatedSched.add(eachSlot);
+                }
             }
+
+            fh.fileWrite(patrollingScheduleFile, false, updatedSched);
+
+            deletePatScheduleFromJobFile();
+
+            patrollingScheduleTableSetUp();
+
+            fieldAction(false);
+            updateBTN.setEnabled(false);
+            removeSlotBTN.setEnabled(false);
+            removeEmpBTN.setEnabled(false);
+            cleanField();
         }
-        
-        fh.fileWrite(patrollingScheduleFile, false, updatedSched);
-        
-        deletePatScheduleFromJobFile();
-        
-        patrollingScheduleTableSetUp();
-        
-        fieldAction(false);
-        updateBTN.setEnabled(false);
-        removeSlotBTN.setEnabled(false);
-        deleteBTN.setEnabled(false);
-        cleanField();
     }//GEN-LAST:event_removeSlotBTNActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
@@ -1186,9 +1224,9 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         
         String dayCode  = inputDate + " " + patID;
         
-        List<String> getEmployeeList = fh.fileRead(BE.employeeJobFile);
+        List<String> getEmployeeList = fh.fileRead(BE.TF.employeeJobFile);
         for (String eachJob : getEmployeeList) {
-            String[] jobDet = eachJob.split(BE.sp);
+            String[] jobDet = eachJob.split(BE.TF.sp);
             String patCode = jobDet[jobDet.length - 1];
             
             if (!patCode.equals(dayCode)) {
@@ -1196,9 +1234,9 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             }
         }
         
-        fh.fileWrite(BE.employeeJobFile, false, removeFromJobFile);
+        fh.fileWrite(BE.TF.employeeJobFile, false, removeFromJobFile);
         
-        deleteBTN.setEnabled(false);
+        removeEmpBTN.setEnabled(false);
         updateBTN.setEnabled(false);
         fieldAction(false);
     }
@@ -1213,14 +1251,14 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         }
         
         for (String allEmp : assignedEmployee) {
-            String empId = allEmp.split(BE.sp)[0];
+            String empId = allEmp.split(BE.TF.sp)[0];
             
             ArrayList<String> jobList = BE.getAssignedJobForSpecificEmployee(empId);
             
             boolean cannotPatroll = false;
             if (!jobList.isEmpty()) {
                 for (String eachJob : jobList) {
-                    String[] jobDetails = eachJob.split(BE.sp);
+                    String[] jobDetails = eachJob.split(BE.TF.sp);
                     String assignedJobCode = jobDetails[3];
                     if (assignedJobCode.equals("NS") || assignedJobCode.equals("MS") || assignedJobCode.equals("PT")) {
                         int repitition = Integer.valueOf(jobDetails[4]);
@@ -1257,7 +1295,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             }
             
             if (!cannotPatroll && !canPatrollId.contains(empId)) {
-                canPatrollId.add(empId);
+                canPatrollId.add(empId.toUpperCase());
             }
         }
         
@@ -1323,7 +1361,6 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     private javax.swing.JTextField contactNoTF;
     private javax.swing.JLabel dateLabel;
     private com.github.lgooddatepicker.components.DatePicker datePicker;
-    private javax.swing.JButton deleteBTN;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -1370,6 +1407,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     private javax.swing.JButton manageScheduleBTN;
     private javax.swing.JTable patrollingScheduleTable;
     private javax.swing.JTextArea remarksTA;
+    private javax.swing.JButton removeEmpBTN;
     private javax.swing.JButton removeSlotBTN;
     private javax.swing.JComboBox<String> securityIdComboBox;
     private javax.swing.JTextField securityNameTF;

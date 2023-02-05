@@ -1007,7 +1007,8 @@ public class AdminExecutive {
     }
     
     public List<String> extractFacilityTimeSlot(String facilityID, String variation,
-                String date, String bookingID) {
+        String date, String bookingID) 
+    {
         FileHandling fh = new FileHandling();
         List<String> availableList = fh.fileRead("facility.txt");
         List<String> availableBooking = fh.fileRead("facilityBooking.txt");
@@ -1024,7 +1025,11 @@ public class AdminExecutive {
             int lastSlot = Integer.valueOf(endTime.substring(0, 2));
             if (eFacilityID.equals(facilityID)) {
                 for (int j = firstSlot; j < lastSlot+1; j++) {
-                    String cStartTime = String.valueOf(j) + ":00";
+                    
+                    String slotValue = String.valueOf(j);
+                    slotValue = (slotValue.length() != 2) ? "0" + slotValue : slotValue;
+                    String cStartTime = slotValue + ":00";
+                    
                     boolean check = true;
                     for (int k = 1; k < availableBooking.size(); k++) {
                         String[] bookingDetails = availableBooking.get(k).split(";");

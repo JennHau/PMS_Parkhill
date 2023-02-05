@@ -4,7 +4,6 @@
  */
 package buildingExecutive;
 
-import com.github.lgooddatepicker.zinternaltools.TimeSpinnerTimer;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -17,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import pms_parkhill_residence.Complaints;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.Users;
 
@@ -28,7 +28,9 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
     public static EmployeeJobAssignation employeeJobAssignation;
     BuildingExecutive BE = new BuildingExecutive();
     FileHandling fileHandling = new FileHandling();
+    
     private Users user;
+    private Complaints complaint;
     
     // Remove unnecessary data
     private String jobID;
@@ -49,24 +51,27 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
      * @param user
      * @param employeeID
      * @param jobId
-     * @param complaintId
+     * @param complaint
      * @param complaintsPage
      * @throws java.io.IOException
      */
-    public EmployeeJobAssignation(Users user, String employeeID, String jobId, String complaintId, boolean complaintsPage) throws IOException {
+    public EmployeeJobAssignation(Users user, String employeeID, String jobId, Complaints complaint, boolean complaintsPage) throws IOException {
         employeeJobAssignation = this;
         initComponents();
-        runDefaultSetUp(user, employeeID, jobId, complaintId, complaintsPage);
+        runDefaultSetUp(user, employeeID, jobId, complaint, complaintsPage);
     }
 
-    private void runDefaultSetUp(Users user, String employeeID, String jobId, String complaintId, boolean complaintsPage) throws IOException {
+    private void runDefaultSetUp(Users user, String employeeID, String jobId, Complaints complaint, boolean complaintsPage) throws IOException {
         this.user = user;
+        this.complaint = complaint;
         employeeJobTable = (DefaultTableModel) assignedJobTable.getModel();
         
         setWindowIcon();
         setSelectedEmployee(employeeID, jobId);
         setCurrentBE();
-        setComplaintsId(complaintId);
+        if (complaint!=null) {
+            setComplaintsId(complaint.getComplaintID());
+        }
         setFromComplaintsPage(complaintsPage);
         jobComboBoxSetUp();
         setJobFormTable();
@@ -101,7 +106,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             String emplyPhoneNo = employeeDetails[3];
             String emplyPos = employeeDetails[4];
 
-            employeeIdTF.setText(this.selectedEmployeeId);
+            employeeIdTF.setText(this.selectedEmployeeId.toUpperCase());
             employeeNameTF.setText(emplyName);
             contNoTF.setText(emplyPhoneNo);
             posTF.setText(emplyPos);
@@ -191,7 +196,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         
         if (getComplaintsId() != null) {
             jobComboBox.setSelectedItem("Complaints");
-            complaintIdTF.setText(getComplaintsId());
+            complaintIdTF.setText(getComplaintsId().toUpperCase());
             repititionCheckBox.setEnabled(false);
             jobComboBox.setEnabled(false);
         }
@@ -204,7 +209,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         String combineDate;
         
         for (String eachJob : jobList) {
-            String[] jobDetails = eachJob.split(BE.sp);
+            String[] jobDetails = eachJob.split(BE.TF.sp);
             String jobId = jobDetails[0];
             String jobDesc = jobDetails[3];
             int repitition = Integer.valueOf(jobDetails[4]);
@@ -214,7 +219,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             String[] endDateTime = jobDetails[8].split(" ");
             
             LocalDateTime workingEndDateTime = null;
-            if (!endDateTime[0].equals("null")) {
+            if (!endDateTime[0].equals(BE.TF.empty)) {
                 workingEndDateTime = BE.combineStringDateTime(endDateTime[0], endDateTime[1]);
             }
             
@@ -222,7 +227,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             String assigneeId = jobDetails[11];
             
             String eachDay = "";
-            if (!dayToRepeat.equals("null")) {
+            if (!dayToRepeat.equals(BE.TF.empty)) {
                 for (String day : dayToRepeat.split(",")) {
                     eachDay += day.toUpperCase()+ " ";
                 }
@@ -237,14 +242,14 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             LocalDateTime dateTimeNow = LocalDateTime.now();
             
             boolean add = true;
-            if ((workingEndDateTime != null && dayToRepeat.equals("null"))) {
+            if ((workingEndDateTime != null && dayToRepeat.equals(BE.TF.empty))) {
                 if (workingEndDateTime.isBefore(dateTimeNow)) {
                     add = false;
                 }
             }
             
             if (add) {
-                listForTable.add(jobId + BE.sp + jobDesc + BE.sp + combineDate + BE.sp + assigneeId + BE.sp);
+                listForTable.add(jobId.toUpperCase() + BE.TF.sp + jobDesc + BE.TF.sp + combineDate + BE.TF.sp + assigneeId.toUpperCase() + BE.TF.sp);
             }
         }
         
@@ -258,7 +263,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         
         if (jobList!=null) {
             for (String jobs : jobList) {
-                String[] jobDetails = jobs.split(BE.sp);
+                String[] jobDetails = jobs.split(BE.TF.sp);
                 String jobItem = jobDetails[2];
                 
                 jobComboBox.addItem(jobItem);
@@ -537,7 +542,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Job ID", "Job Title", "Date & Time", "Assignee ID", "Action"
+                "JOB ID", "JOB TITLE", "DATE & TIME", "ASSIGNEE ID", "ACTION"
             }
         ) {
             Class[] types = new Class [] {
@@ -716,10 +721,9 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(438, 438, 438)
                         .addComponent(editJobBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, 0))
+                    .addComponent(jScrollPane1)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -776,9 +780,10 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(editJobBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(editJobBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1)
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -830,7 +835,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addContainerGap(343, Short.MAX_VALUE))
+                .addContainerGap(483, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -897,39 +902,61 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
     }//GEN-LAST:event_clearBTNActionPerformed
 
     private void addBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBTNActionPerformed
-        try {
-            // TODO add your handling code here:
-            performButtonForAddUpdateDelete(this.addItem);
-            if (fromComplaintsPage) {
-                fromComplaintsPage = false;
-                complaintsId = null;
+        int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
+                + "add this job?", "FACILITY BOOKING",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE);
+
+        if(result == JOptionPane.YES_OPTION){
+            try {
+                // TODO add your handling code here:
+                performButtonForAddUpdateDelete(this.addItem);
+                if (fromComplaintsPage) {
+                    fromComplaintsPage = false;
+                    complaintsId = null;
+                    complaint = null;
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
-        } catch (IOException ex) {
-            ex.printStackTrace();
         }
     }//GEN-LAST:event_addBTNActionPerformed
 
     private void deleteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBTNActionPerformed
-        try {
-            // TODO add your handling code here:
-            performButtonForAddUpdateDelete(this.deleteItem);
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
+                + "remove this job?", "FACILITY BOOKING",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
+
+            if(result == JOptionPane.YES_OPTION){
+            try {
+                // TODO add your handling code here:
+                performButtonForAddUpdateDelete(this.deleteItem);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }//GEN-LAST:event_deleteBTNActionPerformed
 
     private void updateBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBTNActionPerformed
         // TODO add your handling code here:
-        if (!isSame) {
-            try {
-                performButtonForAddUpdateDelete(this.updateItem);
+        int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
+                + "update this job?", "FACILITY BOOKING",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE);
+
+        if(result == JOptionPane.YES_OPTION){
+            if (!isSame) {
+                try {
+                    performButtonForAddUpdateDelete(this.updateItem);
+                }
+                catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
-            catch (IOException ex) {
-                ex.printStackTrace();
+            else {
+                messagesTF.setText("The content is not modified");
             }
-        }
-        else {
-            messagesTF.setText("The content is not modified");
         }
     }//GEN-LAST:event_updateBTNActionPerformed
 
@@ -950,7 +977,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
     private void editJobBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editJobBTNActionPerformed
         try {
             // TODO add your handling code here:
-            BE.toJobModificationPage(this.user, selectedEmployeePosCode, this.jobID, this.complaintsId, this.selectedEmployeeId);
+            BE.toJobModificationPage(this.user, selectedEmployeePosCode, this.jobID, this.complaint, this.selectedEmployeeId);
         } catch (IOException ex) {
             Logger.getLogger(EmployeeJobAssignation.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -963,7 +990,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         int selectedCol = assignedJobTable.getSelectedColumn();
         int selectedRow = assignedJobTable.getSelectedRow();
         
-        this.jobID = BE.validateTableSelectionAndGetValue(employeeJobTable, selectedCol, selectedRow, 4, 0);
+        this.jobID = BE.validateTableSelectionAndGetValue(employeeJobTable, selectedCol, selectedRow, 4, 0).toLowerCase();
         
         if (this.jobID != null) {
             try {
@@ -987,9 +1014,9 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             }
             else {
                 if (jobID!=null) {
-                    List<String> jobFile = fileHandling.fileRead(BE.jobListFile);
+                    List<String> jobFile = fileHandling.fileRead(BE.TF.jobListFile);
                     for (String eachJob : jobFile) {
-                        String[] jobDet = eachJob.split(BE.sp);
+                        String[] jobDet = eachJob.split(BE.TF.sp);
                         if  (jobDet[2].equals(selectedJob)) {
                             String timeNeeded = jobDet[3];
                             String timePlace = timeNeeded.substring(timeNeeded.length()-1);
@@ -1019,7 +1046,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         if (BuildingExecutiveJobManagement.BEjobManagement != null) {
             BuildingExecutiveJobManagement.BEjobManagement.dispose();
         }
-        BE.toJobManagement(this, user, complaintsId, fromComplaintsPage);
+        BE.toJobManagement(this, user, this.complaint, fromComplaintsPage);
     }//GEN-LAST:event_backBTNActionPerformed
 
     private void assignedJobTableMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_assignedJobTableMouseEntered
@@ -1027,7 +1054,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
     }//GEN-LAST:event_assignedJobTableMouseEntered
 
     private void updateJobTextFile(String[] jobItems, int action) throws IOException {
-        List<String> readJobFile = fileHandling.fileRead(BE.employeeJobFile);
+        List<String> readJobFile = fileHandling.fileRead(BE.TF.employeeJobFile);
         List<String> newItemLists = new ArrayList<>();
         
         String itemID = jobItems[0];
@@ -1035,11 +1062,11 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         // make the string[] to an array list
         String specificItem = "";
         for (String arrayItem : jobItems) {
-            specificItem += arrayItem + BE.sp;
+            specificItem += arrayItem + BE.TF.sp;
         }
         
         for (String fileLine : readJobFile) {
-            String[] jobLine = fileLine.split(BE.sp);
+            String[] jobLine = fileLine.split(BE.TF.sp);
             String jobID = jobLine[0];
 
             if (jobID.equals(itemID)) {
@@ -1056,7 +1083,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             newItemLists.add(specificItem);
         }
         
-        fileHandling.fileWrite(BE.employeeJobFile, false, newItemLists);
+        fileHandling.fileWrite(BE.TF.employeeJobFile, false, newItemLists);
         
         if (complaintsId!=null) {
             updateComplaintsFile(action);
@@ -1067,7 +1094,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         ArrayList<String> updateComFile = new ArrayList<>();
         List<String> complaintFile = fileHandling.fileRead(BE.TF.complaintFiles);
         for (String eachComp : complaintFile) {
-            String[] compDet = eachComp.split(BE.sp);
+            String[] compDet = eachComp.split(BE.TF.sp);
             String compId = compDet[0];
             
             if (compId.equals(this.complaintsId)) {
@@ -1082,10 +1109,10 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                             status = cptStatus.Pending.toString();
                         }
                         
-                        updateLine = updateLine + status + BE.sp;
+                        updateLine = updateLine + status + BE.TF.sp;
                     }
                     else {
-                        updateLine = updateLine + compDet[data] + BE.sp;
+                        updateLine = updateLine + compDet[data] + BE.TF.sp;
                     }
                 }
                 
@@ -1105,17 +1132,17 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         // job Id
         String fieldJobId = this.jobID;
         if (action == this.addItem) {
-            fieldJobId = BE.getNewTaskId(BE.employeeJobFile, 0);
+            fieldJobId = BE.getNewTaskId(BE.TF.employeeJobFile, 0);
         }
         
         // employeeId
         String employeeId = this.selectedEmployeeId;
         // complaintId
-        this.complaintsId = this.getComplaintsId();
+        this.complaintsId = (this.getComplaintsId() != null) ? this.getComplaintsId() : BE.TF.empty;
         // job assigned
         String assignedJob = jobComboBox.getSelectedItem().toString();
         String jobDet = BE.findJobDetailsUsingDescriptionOrId(null, assignedJob);
-        String jobId = jobDet.split(BE.sp)[1];
+        String jobId = jobDet.split(BE.TF.sp)[1];
         
         // repitition on or off
         String repitition;
@@ -1142,7 +1169,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         // start date of the job
         String startDate = (dateTimePicker1.datePicker.getDate() != null) 
                             ? (String.valueOf(BE.formatDate(String.valueOf(dateTimePicker1.datePicker.getDate())))) 
-                            : "null";
+                            : BE.TF.empty;
         
         // start time of the job
         LocalTime jobStartTime = BE.formatTime(String.valueOf(dateTimePicker1.timePicker.getTime()));
@@ -1150,12 +1177,12 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         
         // expected end time of the job
         String expectedEndTime;
-        if (!startDate.equals("null")) {
+        if (!startDate.equals(BE.TF.empty)) {
             LocalDateTime dateTimeEnd = LocalDateTime.of(BE.formatDate(startDate), BE.formatTime(startTime));
             expectedEndTime = String.valueOf(dateTimeEnd.plusMinutes(timeNeeded)).replace("T", " ");
         }
         else {
-            expectedEndTime = "null " + String.valueOf(jobStartTime.plusMinutes(timeNeeded));
+            expectedEndTime = BE.TF.empty + " " + String.valueOf(jobStartTime.plusMinutes(timeNeeded));
         }
         
         // day to repeat
@@ -1186,8 +1213,10 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             dayCount++;
         }
         
+        dayToRepeat = (dayToRepeat.equals("")) ? BE.TF.empty : dayToRepeat;
+        
         // get remarks
-        String remarks = remarksTA.getText();
+        String remarks = (remarksTA.getText().equals("")) ? BE.TF.empty : remarksTA.getText();
         
         String[] jobItemDetails = {fieldJobId, employeeId, complaintsId, 
             jobId, repitition, expectedTimeRequired, 
@@ -1202,15 +1231,17 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         
         int newItemDetailsLength = jobItemDetails.length;
         
+        int count = 0;
         if (action == this.updateItem) {
             String[] oldJobDetails = BE.getSpecificJobDetails(employeeId, fieldJobId);
             for (int checkTimes = 0; checkTimes < newItemDetailsLength; checkTimes++) {
                 if (!jobItemDetails[checkTimes].equals(oldJobDetails[checkTimes])) {
-                    isSame = false;
+                    count++;
                 }
             }
             
-            if (isSame) {
+            if (count == newItemDetailsLength) {
+                isSame = true;
                 updatedBy = oldJobDetails[newItemDetailsLength];
                 updatedTime = oldJobDetails[newItemDetailsLength + 1];
             }
@@ -1219,7 +1250,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         latestFields = new ArrayList<>(Arrays.asList(jobItemDetails));
         latestFields.add(updatedBy);
         latestFields.add(updatedTime);
-        latestFields.add("null");
+        latestFields.add(BE.TF.empty);
         
         jobItemDetails = latestFields.toArray(jobItemDetails);
         
@@ -1248,121 +1279,108 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         ArrayList<String> clashJobId = new ArrayList<>();
         
         // get the start and end date time from the new job
-        LocalDate dateInput = BE.formatDate(jobItems[6]);
+        LocalDate dateInput = (jobItems[6].equals(BE.TF.empty)) ? null : BE.formatDate(jobItems[6]);
         LocalTime timeInput = BE.formatTime(jobItems[7]);
         
         // Get all the job assigned to the specific employee
         ArrayList<String> employeeJobList = BE.getAssignedJobForSpecificEmployee(this.selectedEmployeeId);
         
-        // loop for all assigned job
-        for (String eachJob : employeeJobList) {
-            String[] jobDetails = eachJob.split(BE.sp);
-            // get the details of the job
-            int repitition = Integer.valueOf(jobDetails[4]);
-            LocalDate jobStartDate = null;
-            LocalTime jobStartTime = BE.formatTime(jobDetails[7]);
-            String jobId = jobDetails[0];
-            String jobDesc = jobDetails[3];
-            String timeNeeded = jobDetails[5];
-            
-            String jobCode = null;
-            List<String> jobList = fileHandling.fileRead(BE.jobListFile);
-            for (String job : jobList) {
-                String[] jobInfo = job.split(BE.sp);
-                if (jobInfo[2].equals(jobDesc)) {
-                    jobCode = jobInfo[1];
+        if (dateInput != null) {
+            // loop for all assigned job
+            for (String eachJob : employeeJobList) {
+                String[] jobDetails = eachJob.split(BE.TF.sp);
+                // get the details of the job
+                int repitition = Integer.valueOf(jobDetails[4]);
+                LocalDate jobStartDate = null;
+                LocalTime jobStartTime = BE.formatTime(jobDetails[7]);
+                String jobId = jobDetails[0];
+                String jobDesc = jobDetails[3];
+                String timeNeeded = jobDetails[5];
+
+                String jobCode = null;
+                List<String> jobList = fileHandling.fileRead(BE.TF.jobListFile);
+                for (String job : jobList) {
+                    String[] jobInfo = job.split(BE.TF.sp);
+                    if (jobInfo[2].equals(jobDesc)) {
+                        jobCode = jobInfo[1];
+                    }
+                }
+
+                boolean ignore = false;
+                if (jobCode.equals("MS") || jobCode.equals("NS")){
+                    ignore = true;
+                }
+
+                String dayOfWeek = dateInput.getDayOfWeek().toString().toLowerCase();
+
+                if (!ignore) {
+                    String[] jobEndDateTime = jobDetails[8].split(" ");
+
+                    LocalTime workingStartTime2;
+                    LocalTime workingEndTime2;
+
+                    ArrayList<String> dateData = BE.compareJobDate(repitition, jobEndDateTime, jobDetails, timeNeeded, dayOfWeek, dateInput, jobStartTime, jobStartDate);
+
+                    jobStartDate = BE.formatDate(dateData.get(0));
+                    jobStartTime = BE.formatTime(dateData.get(1));
+
+                    workingStartTime2 = (!dateData.get(2).equals("null")) ? BE.formatTime(dateData.get(2)) : null;
+                    workingEndTime2 = (!dateData.get(3).equals("null")) ? BE.formatTime(dateData.get(3)) : null;
+
+                    jobEndDateTime = dateData.get(4).split(" ");
+
+                    if (jobStartDate != null) {
+
+                        boolean clash = BE.compareDateTime(dateInput, timeInput, jobStartDate, jobStartTime, jobEndDateTime, workingStartTime2, workingEndTime2);
+
+                        if (clash) {
+                            clashJobId.add(jobId.toUpperCase());
+                        }
+                    }
                 }
             }
+        }
+        else {
+            String[] eachRepeatDay = jobItems[9].split(",");
+            ArrayList<String> newDays = new ArrayList<>(Arrays.asList(eachRepeatDay));
             
-            boolean ignore = false;
-            if (jobCode.equals("MS") || jobCode.equals("NS")){
-                ignore = true;
-            }
-            
-            String dayOfWeek = dateInput.getDayOfWeek().toString().toLowerCase();
-            
-            if (!ignore) {
-                String[] jobEndDateTime = jobDetails[8].split(" ");
-                
-                LocalTime workingStartTime2;
-                LocalTime workingEndTime2;
-                
-                ArrayList<String> dateData = BE.compareJobDate(repitition, jobEndDateTime, jobDetails, timeNeeded, dayOfWeek, dateInput, jobStartTime, jobStartDate);
-                
-                jobStartDate = BE.formatDate(dateData.get(0));
-                jobStartTime = BE.formatTime(dateData.get(1));
-                
-                workingStartTime2 = (!dateData.get(2).equals("null")) ? BE.formatTime(dateData.get(2)) : null;
-                workingEndTime2 = (!dateData.get(3).equals("null")) ? BE.formatTime(dateData.get(3)) : null;
-                
-                jobEndDateTime = dateData.get(4).split(" ");
-                
-//                if (repitition == BE.repititionON) {
-//                    int overnightDay = BE.checkOvernight(BE.formatTime(jobEndDateTime[1]), timeNeeded);
-//                    boolean isOvernight = (overnightDay != 0);
-//                    ArrayList<String> dayToRepeat = new ArrayList<>(Arrays.asList(jobDetails[9].split(",")));
-//                    
-//                    boolean foundToday = false;
-//                    if (dayToRepeat.contains(dayOfWeek)) {
-//                        foundToday = true;
-//                    }
-//                    
-//                    boolean foundYesterday = false;
-//                    if (isOvernight) {
-//                        if (dayToRepeat.contains(dateInput.getDayOfWeek().plus(overnightDay).toString().toLowerCase())) {
-//                            foundYesterday = true;
-//                        }
-//                    }
-//                    
-//                    if (isOvernight && foundYesterday || 
-//                        isOvernight && foundToday || 
-//                        isOvernight && foundYesterday ||
-//                        !isOvernight && foundToday && !foundYesterday) 
-//                    {
-//                        jobStartDate = dateInput;
-//                        jobEndDateTime[0] = dateInput.toString();
-//                    }
-//                    
-//                    if (isOvernight && foundToday && foundYesterday) {
-//                        workingStartTime2 = timeInput;
-//                        timeInput = LocalTime.parse("00:00:00");
-//                        workingEndTime2 = LocalTime.parse("00:00:00");
-//                    }
-//                    else if (isOvernight && foundToday && !foundYesterday) {
-//                        jobEndDateTime[1] = "00:00:00";
-//                    }
-//                    else if (isOvernight && !foundToday && foundYesterday) {
-//                        timeInput =  LocalTime.parse("00:00:00");
-//                    }
-//                }
-//                else {
-//                    jobStartDate = BE.formatDate(jobDetails[6]);
-//                }
-                
-                if (jobStartDate != null) {
-                    
-                    boolean clash = BE.compareDateTime(dateInput, timeInput, jobStartDate, jobStartTime, jobEndDateTime, workingStartTime2, workingEndTime2);
-//                    LocalDateTime selectedDateTime = LocalDateTime.of(dateInput, timeInput);
-//                    LocalDateTime startDateTime = LocalDateTime.of(jobStartDate, jobStartTime);
-//                    LocalDateTime endDateTime = LocalDateTime.of(BE.formatDate(jobEndDateTime[0]), BE.formatTime(jobEndDateTime[1]));
-//                    
-//                    boolean clash = false;
-//                    if ((selectedDateTime.equals(startDateTime) || selectedDateTime.isAfter(startDateTime)) && 
-//                        (selectedDateTime.equals(endDateTime) || selectedDateTime.isBefore(endDateTime))) {
-//                        clash = true;
-//                    }
-//                    else if (workingStartTime2 != null && workingEndTime2 != null) {
-//                        LocalDateTime startDateTime2 = LocalDateTime.of(jobStartDate, workingStartTime2);
-//                        LocalDateTime endDateTime2 = LocalDateTime.of(jobStartDate, workingEndTime2);
-//
-//                        if ((selectedDateTime.equals(startDateTime2) || selectedDateTime.isAfter(startDateTime2)) &&
-//                            (selectedDateTime.equals(endDateTime2) || selectedDateTime.isBefore(endDateTime2))) {
-//                            clash = true;
-//                        }
-//                    }
-
-                    if (clash) {
-                        clashJobId.add(jobId);
+            for (String eachJob : employeeJobList) {
+                String[] jobDet = eachJob.split(BE.TF.sp);
+                if (!jobDet[9].equals(BE.TF.empty)) {
+                    String[] assignedDays = jobDet[9].split(",");
+                    for (String eachDay : assignedDays) {
+                        if (newDays.contains(eachDay)) {
+                            int timeNeeded = Integer.valueOf(jobDet[5].substring(0, jobDet[5].length()-1));
+                            String timeValue = jobDet[5].substring(jobDet[5].length()-1);
+                            
+                            timeNeeded = (timeValue.equals("h")) ? timeNeeded * 60 : timeNeeded;
+                            
+                            String jobTime = jobDet[7];
+                            LocalDateTime jobStartDateTime = BE.DTF.combineStringDateTime("2000-01-01", jobTime);
+                            LocalDateTime jobEndDateTime = jobStartDateTime.plusMinutes(timeNeeded);
+                            
+                            int newTimeNeeded = Integer.valueOf(jobItems[5].substring(0, jobItems[5].length()-1));
+                            String newTimeValue = jobItems[5].substring(jobDet[5].length()-1);
+                            
+                            newTimeNeeded = (newTimeValue.equals("h")) ? newTimeNeeded * 60 : newTimeNeeded;
+                            
+                            LocalDateTime inputDateTime = BE.DTF.combineStringDateTime("2000-01-01", timeInput.toString());
+                            LocalDateTime inputEndDateTime = inputDateTime.plusMinutes(newTimeNeeded);
+                            
+                            if ((inputDateTime.isAfter(jobStartDateTime) || inputDateTime.isEqual(jobStartDateTime)) 
+                             && (inputDateTime.isBefore(jobEndDateTime) || inputDateTime.isEqual(jobEndDateTime))) {
+                                if (clashJobId.contains(jobDet[0].toUpperCase())) {
+                                    clashJobId.add(jobDet[0].toUpperCase());                                
+                                }
+                            } 
+                            
+                            if ((inputEndDateTime.isAfter(jobStartDateTime) || inputEndDateTime.isEqual(jobStartDateTime)) 
+                             && (inputEndDateTime.isBefore(jobEndDateTime) || inputEndDateTime.isEqual(jobEndDateTime))) {
+                                if (clashJobId.contains(jobDet[0].toUpperCase())) {
+                                    clashJobId.add(jobDet[0].toUpperCase());                                
+                                }
+                            }
+                        }
                     }
                 }
             }

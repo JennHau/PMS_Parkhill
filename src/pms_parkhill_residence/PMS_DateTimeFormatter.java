@@ -10,14 +10,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
 import java.util.Date;
 
 /**
  *
  * @author Winson
  */
-public class PMS_DateTimeFormatter {
+public class PMS_DateTimeFormatter{
     public LocalDate formatDate(String date) {
         java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd");
         
@@ -34,9 +33,24 @@ public class PMS_DateTimeFormatter {
         return localDate;
     }
     
+    public String currentDateTime() {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDateTime dateTimeNow = LocalDateTime.parse(String.valueOf(LocalDateTime.now()), dateTimeFormatter);
+        String dateTime = String.valueOf(dateTimeNow);
+        return dateTime;
+    }
+    
     public String changeFormatDate(String dateString) throws ParseException {
         SimpleDateFormat originalFormat = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = originalFormat.parse(dateString);
+        
+        return targetFormat.format(date);
+    }
+    
+    public String changeFormatDate2(String dateString) throws ParseException {
+        SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat targetFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = originalFormat.parse(dateString);
         
         return targetFormat.format(date);
@@ -78,4 +92,12 @@ public class PMS_DateTimeFormatter {
         return combinedLocalDT;
     }
     
+    public String formatStatementMonth(String monthYear) {
+        String[] splitted = monthYear.split("/");
+        if (splitted[0].length() != 2) {
+            monthYear = "0" + monthYear;
+        }
+        
+        return monthYear;
+    }
 }

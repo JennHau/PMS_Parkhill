@@ -378,6 +378,7 @@ public class ScheduleActionPage extends javax.swing.JFrame {
 
     private void backBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBTNActionPerformed
         // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_backBTNActionPerformed
 
     private void saveBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBTNActionPerformed
@@ -386,13 +387,13 @@ public class ScheduleActionPage extends javax.swing.JFrame {
         String newSlot = "";
         if (allFields!=null) {
             for (String eachItem : allFields) {
-                newSlot = newSlot + eachItem + BE.sp;
+                newSlot = newSlot + eachItem + BE.TF.sp;
             }
             
             ArrayList<String> newItem = new ArrayList<>();
             
-            newSlot = newSlot + " " + BE.sp + " " + BE.sp + " " + BE.sp + " " + BE.sp + " " + BE.sp + 
-                      currentBEid + BE.sp + BE.combineStringDateTime(LocalDate.now().toString(), LocalTime.now().toString());
+            newSlot = newSlot + " " + BE.TF.sp + " " + BE.TF.sp + " " + BE.TF.sp + " " + BE.TF.sp + " " + BE.TF.sp + 
+                      currentBEid + BE.TF.sp + BE.combineStringDateTime(LocalDate.now().toString(), LocalTime.now().toString());
             
             newItem.add(newSlot);
             
