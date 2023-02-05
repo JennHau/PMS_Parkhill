@@ -813,6 +813,12 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
         int column = jTable1.getSelectedColumn();
         int row = jTable1.getSelectedRow();
         
+        String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
+        String cMonthYear = monthYear.substring(0, monthYear.indexOf("/")) 
+                + monthYear.substring(monthYear.indexOf("/") + 1);
+        String invoiceNo = String.valueOf(tableModel.getValueAt(row, 1)) + cMonthYear;
+        String unitNo = String.valueOf(tableModel.getValueAt(row, 1));
+        
         if (column == 6) {
             if (statusCB.getSelectedItem() == "PENDING"){
                 int result = JOptionPane.showConfirmDialog(null,"Are you sure to issue this invoice?",
@@ -823,11 +829,6 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                 if(result == JOptionPane.YES_OPTION){
                     List<String> invoiceDetails = new ArrayList<String>();
                     AccountExecutive ae = new AccountExecutive();
-                    String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
-                    String cMonthYear = monthYear.substring(0, monthYear.indexOf("/")) 
-                            + monthYear.substring(monthYear.indexOf("/") + 1);
-                    String invoiceNo = String.valueOf(tableModel.getValueAt(row, 1)) + cMonthYear;
-                    String unitNo = String.valueOf(tableModel.getValueAt(row, 1));
                     String feeTypeNTarget = feeTypeNameLabel.getText();
                     String feeType = feeTypeNTarget.substring(0, feeTypeNTarget.indexOf(", "));
                     String target = feeTypeNTarget.substring(feeTypeNTarget.indexOf(",") + 2);
@@ -848,6 +849,8 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog (null, "Invoice has been issued!", 
                                     "ISSUE INVOICE", JOptionPane.INFORMATION_MESSAGE);
                 }
+            } else if (statusCB.getSelectedItem() == "ISSUED"){
+                new AccountExecutiveViewInvoice(invoiceNo, unitNo).setVisible(true);
             }
         }
     }//GEN-LAST:event_jTable1MouseClicked

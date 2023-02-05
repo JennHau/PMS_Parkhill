@@ -867,33 +867,36 @@ public class AccountExecutiveIssueOutstandingFee extends javax.swing.JFrame {
     }
     
     private void setTable() {
-        try {
-            DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-            tableModel.setRowCount(0);
-            
-            String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
-            String cMonthYear = monthYear.substring(0, monthYear.indexOf("/")) 
-                    + monthYear.substring(monthYear.indexOf("/") + 1);
-            AccountExecutive ae = new AccountExecutive();
-            List<String> pendingPaymentDetails = ae.calculateTotalOutstanding(cMonthYear);
-            
-            String[] pendingPaymentArray = new String[pendingPaymentDetails.size()];
-            pendingPaymentDetails.toArray(pendingPaymentArray);
-            
-            for (int i=0; i<pendingPaymentDetails.size(); i++) {
-                String[] paymentData = pendingPaymentArray[i].split(";");
-                String unitNo = paymentData[0];
-                String invoiceNo = paymentData[1];
-                String issuedDate = paymentData[2];
-                String totalOutstanding = paymentData[3];
-                
-                String tbData[] = {String.valueOf(i+1), unitNo, invoiceNo,
-                    issuedDate, totalOutstanding, "CHARGE LATE PAYMENT"};
-                tableModel.addRow(tbData);
-            } 
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(monthNYearCB.getItemCount()>0) {
+            try {
+                DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+                tableModel.setRowCount(0);
+
+                String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
+                String cMonthYear = monthYear.substring(0, monthYear.indexOf("/")) 
+                        + monthYear.substring(monthYear.indexOf("/") + 1);
+                AccountExecutive ae = new AccountExecutive();
+                List<String> pendingPaymentDetails = ae.calculateTotalOutstanding(cMonthYear);
+
+                String[] pendingPaymentArray = new String[pendingPaymentDetails.size()];
+                pendingPaymentDetails.toArray(pendingPaymentArray);
+
+                for (int i=0; i<pendingPaymentDetails.size(); i++) {
+                    String[] paymentData = pendingPaymentArray[i].split(";");
+                    String unitNo = paymentData[0];
+                    String invoiceNo = paymentData[1];
+                    String issuedDate = paymentData[2];
+                    String totalOutstanding = paymentData[3];
+
+                    String tbData[] = {String.valueOf(i+1), unitNo, invoiceNo,
+                        issuedDate, totalOutstanding, "CHARGE LATE PAYMENT"};
+                    tableModel.addRow(tbData);
+                } 
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        
     }
 
     /**

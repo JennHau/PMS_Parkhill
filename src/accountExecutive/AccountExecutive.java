@@ -281,6 +281,9 @@ public class AccountExecutive extends Users {
     }
 
     public void createUserTransactionLink(String period, String unitNo) {
+        String transDate = todayDate().substring(4);
+        String[] availableData = {period, transDate};
+        
         List<String> userList = fh.fileRead("userProfile.txt");
         String[] userArray = new String[userList.size()];
         userList.toArray(userArray);
@@ -301,24 +304,26 @@ public class AccountExecutive extends Users {
             }
         }
 
-        List<String> uTLinkList = fh.fileRead("userTransactionLink.txt");
-        String[] uTLinkArray = new String[uTLinkList.size()];
-        uTLinkList.toArray(uTLinkArray);
-
-        boolean check = false;
-        for (int i = 1; i < uTLinkList.size(); i++) {
-            String[] uTDetails = uTLinkArray[i].split(";");
-            String lPeriod = uTDetails[0];
-            String lUnitNo = uTDetails[1];
-            if (lPeriod.equals(period) && lUnitNo.equals(unitNo)) {
-                check = true;
+        for (String data : availableData) {
+            List<String> uTLinkList = fh.fileRead("userTransactionLink.txt");
+            String[] uTLinkArray = new String[uTLinkList.size()];
+            uTLinkList.toArray(uTLinkArray);
+            boolean check = false;
+            for (int i = 1; i < uTLinkList.size(); i++) {
+                String[] uTDetails = uTLinkArray[i].split(";");
+                String lPeriod = uTDetails[0];
+                String lUnitNo = uTDetails[1];
+                if (lPeriod.equals(data) && lUnitNo.equals(unitNo)) {
+                    check = true;
+                }
+            }
+            if (check == false) {
+                List<String> cDetails = new ArrayList<>();
+                cDetails.add(data + ";" + unitNo + ";" + tenantID + ";" + residentID + ";");
+                fh.fileWrite("userTransactionLink.txt", true, cDetails);
             }
         }
-        if (check == false) {
-            List<String> cDetails = new ArrayList<>();
-            cDetails.add(period +";"+ unitNo +";"+ tenantID +";"+ residentID +";");
-            fh.fileWrite("userTransactionLink.txt", true, cDetails);
-        }
+        
     }
 
     public List<String> extractAllPayment(String status) {
@@ -485,8 +490,8 @@ public class AccountExecutive extends Users {
                     newData.add(einvoiceNo + ";" + unitNo + ";" + feeType + ";"
                             + target + ";" + consump + ";" + unit + ";"
                             + unitPrice + ";" + totalPrice + ";" + period + ";"
-                            + userID + ";" + todayDate + ";" + generatedDate
-                            + ";" + "-" + ";");
+                            + userID.toLowerCase() + ";" + todayDate + ";" +
+                            generatedDate + ";" + "-" + ";");
                 }
             }
             fh.fileWrite("payment.txt", true, newData);
@@ -512,12 +517,12 @@ public class AccountExecutive extends Users {
             for (int i = 1; i < usersList.size(); i++) {
                 
                 String[] userDetails = usersArray[i].split(";");
-                String euserID = userDetails[0].toUpperCase();
+                String euserID = userDetails[0];
                 String euserName = userDetails[3] + " " + userDetails[4];
                 usernameList.add(euserName);
                 userIDList.add(euserID);
             }
-
+            
             List<String> iUsersList = fh.fileRead("inactiveUserProfile.txt");
             String[] iUsersArray = new String[iUsersList.size()];
             iUsersList.toArray(iUsersArray);
@@ -637,7 +642,6 @@ public class AccountExecutive extends Users {
         List<String> availablePendingPayment = new ArrayList<>();
         for (int i = 0; i < availableInvoiceNo.size(); i++) {
             String invoiceNo = availableInvoiceNo.get(i);
-
             String tUnitNo = "";
             String tInvoiceNo = "";
             String tIssuedDate = "";
@@ -857,16 +861,60 @@ public class AccountExecutive extends Users {
 //        return availableStatements;
 //    }
     public List<String> extractAllStatementUnit(String status, String monthYear) {
-        List<String> transList = fh.fileRead("userTransactionLink.txt");
+//        List<String> transList = fh.fileRead("userTransactionLink.txt");
+//        List<String> statementList = fh.fileRead("statements.txt");
+//        
+//        List<String> availableStatement = new ArrayList<>();
+//        if(status.equals("PENDING")) {
+//            for (int i = 1; i < transList.size(); i++) {
+//                String[] unitDetails = transList.get(i).split(";");
+//                String uPeriod = unitDetails[0];
+//                String uUnitNo = unitDetails[1];
+//                
+//                if(uPeriod.equals(monthYear)) {
+//                    boolean check = true;
+//                    for (int j = 1; j < statementList.size(); j++) {
+//                        String[] statementDetails = statementList.get(j).split(";");
+//                        String period = statementDetails[0];
+//                        String sUnitNo = statementDetails[1];
+//                        if(uPeriod.equals(period) && uUnitNo.equals(sUnitNo)) {
+//                            check = false;
+//                        }
+//                    }
+//                    if(check) {
+//                        availableStatement.add(monthYear +";"+ uUnitNo +";");
+//                    }
+//                }
+//                
+//            }
+//        } else if(status.equals("ISSUED")) {
+//            for (int i = 1; i < statementList.size(); i++) {
+//                    String[] statementDetails = transList.get(i).split(";");
+//                    String period = statementDetails[0];
+//                    String sUnitNo = statementDetails[1];
+//                    availableStatement.add(period +";"+ sUnitNo +";");
+//                    
+//                }
+//        }
+//        List<String> fullStatement = extractStatementUnitDetails
+//                                        (availableStatement);
+//        return fullStatement;
+        
+        List<String> transList = fh.fileRead("invoices.txt");
         List<String> statementList = fh.fileRead("statements.txt");
         
         List<String> availableStatement = new ArrayList<>();
         if(status.equals("PENDING")) {
             for (int i = 1; i < transList.size(); i++) {
                 String[] unitDetails = transList.get(i).split(";");
-                String uPeriod = unitDetails[0];
+                String uPeriod_temp = unitDetails[9].substring(3);
+                String uPeriod;
+                if(uPeriod_temp.startsWith("0")) {
+                    uPeriod = uPeriod_temp.substring(1);
+                } else {
+                    uPeriod = uPeriod_temp;
+                }
                 String uUnitNo = unitDetails[1];
-                
                 if(uPeriod.equals(monthYear)) {
                     boolean check = true;
                     for (int j = 1; j < statementList.size(); j++) {
@@ -885,12 +933,13 @@ public class AccountExecutive extends Users {
             }
         } else if(status.equals("ISSUED")) {
             for (int i = 1; i < statementList.size(); i++) {
-                    String[] statementDetails = transList.get(i).split(";");
+                    String[] statementDetails = statementList.get(i).split(";");
                     String period = statementDetails[0];
                     String sUnitNo = statementDetails[1];
-                    availableStatement.add(period +";"+ sUnitNo +";");
-                    
-                }
+                    if(period.equals(monthYear)) {
+                        availableStatement.add(period +";"+ sUnitNo +";");
+                    }
+            }
         }
         List<String> fullStatement = extractStatementUnitDetails
                                         (availableStatement);
@@ -962,7 +1011,9 @@ public class AccountExecutive extends Users {
                     }
                 }
             }
-            availableStatements.add(sUnitNo + ";" + target + ";" + owner + ";" + resident + ";");
+            if(!owner.equals("-")) {
+                availableStatements.add(sUnitNo + ";" + target + ";" + owner + ";" + resident + ";");
+            }
         }
         return availableStatements;
     }
@@ -1188,5 +1239,23 @@ public class AccountExecutive extends Users {
                 newData.add(transList4.get(i));
             }
         } fh.fileWrite("statements.txt", false, newData);
+    }
+    
+    public ArrayList getCurrentUnitPaymentHistory(String unitNo) {
+        ArrayList<String> paymentHistory = new ArrayList<>();
+        List<String> paymentFile = fh.fileRead("payment.txt");
+        
+        for (String eachPay : paymentFile) {
+            String[] payDet = eachPay.split(";");
+            String uNo = payDet[1];
+            if (uNo.equals(unitNo)) {
+                String deleteID = payDet[payDet.length-1];
+                if (deleteID.equals("-")) {
+                    paymentHistory.add(eachPay);
+                }
+            }
+        }
+        
+        return paymentHistory;
     }
 }

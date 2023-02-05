@@ -694,6 +694,8 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
         int column = jTable1.getSelectedColumn();
         int row = jTable1.getSelectedRow();
         if (column == 6) {
+            String invoiceNo = String.valueOf(tableModel.getValueAt(row, 0));
+            String unitNo = String.valueOf(tableModel.getValueAt(row, 1));
             if (statusCB.getSelectedItem() == "PENDING"){
 
                 int result = JOptionPane.showConfirmDialog(null,"Are you sure to issue this receipt?",
@@ -702,11 +704,7 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
 
                 if(result == JOptionPane.YES_OPTION){
-
                     List<String> receiptDetails = new ArrayList<>();
-
-
-                    String invoiceNo = String.valueOf(tableModel.getValueAt(row, 0));
                     String feeType = String.valueOf(tableModel.getValueAt(row, 2));
                     receiptDetails.add(invoiceNo +";"+ feeType +";");
                     AccountExecutive ae = new AccountExecutive();
@@ -715,7 +713,9 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog (null, "Receipt has been issued!", 
                                     "ISSUE RECEIPT", JOptionPane.INFORMATION_MESSAGE);
                 }
-                }
+            } else if (statusCB.getSelectedItem() == "ISSUED"){
+                new AccountExecutiveViewReceipt(unitNo, invoiceNo).setVisible(true);
+            }
         }
     }//GEN-LAST:event_jTable1MouseClicked
 

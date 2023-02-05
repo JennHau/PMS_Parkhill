@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.HomePage;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -769,42 +770,42 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
     
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
-        if (statusCB.getSelectedItem() == "PENDING"){
-            List<String> statementDetails = new ArrayList<String>();
-            
-            DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-            int column = jTable1.getSelectedColumn();
-            int row = jTable1.getSelectedRow();
+        List<String> statementDetails = new ArrayList<String>();
 
-            if (column == 5) {
-                if (statusCB.getSelectedItem() == "PENDING"){
+        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        int column = jTable1.getSelectedColumn();
+        int row = jTable1.getSelectedRow();
 
-                    int result = JOptionPane.showConfirmDialog(null,"Are you sure to issue this statement?",
-                                "ISSUE STATEMENT",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE);
+        if (column == 5) {
+            if (statusCB.getSelectedItem() == "PENDING"){
 
-                    if(result == JOptionPane.YES_OPTION){
-                        String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
+                int result = JOptionPane.showConfirmDialog(null,"Are you sure to issue this statement?",
+                            "ISSUE STATEMENT",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+                if(result == JOptionPane.YES_OPTION){
+                    String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
 //                        String cMonthYear = monthYear.substring(0, monthYear.indexOf("/")) 
 //                                + monthYear.substring(monthYear.indexOf("/") + 1);
 //                        String invoiceNo = String.valueOf(tableModel.getValueAt(row, 1)) + cMonthYear;
-                        String unitNo = String.valueOf(tableModel.getValueAt(row, 1));
+                    String unitNo = String.valueOf(tableModel.getValueAt(row, 1));
 
-                        String cDetails = monthYear +";"+ unitNo +";";
-                        statementDetails.add(cDetails);
+                    String cDetails = monthYear +";"+ unitNo +";";
+                    statementDetails.add(cDetails);
 
-                        AccountExecutive ae = new AccountExecutive();
-                        ae.issueStatement(statementDetails);
-                        setTable();
-                        JOptionPane.showMessageDialog (null, "Statement has been issued!", 
-                                        "ISSUE STATEMENT", JOptionPane.INFORMATION_MESSAGE);
-                        setTable();
-                    }
+                    AccountExecutive ae = new AccountExecutive();
+                    ae.issueStatement(statementDetails);
+                    setTable();
+                    JOptionPane.showMessageDialog (null, "Statement has been issued!", 
+                                    "ISSUE STATEMENT", JOptionPane.INFORMATION_MESSAGE);
+                    setTable();
                 }
+            } else if (statusCB.getSelectedItem() == "ISSUED"){
+                String monthNYear = String.valueOf(monthNYearCB.getSelectedItem());
+                new AccountExecutiveViewStatement(user, monthNYear).setVisible(true);
             }
         }
-        
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void dashboardLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseClicked
@@ -1053,7 +1054,7 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
         }
         if (tableModel.getRowCount() == 0) {
             issueAllPanel.setBackground(Color.GRAY);
-        } else {
+        } else if (tableModel.getRowCount() != 0 && statusCB.getSelectedItem().equals("PENDING")) {
             issueAllPanel.setBackground(new Color(13,50,79));
         }
     }
