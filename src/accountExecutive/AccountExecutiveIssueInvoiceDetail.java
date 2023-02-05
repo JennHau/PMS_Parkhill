@@ -850,6 +850,7 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                                     "ISSUE INVOICE", JOptionPane.INFORMATION_MESSAGE);
                 }
             } else if (statusCB.getSelectedItem() == "ISSUED"){
+                dispose();
                 new AccountExecutiveViewInvoice(invoiceNo, unitNo).setVisible(true);
             }
         }
