@@ -7,6 +7,8 @@ package buildingManager;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import pms_parkhill_residence.FileHandling;
@@ -300,5 +302,46 @@ public class BuildingManager extends Users{
                 newData.add(allocationList.get(i));
             }
         } fh.fileWrite("budgetAllocation.txt", false, newData);
+    }
+    
+    public String currentDateTime() {
+        LocalDateTime dt = LocalDateTime.now();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String currentDateTime = dtf.format(dt);
+        return currentDateTime;
+    }
+    
+    public List<String> propertyUnitReport() {
+        List<String> unitList = fh.fileRead("propertyDetails.txt");
+        List<String> userList = fh.fileRead("userProfile.txt");
+        List<String> addedUser = new ArrayList<>();
+        
+        List<String> availableList = new ArrayList<>();
+        
+        for(int i=1; i<unitList.size(); i++) {
+            String[] unitDetails = unitList.get(i).split(";");
+            String unitNo = unitDetails[0];
+            String category = unitDetails[1];
+            String status = unitDetails[3];
+            
+            for(int j=1; j<userList.size(); j++) {
+                String[] userDetails = userList.get(i).split(";");
+                String userID = userDetails[0];
+                String name = userDetails[3] +" "+ userDetails[4];
+                String uUnitNo = userDetails[8];
+                
+                if(unitNo.equals(uUnitNo) && (userID.startsWith("tnt") 
+                        || userID.startsWith("vdr")) && !addedUser.contains(userID)) {
+                    availableList.add(unitNo +";"+ category +";"+ status +";"+
+                            userID +";"+ "Tenant" +";"+ name);
+                    addedUser.add(userID);
+                } else if(unitNo.equals(uUnitNo) && userID.startsWith("rsd")
+                        && !addedUser.contains(userID)) {
+                    availableList.add(unitNo +";"+ category +";"+ status +";"+
+                            userID +";"+ "Resident" +";"+ name);
+                    addedUser.add(userID);
+                }
+            }
+        } return availableList;
     }
 }
