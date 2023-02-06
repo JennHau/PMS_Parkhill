@@ -155,51 +155,51 @@
                               <Group type="102" attributes="0">
                                   <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
                                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="jLabel26" min="-2" pref="159" max="-2" attributes="0"/>
-                                              <Component id="contactTF" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="firstNameTF" max="32767" attributes="0"/>
-                                              <Component id="jLabel25" max="32767" attributes="0"/>
-                                              <Component id="icTF" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="jLabel30" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                                              <Component id="jLabel32" min="-2" pref="159" max="-2" attributes="0"/>
+                                              <Component id="passwordTF" min="-2" pref="200" max="-2" attributes="0"/>
                                           </Group>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="editContactBTN" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="32767" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="lastNameTF" max="32767" attributes="0"/>
-                                              <Component id="jLabel28" max="32767" attributes="0"/>
-                                              <Component id="emailTF" max="32767" attributes="0"/>
-                                              <Component id="jLabel27" max="32767" attributes="0"/>
-                                              <Component id="jLabel29" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
-                                              <Component id="genderCB" alignment="0" min="-2" pref="140" max="-2" attributes="0"/>
+                                          <Component id="editPasswordBTN" min="-2" pref="72" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="jLabel11" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jLabel13" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jLabel14" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jLabel16" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Group type="103" groupAlignment="1" attributes="0">
+                                              <Component id="warningMessage" alignment="0" max="32767" attributes="0"/>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                      <Component id="jLabel26" min="-2" pref="159" max="-2" attributes="0"/>
+                                                      <Component id="contactTF" alignment="0" max="32767" attributes="0"/>
+                                                      <Component id="firstNameTF" max="32767" attributes="0"/>
+                                                      <Component id="jLabel25" max="32767" attributes="0"/>
+                                                      <Component id="icTF" alignment="0" max="32767" attributes="0"/>
+                                                      <Component id="jLabel30" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="editContactBTN" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="32767" attributes="0"/>
+                                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                      <Component id="lastNameTF" max="32767" attributes="0"/>
+                                                      <Component id="jLabel28" max="32767" attributes="0"/>
+                                                      <Component id="emailTF" max="32767" attributes="0"/>
+                                                      <Component id="jLabel27" max="32767" attributes="0"/>
+                                                      <Component id="jLabel29" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                                                      <Component id="genderCB" alignment="0" min="-2" pref="140" max="-2" attributes="0"/>
+                                                  </Group>
+                                              </Group>
                                           </Group>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Component id="editEmailBTN" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                                      <Component id="jLabel32" min="-2" pref="159" max="-2" attributes="0"/>
-                                                      <Component id="passwordTF" min="-2" pref="200" max="-2" attributes="0"/>
-                                                  </Group>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="editPasswordBTN" min="-2" pref="72" max="-2" attributes="0"/>
-                                                  <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                                                  <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Component id="jLabel11" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                      <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                      <Component id="jLabel13" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                      <Component id="jLabel14" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                      <Component id="jLabel16" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  </Group>
-                                              </Group>
-                                              <Component id="warningMessage" alignment="0" min="-2" pref="450" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -469,6 +469,7 @@
         <Component class="javax.swing.JButton" name="updateBTN">
           <Properties>
             <Property name="text" type="java.lang.String" value="Update"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="updateBTNActionPerformed"/>
@@ -527,9 +528,6 @@
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="warningMessage">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel4"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JPasswordField" name="passwordTF">
           <Properties>
