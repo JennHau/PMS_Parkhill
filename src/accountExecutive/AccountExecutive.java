@@ -398,7 +398,9 @@ public class AccountExecutive extends Users {
             List<String> invoicesList = fh.fileRead("invoices.txt");
             String[] invoicesArray = new String[invoicesList.size()];
             invoicesList.toArray(invoicesArray);
-
+            
+            List<String> paidList = fh.fileRead("payment.txt");
+            
             for (int i = 1; i < invoicesList.size(); i++) {
                 String[] feesDetails = invoicesArray[i].split(";");
                 String einvoiceNo = feesDetails[0];
@@ -412,7 +414,19 @@ public class AccountExecutive extends Users {
                         + unit + ";" + unitPrice + ";" + totalPrice + ";";
 
                 if (einvoiceNo.equals(invoiceNo)) {
-                    paymentFees.add(cDetails);
+                    boolean check = true;
+                    for(int j = 1; j < paidList.size(); j++) {
+                        String[] paymentDetails = paidList.get(j).split(";");
+                        String pInvoiceNo = paymentDetails[0];
+                        String pFeeType = paymentDetails[2];
+                        
+                        if(einvoiceNo.equals(pInvoiceNo) && feeType.equals(pFeeType)) {
+                            check = false;
+                        }
+                    }
+                    if(check) {
+                        paymentFees.add(cDetails);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -1252,7 +1266,7 @@ public class AccountExecutive extends Users {
     
     public ArrayList getCurrentUnitPaymentHistory(String unitNo) {
         ArrayList<String> paymentHistory = new ArrayList<>();
-        List<String> paymentFile = fh.fileRead("payment.txt");
+        List<String> paymentFile = fh.fileRead("receipt.txt");
         
         for (String eachPay : paymentFile) {
             String[] payDet = eachPay.split(";");

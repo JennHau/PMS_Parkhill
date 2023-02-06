@@ -66,6 +66,7 @@ public class BuildingManagerModifyUser extends javax.swing.JFrame {
         modifyBt = new javax.swing.JButton();
         deleteBt1 = new javax.swing.JButton();
         cancelBt = new javax.swing.JButton();
+        resetPassBt = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -234,6 +235,13 @@ public class BuildingManagerModifyUser extends javax.swing.JFrame {
             }
         });
 
+        resetPassBt.setText("RESET TO DEFAULT");
+        resetPassBt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetPassBtActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -266,7 +274,7 @@ public class BuildingManagerModifyUser extends javax.swing.JFrame {
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addComponent(jLabel6)
-                                .addContainerGap(206, Short.MAX_VALUE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(lastNameTF, javax.swing.GroupLayout.Alignment.LEADING)
@@ -276,9 +284,12 @@ public class BuildingManagerModifyUser extends javax.swing.JFrame {
                                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(0, 84, Short.MAX_VALUE)))
+                                            .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.LEADING))
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(45, 45, 45)
+                                        .addComponent(resetPassBt)))
                                 .addGap(20, 20, 20))))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(272, 272, 272)
@@ -294,7 +305,7 @@ public class BuildingManagerModifyUser extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(warningMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(jPanel6Layout.createSequentialGroup()
@@ -329,7 +340,9 @@ public class BuildingManagerModifyUser extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel10)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel10)
+                                    .addComponent(resetPassBt))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
@@ -460,7 +473,7 @@ public class BuildingManagerModifyUser extends javax.swing.JFrame {
                 if(result == JOptionPane.YES_OPTION){
                     Users users = new Users(userID, email, password, firstName,
                         lastName, idNo, gender, phoneNo, "-");
-                    users.modifyUserAccount();
+                    users.modifyOthersAccount();
                     JOptionPane.showMessageDialog (null, "User account has been modified!",
                         "MODIFY USER ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
@@ -502,6 +515,23 @@ public class BuildingManagerModifyUser extends javax.swing.JFrame {
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_cancelBtActionPerformed
+
+    private void resetPassBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetPassBtActionPerformed
+        // TODO add your handling code here:
+        int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
+            + "reset this account password?",
+            "RESET ACCOUNT PASSWORD",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
+
+        if(result == JOptionPane.YES_OPTION){
+            Users users = new Users();
+            users.resetPasswordtoDefault("Parkhill@1234", userIDTF.getText().toLowerCase());
+            resetPassBt.setEnabled(false);
+            JOptionPane.showMessageDialog (null, "Password Reset!",
+                "RESET PASSWORD", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_resetPassBtActionPerformed
     
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
@@ -4663,6 +4693,7 @@ public class BuildingManagerModifyUser extends javax.swing.JFrame {
     private javax.swing.JTextField lastNameTF;
     private javax.swing.JButton modifyBt;
     private javax.swing.JTextField phoneNoTF;
+    private javax.swing.JToggleButton resetPassBt;
     private javax.swing.JTextField userIDTF;
     private javax.swing.JTextField userRoleTF;
     private javax.swing.JLabel warningMessage;

@@ -2,3 +2,6 @@ invoiceNo;unitNo;feeType;target;consumption;unit;unitPrice(RM);totalPrice(RM);pe
 A-02-0212023;A-02-02;Gas;Residential;125.46;kWh;0.12;15.05;1/2023;tnt000007;06/02/2023;06/02/2023;-;
 S-02-0512023;S-02-05;Management Fee;Commercial;800;Square Feet;0.33;264.00;1/2023;vdr000010;06/02/2023;06/02/2023;-;
 A-01-03A12023;A-01-03A;Gas;Residential;135.89;kWh;0.12;16.31;1/2023;tnt000004;06/01/2023;06/01/2023;-;
+A-01-0112023;A-01-01;Gas;Residential;204.95;kWh;0.12;24.59;1/2023;tnt000001;06/02/2023;06/02/2023;-;
+A-01-0112023;A-01-01;Electricity;Residential;201.40;W;0.22;44.31;1/2023;tnt000001;06/02/2023;06/02/2023;-;
+A-01-0112023;A-01-01;Water;Residential;36.69;Cubic Metres;0.57;20.92;1/2023;tnt000001;06/02/2023;06/02/2023;-;

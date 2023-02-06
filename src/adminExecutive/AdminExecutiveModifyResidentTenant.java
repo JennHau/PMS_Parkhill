@@ -72,7 +72,7 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
         resetPassBt = new javax.swing.JToggleButton();
         unitNoTF = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
         setBackground(new java.awt.Color(13, 24, 42));
         setResizable(false);
@@ -140,7 +140,6 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
         });
 
         cancelBt.setText("CLOSE");
-        cancelBt.setActionCommand("CLOSE");
         cancelBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtActionPerformed(evt);
@@ -517,7 +516,7 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
                 if(result == JOptionPane.YES_OPTION){
                     Users users = new Users(userID, email, password, firstName,
                             lastName, idNo, gender, phoneNo, unitNo);
-                    users.modifyUserAccount();
+                    users.modifyOthersAccount();
                     JOptionPane.showMessageDialog (null, "User account has been modified!", 
                                     "MODIFY USER ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
@@ -648,7 +647,7 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
 
             if(result == JOptionPane.YES_OPTION){
                 Users users = new Users();
-                users.resetPassword("Parkhill@1234", userIDTF.getText().toLowerCase());
+                users.resetPasswordtoDefault("Parkhill@1234", userIDTF.getText().toLowerCase());
                 resetPassBt.setEnabled(false);
                 JOptionPane.showMessageDialog (null, "Password Reset!", 
                                 "RESET PASSWORD", JOptionPane.INFORMATION_MESSAGE);

@@ -9,3 +9,6 @@ S-02-0212023;S-02-02;Management Fee;Commercial;800;Square Feet;0.33;264.00;1/202
 S-02-0312023;S-02-03;Management Fee;Commercial;1200;Square Feet;0.33;396.00;1/2023;06/01/2023;-;
 S-02-03A12023;S-02-03A;Management Fee;Commercial;1000;Square Feet;0.33;330.00;1/2023;06/01/2023;-;
 S-02-0512023;S-02-05;Management Fee;Commercial;800;Square Feet;0.33;264.00;1/2023;06/01/2023;-;
+A-01-0112023;A-01-01;Gas;Residential;204.95;kWh;0.12;24.59;1/2023;06/02/2023;-;
+A-01-0112023;A-01-01;Electricity;Residential;201.40;W;0.22;44.31;1/2023;06/02/2023;-;
+A-01-0112023;A-01-01;Water;Residential;36.69;Cubic Metres;0.57;20.92;1/2023;06/02/2023;-;

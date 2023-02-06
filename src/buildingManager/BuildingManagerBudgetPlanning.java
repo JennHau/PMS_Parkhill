@@ -124,9 +124,9 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
             }
         });
 
+        jLabel24.setText("Dashboard");
         jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel24.setText("Dashboard");
         jLabel24.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel24MouseClicked(evt);
@@ -163,9 +163,9 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setText("User Management");
         jLabel4.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("User Management");
         jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel4MouseClicked(evt);
@@ -202,10 +202,10 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setText("Reports");
         jLabel5.setBackground(new java.awt.Color(13, 24, 42));
         jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Reports");
         jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel5MouseClicked(evt);
@@ -242,9 +242,9 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setText("Budget Planning");
         jLabel6.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Budget Planning");
         jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel6MouseClicked(evt);
@@ -281,9 +281,9 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
             }
         });
 
+        jLabel8.setText("Team Structure");
         jLabel8.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("Team Structure");
         jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel8MouseClicked(evt);
@@ -312,9 +312,9 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
 
         jPanel12.setBackground(new java.awt.Color(13, 24, 42));
 
+        jLabel10.setText("LOGOUT");
         jLabel10.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("LOGOUT");
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
@@ -335,10 +335,10 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
 
         jPanel13.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel11.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
         jLabel11.setText("VIEW PROFILE");
+        jLabel11.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
@@ -367,10 +367,10 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
             }
         });
 
-        jLabel12.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
         jLabel12.setText("LOGOUT");
+        jLabel12.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel12MouseClicked(evt);
@@ -457,16 +457,16 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(153, 153, 153), null, null));
 
-        jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(13, 24, 42));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("BUILDING MANAGER");
+        jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(13, 24, 42));
 
-        usernameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        usernameLabel.setForeground(new java.awt.Color(102, 102, 102));
         usernameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         usernameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
         usernameLabel.setText("USERNAME");
+        usernameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        usernameLabel.setForeground(new java.awt.Color(102, 102, 102));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -474,10 +474,10 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(usernameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
-                .addGap(19, 19, 19))
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(usernameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 692, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -491,23 +491,23 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(102, 102, 102));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setText("OPERATIONS & BUDGET PLANNING");
         jLabel14.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(102, 102, 102));
 
         jPanel4.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel25.setFont(new java.awt.Font("Yu Gothic UI", 1, 20)); // NOI18N
-        jLabel25.setForeground(new java.awt.Color(255, 255, 255));
         jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel25.setText("ALLOCATION FUND BALANCE");
+        jLabel25.setFont(new java.awt.Font("Yu Gothic UI", 1, 20)); // NOI18N
+        jLabel25.setForeground(new java.awt.Color(255, 255, 255));
 
-        totalLabel.setFont(new java.awt.Font("Stencil", 0, 20)); // NOI18N
-        totalLabel.setForeground(new java.awt.Color(255, 255, 255));
         totalLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         totalLabel.setText("RM 0.00");
+        totalLabel.setFont(new java.awt.Font("Stencil", 0, 20)); // NOI18N
+        totalLabel.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -553,9 +553,9 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jLabel16.setForeground(new java.awt.Color(153, 153, 153));
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel16.setText("Available Allocations:");
+        jLabel16.setForeground(new java.awt.Color(153, 153, 153));
 
         yearCB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -563,9 +563,9 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
             }
         });
 
+        jLabel13.setText("YEAR:");
         jLabel13.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel13.setText("YEAR:");
 
         jPanel15.setBackground(new java.awt.Color(13, 50, 79));
         jPanel15.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -574,9 +574,9 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
             }
         });
 
-        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel18.setText(" NEW ALLOCATION");
+        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
         jLabel18.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel18MouseClicked(evt);
@@ -597,35 +597,35 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
             .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
         );
 
-        jLabel15.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(102, 102, 102));
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel15.setText("FINANCIAL CAPITAL");
+        jLabel15.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(102, 102, 102));
 
-        totalCapitalLabel.setFont(new java.awt.Font("Stencil", 0, 20)); // NOI18N
-        totalCapitalLabel.setForeground(new java.awt.Color(53, 53, 53));
         totalCapitalLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         totalCapitalLabel.setText("RM 0.00");
+        totalCapitalLabel.setFont(new java.awt.Font("Stencil", 0, 20)); // NOI18N
+        totalCapitalLabel.setForeground(new java.awt.Color(53, 53, 53));
 
-        jLabel19.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
-        jLabel19.setForeground(new java.awt.Color(102, 102, 102));
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel19.setText("MONTHLY UTILITIES/ RENTAL");
+        jLabel19.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(102, 102, 102));
 
-        totalMonthlyIncomeLabel.setFont(new java.awt.Font("Stencil", 0, 20)); // NOI18N
-        totalMonthlyIncomeLabel.setForeground(new java.awt.Color(53, 53, 53));
         totalMonthlyIncomeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         totalMonthlyIncomeLabel.setText("RM 0.00");
+        totalMonthlyIncomeLabel.setFont(new java.awt.Font("Stencil", 0, 20)); // NOI18N
+        totalMonthlyIncomeLabel.setForeground(new java.awt.Color(53, 53, 53));
 
-        jLabel20.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
-        jLabel20.setForeground(new java.awt.Color(102, 102, 102));
         jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel20.setText("FACILITY BOOKING FEE");
+        jLabel20.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(102, 102, 102));
 
-        totalFacilityIncomeLabel.setFont(new java.awt.Font("Stencil", 0, 20)); // NOI18N
-        totalFacilityIncomeLabel.setForeground(new java.awt.Color(53, 53, 53));
         totalFacilityIncomeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         totalFacilityIncomeLabel.setText("RM 0.00");
+        totalFacilityIncomeLabel.setFont(new java.awt.Font("Stencil", 0, 20)); // NOI18N
+        totalFacilityIncomeLabel.setForeground(new java.awt.Color(53, 53, 53));
 
         jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add new icon.jpg"))); // NOI18N
         jLabel21.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -639,15 +639,15 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
 
         jPanel16.setBackground(new java.awt.Color(102, 102, 102));
 
-        jLabel26.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel26.setForeground(new java.awt.Color(255, 255, 255));
         jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel26.setText("ALLOCATED BUDGET");
+        jLabel26.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        jLabel26.setForeground(new java.awt.Color(255, 255, 255));
 
-        allocatedBudgetLabel.setFont(new java.awt.Font("Stencil", 0, 14)); // NOI18N
-        allocatedBudgetLabel.setForeground(new java.awt.Color(255, 255, 255));
         allocatedBudgetLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         allocatedBudgetLabel.setText("RM 0.00");
+        allocatedBudgetLabel.setFont(new java.awt.Font("Stencil", 0, 14)); // NOI18N
+        allocatedBudgetLabel.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
         jPanel16.setLayout(jPanel16Layout);
@@ -787,9 +787,9 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Dashboard");
         jLabel1.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Dashboard");
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel1MouseClicked(evt);
@@ -826,9 +826,9 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
             }
         });
 
+        jLabel7.setText("User Management");
         jLabel7.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("User Management");
         jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel7MouseClicked(evt);
@@ -865,10 +865,10 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
             }
         });
 
+        jLabel17.setText("Reports");
         jLabel17.setBackground(new java.awt.Color(13, 24, 42));
         jLabel17.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel17.setText("Reports");
         jLabel17.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel17MouseClicked(evt);
@@ -905,9 +905,9 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
             }
         });
 
+        jLabel22.setText("Budget Planning");
         jLabel22.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel22.setText("Budget Planning");
         jLabel22.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel22MouseClicked(evt);
@@ -944,9 +944,9 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
             }
         });
 
+        jLabel35.setText("Team Structure");
         jLabel35.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel35.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel35.setText("Team Structure");
         jLabel35.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel35MouseClicked(evt);
@@ -975,10 +975,10 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
 
         jPanel31.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel36.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel36.setForeground(new java.awt.Color(255, 255, 255));
         jLabel36.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
         jLabel36.setText("LOGOUT");
+        jLabel36.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        jLabel36.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel31Layout = new javax.swing.GroupLayout(jPanel31);
         jPanel31.setLayout(jPanel31Layout);
@@ -998,11 +998,27 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
         );
 
         jPanel32.setBackground(new java.awt.Color(13, 24, 42));
+        jPanel32.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel32MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jPanel32MouseEntered(evt);
+            }
+        });
 
-        jLabel37.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel37.setForeground(new java.awt.Color(255, 255, 255));
         jLabel37.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
         jLabel37.setText("VIEW PROFILE");
+        jLabel37.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        jLabel37.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel37.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel37MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel37MouseEntered(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel32Layout = new javax.swing.GroupLayout(jPanel32);
         jPanel32.setLayout(jPanel32Layout);
@@ -1031,10 +1047,10 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
             }
         });
 
-        jLabel38.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel38.setForeground(new java.awt.Color(255, 255, 255));
         jLabel38.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
         jLabel38.setText("LOGOUT");
+        jLabel38.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        jLabel38.setForeground(new java.awt.Color(255, 255, 255));
         jLabel38.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel38MouseClicked(evt);
@@ -1522,6 +1538,28 @@ public class BuildingManagerBudgetPlanning extends javax.swing.JFrame {
         // TODO add your handling code here:
         jPanel33.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_jPanel33MouseEntered
+
+    private void jLabel37MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel37MouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new BuildingManagerViewProfile(user).setVisible(true);
+    }//GEN-LAST:event_jLabel37MouseClicked
+
+    private void jLabel37MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel37MouseEntered
+        // TODO add your handling code here:
+        jLabel37.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jLabel37MouseEntered
+
+    private void jPanel32MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel32MouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new BuildingManagerViewProfile(user).setVisible(true);
+    }//GEN-LAST:event_jPanel32MouseClicked
+
+    private void jPanel32MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel32MouseEntered
+        // TODO add your handling code here:
+        jPanel32.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jPanel32MouseEntered
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));

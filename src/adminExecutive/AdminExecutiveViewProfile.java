@@ -4,29 +4,34 @@
  */
 package adminExecutive;
 
+import accountExecutive.*;
 import java.awt.Cursor;
 import java.awt.Toolkit;
-import java.util.List;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.HomePage;
 import pms_parkhill_residence.Users;
+import pms_parkhill_residence.Validation;
+import residentANDtenant.ResidentTenantProfile;
 
 /**
  *
  * @author wongj
  */
-public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
+public class AdminExecutiveViewProfile extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param user
      */
-    public AdminExecutiveUnitManagementHistory(Users user) {
+    public AdminExecutiveViewProfile(Users user) {
         initComponents();
         setWindowIcon();
         this.user = user;
         setCurrentProfile();
-        setTable();
+        profileFormSetUp();
     }
 
     /**
@@ -43,12 +48,31 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
         usernameLabel = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jLabel16 = new javax.swing.JLabel();
-        searchTextField = new javax.swing.JTextField();
-        clearbt = new javax.swing.JButton();
-        typeCB = new javax.swing.JComboBox<>();
+        jLabel25 = new javax.swing.JLabel();
+        firstNameTF = new javax.swing.JTextField();
+        jLabel30 = new javax.swing.JLabel();
+        contactTF = new javax.swing.JTextField();
+        editContactBTN = new javax.swing.JButton();
+        jLabel28 = new javax.swing.JLabel();
+        lastNameTF = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
+        emailTF = new javax.swing.JTextField();
+        editEmailBTN = new javax.swing.JButton();
+        jLabel26 = new javax.swing.JLabel();
+        icTF = new javax.swing.JTextField();
+        jLabel29 = new javax.swing.JLabel();
+        genderCB = new javax.swing.JComboBox<>();
+        updateBTN = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel31 = new javax.swing.JLabel();
+        userIDLabel = new javax.swing.JLabel();
+        jLabel32 = new javax.swing.JLabel();
+        editPasswordBTN = new javax.swing.JButton();
+        passwordTF = new javax.swing.JPasswordField();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         warningMessage = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
@@ -82,16 +106,16 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(153, 153, 153), null, null));
 
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("ADMIN EXECUTIVE");
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(13, 24, 42));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel2.setText("ADMIN EXECUTIVE");
 
+        usernameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        usernameLabel.setForeground(new java.awt.Color(102, 102, 102));
         usernameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         usernameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
         usernameLabel.setText("USERNAME");
-        usernameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        usernameLabel.setForeground(new java.awt.Color(102, 102, 102));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -99,10 +123,10 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
-                .addComponent(usernameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 734, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(usernameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(19, 19, 19))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -114,67 +138,190 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
                 .addContainerGap(9, Short.MAX_VALUE))
         );
 
-        jPanel6.setBackground(new java.awt.Color(226, 226, 226));
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel14.setText("UNIT MANAGEMENT [HISTORY]");
-        jLabel14.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel14.setText("PERSONAL PROFILE");
+        jLabel14.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+        jLabel25.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
+        jLabel25.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel25.setText("First Name:");
 
-            },
-            new String [] {
-                "NO.", "DELETION ID", "UNIT NO.", "SQUARE FOOT", "STATUS", "DATE OF SOLD", "DELETED DATETIME", "ACTION"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
-            };
+        firstNameTF.setEnabled(false);
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(jTable1);
+        jLabel30.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
+        jLabel30.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel30.setText("Contact No.:");
 
-        jLabel16.setText("UNIT NO:");
-        jLabel16.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
-        jLabel16.setForeground(new java.awt.Color(153, 153, 153));
+        contactTF.setEnabled(false);
 
-        searchTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                searchTextFieldKeyReleased(evt);
-            }
-        });
-
-        clearbt.setText("CLEAR");
-        clearbt.addActionListener(new java.awt.event.ActionListener() {
+        editContactBTN.setText("Edit");
+        editContactBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clearbtActionPerformed(evt);
+                editContactBTNActionPerformed(evt);
             }
         });
 
-        typeCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Residential", "Commercial" }));
-        typeCB.addActionListener(new java.awt.event.ActionListener() {
+        jLabel28.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
+        jLabel28.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel28.setText("Last Name:");
+
+        lastNameTF.setEnabled(false);
+
+        jLabel27.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
+        jLabel27.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel27.setText("Email: ");
+
+        emailTF.setEnabled(false);
+
+        editEmailBTN.setText("Edit");
+        editEmailBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                typeCBActionPerformed(evt);
+                editEmailBTNActionPerformed(evt);
             }
         });
 
-        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel13.setText("TYPE:");
+        jLabel26.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
+        jLabel26.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel26.setText("Identification No.:");
+
+        icTF.setEnabled(false);
+
+        jLabel29.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
+        jLabel29.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel29.setText("Gender:");
+
+        genderCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
+        genderCB.setEnabled(false);
+
+        updateBTN.setBackground(new java.awt.Color(13, 24, 42));
+        updateBTN.setForeground(new java.awt.Color(255, 255, 255));
+        updateBTN.setText("Update");
+        updateBTN.setEnabled(false);
+        updateBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateBTNActionPerformed(evt);
+            }
+        });
+
+        jPanel2.setBackground(new java.awt.Color(13, 50, 79));
+
+        jLabel31.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
+        jLabel31.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel31.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel31.setText("USERID:");
+
+        userIDLabel.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+        userIDLabel.setForeground(new java.awt.Color(255, 255, 255));
+        userIDLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        userIDLabel.setText("XXXXXXX");
+        userIDLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(userIDLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(userIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jLabel32.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
+        jLabel32.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel32.setText("Password:");
+
+        editPasswordBTN.setText("Edit");
+        editPasswordBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editPasswordBTNActionPerformed(evt);
+            }
+        });
+
+        passwordTF.setText("jPasswordField1");
+        passwordTF.setEnabled(false);
+        passwordTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordTFActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel7.setText("Minimum 8 characters and includes the following:");
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel7MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel7MouseExited(evt);
+            }
+        });
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel10.setText("- Include at least one uppercase character (A-Z)");
+        jLabel10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel10MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel10MouseExited(evt);
+            }
+        });
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel11.setText("- Include at least one lowercase character (a-z)");
+        jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel11MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel11MouseExited(evt);
+            }
+        });
+
+        jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel12.setText("- Include at least one number (0-9)");
+        jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel12MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel12MouseExited(evt);
+            }
+        });
+
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel13.setText("- Include at least one special chatacter (example: !, @, #, $)");
+        jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel13MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel13MouseExited(evt);
+            }
+        });
 
-        warningMessage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         warningMessage.setForeground(new java.awt.Color(255, 0, 51));
+        warningMessage.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         warningMessage.setPreferredSize(new java.awt.Dimension(138, 17));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -182,43 +329,128 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 960, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(363, 363, 363))
-                    .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap()
+                        .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(typeCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(warningMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(46, 46, 46)
-                        .addComponent(jLabel16)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(clearbt)))
-                .addContainerGap(25, Short.MAX_VALUE))
+                        .addGap(94, 94, 94)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(warningMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(322, 322, 322))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel25)
+                                    .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(contactTF, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(firstNameTF, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(icTF, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(84, 84, 84)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addComponent(editContactBTN)
+                                        .addGap(76, 76, 76)
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                    .addComponent(emailTF, javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(lastNameTF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(editEmailBTN))))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(jLabel29, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(genderCB, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(updateBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(77, 77, 77)
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel10)
+                                            .addComponent(jLabel7)
+                                            .addComponent(jLabel11)
+                                            .addComponent(jLabel12)
+                                            .addComponent(jLabel13)
+                                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                                        .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGap(63, 63, 63))
+                                                    .addComponent(passwordTF, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(editPasswordBTN)))))))
+                        .addGap(0, 86, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel13)
-                .addGap(0, 0, 0)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(warningMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(typeCB, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(clearbt)
-                        .addComponent(jLabel16)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addGap(21, 21, 21)
+                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(warningMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(firstNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(contactTF, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(editContactBTN))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(41, 41, 41))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lastNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(emailTF, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(editEmailBTN))))
+                .addGap(38, 38, 38)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(icTF, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(genderCB, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(editPasswordBTN)
+                            .addComponent(passwordTF, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel10)
+                        .addGap(0, 0, 0)
+                        .addComponent(jLabel11)
+                        .addGap(0, 0, 0)
+                        .addComponent(jLabel12)
+                        .addGap(0, 0, 0)
+                        .addComponent(jLabel13)))
+                .addGap(33, 33, 33)
+                .addComponent(updateBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33))
         );
 
         jPanel1.setBackground(new java.awt.Color(13, 24, 42));
@@ -236,9 +468,9 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
             }
         });
 
-        dashboardLabel.setText("Dashboard");
         dashboardLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         dashboardLabel.setForeground(new java.awt.Color(255, 255, 255));
+        dashboardLabel.setText("Dashboard");
         dashboardLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 dashboardLabelMouseClicked(evt);
@@ -265,7 +497,7 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        unitManagePanel.setBackground(new java.awt.Color(13, 50, 79));
+        unitManagePanel.setBackground(new java.awt.Color(13, 24, 42));
         unitManagePanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 unitManagePanelMouseClicked(evt);
@@ -275,9 +507,9 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
             }
         });
 
-        unitManageLabel.setText("Unit Management");
         unitManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         unitManageLabel.setForeground(new java.awt.Color(255, 255, 255));
+        unitManageLabel.setText("Unit Management");
         unitManageLabel.setPreferredSize(new java.awt.Dimension(150, 25));
         unitManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -315,10 +547,10 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
             }
         });
 
-        rTManageLabel.setText("Resident/ Tenant Management");
         rTManageLabel.setBackground(new java.awt.Color(13, 24, 42));
         rTManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         rTManageLabel.setForeground(new java.awt.Color(255, 255, 255));
+        rTManageLabel.setText("Resident/ Tenant Management");
         rTManageLabel.setPreferredSize(new java.awt.Dimension(250, 25));
         rTManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -361,9 +593,9 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
             }
         });
 
-        complaintManagement.setText("Complaint Management");
         complaintManagement.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         complaintManagement.setForeground(new java.awt.Color(255, 255, 255));
+        complaintManagement.setText("Complaint Management");
         complaintManagement.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 complaintManagementMouseClicked(evt);
@@ -400,9 +632,9 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
             }
         });
 
-        employeeManageLabel.setText("Employee Management");
         employeeManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         employeeManageLabel.setForeground(new java.awt.Color(255, 255, 255));
+        employeeManageLabel.setText("Employee Management");
         employeeManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 employeeManageLabelMouseClicked(evt);
@@ -439,10 +671,10 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
             }
         });
 
-        logoutLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
-        logoutLabel.setText("LOGOUT");
         logoutLabel.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
         logoutLabel.setForeground(new java.awt.Color(255, 255, 255));
+        logoutLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
+        logoutLabel.setText("LOGOUT");
         logoutLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 logoutLabelMouseClicked(evt);
@@ -469,20 +701,17 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        viewProfilePanel.setBackground(new java.awt.Color(13, 24, 42));
+        viewProfilePanel.setBackground(new java.awt.Color(13, 50, 79));
         viewProfilePanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                viewProfilePanelMouseClicked(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 viewProfilePanelMouseEntered(evt);
             }
         });
 
-        viewProfileLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
-        viewProfileLabel.setText("VIEW PROFILE");
         viewProfileLabel.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
         viewProfileLabel.setForeground(new java.awt.Color(255, 255, 255));
+        viewProfileLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
+        viewProfileLabel.setText("VIEW PROFILE");
         viewProfileLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 viewProfileLabelMouseClicked(evt);
@@ -519,9 +748,9 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
             }
         });
 
-        facilityManageLabel.setText("Facility Management");
         facilityManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         facilityManageLabel.setForeground(new java.awt.Color(255, 255, 255));
+        facilityManageLabel.setText("Facility Management");
         facilityManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 facilityManageLabelMouseClicked(evt);
@@ -558,9 +787,9 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
             }
         });
 
-        facBookManageLabel.setText("Facility Booking Management");
         facBookManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         facBookManageLabel.setForeground(new java.awt.Color(255, 255, 255));
+        facBookManageLabel.setText("Facility Booking Management");
         facBookManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 facBookManageLabelMouseClicked(evt);
@@ -629,7 +858,7 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
                 .addComponent(facilityManagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(facBookManagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 214, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 219, Short.MAX_VALUE)
                 .addComponent(viewProfilePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(logoutPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -660,85 +889,123 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private final Users user;
+    private Users user;
     
     private void setCurrentProfile() {
         usernameLabel.setText(user.getFirstName() +" "+ user.getLastName());
     }
     
-    private void clearbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearbtActionPerformed
-       searchTextField.setText("");
-       DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-       tableModel.setRowCount(0);
-       setTable();
-    }//GEN-LAST:event_clearbtActionPerformed
-
-    private void typeCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeCBActionPerformed
-        // TODO add your handling code here:
-        setTable();
-    }//GEN-LAST:event_typeCBActionPerformed
-
+    private void profileFormSetUp() {
+            firstNameTF.setText(this.user.getFirstName());
+            lastNameTF.setText(this.user.getLastName());
+            contactTF.setText(this.user.getPhoneNo());
+            emailTF.setText(this.user.getEmail());
+            icTF.setText(this.user.getIdentificationNo());
+            genderCB.setSelectedItem(this.user.getGender());
+            passwordTF.setText(this.user.getPassword());
+            userIDLabel.setText(this.user.getUserID().toUpperCase());
+    }
     
-    
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    private void editContactBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editContactBTNActionPerformed
         // TODO add your handling code here:
-        AdminExecutive ae = new AdminExecutive();
+        contactTF.setEnabled(true);
+        updateBTN.setEnabled(true);
+    }//GEN-LAST:event_editContactBTNActionPerformed
+
+    private void editEmailBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editEmailBTNActionPerformed
+        // TODO add your handling code here:
+        emailTF.setEnabled(true);
+        updateBTN.setEnabled(true);
+    }//GEN-LAST:event_editEmailBTNActionPerformed
+
+    private void updateBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBTNActionPerformed
+        // TODO add your handling code here:
+        String userID = userIDLabel.getText();
+        String email = emailTF.getText();
+        String password = String.valueOf(passwordTF.getPassword());
+        String firstName = firstNameTF.getText();
+        String lastName = lastNameTF.getText();
+        String idNo = icTF.getText();
+        String gender = String.valueOf(genderCB.getSelectedItem());
+        String phoneNo = contactTF.getText();
         
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        int column = jTable1.getSelectedColumn();
-        int row = jTable1.getSelectedRow();
-        
-        if (column == 7) {
-            String unitNo = String.valueOf(tableModel.getValueAt(row, 2));
-            boolean check = ae.restoreUnitValidation(unitNo);
-            
-            if (check) {
+        Validation vd = new Validation();
+        if(vd.emailDuplication(email, "userProfile.txt", userID)) {
+            if(vd.passwordValid(password)) {
+                warningMessage.setText("");
                 int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
-                        + "restore this property unit?\n Its previous tenant and "
-                        + "resident accounts will be restored as well.",
-                        "RESTORE PROPERTY UNIT",
+                        + "modify your personal profile?",
+                        "UPDATE PERSONAL PROFILE",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE);
 
                 if(result == JOptionPane.YES_OPTION){
-                    warningMessage.setText("");
-                    String deletionID = String.valueOf(tableModel.getValueAt(row, 1));
-                    ae.restoreUnit(deletionID.toLowerCase());
-                    setTable();
-                    JOptionPane.showMessageDialog (null, "Property unit has been restored!", 
-                         "RESTORE PROPERTY UNIT", JOptionPane.INFORMATION_MESSAGE);
+                    Users user_temp = new Users(userID, email, password, firstName, lastName, idNo, gender, phoneNo);
+                    user_temp.modifySelfAccount();
+                    user = new Users(userID.toLowerCase());
+                    JOptionPane.showMessageDialog (null, "Personal profile has been updated!", 
+                                    "UPDATE PERSONAL PROFILE", JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
+                    new AdminExecutiveViewProfile(user).setVisible(true);
                 }
-                
             } else {
-                warningMessage.setText("Restore failed! Same property unit found in existing system.");
+                warningMessage.setText("Invalid password!");
             }
-       }
-    }//GEN-LAST:event_jTable1MouseClicked
-
-    private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
-        // TODO add your handling code here:
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        // reset table
-        tableModel.setRowCount(0);
-        setTable();
-        if (!"".equals(searchTextField.getText().toUpperCase())) {
-            String module_code = searchTextField.getText().toUpperCase();
-            for (int i=0; i<tableModel.getRowCount(); i++) {
-                // get module code from table
-                String tmodule_code = String.valueOf(jTable1.getValueAt(i, 1)).toUpperCase();
-                // if module code not contain in search bar
-                if (!tmodule_code.contains(module_code)) {
-                    // remove module from table
-                    tableModel.removeRow(i);
-                    i--;
-                }
-            }
-        } 
-        else {
-            tableModel.setRowCount(0);
-            setTable();
+        } else {
+            warningMessage.setText("Email is taken!");
         }
-    }//GEN-LAST:event_searchTextFieldKeyReleased
+        
+    }//GEN-LAST:event_updateBTNActionPerformed
+
+    private void editPasswordBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editPasswordBTNActionPerformed
+        // TODO add your handling code here:
+        passwordTF.setEnabled(true);
+        updateBTN.setEnabled(true);
+    }//GEN-LAST:event_editPasswordBTNActionPerformed
+
+    private void passwordTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordTFActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordTFActionPerformed
+
+    private void jLabel7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel7MouseEntered
+
+    private void jLabel7MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel7MouseExited
+
+    private void jLabel10MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel10MouseEntered
+
+    private void jLabel10MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel10MouseExited
+
+    private void jLabel11MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel11MouseEntered
+
+    private void jLabel11MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel11MouseExited
+
+    private void jLabel12MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel12MouseEntered
+
+    private void jLabel12MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel12MouseExited
+
+    private void jLabel13MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel13MouseEntered
+
+    private void jLabel13MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel13MouseExited
 
     private void dashboardLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseClicked
         // TODO add your handling code here:
@@ -878,8 +1145,6 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
 
     private void viewProfileLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileLabelMouseClicked
         // TODO add your handling code here:
-        dispose();
-        new AdminExecutiveViewProfile(user).setVisible(true);
     }//GEN-LAST:event_viewProfileLabelMouseClicked
 
     private void viewProfileLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileLabelMouseEntered
@@ -936,43 +1201,10 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
         facBookManagePanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_facBookManagePanelMouseEntered
 
-    private void viewProfilePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfilePanelMouseClicked
-        // TODO add your handling code here:
-        dispose();
-        new AdminExecutiveViewProfile(user).setVisible(true);
-    }//GEN-LAST:event_viewProfilePanelMouseClicked
-    
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
     
-    private void setTable() {
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        tableModel.setRowCount(0);
-            
-        AdminExecutive ae = new AdminExecutive();
-        List<String> availableList = 
-                ae.extractAllPropertiesHistory(String.valueOf
-                                (typeCB.getSelectedItem()).toLowerCase());
-        
-        String[] propertiesArray = new String[availableList.size()];
-        availableList.toArray(propertiesArray);
-        
-        for (int i = 0; i < availableList.size(); i++) {
-            String[] propertyDetails = propertiesArray[i].split(";");
-            String deletionID = propertyDetails[0].toUpperCase();
-            String unitNo = propertyDetails[1];
-            String squareFoot = propertyDetails[2];
-            String status = propertyDetails[3];
-            String dateOfSold = propertyDetails[4];
-            String deletedDateTime = propertyDetails[5];
-            
-            String[] tbData = {String.valueOf(i+1), deletionID, unitNo, squareFoot,
-                status, dateOfSold, deletedDateTime, "RESTORE"};
-            tableModel.addRow(tbData);
-        }
-    }
-
     /**
      * @param args the command line arguments
      */
@@ -990,398 +1222,14 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdminExecutiveUnitManagementHistory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutiveViewProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdminExecutiveUnitManagementHistory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutiveViewProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdminExecutiveUnitManagementHistory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutiveViewProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdminExecutiveUnitManagementHistory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminExecutiveViewProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -1514,41 +1362,60 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminExecutiveUnitManagementHistory(null).setVisible(true);
+                new AdminExecutiveViewProfile(null).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton clearbt;
     private javax.swing.JLabel complaintManagement;
     private javax.swing.JPanel complaintManagementPanel;
+    private javax.swing.JTextField contactTF;
     private javax.swing.JLabel dashboardLabel;
     private javax.swing.JPanel dashboardPanel;
+    private javax.swing.JButton editContactBTN;
+    private javax.swing.JButton editEmailBTN;
+    private javax.swing.JButton editPasswordBTN;
+    private javax.swing.JTextField emailTF;
     private javax.swing.JLabel employeeManageLabel;
     private javax.swing.JPanel employeeManagePanel;
     private javax.swing.JLabel facBookManageLabel;
     private javax.swing.JPanel facBookManagePanel;
     private javax.swing.JLabel facilityManageLabel;
     private javax.swing.JPanel facilityManagePanel;
+    private javax.swing.JTextField firstNameTF;
+    private javax.swing.JComboBox<String> genderCB;
+    private javax.swing.JTextField icTF;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField lastNameTF;
     private javax.swing.JLabel logoutLabel;
     private javax.swing.JPanel logoutPanel;
+    private javax.swing.JPasswordField passwordTF;
     private javax.swing.JLabel rTManageLabel;
     private javax.swing.JPanel rTMangePanel;
-    private javax.swing.JTextField searchTextField;
-    private javax.swing.JComboBox<String> typeCB;
     private javax.swing.JLabel unitManageLabel;
     private javax.swing.JPanel unitManagePanel;
+    private javax.swing.JButton updateBTN;
+    private javax.swing.JLabel userIDLabel;
     private javax.swing.JLabel usernameLabel;
     private javax.swing.JLabel viewProfileLabel;
     private javax.swing.JPanel viewProfilePanel;
