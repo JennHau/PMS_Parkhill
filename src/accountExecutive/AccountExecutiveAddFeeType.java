@@ -9,6 +9,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -19,9 +20,10 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public AccountExecutiveAddFeeType() {
+    public AccountExecutiveAddFeeType(Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
         setTable();
     }
 
@@ -316,6 +318,8 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private final Users user;
+    
     private void feeTypeNameTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_feeTypeNameTFActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_feeTypeNameTFActionPerformed
@@ -364,7 +368,7 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
                     warningMessage.setText("");
                     JOptionPane.showMessageDialog (null, "Fee Type has been added!", 
                                 "ADD FEE TYPE", JOptionPane.INFORMATION_MESSAGE);
-                    AccountExecutiveIssueInvoice aei = new AccountExecutiveIssueInvoice();
+                    AccountExecutiveIssueInvoice aei = new AccountExecutiveIssueInvoice(user);
                     aei.setVisible(true);
                     dispose();
                 } else {
@@ -380,7 +384,7 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        AccountExecutiveIssueInvoice aei = new AccountExecutiveIssueInvoice();
+        AccountExecutiveIssueInvoice aei = new AccountExecutiveIssueInvoice(user);
         aei.setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
@@ -615,7 +619,7 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutiveAddFeeType().setVisible(true);
+                new AccountExecutiveAddFeeType(null).setVisible(true);
             }
         });
     }

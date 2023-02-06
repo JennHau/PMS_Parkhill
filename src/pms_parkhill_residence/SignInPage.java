@@ -4,6 +4,8 @@
  */
 package pms_parkhill_residence;
 
+import accountExecutive.AccountExecutiveDashboard;
+import adminExecutive.AdminExecutiveDashboard;
 import buildingExecutive.BuildingExecutiveMainPage;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -259,6 +261,8 @@ public class SignInPage extends javax.swing.JFrame {
             case "rsd" -> new ResidentTenantMainPage(user).setVisible(true);
             case "vdr" -> new ResidentTenantMainPage(user).setVisible(true);
             case "tnt" -> new ResidentTenantMainPage(user).setVisible(true);
+            case "ace" -> new AccountExecutiveDashboard(user).setVisible(true);
+            case "ade" -> new AdminExecutiveDashboard(user).setVisible(true);
         }
     }
 

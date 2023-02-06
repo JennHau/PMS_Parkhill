@@ -9,6 +9,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -19,9 +20,10 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public AccountExecutiveFeeTypeSetting() {
+    public AccountExecutiveFeeTypeSetting(Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
         setTable();
     }
 
@@ -348,6 +350,8 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private final Users user;
+    
     private void feeTypeNameTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_feeTypeNameTFActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_feeTypeNameTFActionPerformed
@@ -411,7 +415,7 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        AccountExecutiveIssueInvoice aei = new AccountExecutiveIssueInvoice();
+        AccountExecutiveIssueInvoice aei = new AccountExecutiveIssueInvoice(user);
         aei.setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
@@ -478,7 +482,7 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog (null, "Fee Type has been deleted!", 
                                 "DELETE FEE TYPE", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
-                    new AccountExecutiveIssueInvoice().setVisible(true);
+                    new AccountExecutiveIssueInvoice(user).setVisible(true);
                 }
         } catch (Exception e) {
             e.printStackTrace();
@@ -838,7 +842,7 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutiveFeeTypeSetting().setVisible(true);
+                new AccountExecutiveFeeTypeSetting(null).setVisible(true);
             }
         });
     }

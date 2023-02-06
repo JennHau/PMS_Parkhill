@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -22,9 +23,10 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
      * @param status
      */
     public AdminExecutiveModifyComplaint(String complaintID, String complainerID,
-            String status) {
+            String status, Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
         this.status = status; this.complaintID = complaintID;
         this.complainerID = complainerID;
         setButton();
@@ -58,7 +60,7 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
         unitNoLabel = new javax.swing.JLabel();
         complainerLabel = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
         setBackground(new java.awt.Color(13, 24, 42));
         setResizable(false);
@@ -113,7 +115,7 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
             }
         });
 
-        cancelBt.setText("BACK");
+        cancelBt.setText("CLOSE");
         cancelBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtActionPerformed(evt);
@@ -260,6 +262,8 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private final Users user;
+    
     String status; String complaintID; String complainerID;
     String complaintDesc;
     FileHandling fh = new FileHandling();
@@ -313,14 +317,16 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
             JOptionPane.showMessageDialog (null, "Complaint has been updated!", 
                             "MODIFY COMPLAINT", JOptionPane.INFORMATION_MESSAGE);
             dispose();
-            new AdminExecutiveComplaintManagement().setVisible(true);
+            if (AdminExecutiveComplaintManagement.adeComplaint != null) {
+                AdminExecutiveComplaintManagement.adeComplaint.dispose();
+            }  
+            new AdminExecutiveComplaintManagement(user).setVisible(true);
         }
     }//GEN-LAST:event_modifyBtActionPerformed
 
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveComplaintManagement().setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
     private void complaintDetailsTAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_complaintDetailsTAKeyReleased
@@ -347,7 +353,10 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
             JOptionPane.showMessageDialog (null, "Complaint has been deleted!", 
                             "DELETE COMPLAINT", JOptionPane.INFORMATION_MESSAGE);
             dispose();
-            new AdminExecutiveComplaintManagement().setVisible(true);
+            if (AdminExecutiveComplaintManagement.adeComplaint != null) {
+                AdminExecutiveComplaintManagement.adeComplaint.dispose();
+            }  
+            new AdminExecutiveComplaintManagement(user).setVisible(true);
         }
     }//GEN-LAST:event_deleteBt1ActionPerformed
     
@@ -4482,7 +4491,7 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminExecutiveModifyComplaint(null, null, null).setVisible(true);
+                new AdminExecutiveModifyComplaint(null, null, null, null).setVisible(true);
             }
         });
     }
@@ -4492,7 +4501,6 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
     private javax.swing.JLabel complainerLabel;
     private javax.swing.JTextArea complaintDetailsTA;
     private javax.swing.JLabel complaintIDLabel;
-    private javax.swing.JButton deleteBt;
     private javax.swing.JButton deleteBt1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;

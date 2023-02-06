@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -22,9 +23,10 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
      * Creates new form homePage
      * @param bookingList
      */
-    public AdminExecutivePaymentGateway(List<String> bookingList) {
+    public AdminExecutivePaymentGateway(List<String> bookingList, Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
         this.bookingList = bookingList;
         setUnitNoCB();
         setDefault();
@@ -307,6 +309,7 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
     List<String> bookingList = new ArrayList<>();
     String bookingID; String facilityID; String facilityName;
     String unitPrice; String totalPrice; String date; String fctNameGen;
+    private final Users user;
     
     private void setDefault() {
         
@@ -343,7 +346,7 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
     private void cancelBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBTActionPerformed
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveFacilityPreview(facilityID).setVisible(true);
+        new AdminExecutiveFacilityPreview(facilityID, user).setVisible(true);
     }//GEN-LAST:event_cancelBTActionPerformed
 
     private void bookBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookBtActionPerformed
@@ -366,7 +369,7 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
             JOptionPane.showMessageDialog (null, "Facility Booking has been made!", 
                             "FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
             dispose();
-            new AdminExecutiveViewFacilityBooking(facilityID, fctNameGen).setVisible(true);
+            new AdminExecutiveViewFacilityBooking(facilityID, fctNameGen, user).setVisible(true);
         }
     }//GEN-LAST:event_bookBtActionPerformed
 
@@ -941,7 +944,7 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminExecutivePaymentGateway(null).setVisible(true);
+                new AdminExecutivePaymentGateway(null, null).setVisible(true);
             }
         });
     }

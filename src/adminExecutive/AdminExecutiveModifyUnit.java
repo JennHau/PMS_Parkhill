@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -23,9 +24,10 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
      * @param squareFoot
      */
     public AdminExecutiveModifyUnit(String propertyType, String unitNo, 
-            String squareFoot) {
+            String squareFoot, Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
         this.type = propertyType; this.unitNo = unitNo; this.squareFoot = squareFoot;
         setTable();
         setDefault();
@@ -60,7 +62,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         deleteBt = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
         setBackground(new java.awt.Color(13, 24, 42));
         setResizable(false);
@@ -150,7 +152,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
             }
         });
 
-        cancelBt.setText("BACK");
+        cancelBt.setText("CLOSE");
         cancelBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtActionPerformed(evt);
@@ -294,6 +296,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
 
     public String type; public String unitNo; public String squareFoot;
     FileHandling fh = new FileHandling();
+    private final Users user;
     
     private void unitNoTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unitNoTFActionPerformed
         // TODO add your handling code here:
@@ -321,14 +324,17 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
             JOptionPane.showMessageDialog (null, "Property unit has been modified!", 
                          "MODIFY PROPERTY UNIT", JOptionPane.INFORMATION_MESSAGE);
             dispose();
-            new AdminExecutiveUnitManagement().setVisible(true);
+            if (AdminExecutiveUnitManagement.adeUnitManage != null) {
+                AdminExecutiveUnitManagement.adeUnitManage.dispose();
+            }
+            new AdminExecutiveUnitManagement(user).setVisible(true);
         }
     }//GEN-LAST:event_modifyBtActionPerformed
 
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        AdminExecutiveUnitManagement ae = new AdminExecutiveUnitManagement();
+        AdminExecutiveUnitManagement ae = new AdminExecutiveUnitManagement(user);
         ae.setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
@@ -400,7 +406,10 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
                         + "respective user(s) have been deleted!", 
                         "DELETE PROPERTY UNIT", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
-                new AdminExecutiveUnitManagement().setVisible(true);
+                if (AdminExecutiveUnitManagement.adeUnitManage != null) {
+                    AdminExecutiveUnitManagement.adeUnitManage.dispose();
+                }   
+                new AdminExecutiveUnitManagement(user).setVisible(true);
             }
         } else {
             warningMessage.setText("The property unit contains outstanding fee!");
@@ -1493,7 +1502,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminExecutiveModifyUnit(null, null, null).setVisible(true);
+                new AdminExecutiveModifyUnit(null, null, null, null).setVisible(true);
             }
         });
     }

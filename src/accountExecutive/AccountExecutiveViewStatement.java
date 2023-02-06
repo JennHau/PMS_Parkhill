@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 
 
 /**
@@ -20,19 +19,20 @@ import pms_parkhill_residence.Users;
 public class AccountExecutiveViewStatement extends javax.swing.JFrame {
     FileHandling fh = new FileHandling();
     ResidentTenant RT = new ResidentTenant();
+    AccountExecutive AE = new AccountExecutive();
     private final String monthNyear;
-    private final Users user;
+    private final String unitNo;
     
     DefaultTableModel stateTab;
     
     /**
      * Creates new form custReceipt
-     * @param user
+     * @param unitNo
      * @param monthNyear
      */
-    public AccountExecutiveViewStatement(Users user, String monthNyear) {
+    public AccountExecutiveViewStatement(String unitNo, String monthNyear) {
         initComponents();
-        this.user = user;
+        this.unitNo = unitNo;
         this.monthNyear = monthNyear;
         stateTab = (DefaultTableModel) statementTable.getModel();
         
@@ -334,7 +334,7 @@ public class AccountExecutiveViewStatement extends javax.swing.JFrame {
     
     private void setDefault() {
         try {
-            ArrayList<String> statementList = RT.getCurrentUnitMonthStatement(user, monthNyear);
+            ArrayList<String> statementList = AE.getCurrentUnitMonthStatement(unitNo, monthNyear);
             RT.setTableRow(stateTab, statementList);
             
             calculateTotal();
@@ -376,7 +376,7 @@ public class AccountExecutiveViewStatement extends javax.swing.JFrame {
             String statePeriod = stateDet[0];
             String stateUnit = stateDet[0];
             
-            if (statePeriod.equals(this.monthNyear) && stateUnit.equals(this.user.getUnitNo())) {
+            if (statePeriod.equals(this.monthNyear) && stateUnit.equals(unitNo)) {
                 // Set issued date
                 issuedDateLabel.setText(stateDet[2]);
             }
@@ -385,7 +385,7 @@ public class AccountExecutiveViewStatement extends javax.swing.JFrame {
     
     private void setReportDetails() {
         periodLabel.setText(monthNyear);
-        unitNoLabel.setText(user.getUnitNo());
+        unitNoLabel.setText(unitNo);
         setIssuedDate();
     }
     
