@@ -385,6 +385,23 @@ public class ResidentTenant {
         return monthStatement;
     }
     
+    public ArrayList getCurrentUnitIssuedReceipt(String unitNo) {
+        ArrayList<String> issuedReceipt = new ArrayList<>();
+        
+        List<String> receiptList = fh.fileRead(TF.receiptFile);
+        
+        for (String eachReceipt : receiptList) {
+            String[] receiptDet = eachReceipt.split(TF.sp);
+            String uNo = receiptDet[1];
+            
+            if (uNo.equals(unitNo)) {
+                issuedReceipt.add(eachReceipt);
+            }
+        }
+        
+        return issuedReceipt;
+    }
+    
     public String getFacilityId(String bookingId) {
         List<String> facilityBookingFile = fh.fileRead(TF.facilityBookingFile);
         for (String eachBooking : facilityBookingFile) {
@@ -477,11 +494,9 @@ public class ResidentTenant {
         return null;
     }
     
-    public double getTotalPricePerInvoice(String invoiceId) {
-        List<String> invoiceFile = fh.fileRead(TF.invoiceFile);
-        
+    public double getTotalPricePerInvoice(String invoiceId, ArrayList<String> dataList) {
         double totalAmount = 0;
-        for (String eachInv : invoiceFile) {
+        for (String eachInv : dataList) {
             String[] invDet = eachInv.split(TF.sp);
             String invNo = invDet[0];
             
@@ -520,8 +535,8 @@ public class ResidentTenant {
         page.setVisible(true);
     }
     
-    public void toInvoicePayment(String invoiceNo, Users user) {
-        ResidentTenantInvoicePayment page = new ResidentTenantInvoicePayment(invoiceNo, user);
+    public void toInvoicePayment(String invoiceNo, Users user, String feeTypes) {
+        ResidentTenantInvoicePayment page = new ResidentTenantInvoicePayment(invoiceNo, user, feeTypes);
         page.setVisible(true);
     }
     
@@ -585,8 +600,8 @@ public class ResidentTenant {
         page.setVisible(true);
     }
     
-    public void toViewPaidInvoice(Users user, String invoiceNo) {
-        ResidentTenantViewPaidInvoice page = new ResidentTenantViewPaidInvoice(invoiceNo, user);
+    public void toViewPaidInvoice(Users user, String invoiceNo, String feeTypes) {
+        ResidentTenantViewPaidInvoice page = new ResidentTenantViewPaidInvoice(invoiceNo, user, feeTypes);
         page.setVisible(true);
     }
     

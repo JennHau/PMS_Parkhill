@@ -16,7 +16,7 @@ import pms_parkhill_residence.Users;
  *
  * @author wongj
  */
-public class BuildingExecutiveJobReports extends javax.swing.JFrame {
+public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
     BuildingExecutive BE = new BuildingExecutive();
     private final Users user;
     DefaultTableModel jobTab;
@@ -24,82 +24,13 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
      * Creates new form homePage
      * @param user
      */
-    public BuildingExecutiveJobReports(Users user) {
+    public BuildingExecutiveRepetitiveJobReports(Users user) {
         this.user = user;
         initComponents();
         jobTab = (DefaultTableModel) jobTable.getModel();
         setWindowIcon();
         
-        monthYearComboBoxSetUp();
         employeeComboBoxSetUp();
-    }
-    
-    private ArrayList getDateRange() {
-        List<String> allJob = BE.getAllAssignedJob();
-        
-        
-        LocalDate earliestDate = null;
-        LocalDate latestDate = null;
-        boolean firstLine = true;
-        for (String eachJob : allJob) {
-            if (!firstLine) {
-                String[] jobDet = eachJob.split(BE.TF.sp);
-                String assignedJob = jobDet[4];
-                
-                if (!assignedJob.equals("PT")) {
-                    String date = jobDet[6];
-                    if (!date.equals(BE.TF.empty)) {
-                        LocalDate jobDate = BE.DTF.formatDate(date);
-
-                        if (earliestDate != null) {
-                            if (jobDate.isBefore(earliestDate)) {
-                                earliestDate = jobDate;
-                            }
-                        }
-                        else {
-                            earliestDate = jobDate;
-                        }
-
-                        if (latestDate != null) {
-                            if (jobDate.isAfter(latestDate)) {
-                                latestDate = jobDate;
-                            }
-                        }
-                        else {
-                            latestDate = jobDate;
-                        }
-                    }
-                }
-            }
-            
-            firstLine = false;
-        }
-        
-        ArrayList<String> complaintsDateRange = new ArrayList<>();
-        
-        if (earliestDate != null && latestDate != null) {
-            earliestDate = earliestDate.withDayOfMonth(1);
-            latestDate = latestDate.withDayOfMonth(1);
-
-            while (latestDate.isAfter(earliestDate) || latestDate.isEqual(earliestDate)) {
-                complaintsDateRange.add(String.valueOf(latestDate.getMonthValue() + "-" + latestDate.getYear()));
-                latestDate = latestDate.minusMonths(1);
-            }
-        }
-        
-        System.out.println(complaintsDateRange);
-        return complaintsDateRange;
-    }
-    
-    private void monthYearComboBoxSetUp() {
-        ArrayList<String> dateRange = getDateRange();
-        
-        monthCB.removeAllItems();
-        for (String eachDate : dateRange) {
-            monthCB.addItem(eachDate);
-        }
-        
-        monthCB.setSelectedItem(0);
     }
     
     private void employeeComboBoxSetUp() {
@@ -127,31 +58,46 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
     }
     
     private void tableSetUp() {
-        String selectedMonthYear = (monthCB.getSelectedItem() != null) ? monthCB.getSelectedItem().toString() : null;
         String selectedEmployee = (employeeIdCB.getSelectedItem() != null) ? employeeIdCB.getSelectedItem().toString() : null;
         
         List<String> allJobs = BE.getAllAssignedJob();
         
         ArrayList<String> employeeJobs = new ArrayList<>();
-        ArrayList<String> dateJobs = new ArrayList<>();
         
         boolean firstLine = true;
         for (String eachJob : allJobs) {
             if (!firstLine) {
                 String[] jobDet = eachJob.split(BE.TF.sp);
-                String jobDesc = jobDet[3];
+                String jobCode = jobDet[3];
 
-                if (!jobDesc.equals("PT")) {
-                    String empId = jobDet[1];
-
-                    if (selectedEmployee != null) {
-                        if (!selectedEmployee.equals("- ALL -")) {
-                            if (empId.equals(selectedEmployee.toLowerCase())) {
-                                employeeJobs.add(eachJob);
+                if (!jobCode.equals("PT")) {
+                    String jobDate = jobDet[6];
+                    String dayToRepeat = jobDet[9];
+                    
+                    if (jobDate.equals(BE.TF.empty) && !dayToRepeat.equals(BE.TF.empty)) {
+                        if (selectedEmployee != null) {
+                            String jobId = jobDet[0];
+                            String empId = jobDet[1];
+                            String jobDetails = BE.findJobDetailsUsingDescriptionOrId(jobCode, null).split(BE.TF.sp)[2];
+                            String startTime = jobDet[7];
+                            String endTime = jobDet[8].split(" ")[1];
+                            String updatedBy = jobDet[11];
+                            
+                            String[] data = {jobId.toUpperCase(), empId.toUpperCase(), jobDetails, startTime, endTime, dayToRepeat.toUpperCase(), updatedBy.toUpperCase()};
+                            String line = "";
+                            
+                            for (String eachData : data) {
+                                line = line + eachData + BE.TF.sp;
                             }
-                        }
-                        else {
-                            employeeJobs.add(eachJob);
+                            
+                            if (!selectedEmployee.equals("- ALL -")) {
+                                if (empId.equals(selectedEmployee.toLowerCase())) {
+                                    employeeJobs.add(line);
+                                }
+                            }
+                            else {
+                                employeeJobs.add(line);
+                            }
                         }
                     }
                 }
@@ -160,57 +106,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
             firstLine = false;
         }
         
-        for (String eachJob : employeeJobs) {
-            if (selectedMonthYear != null) {
-                String[] monthYear = selectedMonthYear.split("-");
-                LocalDate firstDay = LocalDate.of(Integer.valueOf(monthYear[1]), Integer.valueOf(monthYear[0]), 1);
-                int totalDays = firstDay.lengthOfMonth();
-                LocalDate lastDay = firstDay.withDayOfMonth(totalDays);
-
-                String[] jobDet = eachJob.split(BE.TF.sp);
-                String jobDate = jobDet[6];
-
-                if (!jobDate.equals(BE.TF.empty)) {
-                    LocalDate compDate = BE.DTF.formatDate(jobDate);
-
-                    if ((compDate.isEqual(firstDay) || compDate.isAfter(firstDay)) && 
-                        (compDate.isEqual(lastDay) || compDate.isBefore(lastDay))) {
-                        String jobId = jobDet[0];
-                        String userId = jobDet[1];
-                        String compId = jobDet[2];
-                        String assignedJob = BE.findJobDetailsUsingDescriptionOrId(jobDet[3], null).split(BE.TF.sp)[2];
-                        String startTime = jobDet[7];
-                        String endDateTime = jobDet[8];
-                        String updatedBy = jobDet[11];
-
-                        String[] data = {jobDate, jobId.toUpperCase(), userId.toUpperCase(), compId.toUpperCase(), assignedJob,
-                                         startTime, endDateTime, updatedBy.toUpperCase()};
-                        String line = "";
-                        for (String eachData : data) {
-                            line = line + eachData + BE.TF.sp;
-                        }
-                        dateJobs.add(line);
-                    }
-                }
-            }
-        }
-        
-        for (int item1 = 0; item1 < dateJobs.size()-1; item1++) {
-            for (int item2 = item1+1; item2 < dateJobs.size(); item2++) {
-                String comp1 = dateJobs.get(item1);
-                String comp2 = dateJobs.get(item2);
-
-                LocalDate date1 = BE.DTF.formatDate(comp1.split(BE.TF.sp)[0]);
-                LocalDate date2 = BE.DTF.formatDate(comp2.split(BE.TF.sp)[0]);
-
-                if (date2.isBefore(date1)) {
-                    dateJobs.set(item1, comp2);
-                    dateJobs.set(item2, comp1);
-                }
-            }
-        }
-        
-        BE.setTableRow(jobTab, dateJobs);
+        BE.setTableRow(jobTab, employeeJobs);
     }
 
     /**
@@ -252,14 +148,11 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
         pendingFeeLabel2 = new javax.swing.JLabel();
         pendingFeeLine2 = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
-        monthCB = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jobTable = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jLabel25 = new javax.swing.JLabel();
         employeeIdCB = new javax.swing.JComboBox<>();
-        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -280,9 +173,9 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Dashboard");
         jLabel1.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Dashboard");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -303,9 +196,9 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
 
         jPanel7.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel4.setText("Job Assignation");
         jLabel4.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Job Assignation");
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -326,10 +219,10 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
 
         jPanel8.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel5.setText("Complaints");
         jLabel5.setBackground(new java.awt.Color(13, 24, 42));
         jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Complaints");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -350,9 +243,9 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
 
         jPanel10.setBackground(new java.awt.Color(13, 50, 79));
 
-        jLabel8.setText("Reports");
         jLabel8.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Reports");
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -373,10 +266,10 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
 
         jPanel11.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/notificationIcon.png"))); // NOI18N
-        jLabel9.setText(" NOTIFICATIONS");
         jLabel9.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/notificationIcon.png"))); // NOI18N
+        jLabel9.setText(" NOTIFICATIONS");
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
@@ -397,10 +290,10 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
 
         jPanel12.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
-        jLabel13.setText("LOGOUT");
         jLabel13.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
+        jLabel13.setText("LOGOUT");
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
@@ -421,10 +314,10 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
 
         jPanel13.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
-        jLabel11.setText("VIEW PROFILE");
         jLabel11.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
+        jLabel11.setText("VIEW PROFILE");
 
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
@@ -445,10 +338,10 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
 
         jPanel14.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
-        jLabel12.setText("LOGOUT");
         jLabel12.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
+        jLabel12.setText("LOGOUT");
 
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
         jPanel14.setLayout(jPanel14Layout);
@@ -469,9 +362,9 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
 
         jPanel9.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel6.setText("Patrolling Management");
         jLabel6.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Patrolling Management");
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -549,16 +442,16 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(153, 153, 153), null, null));
 
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("PARKHILL RESIDENCE BUILDING EXECUTIVE");
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(13, 24, 42));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel2.setText("PARKHILL RESIDENCE BUILDING EXECUTIVE");
 
+        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
         jLabel7.setText("USERNAME");
-        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -583,9 +476,9 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(226, 226, 226));
 
+        pendingFeeLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         pendingFeeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pendingFeeLabel.setText("Patrolling");
-        pendingFeeLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         pendingFeeLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 pendingFeeLabelMouseClicked(evt);
@@ -595,57 +488,46 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
             }
         });
 
+        pendingFeeLabel1.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         pendingFeeLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pendingFeeLabel1.setText("Complaints");
-        pendingFeeLabel1.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         pendingFeeLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 pendingFeeLabel1MouseEntered(evt);
             }
         });
 
-        pendingFeeLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        pendingFeeLabel2.setText("Employee Job");
         pendingFeeLabel2.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         pendingFeeLabel2.setForeground(new java.awt.Color(13, 24, 42));
+        pendingFeeLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pendingFeeLabel2.setText("Employee Job");
         pendingFeeLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 pendingFeeLabel2MouseEntered(evt);
             }
         });
 
-        pendingFeeLine2.setText("jTextField1");
         pendingFeeLine2.setBackground(new java.awt.Color(13, 24, 42));
         pendingFeeLine2.setForeground(new java.awt.Color(13, 24, 42));
+        pendingFeeLine2.setText("jTextField1");
 
-        jLabel23.setText("Job Report");
         jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(51, 51, 51));
-
-        jLabel24.setText("Month/Year: ");
-        jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel24.setForeground(new java.awt.Color(51, 51, 51));
-
-        monthCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        monthCB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                monthCBActionPerformed(evt);
-            }
-        });
+        jLabel23.setText("Repetitive Job Report");
 
         jobTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "START DATE", "JOB ID", "EMPLOYEE ID", "COMPLAINT ID", "JOB DESCRIPTION", "START TIME", "END DATE TIME", "UPDATE BY"
+                "JOB ID", "EMPLOYEE ID", "JOB DESCRIPTION", "START TIME", "END TIME", "REPEAT DAYS", "UPDATE BY"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -659,9 +541,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
             jobTable.getColumnModel().getColumn(2).setResizable(false);
             jobTable.getColumnModel().getColumn(3).setResizable(false);
             jobTable.getColumnModel().getColumn(4).setResizable(false);
-            jobTable.getColumnModel().getColumn(5).setResizable(false);
             jobTable.getColumnModel().getColumn(6).setResizable(false);
-            jobTable.getColumnModel().getColumn(7).setResizable(false);
         }
 
         jButton1.setText("View");
@@ -682,8 +562,6 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Repetitive Job");
-
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -693,23 +571,16 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(13, 13, 13)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGap(438, 438, 438)
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-                                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(monthCB, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(28, 28, 28)
-                                    .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(employeeIdCB, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton2))
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 975, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(employeeIdCB, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 975, Short.MAX_VALUE)
+                            .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -743,12 +614,8 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
                 .addComponent(jLabel23)
                 .addGap(5, 5, 5)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel24)
-                    .addComponent(monthCB)
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel25)
-                        .addComponent(employeeIdCB)
-                        .addComponent(jButton2)))
+                    .addComponent(jLabel25)
+                    .addComponent(employeeIdCB))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
@@ -802,10 +669,6 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
         
     }//GEN-LAST:event_pendingFeeLabelMouseClicked
 
-    private void monthCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthCBActionPerformed
-        tableSetUp();
-    }//GEN-LAST:event_monthCBActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -836,19 +699,19 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BuildingExecutiveJobReports.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BuildingExecutiveRepetitiveJobReports.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BuildingExecutiveJobReports.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BuildingExecutiveRepetitiveJobReports.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BuildingExecutiveJobReports.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BuildingExecutiveRepetitiveJobReports.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BuildingExecutiveJobReports.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BuildingExecutiveRepetitiveJobReports.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BuildingExecutiveJobReports(null).setVisible(true);
+                new BuildingExecutiveRepetitiveJobReports(null).setVisible(true);
             }
         });
     }
@@ -856,14 +719,12 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> employeeIdCB;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -887,7 +748,6 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jobTable;
-    private javax.swing.JComboBox<String> monthCB;
     private javax.swing.JLabel pendingFeeLabel;
     private javax.swing.JLabel pendingFeeLabel1;
     private javax.swing.JLabel pendingFeeLabel2;

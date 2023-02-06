@@ -1,1 +1,4 @@
 invoiceNo;unitNo;feeType;target;consumption;unit;unitPrice(RM);totalPrice(RM);period;paymentBy;paymentDate;issuedDate;deleteID;
+S-01-01112022;S-01-01;Gas;Commercial;161.94;kWh;0.13;21.05;12/2022;vdr000001;06/02/2023;07/12/2022;-;
+S-01-01112022;S-01-01;Electric;Commercial;133.65;kWh;0.13;17.37;12/2022;WINSON;07/12/2022;07/12/2022;-;
+S-01-01112022;S-01-01;Water;Commercial;133.65;kWh;0.13;17.37;12/2022;WINSON;07/12/2022;07/12/2022;-;

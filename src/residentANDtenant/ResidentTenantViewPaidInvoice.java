@@ -4,10 +4,11 @@
  */
 package residentANDtenant;
 
-import accountExecutive.*;
 import java.awt.Cursor;
 import java.awt.Toolkit;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.Users;
 
@@ -17,20 +18,21 @@ import pms_parkhill_residence.Users;
  */
 public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
     ResidentTenant RT = new ResidentTenant();
-    
+    DefaultTableModel paidTab;
     /**
      * Creates new form homePage
      * @param invoiceNo
      * @param user
      */
-    public ResidentTenantViewPaidInvoice(String invoiceNo, Users user) {
+    public ResidentTenantViewPaidInvoice(String invoiceNo, Users user, String feeTypes) {
         initComponents();
+        paidTab = (DefaultTableModel) paidTable.getModel();
         setWindowIcon();
         this.invoiceNo = invoiceNo;
         this.user = user;
         this.unitNo = this.user.getUnitNo();
+        setTable(feeTypes);
         setFixData();
-        setTable();
     }
 
     /**
@@ -48,7 +50,7 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        paidTable = new javax.swing.JTable();
         jLabel16 = new javax.swing.JLabel();
         invoiceNoLabel = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
@@ -58,7 +60,7 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
-        unitNoLabel1 = new javax.swing.JLabel();
+        lastPayDate = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         dashboardOuterTab = new javax.swing.JPanel();
@@ -125,25 +127,25 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(102, 102, 102));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel14.setText("PAID INVOICE");
+        jLabel14.setText("INVOICE");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        paidTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "FEE TYPE", "ISSUE DATE", "CONSUMPTION", "UNIT", "UNIT PRICE (RM)", "TOTAL PRICE (RM)"
+                "FEE TYPE", "ISSUE DATE", "CONSUMPTION", "UNIT", "UNIT PRICE (RM)", "PAY DATE", "TOTAL PRICE (RM)"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(paidTable);
 
         jLabel16.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(153, 153, 153));
@@ -224,12 +226,12 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
 
         jLabel19.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel19.setText("ISSUED DATE:");
+        jLabel19.setText("LAST PAY DATE: ");
 
-        unitNoLabel1.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
-        unitNoLabel1.setForeground(new java.awt.Color(153, 153, 153));
-        unitNoLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        unitNoLabel1.setText("2022-12-30");
+        lastPayDate.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
+        lastPayDate.setForeground(new java.awt.Color(153, 153, 153));
+        lastPayDate.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        lastPayDate.setText("2022-12-30");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -255,7 +257,7 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
                                     .addGap(106, 106, 106)
                                     .addComponent(jLabel19)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(unitNoLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(lastPayDate, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(25, Short.MAX_VALUE))))
@@ -276,7 +278,7 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
                         .addComponent(unitNoLabel))
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel19)
-                        .addComponent(unitNoLabel1))
+                        .addComponent(lastPayDate))
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel16)
                         .addComponent(invoiceNoLabel)))
@@ -814,35 +816,65 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
         visitorPassOuterTab.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_visitorPassOuterTabMouseEntered
 
+    private void setTable(String feeTypes) {
+        ArrayList<String> toTable = new ArrayList<>();
+        
+        feeTypes = feeTypes + ",";
+        String[] feeTypeList = feeTypes.split(",");
+        
+        ArrayList<String> feeList = new ArrayList<>(Arrays.asList(feeTypeList));
+        
+        ArrayList<ArrayList> invoiceList = RT.getCurrentUnitInvoice(this.user.getUnitNo());
+        ArrayList<String> compList = invoiceList.get(1);
+        
+        LocalDate latestDate = null;
+        double totalAmount = 0;
+        for (String eachComp : compList) {
+            String[] compDet = eachComp.split(RT.TF.sp);
+            String compInv = compDet[0];
+            
+            if (compInv.equals(this.invoiceNo)) {
+                String compType = compDet[2];
+                if (feeList.contains(compType)) {
+                    String issueDate = compDet[9];
+                    String consump = compDet[4];
+                    String unit = compDet[5];
+                    String unitPrice = compDet[6];
+                    String totalPrice = compDet[7];
+                    String payDate = compDet[10];
+                    
+                    LocalDate eachDate = RT.DTF.formatDate2(payDate);
+                    if (latestDate != null) {
+                        if (eachDate.isAfter(latestDate)) {
+                            latestDate = eachDate;
+                        }
+                    }
+                    else {
+                        latestDate = eachDate;
+                    }
+                    
+                    totalAmount = Double.parseDouble(totalPrice) + totalAmount;
+                    
+                    String[] data = {compType, issueDate, consump, unit, unitPrice, payDate, totalPrice};
+                    String line = "";
+                    for (String eachData : data) {
+                        line = line + eachData + RT.TF.sp;
+                    }
+                    
+                    toTable.add(line);
+                }
+            }
+        }
+        
+        lastPayDate.setText(String.valueOf(latestDate));
+        total = String.format("%.02f", totalAmount);
+        RT.setTableRow(paidTab, toTable);
+    }
+    
     private void setFixData() {
         invoiceNoLabel.setText(invoiceNo);
         unitNoLabel.setText(unitNo);
-    }
-    
-    private void setTable() {
-        AccountExecutive ae = new AccountExecutive();
-        List<String> paymentFeesDetails = ae.extractPaymentFees(invoiceNo);
-        String[] feesDetailsArray = new String[paymentFeesDetails.size()];
-        paymentFeesDetails.toArray(feesDetailsArray);
-        float subTotal = 0.00f;
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        
-        for (int i=0; i<paymentFeesDetails.size(); i++) {
-            String[] paymentDetails = feesDetailsArray[i].split(";");
-            String feeType = paymentDetails[0];
-            String issueDate = paymentDetails[1];
-            String consump = paymentDetails[2];
-            String unit = paymentDetails[3];
-            String unitPrice = paymentDetails[4];
-            String totalPrice = paymentDetails[5];
-
-            subTotal += Float.valueOf(totalPrice);
-            String tbData[] = {feeType, issueDate, consump, unit, unitPrice, 
-                totalPrice};
-            tableModel.addRow(tbData);
-        } 
-        totalLabel.setText("Total: RM" + subTotal);
-        total = String.valueOf(subTotal);
+        totalLabel.setText("TOTAL: " + total);
     }
     
     private void setWindowIcon() {
@@ -878,7 +910,7 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ResidentTenantViewPaidInvoice(null, null).setVisible(true);
+                new ResidentTenantViewPaidInvoice(null, null, null).setVisible(true);
             }
         });
     }
@@ -911,12 +943,12 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lastPayDate;
+    private javax.swing.JTable paidTable;
     private javax.swing.JLabel paymentManagementInnerTab;
     private javax.swing.JPanel paymentManagementOuterTab;
     private javax.swing.JLabel totalLabel;
     private javax.swing.JLabel unitNoLabel;
-    private javax.swing.JLabel unitNoLabel1;
     private javax.swing.JLabel visitorPassInnerTab;
     private javax.swing.JPanel visitorPassOuterTab;
     // End of variables declaration//GEN-END:variables

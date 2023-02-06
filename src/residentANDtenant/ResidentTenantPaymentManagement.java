@@ -43,30 +43,25 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
         ArrayList<String> incompleteInv = invoiceList.get(0);
         ArrayList<String> toTable = new ArrayList<>();
         
-        ArrayList<String> itemIdList = new ArrayList<>();
-        
         float totalAmount = 0;
         int itemNo = 1;
         for (String eachIncomp : incompleteInv) {
             String[] incompDet = eachIncomp.split(RT.TF.sp);
             String itemID = incompDet[0];
+            String itemDet = incompDet[2];
             
-            if (!itemIdList.contains(itemID)) {
-                
-                double amount = RT.getTotalPricePerInvoice(itemID);
-                
-                String[] list = {String.valueOf(itemNo), itemID, String.format("%.02f", amount)};
+            double amount = RT.getTotalPricePerInvoice(itemID, incompleteInv);
 
-                String combined = "";
-                for (String data : list) {
-                    combined = combined + data + RT.TF.sp;
-                }
+            String[] list = {String.valueOf(itemNo), itemID, itemDet, String.format("%.02f", amount)};
 
-                toTable.add(combined);
-                itemIdList.add(itemID);
-                totalAmount += amount;
-                itemNo++;
+            String combined = "";
+            for (String data : list) {
+                combined = combined + data + RT.TF.sp;
             }
+
+            toTable.add(combined);
+            totalAmount += amount;
+            itemNo++;
         }
         
         RT.setTableRow(penFeeTab, toTable);
@@ -212,13 +207,13 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
 
         pendingFeeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "NO.", "ITEM ID", "AMOUNT (RM)"
+                "NO.", "ITEM ID", "ITEM NAME", "AMOUNT (RM)"
             }
         ));
         jScrollPane1.setViewportView(pendingFeeTable);

@@ -619,7 +619,7 @@ public class BuildingExecutive extends Users{
         return blockList;
     }
     
-    public void tableSettingUpdate(String timeIntervalSet, String levelIntervalSet, boolean resetDefault) {
+    public void tableSettingUpdate(String timeIntervalSet, String levelIntervalSet, int hourRequest, boolean resetDefault) {
         ArrayList<String> blockList = getAvailableBlock();
         
         if (blockList.contains("S")) {
@@ -648,13 +648,13 @@ public class BuildingExecutive extends Users{
                             + currentBlock + TF.sp
                             + levelANDcheck[0] + TF.sp
                             + levelANDcheck[1] + TF.sp
-                            + formatTime(thisTime).plusHours(1).toString() + TF.sp
-                            + " " + TF.sp
-                            + " " + TF.sp
-                            + " " + TF.sp
-                            + " " + TF.sp
-                            + " " + TF.sp
-                            + " " + TF.sp);
+                            + formatTime(thisTime).plusHours(hourRequest).toString() + TF.sp
+                            + "-" + TF.sp
+                            + "-" + TF.sp
+                            + "-" + TF.sp
+                            + "-" + TF.sp
+                            + "-" + TF.sp
+                            + "-" + TF.sp);
                     newNo++;
                 }
             }
@@ -664,13 +664,13 @@ public class BuildingExecutive extends Users{
                     + "S" + TF.sp
                     + "Level 1-2" + TF.sp
                     + "Level 2" + TF.sp
-                    + formatTime(thisTime).plusHours(1).toString() + TF.sp
-                    + " " + TF.sp
-                    + " " + TF.sp
-                    + " " + TF.sp
-                    + " " + TF.sp
-                    + " " + TF.sp
-                    + " " + TF.sp);
+                    + formatTime(thisTime).plusHours(hourRequest).toString() + TF.sp
+                    + "-" + TF.sp
+                    + "-" + TF.sp
+                    + "-" + TF.sp
+                    + "-" + TF.sp
+                    + "-" + TF.sp
+                    + "-" + TF.sp);
             
             tempTime = tempTime.plusHours(Integer.valueOf(timeIntervalSet));
         }
@@ -710,17 +710,22 @@ public class BuildingExecutive extends Users{
         List<String> jobList = fh.fileRead(TF.employeeJobFile);
         List<String> completedJobList = fh.fileRead(TF.jobFileHistory);
         
+        boolean firstLine = true;
         for (String completedJob : completedJobList) {
-            String[] jobDet = completedJob.split(TF.sp);
+            if (!firstLine) {
+                String[] jobDet = completedJob.split(TF.sp);
             
-            String line = "";
-            for (int item = 0; item < jobDet.length; item++) {
-                if (item != 2) {
-                    line = line + jobDet[item] + TF.sp;
+                String line = "";
+                for (int item = 0; item < jobDet.length; item++) {
+                    if (item != 2) {
+                        line = line + jobDet[item] + TF.sp;
+                    }
                 }
+
+                jobList.add(line);
             }
             
-            jobList.add(line);
+            firstLine = false;
         }
         
         return jobList;

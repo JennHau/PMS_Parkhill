@@ -211,7 +211,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         for (String eachJob : jobList) {
             String[] jobDetails = eachJob.split(BE.TF.sp);
             String jobId = jobDetails[0];
-            String jobDesc = jobDetails[3];
+            String jobDesc = BE.findJobDetailsUsingDescriptionOrId(jobDetails[3], null).split(BE.TF.sp)[2];
             int repitition = Integer.valueOf(jobDetails[4]);
             String startDate = jobDetails[6];
             String startTime = jobDetails[7];
@@ -990,10 +990,11 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         int selectedCol = assignedJobTable.getSelectedColumn();
         int selectedRow = assignedJobTable.getSelectedRow();
         
-        this.jobID = BE.validateTableSelectionAndGetValue(employeeJobTable, selectedCol, selectedRow, 4, 0).toLowerCase();
+        this.jobID = BE.validateTableSelectionAndGetValue(employeeJobTable, selectedCol, selectedRow, 4, 0);
         
         if (this.jobID != null) {
             try {
+                this.jobID = this.jobID.toLowerCase();
                 setJobFormTable();
             } catch (IOException ex) {
                 Logger.getLogger(EmployeeJobAssignation.class.getName()).log(Level.SEVERE, null, ex);

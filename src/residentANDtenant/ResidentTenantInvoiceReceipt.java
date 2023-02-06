@@ -136,18 +136,18 @@ public class ResidentTenantInvoiceReceipt extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Arial Narrow", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(13, 24, 42));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("INVOICE RECEIPT");
+        jLabel1.setText("RECEIPT");
 
         invoiceReceiptTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "FEE TYPE", "CONSUMPTION", "UNIT PRICE", "TOTAL PRICE (RM)"
+                "FEE TYPE", "CONSUMPTION", "UNIT PRICE", "PAYMENT DATE", "TOTAL PRICE (RM)"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -183,7 +183,7 @@ public class ResidentTenantInvoiceReceipt extends javax.swing.JFrame {
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setText("PAYMENT DATE:");
+        jLabel11.setText("ISSUED DATE:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -195,8 +195,8 @@ public class ResidentTenantInvoiceReceipt extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(62, 62, 62)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(invNoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
+                            .addComponent(invNoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8)
@@ -289,10 +289,10 @@ public class ResidentTenantInvoiceReceipt extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void setDefault() {
-        ArrayList<String> invoiceList = RT.getCurrentUnitPaymentHistory(user.getUnitNo());
+        ArrayList<String> invoiceList = RT.getCurrentUnitIssuedReceipt(user.getUnitNo());
         ArrayList<String> toReceipt = new ArrayList<>();
         
-        String paymentDate = null;
+        String invoicePeriod = null;
         double totalAmount = 0;
         for (String eachInv : invoiceList) {
             String[] invDet = eachInv.split(RT.TF.sp);
@@ -302,11 +302,12 @@ public class ResidentTenantInvoiceReceipt extends javax.swing.JFrame {
                 String consumption = invDet[4] + " " + invDet[5];
                 String unitPrice = invDet[6];
                 String totalPrice = invDet[7];
-                paymentDate = RT.DTF.formatDate2(invDet[10]).toString();
+                String paymentDate = RT.DTF.formatDate2(invDet[10]).toString();
+                invoicePeriod = invDet[8];
                 
                 totalAmount = totalAmount + Double.parseDouble(totalPrice);
                 
-                String[] data = {feeType, consumption, unitPrice, totalPrice};
+                String[] data = {feeType, consumption, unitPrice, paymentDate, totalPrice};
                 
                 String line = "";
                 for (String eachData : data) {
@@ -322,7 +323,7 @@ public class ResidentTenantInvoiceReceipt extends javax.swing.JFrame {
         invNoLabel.setText(invoiceNo);
         unitNoLabel.setText(user.getUnitNo());
         amountPaid.setText("RM" + String.format("%.02f", totalAmount));
-        paymentDateLabel.setText(paymentDate);
+        paymentDateLabel.setText(invoicePeriod);
     }
     
     private void doneBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneBtActionPerformed

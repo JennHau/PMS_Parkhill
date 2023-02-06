@@ -50,7 +50,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
     }
     
     private void paymentHistoryTableSetUp() throws ParseException {
-        ArrayList<String> paymentHist = RT.getCurrentUnitPaymentHistory(this.user.getUnitNo());
+        ArrayList<String> receiptList = RT.getCurrentUnitIssuedReceipt(this.user.getUnitNo());
         ArrayList<String> facilityPay = RT.getCurrentUnitFacilityPayment(this.user.getUnitNo());
         ArrayList<String> sortedList;
         
@@ -59,16 +59,36 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
         
         ArrayList<String> existedIdList = new ArrayList<>();
                 
-        for (String eachHist : paymentHist) {
+        for (String eachHist : receiptList) {
             String[] histData = eachHist.split(RT.TF.sp);
-            
             String invoiceNo = histData[0];
+            
+            LocalDate latestDate = null;
+            String feeTypes = "";
             if (!existedIdList.contains(invoiceNo)) {
+                for (String hist : receiptList) {
+                    String[] eachHistData = hist.split(RT.TF.sp);
+                    String histInv = eachHistData[0];
+                    if (histInv.equals(invoiceNo)) {
+                        String type = eachHistData[2];
+                        feeTypes = feeTypes + type + ",";
+                        
+                        LocalDate paymentDate = RT.DTF.formatDate2(eachHistData[10]);
+                        if (latestDate != null) {
+                            if (paymentDate.isAfter(latestDate)) {
+                                latestDate = paymentDate;
+                            }
+                        }
+                        else {
+                            latestDate = paymentDate;
+                        }
+                    }
+                }
                 String toAdd = "";
             
-                String feeType = "Invoice for " + histData[8];
-                double totalPrice = RT.getTotalPricePerInvoice(invoiceNo);
-                String paidDate = DTF.changeFormatDate(histData[10]);
+                String feeType = "Invoice - " + feeTypes.substring(0, feeTypes.length()-1);
+                double totalPrice = RT.getTotalPricePerInvoice(invoiceNo, receiptList);
+                String paidDate = String.valueOf(latestDate);
                 String[] data = {invoiceNo, feeType, String.format("%.02f", totalPrice), paidDate};
 
                 for (String eachData : data) {
@@ -733,6 +753,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
                 notFound = false;
                 
                 RT.toInvoiceReceipt(user, recInvNo);
+                break;
             }
         }
         
@@ -743,6 +764,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
                 
                 if (bookingId.equals(itemID)) {
                     RT.toFacilityReceipt(user, bookingId);
+                    break;
                 }
             }
         }
