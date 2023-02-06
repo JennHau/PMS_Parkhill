@@ -4,13 +4,12 @@
  */
 package buildingManager;
 
-import accountExecutive.*;
 import java.awt.Toolkit;
-import java.text.DecimalFormat;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -21,9 +20,10 @@ public class BuildingManagerManageCapital extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public BuildingManagerManageCapital() {
+    public BuildingManagerManageCapital(Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
         setTable();
     }
 
@@ -50,7 +50,7 @@ public class BuildingManagerManageCapital extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         warningMessage = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
         setBackground(new java.awt.Color(13, 24, 42));
         setResizable(false);
@@ -118,7 +118,7 @@ public class BuildingManagerManageCapital extends javax.swing.JFrame {
             }
         });
 
-        cancelBt.setText("BACK");
+        cancelBt.setText("CLOSE");
         cancelBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtActionPerformed(evt);
@@ -233,6 +233,7 @@ public class BuildingManagerManageCapital extends javax.swing.JFrame {
 
     FileHandling fh = new FileHandling();
     BuildingManager bm = new BuildingManager();
+    private final Users user;
     
     private void capitalAmountTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_capitalAmountTFActionPerformed
         // TODO add your handling code here:
@@ -262,7 +263,7 @@ public class BuildingManagerManageCapital extends javax.swing.JFrame {
         if (BuildingManagerBudgetPlanning.bmBudgetPlanning != null) {
             BuildingManagerBudgetPlanning.bmBudgetPlanning.dispose();
         }
-        new BuildingManagerBudgetPlanning().setVisible(true);
+        new BuildingManagerBudgetPlanning(user).setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
     private void capitalAmountTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_capitalAmountTFKeyTyped
@@ -889,7 +890,7 @@ public class BuildingManagerManageCapital extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BuildingManagerManageCapital().setVisible(true);
+                new BuildingManagerManageCapital(null).setVisible(true);
             }
         });
     }

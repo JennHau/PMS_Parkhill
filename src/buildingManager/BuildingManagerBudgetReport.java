@@ -4,12 +4,10 @@
  */
 package buildingManager;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 
 
 /**
@@ -22,8 +20,9 @@ public class BuildingManagerBudgetReport extends javax.swing.JFrame {
      * Creates new form custReceipt
      * @param year
      */
-    public BuildingManagerBudgetReport(String year) {
+    public BuildingManagerBudgetReport(String year, Users user) {
         initComponents();
+        this.user = user;
         this.year = year;
         setDefault();
         setTable();
@@ -261,6 +260,7 @@ public class BuildingManagerBudgetReport extends javax.swing.JFrame {
     FileHandling fh = new FileHandling();
     BuildingManager bm = new BuildingManager();
     String year; float totalPrice;
+    private final Users user;
     
     
     private void setDefault() {
@@ -362,7 +362,7 @@ public class BuildingManagerBudgetReport extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BuildingManagerBudgetReport(null).setVisible(true);
+                new BuildingManagerBudgetReport(null, null).setVisible(true);
             }
         });
     }

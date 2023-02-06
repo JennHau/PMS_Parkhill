@@ -9,6 +9,7 @@ import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.HomePage;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -19,10 +20,14 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public BuildingManagerUserManagement() {
+    public BuildingManagerUserManagement(Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
+        setCurrentProfile();
         setTable();
+        
+        bdmUserManage = this;
     }
 
     /**
@@ -36,7 +41,7 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
 
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        usernameLabel = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         searchTextField = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
@@ -82,11 +87,11 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("BUILDING MANAGER");
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
-        jLabel7.setText("USERNAME");
+        usernameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        usernameLabel.setForeground(new java.awt.Color(102, 102, 102));
+        usernameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        usernameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
+        usernameLabel.setText("USERNAME");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -96,7 +101,7 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(usernameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
         jPanel3Layout.setVerticalGroup(
@@ -105,7 +110,7 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
+                    .addComponent(usernameLabel))
                 .addContainerGap(9, Short.MAX_VALUE))
         );
 
@@ -171,6 +176,9 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
 
         jPanel4.setBackground(new java.awt.Color(13, 50, 79));
         jPanel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel4MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jPanel4MouseEntered(evt);
             }
@@ -611,6 +619,12 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     BuildingManager bm = new BuildingManager();
+    public static BuildingManagerUserManagement bdmUserManage;
+    private final Users user;
+    
+    private void setCurrentProfile() {
+        usernameLabel.setText(user.getFirstName() +" "+ user.getLastName());
+    }
     
     private void setTable() {
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
@@ -682,9 +696,8 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
 
     private void jLabel16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MouseClicked
         // TODO add your handling code here:
-        dispose();
         String userRole = (String)userRoleCB.getSelectedItem();
-        new BuildingManagerAddUser(userRole).setVisible(true);
+        new BuildingManagerAddUser(userRole, user).setVisible(true);
     }//GEN-LAST:event_jLabel16MouseClicked
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -696,15 +709,14 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
         if (column == 5) {
             String userID = String.valueOf(tableModel.getValueAt(row, 0));
             
-            dispose();
-            new BuildingManagerModifyUser(userID).setVisible(true);
+            new BuildingManagerModifyUser(userID, user).setVisible(true);
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerDashboard().setVisible(true);
+        new BuildingManagerDashboard(user).setVisible(true);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
@@ -715,7 +727,7 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
     private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerDashboard().setVisible(true);
+        new BuildingManagerDashboard(user).setVisible(true);
     }//GEN-LAST:event_jPanel2MouseClicked
 
     private void jPanel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseEntered
@@ -744,7 +756,7 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerReports().setVisible(true);
+        new BuildingManagerReports(user).setVisible(true);
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jLabel5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseEntered
@@ -755,7 +767,7 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
     private void jPanel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerReports().setVisible(true);
+        new BuildingManagerReports(user).setVisible(true);
     }//GEN-LAST:event_jPanel8MouseClicked
 
     private void jPanel8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseEntered
@@ -766,7 +778,7 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerBudgetPlanning().setVisible(true);
+        new BuildingManagerBudgetPlanning(user).setVisible(true);
     }//GEN-LAST:event_jLabel6MouseClicked
 
     private void jLabel6MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseEntered
@@ -777,7 +789,7 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
     private void jPanel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerBudgetPlanning().setVisible(true);
+        new BuildingManagerBudgetPlanning(user).setVisible(true);
     }//GEN-LAST:event_jPanel9MouseClicked
 
     private void jPanel9MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseEntered
@@ -788,7 +800,7 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerTeamStructure().setVisible(true);
+        new BuildingManagerTeamStructure(user).setVisible(true);
     }//GEN-LAST:event_jLabel8MouseClicked
 
     private void jLabel8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseEntered
@@ -799,7 +811,7 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
     private void jPanel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerTeamStructure().setVisible(true);
+        new BuildingManagerTeamStructure(user).setVisible(true);
     }//GEN-LAST:event_jPanel10MouseClicked
 
     private void jPanel10MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseEntered
@@ -829,6 +841,10 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
         // TODO add your handling code here:
         jPanel14.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_jPanel14MouseEntered
+
+    private void jPanel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPanel4MouseClicked
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
@@ -991,7 +1007,7 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BuildingManagerUserManagement().setVisible(true);
+                new BuildingManagerUserManagement(null).setVisible(true);
             }
         });
     }
@@ -1011,7 +1027,6 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -1029,5 +1044,6 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField searchTextField;
     private javax.swing.JComboBox<String> userRoleCB;
+    private javax.swing.JLabel usernameLabel;
     // End of variables declaration//GEN-END:variables
 }

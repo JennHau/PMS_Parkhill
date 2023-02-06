@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.HomePage;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -21,9 +22,11 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public BuildingManagerTeamStructureComm() {
+    public BuildingManagerTeamStructureComm(Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
+        setCurrentProfile();
         setTable();
     }
 
@@ -38,7 +41,7 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
 
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        usernameLabel = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         searchTextField = new javax.swing.JTextField();
         clearbt = new javax.swing.JButton();
@@ -92,11 +95,11 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("BUILDING MANAGER");
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
-        jLabel7.setText("USERNAME");
+        usernameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        usernameLabel.setForeground(new java.awt.Color(102, 102, 102));
+        usernameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        usernameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
+        usernameLabel.setText("USERNAME");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -106,7 +109,7 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(usernameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
         jPanel3Layout.setVerticalGroup(
@@ -115,7 +118,7 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
+                    .addComponent(usernameLabel))
                 .addContainerGap(9, Short.MAX_VALUE))
         );
 
@@ -718,6 +721,12 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
     FileHandling fh = new FileHandling();
     String oldRoleTitle=null; String oldName=null;
     
+    private final Users user;
+    
+    private void setCurrentProfile() {
+        usernameLabel.setText(user.getFirstName() +" "+ user.getLastName());
+    }
+    
     private void setTable() {
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
         tableModel.setRowCount(0);
@@ -880,7 +889,7 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerDashboard().setVisible(true);
+        new BuildingManagerDashboard(user).setVisible(true);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
@@ -891,7 +900,7 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
     private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerDashboard().setVisible(true);
+        new BuildingManagerDashboard(user).setVisible(true);
     }//GEN-LAST:event_jPanel2MouseClicked
 
     private void jPanel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseEntered
@@ -902,7 +911,7 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerUserManagement().setVisible(true);
+        new BuildingManagerUserManagement(user).setVisible(true);
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void jLabel4MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseEntered
@@ -913,7 +922,7 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
     private void jPanel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerUserManagement().setVisible(true);
+        new BuildingManagerUserManagement(user).setVisible(true);
     }//GEN-LAST:event_jPanel7MouseClicked
 
     private void jPanel7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseEntered
@@ -924,7 +933,7 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerReports().setVisible(true);
+        new BuildingManagerReports(user).setVisible(true);
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jLabel5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseEntered
@@ -935,7 +944,7 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
     private void jPanel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerReports().setVisible(true);
+        new BuildingManagerReports(user).setVisible(true);
     }//GEN-LAST:event_jPanel8MouseClicked
 
     private void jPanel8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseEntered
@@ -946,7 +955,7 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerBudgetPlanning().setVisible(true);
+        new BuildingManagerBudgetPlanning(user).setVisible(true);
     }//GEN-LAST:event_jLabel6MouseClicked
 
     private void jLabel6MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseEntered
@@ -957,7 +966,7 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
     private void jPanel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerBudgetPlanning().setVisible(true);
+        new BuildingManagerBudgetPlanning(user).setVisible(true);
     }//GEN-LAST:event_jPanel9MouseClicked
 
     private void jPanel9MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseEntered
@@ -968,7 +977,7 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerTeamStructure().setVisible(true);
+        new BuildingManagerTeamStructure(user).setVisible(true);
     }//GEN-LAST:event_jLabel8MouseClicked
 
     private void jLabel8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseEntered
@@ -979,7 +988,7 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
     private void jPanel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerTeamStructure().setVisible(true);
+        new BuildingManagerTeamStructure(user).setVisible(true);
     }//GEN-LAST:event_jPanel10MouseClicked
 
     private void jPanel10MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseEntered
@@ -1299,7 +1308,7 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BuildingManagerTeamStructureComm().setVisible(true);
+                new BuildingManagerTeamStructureComm(null).setVisible(true);
             }
         });
     }
@@ -1322,7 +1331,6 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -1344,6 +1352,7 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
     private javax.swing.JTextField roleTitleTF;
     private javax.swing.JButton saveBt;
     private javax.swing.JTextField searchTextField;
+    private javax.swing.JLabel usernameLabel;
     private javax.swing.JLabel warningMessage;
     // End of variables declaration//GEN-END:variables
 }

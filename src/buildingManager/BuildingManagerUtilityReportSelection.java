@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -18,9 +19,10 @@ public class BuildingManagerUtilityReportSelection extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public BuildingManagerUtilityReportSelection() {
+    public BuildingManagerUtilityReportSelection(Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
         setUtitlityTypeCB();
     }
 
@@ -45,7 +47,7 @@ public class BuildingManagerUtilityReportSelection extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         monthYearCB = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
         setBackground(new java.awt.Color(13, 24, 42));
         setResizable(false);
@@ -197,6 +199,7 @@ public class BuildingManagerUtilityReportSelection extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     FileHandling fh = new FileHandling();
+    private final Users user;
     
     private void setUtitlityTypeCB() {
         List<String> availableList = fh.fileRead("feeTypes.txt");
@@ -254,7 +257,7 @@ public class BuildingManagerUtilityReportSelection extends javax.swing.JFrame {
         if(!monthYear.equals("-PLEASE SELECT-")) {
             warningMessage.setText("");
             dispose();
-            new BuildingManagerUtitlityReport(utilityType, monthYear).setVisible(true);
+            new BuildingManagerUtitlityReport(utilityType, monthYear, user).setVisible(true);
         } else {
             warningMessage.setText("Please select the desired period!");
         }
@@ -570,7 +573,7 @@ public class BuildingManagerUtilityReportSelection extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BuildingManagerUtilityReportSelection().setVisible(true);
+                new BuildingManagerUtilityReportSelection(null).setVisible(true);
             }
         });
     }

@@ -8,6 +8,7 @@ import adminExecutive.*;
 import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 import pms_parkhill_residence.Validation;
 
 /**
@@ -20,9 +21,10 @@ public class BuildingManagerAddUser extends javax.swing.JFrame {
      * Creates new form homePage
      * @param userRole
      */
-    public BuildingManagerAddUser(String userRole) {
+    public BuildingManagerAddUser(String userRole, Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
         this.userRole = userRole;
         setDefault();
     }
@@ -131,7 +133,7 @@ public class BuildingManagerAddUser extends javax.swing.JFrame {
             }
         });
 
-        cancelBt.setText("BACK");
+        cancelBt.setText("CLOSE");
         cancelBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtActionPerformed(evt);
@@ -358,6 +360,7 @@ public class BuildingManagerAddUser extends javax.swing.JFrame {
     FileHandling fh = new FileHandling();
     BuildingManager bm = new BuildingManager();
     String userRole;
+    private final Users user;
     
     private void setDefault() {
         String latestUserID = "";
@@ -404,7 +407,10 @@ public class BuildingManagerAddUser extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog (null, "New user has been added!", 
                                     "USER REGISTRATION", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
-                    new BuildingManagerUserManagement().setVisible(true);
+                    if (BuildingManagerUserManagement.bdmUserManage != null) {
+                        BuildingManagerUserManagement.bdmUserManage.dispose();
+                    }   
+                    new BuildingManagerUserManagement(user).setVisible(true);
                 }
             } else {
                 warningMessage.setText("Invalid email or email existed!");
@@ -417,7 +423,6 @@ public class BuildingManagerAddUser extends javax.swing.JFrame {
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerUserManagement().setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
     private void firstNameTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstNameTFActionPerformed
@@ -2532,7 +2537,7 @@ public class BuildingManagerAddUser extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BuildingManagerAddUser(null).setVisible(true);
+                new BuildingManagerAddUser(null, null).setVisible(true);
             }
         });
     }

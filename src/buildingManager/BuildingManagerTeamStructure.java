@@ -9,15 +9,12 @@ import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.HomePage;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -28,10 +25,14 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public BuildingManagerTeamStructure() {
+    public BuildingManagerTeamStructure(Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
+        setCurrentProfile();
         setImage(); setName();
+        
+        bdmTeamStructure = this;
     }
 
     /**
@@ -45,7 +46,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
 
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        usernameLabel = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
@@ -117,11 +118,11 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("BUILDING MANAGER");
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
-        jLabel7.setText("USERNAME");
+        usernameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        usernameLabel.setForeground(new java.awt.Color(102, 102, 102));
+        usernameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        usernameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
+        usernameLabel.setText("USERNAME");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -131,7 +132,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(usernameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
         jPanel3Layout.setVerticalGroup(
@@ -140,7 +141,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
+                    .addComponent(usernameLabel))
                 .addContainerGap(9, Short.MAX_VALUE))
         );
 
@@ -417,7 +418,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
         jPanel6.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(177, 280, 320, 10));
 
         jSeparator6.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jPanel6.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(507, 418, -1, 55));
+        jPanel6.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 430, 10, 40));
 
         jSeparator7.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jPanel6.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 280, 20, 40));
@@ -857,6 +858,13 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
     
     BuildingManager bm = new BuildingManager();
     FileHandling fh = new FileHandling();
+    public static BuildingManagerTeamStructure bdmTeamStructure;
+    
+    private final Users user;
+    
+    private void setCurrentProfile() {
+        usernameLabel.setText(user.getFirstName() +" "+ user.getLastName());
+    }
     
     private void setImage() {
         String[] iconName = {"Head of Building Manager", "Assistant Building Manager",
@@ -928,7 +936,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
     private void jLabel17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerModifyTeamStructure().setVisible(true);
+        new BuildingManagerModifyTeamStructure(user).setVisible(true);
     }//GEN-LAST:event_jLabel17MouseClicked
 
     private void jLabel17MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseEntered
@@ -957,26 +965,24 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
 
     private void jPanel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel19MouseClicked
         // TODO add your handling code here:
-        dispose();
-        new BuildingManagerModifyTeamStructure().setVisible(true);
+        new BuildingManagerModifyTeamStructure(user).setVisible(true);
     }//GEN-LAST:event_jPanel19MouseClicked
 
     private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
         // TODO add your handling code here:
-        dispose();
-        new BuildingManagerModifyTeamStructure().setVisible(true);
+        new BuildingManagerModifyTeamStructure(user).setVisible(true);
     }//GEN-LAST:event_jLabel13MouseClicked
 
     private void jLabel15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerTeamStructureComm().setVisible(true);
+        new BuildingManagerTeamStructureComm(user).setVisible(true);
     }//GEN-LAST:event_jLabel15MouseClicked
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerDashboard().setVisible(true);
+        new BuildingManagerDashboard(user).setVisible(true);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
@@ -987,7 +993,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
     private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerDashboard().setVisible(true);
+        new BuildingManagerDashboard(user).setVisible(true);
     }//GEN-LAST:event_jPanel2MouseClicked
 
     private void jPanel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseEntered
@@ -998,7 +1004,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerUserManagement().setVisible(true);
+        new BuildingManagerUserManagement(user).setVisible(true);
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void jLabel4MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseEntered
@@ -1009,7 +1015,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
     private void jPanel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerUserManagement().setVisible(true);
+        new BuildingManagerUserManagement(user).setVisible(true);
     }//GEN-LAST:event_jPanel7MouseClicked
 
     private void jPanel7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseEntered
@@ -1020,7 +1026,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerReports().setVisible(true);
+        new BuildingManagerReports(user).setVisible(true);
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jLabel5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseEntered
@@ -1031,7 +1037,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
     private void jPanel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerReports().setVisible(true);
+        new BuildingManagerReports(user).setVisible(true);
     }//GEN-LAST:event_jPanel8MouseClicked
 
     private void jPanel8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseEntered
@@ -1042,7 +1048,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerBudgetPlanning().setVisible(true);
+        new BuildingManagerBudgetPlanning(user).setVisible(true);
     }//GEN-LAST:event_jLabel6MouseClicked
 
     private void jLabel6MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseEntered
@@ -1053,7 +1059,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
     private void jPanel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerBudgetPlanning().setVisible(true);
+        new BuildingManagerBudgetPlanning(user).setVisible(true);
     }//GEN-LAST:event_jPanel9MouseClicked
 
     private void jPanel9MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseEntered
@@ -2159,7 +2165,7 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BuildingManagerTeamStructure().setVisible(true);
+                new BuildingManagerTeamStructure(null).setVisible(true);
             }
         });
     }
@@ -2184,7 +2190,6 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -2223,5 +2228,6 @@ public class BuildingManagerTeamStructure extends javax.swing.JFrame {
     private javax.swing.JLabel titleLabel4;
     private javax.swing.JLabel titleLabel5;
     private javax.swing.JLabel titleLabel6;
+    private javax.swing.JLabel usernameLabel;
     // End of variables declaration//GEN-END:variables
 }

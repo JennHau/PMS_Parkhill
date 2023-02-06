@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 
 
 /**
@@ -19,8 +20,9 @@ public class BuildingManagerPropertyUnitReport extends javax.swing.JFrame {
     /**
      * Creates new form custReceipt
      */
-    public BuildingManagerPropertyUnitReport() {
+    public BuildingManagerPropertyUnitReport(Users user) {
         initComponents();
+        this.user = user;
         setTable();
         setDefault();
     }
@@ -280,6 +282,7 @@ public class BuildingManagerPropertyUnitReport extends javax.swing.JFrame {
     FileHandling fh = new FileHandling();
     BuildingManager bm = new BuildingManager();
     int totalResident; int totalTenant; int totalUnit;
+    private final Users user;
     
     
     private void setDefault() {
@@ -376,7 +379,7 @@ public class BuildingManagerPropertyUnitReport extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BuildingManagerPropertyUnitReport().setVisible(true);
+                new BuildingManagerPropertyUnitReport(null).setVisible(true);
             }
         });
     }

@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -18,9 +19,10 @@ public class BuildingManagerBudgetReportSelection extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public BuildingManagerBudgetReportSelection() {
+    public BuildingManagerBudgetReportSelection(Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
         setMonthYearCB();
     }
 
@@ -43,7 +45,7 @@ public class BuildingManagerBudgetReportSelection extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         yearCB = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
         setBackground(new java.awt.Color(13, 24, 42));
         setResizable(false);
@@ -177,6 +179,7 @@ public class BuildingManagerBudgetReportSelection extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     FileHandling fh = new FileHandling();
+    private final Users user;
     
     private void setMonthYearCB() {
         List<String> availableList = fh.fileRead("budgetAllocation.txt");
@@ -209,7 +212,7 @@ public class BuildingManagerBudgetReportSelection extends javax.swing.JFrame {
         if(!year.equals("-PLEASE SELECT-")) {
             warningMessage.setText("");
             dispose();
-            new BuildingManagerBudgetReport(year).setVisible(true);
+            new BuildingManagerBudgetReport(year, user).setVisible(true);
         } else {
             warningMessage.setText("Please select the desired period!");
         }
@@ -774,7 +777,7 @@ public class BuildingManagerBudgetReportSelection extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BuildingManagerBudgetReportSelection().setVisible(true);
+                new BuildingManagerBudgetReportSelection(null).setVisible(true);
             }
         });
     }

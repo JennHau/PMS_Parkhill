@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -21,9 +22,10 @@ public class BuildingManagerAddAllocation extends javax.swing.JFrame {
      * Creates new form homePage
      * @param fundBalance
      */
-    public BuildingManagerAddAllocation(String fundBalance) {
+    public BuildingManagerAddAllocation(String fundBalance, Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
         this.fundBalance = fundBalance;
         setDefault();
     }
@@ -57,7 +59,7 @@ public class BuildingManagerAddAllocation extends javax.swing.JFrame {
         fundBalanceLabel = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
         setBackground(new java.awt.Color(13, 24, 42));
         setResizable(false);
@@ -231,9 +233,8 @@ public class BuildingManagerAddAllocation extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(51, 51, 51)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(allocationAmountLabel)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(allocationAmountLabel)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(descTF)
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -307,6 +308,7 @@ public class BuildingManagerAddAllocation extends javax.swing.JFrame {
     FileHandling fh = new FileHandling();
     BuildingManager bm = new BuildingManager();
     String fundBalance;
+    private final Users user;
     
     private void setDefault() {
         String latestID = bm.getLatestID("budgetAllocation.txt", "alc");
@@ -348,7 +350,7 @@ public class BuildingManagerAddAllocation extends javax.swing.JFrame {
                 if (BuildingManagerBudgetPlanning.bmBudgetPlanning != null) {
                     BuildingManagerBudgetPlanning.bmBudgetPlanning.dispose();
                 }
-                new BuildingManagerBudgetPlanning().setVisible(true);
+                new BuildingManagerBudgetPlanning(user).setVisible(true);
             }
         } else{
             warningMessage.setText("Please complete the form!");
@@ -1495,7 +1497,7 @@ public class BuildingManagerAddAllocation extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BuildingManagerAddAllocation(null).setVisible(true);
+                new BuildingManagerAddAllocation(null, null).setVisible(true);
             }
         });
     }

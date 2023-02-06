@@ -7,6 +7,7 @@ package buildingManager;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import pms_parkhill_residence.HomePage;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -17,9 +18,10 @@ public class BuildingManagerReports extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public BuildingManagerReports() {
+    public BuildingManagerReports(Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
     }
 
     /**
@@ -748,9 +750,11 @@ public class BuildingManagerReports extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private final Users user;
+    
     private void jLabel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseClicked
         // TODO add your handling code here:
-        new BuildingManagerUtilityReportSelection().setVisible(true);
+        new BuildingManagerUtilityReportSelection(user).setVisible(true);
     }//GEN-LAST:event_jLabel20MouseClicked
 
     private void jLabel20MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseEntered
@@ -765,7 +769,7 @@ public class BuildingManagerReports extends javax.swing.JFrame {
 
     private void jLabel21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel21MouseClicked
         // TODO add your handling code here:
-        new BuildingManagerBudgetReportSelection().setVisible(true);
+        new BuildingManagerBudgetReportSelection(user).setVisible(true);
     }//GEN-LAST:event_jLabel21MouseClicked
 
     private void jLabel21MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel21MouseEntered
@@ -779,7 +783,7 @@ public class BuildingManagerReports extends javax.swing.JFrame {
 
     private void jLabel22MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel22MouseClicked
         // TODO add your handling code here:
-        new BuildingManagerPropertyUnitReport().setVisible(true);
+        new BuildingManagerPropertyUnitReport(user).setVisible(true);
     }//GEN-LAST:event_jLabel22MouseClicked
 
     private void jLabel22MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel22MouseEntered
@@ -794,23 +798,23 @@ public class BuildingManagerReports extends javax.swing.JFrame {
 
     private void jPanel16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel16MouseClicked
         // TODO add your handling code here:
-        new BuildingManagerUtilityReportSelection().setVisible(true);
+        new BuildingManagerUtilityReportSelection(user).setVisible(true);
     }//GEN-LAST:event_jPanel16MouseClicked
 
     private void jPanel17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel17MouseClicked
         // TODO add your handling code here:
-        new BuildingManagerBudgetReportSelection().setVisible(true);
+        new BuildingManagerBudgetReportSelection(user).setVisible(true);
     }//GEN-LAST:event_jPanel17MouseClicked
 
     private void jPanel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel18MouseClicked
         // TODO add your handling code here:
-        new BuildingManagerPropertyUnitReport().setVisible(true);
+        new BuildingManagerPropertyUnitReport(user).setVisible(true);
     }//GEN-LAST:event_jPanel18MouseClicked
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerDashboard().setVisible(true);
+        new BuildingManagerDashboard(user).setVisible(true);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
@@ -821,7 +825,7 @@ public class BuildingManagerReports extends javax.swing.JFrame {
     private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerDashboard().setVisible(true);
+        new BuildingManagerDashboard(user).setVisible(true);
     }//GEN-LAST:event_jPanel2MouseClicked
 
     private void jPanel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseEntered
@@ -832,7 +836,7 @@ public class BuildingManagerReports extends javax.swing.JFrame {
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerUserManagement().setVisible(true);
+        new BuildingManagerUserManagement(user).setVisible(true);
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void jLabel4MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseEntered
@@ -843,7 +847,7 @@ public class BuildingManagerReports extends javax.swing.JFrame {
     private void jPanel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerUserManagement().setVisible(true);
+        new BuildingManagerUserManagement(user).setVisible(true);
     }//GEN-LAST:event_jPanel7MouseClicked
 
     private void jPanel7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseEntered
@@ -872,7 +876,7 @@ public class BuildingManagerReports extends javax.swing.JFrame {
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerBudgetPlanning().setVisible(true);
+        new BuildingManagerBudgetPlanning(user).setVisible(true);
     }//GEN-LAST:event_jLabel6MouseClicked
 
     private void jLabel6MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseEntered
@@ -883,7 +887,7 @@ public class BuildingManagerReports extends javax.swing.JFrame {
     private void jPanel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerBudgetPlanning().setVisible(true);
+        new BuildingManagerBudgetPlanning(user).setVisible(true);
     }//GEN-LAST:event_jPanel9MouseClicked
 
     private void jPanel9MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseEntered
@@ -894,7 +898,7 @@ public class BuildingManagerReports extends javax.swing.JFrame {
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerTeamStructure().setVisible(true);
+        new BuildingManagerTeamStructure(user).setVisible(true);
     }//GEN-LAST:event_jLabel8MouseClicked
 
     private void jLabel8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseEntered
@@ -905,7 +909,7 @@ public class BuildingManagerReports extends javax.swing.JFrame {
     private void jPanel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerTeamStructure().setVisible(true);
+        new BuildingManagerTeamStructure(user).setVisible(true);
     }//GEN-LAST:event_jPanel10MouseClicked
 
     private void jPanel10MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseEntered
@@ -1225,7 +1229,7 @@ public class BuildingManagerReports extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BuildingManagerReports().setVisible(true);
+                new BuildingManagerReports(null).setVisible(true);
             }
         });
     }

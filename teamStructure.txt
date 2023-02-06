@@ -1,10 +1,10 @@
 type;role;name;
-slot;Head of Building Manager;Winson Low;
+slot;Head of Building Manager;Winson Low Qian Yao;
 slot;Assistant Building Manager;Siah Yao Liang;
 slot;Head of Account Executive;Elizabeth;
 slot;Head of Building Executive;Hin Chee Wei;
 slot;Head of Admin Executive;Cynthia Chong;
-slot;Head of Security Guard;Ali Bin Muhhamad;
+slot;Head of Security Guard;-;
 other;Cleaner;Low Shi;
 other;Yeeha;Liang Xiao;
 other;Okay;Liza;

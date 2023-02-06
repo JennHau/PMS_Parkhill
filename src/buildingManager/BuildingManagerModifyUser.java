@@ -21,9 +21,10 @@ public class BuildingManagerModifyUser extends javax.swing.JFrame {
      * Creates new form homePage
      * @param userID
      */
-    public BuildingManagerModifyUser(String userID) {
+    public BuildingManagerModifyUser(String userID, Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
         this.userID = userID;
         setDefault();
     }
@@ -226,7 +227,7 @@ public class BuildingManagerModifyUser extends javax.swing.JFrame {
             }
         });
 
-        cancelBt.setText("BACK");
+        cancelBt.setText("CLOSE");
         cancelBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtActionPerformed(evt);
@@ -372,6 +373,7 @@ public class BuildingManagerModifyUser extends javax.swing.JFrame {
     FileHandling fh = new FileHandling();
     BuildingManager bm = new BuildingManager();
     String userID;
+    private final Users user;
     
     private void setDefault() {
         if(userID.startsWith("ACE")) {
@@ -462,7 +464,10 @@ public class BuildingManagerModifyUser extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog (null, "User account has been modified!",
                         "MODIFY USER ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
-                    new BuildingManagerUserManagement().setVisible(true);
+                    if (BuildingManagerUserManagement.bdmUserManage != null) {
+                        BuildingManagerUserManagement.bdmUserManage.dispose();
+                    }   
+                    new BuildingManagerUserManagement(user).setVisible(true);
                 }
             } else {
                 warningMessage.setText("Invalid email or email existed!");
@@ -486,14 +491,16 @@ public class BuildingManagerModifyUser extends javax.swing.JFrame {
             JOptionPane.showMessageDialog (null, "User has been deleted!",
                 "DELETE USER ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
             dispose();
-            new BuildingManagerUserManagement().setVisible(true);
+            if (BuildingManagerUserManagement.bdmUserManage != null) {
+                BuildingManagerUserManagement.bdmUserManage.dispose();
+            }   
+            new BuildingManagerUserManagement(user).setVisible(true);
         }
     }//GEN-LAST:event_deleteBt1ActionPerformed
 
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerUserManagement().setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
     
     private void setWindowIcon() {
@@ -4625,7 +4632,7 @@ public class BuildingManagerModifyUser extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BuildingManagerModifyUser(null).setVisible(true);
+                new BuildingManagerModifyUser(null, null).setVisible(true);
             }
         });
     }

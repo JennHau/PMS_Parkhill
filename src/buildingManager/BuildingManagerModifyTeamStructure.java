@@ -11,12 +11,14 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -27,9 +29,10 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public BuildingManagerModifyTeamStructure() {
+    public BuildingManagerModifyTeamStructure(Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
         setTable();
     }
 
@@ -63,7 +66,7 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         imageLabel = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
         setBackground(new java.awt.Color(13, 24, 42));
         setResizable(false);
@@ -148,7 +151,7 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
             }
         });
 
-        cancelBt.setText("BACK");
+        cancelBt.setText("CLOSE");
         cancelBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtActionPerformed(evt);
@@ -317,8 +320,9 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
     public String type;
     FileHandling fh = new FileHandling();
     BuildingManager bm = new BuildingManager();
+    private final Users user;
     
-    private String defaultFilePath = "src\\images\\";
+    private final String defaultFilePath = "src\\images\\";
     private final String defaultFileExtension = "jpg";
     private String previousProfilePicPath;
     private String filePath;
@@ -351,7 +355,10 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
             JOptionPane.showMessageDialog (null, "Role title has been modified!", 
                 "MODIFY TEAM STRUCTURE", JOptionPane.INFORMATION_MESSAGE);
             dispose();
-            new BuildingManagerTeamStructure().setVisible(true);
+            if (BuildingManagerTeamStructure.bdmTeamStructure != null) {
+                BuildingManagerTeamStructure.bdmTeamStructure.dispose();
+            }
+            new BuildingManagerTeamStructure(user).setVisible(true);
         }
         
     }//GEN-LAST:event_modifyBtActionPerformed
@@ -359,7 +366,6 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerTeamStructure().setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
     private void deleteBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtActionPerformed
@@ -375,7 +381,10 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
             JOptionPane.showMessageDialog (null, "Person has been deleted!", 
                     "DELETE TEAM STRUCTURE", JOptionPane.INFORMATION_MESSAGE);
             dispose();
-            new BuildingManagerTeamStructure().setVisible(true);
+            if (BuildingManagerTeamStructure.bdmTeamStructure != null) {
+                BuildingManagerTeamStructure.bdmTeamStructure.dispose();
+            }
+            new BuildingManagerTeamStructure(user).setVisible(true);
         }
     }//GEN-LAST:event_deleteBtActionPerformed
 
@@ -399,20 +408,26 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
     private void setImage(String imageName) {
         boolean exist = bm.checkImageFile(imageName);
         ImageIcon imageicon;
-        if (exist) {
-            // locate image directory
-            imageicon = new ImageIcon(getClass().getResource
-                                ("/images/"+ imageName +".jpg"));
-        } else {
-            imageicon = new ImageIcon(getClass().getResource
-                                ("/images/orgChart_default.jpg"));
+        
+        try{
+            if (exist) {
+                // locate image directory
+                File imagePath = new File("src\\images\\"+ imageName + ".jpg");
+                imageicon = new ImageIcon(ImageIO.read(imagePath));
+            } else {
+                File imagePath = new File("src\\images\\orgChart_default.jpg");
+                imageicon = new ImageIcon(ImageIO.read(imagePath));
+            }
+            imageicon.getImage().flush();
+            // set image to assign size
+            Image image = (imageicon).getImage().getScaledInstance(78, 81, Image.SCALE_SMOOTH);
+            // replace variable to new resized image
+            imageicon = new ImageIcon(image);
+            imageLabel.setIcon(imageicon);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        imageicon.getImage().flush();
-        // set image to assign size
-        Image image = (imageicon).getImage().getScaledInstance(78, 81, Image.SCALE_SMOOTH);
-        // replace variable to new resized image
-        imageicon = new ImageIcon(image);
-        imageLabel.setIcon(imageicon);
+        
     }
     
     private boolean replaceFile(String fileLocation, String destination) throws IOException {
@@ -2581,7 +2596,7 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BuildingManagerModifyTeamStructure().setVisible(true);
+                new BuildingManagerModifyTeamStructure(null).setVisible(true);
             }
         });
     }

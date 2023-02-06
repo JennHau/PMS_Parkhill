@@ -7,6 +7,7 @@ package buildingManager;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 
 
 /**
@@ -20,10 +21,11 @@ public class BuildingManagerUtitlityReport extends javax.swing.JFrame {
      * @param utilityType
      * @param monthYear
      */
-    public BuildingManagerUtitlityReport(String utilityType, String monthYear) {
+    public BuildingManagerUtitlityReport(String utilityType, String monthYear, Users user) {
         initComponents();
         this.utilityType = utilityType;
         this.monthYear = monthYear;
+        this.user = user;
         setDefault();
         setTable();
     }
@@ -341,6 +343,7 @@ public class BuildingManagerUtitlityReport extends javax.swing.JFrame {
     BuildingManager bm = new BuildingManager();
     String utilityType; String monthYear; String unit; float totalConsumption;
     float totalPrice;
+    private final Users user;
     
     
     private void setDefault() {
@@ -423,7 +426,7 @@ public class BuildingManagerUtitlityReport extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BuildingManagerUtitlityReport(null, null).setVisible(true);
+                new BuildingManagerUtitlityReport(null, null, null).setVisible(true);
             }
         });
     }
