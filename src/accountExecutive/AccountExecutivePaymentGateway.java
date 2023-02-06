@@ -7,6 +7,7 @@ package accountExecutive;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -17,12 +18,13 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public AccountExecutivePaymentGateway(String invoiceNo, String unitNo, String total) {
+    public AccountExecutivePaymentGateway(String invoiceNo, String unitNo, String total, Users user) {
         initComponents();
         setWindowIcon();
         this.invoiceNo = invoiceNo;
         this.unitNo = unitNo;
         this.total = total;
+        this.user = user;
         setFixData();
         setPayerCB();
     }
@@ -65,7 +67,7 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
         phoneNoTF = new javax.swing.JTextField();
         warningLabel = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
         setBackground(new java.awt.Color(13, 24, 42));
         setResizable(false);
@@ -404,6 +406,7 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
     private final String invoiceNo;
     private final String unitNo;
     private final String total;
+    private final Users user;
     
     private void userIDTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userIDTFActionPerformed
         // TODO add your handling code here:
@@ -416,7 +419,6 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
     private void cancelBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBTActionPerformed
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveMakePayment(invoiceNo, unitNo).setVisible(true);
     }//GEN-LAST:event_cancelBTActionPerformed
 
     private void emailTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailTFKeyTyped
@@ -438,7 +440,10 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog (null, "Payment has been made successfully!", 
                     "PAYMENT", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
-                new AccountExecutivePayment().setVisible(true);
+                if (AccountExecutiveMakePayment.aceMakePayment != null) {
+                    AccountExecutiveMakePayment.aceMakePayment.dispose();
+                }
+                new AccountExecutivePayment(user).setVisible(true);
             }   
         } else {
             warningLabel.setText("Please select an active payer!");
@@ -793,7 +798,7 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutivePaymentGateway(null, null, null).setVisible(true);
+                new AccountExecutivePaymentGateway(null, null, null, null).setVisible(true);
             }
         });
     }

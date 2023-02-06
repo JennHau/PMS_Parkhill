@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -20,9 +21,10 @@ public class AdminExecutiveAddFacility extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public AdminExecutiveAddFacility() {
+    public AdminExecutiveAddFacility(Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
         setDefault();
     }
 
@@ -67,7 +69,7 @@ public class AdminExecutiveAddFacility extends javax.swing.JFrame {
         imageNameLabel = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
         setBackground(new java.awt.Color(13, 24, 42));
         setResizable(false);
@@ -120,7 +122,7 @@ public class AdminExecutiveAddFacility extends javax.swing.JFrame {
             }
         });
 
-        cancelBt.setText("BACK");
+        cancelBt.setText("CLOSE");
         cancelBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtActionPerformed(evt);
@@ -276,9 +278,9 @@ public class AdminExecutiveAddFacility extends javax.swing.JFrame {
         imageNameLabel.setPreferredSize(new java.awt.Dimension(52, 16));
         imageNameLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
 
+        jLabel16.setForeground(new java.awt.Color(153, 153, 153));
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel16.setText("Recommended Image Size: 1020 x 307");
-        jLabel16.setForeground(new java.awt.Color(153, 153, 153));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -294,7 +296,7 @@ public class AdminExecutiveAddFacility extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -426,6 +428,7 @@ public class AdminExecutiveAddFacility extends javax.swing.JFrame {
 
     FileHandling fh = new FileHandling();
     AdminExecutive ae = new AdminExecutive();
+    private final Users user;
     
     private void setDefault() {
         String latestFacilityID = ae.getLatestID("facility.txt", "fct");
@@ -440,6 +443,7 @@ public class AdminExecutiveAddFacility extends javax.swing.JFrame {
         String fctName = facilityNameTF.getText();
         String booking = String.valueOf(bookingCB.isSelected());
         String payment = String.valueOf(paymentCB.isSelected());
+        String imageName = imageNameLabel.getText();
         
         String unitPrice = unitPriceTF.getText();
         
@@ -453,7 +457,7 @@ public class AdminExecutiveAddFacility extends javax.swing.JFrame {
         boolean check = ae.checkAddFacilityValidation(fctName, fctID);
         
         if(!fctName.equals("") && !startHour.equals("-PLEASE SELECT-") &&
-                !endHour.equals("-PLEASE SELECT-") && !imageNameLabel.equals("")) {
+                !endHour.equals("-PLEASE SELECT-") && !imageName.equals("")) {
             if(check) {
                 if(payment.equals("true") && (unitPrice.equals("") ||
                     unit.equals("-PLEASE SELECT-"))) {
@@ -478,7 +482,10 @@ public class AdminExecutiveAddFacility extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog (null, "New facility has been added!", 
                                         "ADD FACILITY", JOptionPane.INFORMATION_MESSAGE);
                         dispose();
-                        new AdminExecutiveFacilityManagement().setVisible(true); 
+                        if (AdminExecutiveFacilityManagement.adeFacility != null) {
+                            AdminExecutiveFacilityManagement.adeFacility.dispose();
+                        }
+                        new AdminExecutiveFacilityManagement(user).setVisible(true); 
                     }
                 } else if(payment.equals("false")) {
                     warningMessage.setText("");
@@ -496,7 +503,10 @@ public class AdminExecutiveAddFacility extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog (null, "New facility has been added!", 
                                         "ADD FACILITY", JOptionPane.INFORMATION_MESSAGE);
                         dispose();
-                        new AdminExecutiveFacilityManagement().setVisible(true);
+                        if (AdminExecutiveFacilityManagement.adeFacility != null) {
+                            AdminExecutiveFacilityManagement.adeFacility.dispose();
+                        }
+                        new AdminExecutiveFacilityManagement(user).setVisible(true);
                     }
                 }
             } else {
@@ -514,12 +524,10 @@ public class AdminExecutiveAddFacility extends javax.swing.JFrame {
             fh.deleteTempImage();
             // close Admin_add JFrame
             dispose();
-            new AdminExecutiveFacilityManagement().setVisible(true);
          // if Jlabel has no value   
         } else {
             // close Admin_add JFrame
             dispose();
-            new AdminExecutiveFacilityManagement().setVisible(true);
         }
     }//GEN-LAST:event_cancelBtActionPerformed
 
@@ -2680,7 +2688,7 @@ public class AdminExecutiveAddFacility extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminExecutiveAddFacility().setVisible(true);
+                new AdminExecutiveAddFacility(null).setVisible(true);
             }
         });
     }

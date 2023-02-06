@@ -269,9 +269,8 @@ public class ResetPasswordVerify extends javax.swing.JFrame {
             boolean valid = users.resetPasswordVerify(emailTF.getText(),
                 phoneNoTF.getText(), IDNoTF.getText());
             if (valid) {
-                
                 dispose();
-                new ResetPassword().setVisible(true);
+                new ResetPassword(emailTF.getText()).setVisible(true);
             } else {
                 warningMessage.setText("Sorry, record not found!");
                 emailTF.setText(""); phoneNoTF.setText(""); IDNoTF.setText("");

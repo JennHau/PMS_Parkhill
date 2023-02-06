@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 import pms_parkhill_residence.Validation;
 
 /**
@@ -20,9 +21,10 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public AdminExecutiveAddResidentTenant() {
+    public AdminExecutiveAddResidentTenant(Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
         tenantRB.setSelected(true);
         setDefault();
     }
@@ -135,7 +137,8 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
             }
         });
 
-        cancelBt.setText("BACK");
+        cancelBt.setText("CLOSE");
+        cancelBt.setActionCommand("CLOSE");
         cancelBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtActionPerformed(evt);
@@ -411,6 +414,7 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
 
     FileHandling fh = new FileHandling();
     AdminExecutive ae = new AdminExecutive();
+    private final Users user;
     
     private void setDefault() {
         String latestUserID = "";
@@ -477,7 +481,10 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog (null, "New user has been added!", 
                                     "USER REGISTRATION", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
-                    new AdminExecutiveResidentTManagement().setVisible(true);
+                    if (AdminExecutiveResidentTManagement.adeRTManagement != null) {
+                        AdminExecutiveResidentTManagement.adeRTManagement.dispose();
+                    }   
+                    new AdminExecutiveResidentTManagement(user).setVisible(true);
                 }
             } else {
                 warningMessage.setText("Invalid email or email existed!");
@@ -490,7 +497,6 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveResidentTManagement().setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
     private void firstNameTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstNameTFActionPerformed
@@ -1623,7 +1629,7 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminExecutiveAddResidentTenant().setVisible(true);
+                new AdminExecutiveAddResidentTenant(null).setVisible(true);
             }
         });
     }

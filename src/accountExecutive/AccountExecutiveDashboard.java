@@ -7,6 +7,7 @@ package accountExecutive;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import pms_parkhill_residence.HomePage;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -16,10 +17,13 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param user
      */
-    public AccountExecutiveDashboard() {
+    public AccountExecutiveDashboard(Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
+        setCurrentProfile();
     }
 
     /**
@@ -43,8 +47,6 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
         issueReceiptLabel = new javax.swing.JLabel();
         outstandingFeePanel = new javax.swing.JPanel();
         outstandingFeeLabel = new javax.swing.JLabel();
-        jPanel11 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
         logoutPanel = new javax.swing.JPanel();
         logoutLabel = new javax.swing.JLabel();
         viewProfilePanel = new javax.swing.JPanel();
@@ -53,7 +55,7 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
         issueStatementLabel = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        usernameLabel = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -269,30 +271,6 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel11.setBackground(new java.awt.Color(13, 24, 42));
-
-        jLabel9.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/notificationIcon.png"))); // NOI18N
-        jLabel9.setText(" NOTIFICATIONS");
-
-        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
-        jPanel11.setLayout(jPanel11Layout);
-        jPanel11Layout.setHorizontalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75))
-        );
-        jPanel11Layout.setVerticalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel11Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel9)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         logoutPanel.setBackground(new java.awt.Color(13, 24, 42));
         logoutPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -335,6 +313,9 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
 
         viewProfilePanel.setBackground(new java.awt.Color(13, 24, 42));
         viewProfilePanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                viewProfilePanelMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 viewProfilePanelMouseEntered(evt);
             }
@@ -425,13 +406,10 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
                             .addComponent(paymentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(issueReceiptPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(outstandingFeePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(viewProfilePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(issueStatementPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(logoutPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(logoutPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -451,9 +429,7 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
                 .addComponent(outstandingFeePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(issueStatementPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 257, Short.MAX_VALUE)
                 .addComponent(viewProfilePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(logoutPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -468,11 +444,11 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("ACCOUNT EXECUTIVE");
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
-        jLabel7.setText("USERNAME");
+        usernameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        usernameLabel.setForeground(new java.awt.Color(102, 102, 102));
+        usernameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        usernameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
+        usernameLabel.setText("USERNAME");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -480,10 +456,10 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(19, 19, 19))
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(54, 54, 54)
+                .addComponent(usernameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 688, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -491,7 +467,7 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
+                    .addComponent(usernameLabel))
                 .addContainerGap(9, Short.MAX_VALUE))
         );
 
@@ -532,6 +508,12 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private final Users user;
+    
+    private void setCurrentProfile() {
+        usernameLabel.setText(user.getFirstName() +" "+ user.getLastName());
+    }
+    
     private void issueInvoicePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoicePanelMouseEntered
         // TODO add your handling code here:
         issueInvoicePanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -540,7 +522,7 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
     private void issueInvoicePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoicePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueInvoice().setVisible(true);
+        new AccountExecutiveIssueInvoice(user).setVisible(true);
     }//GEN-LAST:event_issueInvoicePanelMouseClicked
 
     private void issueInvoiceLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoiceLabelMouseEntered
@@ -551,7 +533,7 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
     private void issueInvoiceLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoiceLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueInvoice().setVisible(true);
+        new AccountExecutiveIssueInvoice(user).setVisible(true);
     }//GEN-LAST:event_issueInvoiceLabelMouseClicked
 
     private void dashboardPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanelMouseEntered
@@ -571,6 +553,8 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
 
     private void viewProfileLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileLabelMouseClicked
         // TODO add your handling code here:
+        dispose();
+        new AccountExecutiveViewProfile(user).setVisible(true);
     }//GEN-LAST:event_viewProfileLabelMouseClicked
 
     private void logoutLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabelMouseEntered
@@ -603,7 +587,7 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
     private void paymentLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutivePayment().setVisible(true);
+        new AccountExecutivePayment(user).setVisible(true);
     }//GEN-LAST:event_paymentLabelMouseClicked
 
     private void paymentPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentPanelMouseEntered
@@ -614,7 +598,7 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
     private void paymentPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentPanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutivePayment().setVisible(true);
+        new AccountExecutivePayment(user).setVisible(true);
     }//GEN-LAST:event_paymentPanelMouseClicked
 
     private void issueReceiptLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptLabelMouseEntered
@@ -625,13 +609,13 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
     private void issueReceiptLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueReceipt().setVisible(true);
+        new AccountExecutiveIssueReceipt(user).setVisible(true);
     }//GEN-LAST:event_issueReceiptLabelMouseClicked
 
     private void issueReceiptPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptPanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueReceipt().setVisible(true);
+        new AccountExecutiveIssueReceipt(user).setVisible(true);
     }//GEN-LAST:event_issueReceiptPanelMouseClicked
 
     private void issueReceiptPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptPanelMouseDragged
@@ -651,7 +635,7 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
     private void outstandingFeeLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeeLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueOutstandingFee().setVisible(true);
+        new AccountExecutiveIssueOutstandingFee(user).setVisible(true);
     }//GEN-LAST:event_outstandingFeeLabelMouseClicked
 
     private void outstandingFeePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeePanelMouseEntered
@@ -662,7 +646,7 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
     private void outstandingFeePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueOutstandingFee().setVisible(true);
+        new AccountExecutiveIssueOutstandingFee(user).setVisible(true);
     }//GEN-LAST:event_outstandingFeePanelMouseClicked
 
     private void issueStatementLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementLabelMouseEntered
@@ -673,13 +657,13 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
     private void issueStatementLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueStatement().setVisible(true);
+        new AccountExecutiveIssueStatement(user).setVisible(true);
     }//GEN-LAST:event_issueStatementLabelMouseClicked
 
     private void issueStatementPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementPanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueStatement().setVisible(true);
+        new AccountExecutiveIssueStatement(user).setVisible(true);
     }//GEN-LAST:event_issueStatementPanelMouseClicked
 
     private void issueStatementPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementPanelMouseEntered
@@ -699,6 +683,12 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
     private void dashboardPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanelMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_dashboardPanelMouseClicked
+
+    private void viewProfilePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfilePanelMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new AccountExecutiveViewProfile(user).setVisible(true);
+    }//GEN-LAST:event_viewProfilePanelMouseClicked
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
@@ -765,7 +755,7 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutiveDashboard().setVisible(true);
+                new AccountExecutiveDashboard(null).setVisible(true);
             }
         });
     }
@@ -781,10 +771,7 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel issueStatementPanel;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JLabel logoutLabel;
@@ -793,6 +780,7 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel outstandingFeePanel;
     private javax.swing.JLabel paymentLabel;
     private javax.swing.JPanel paymentPanel;
+    private javax.swing.JLabel usernameLabel;
     private javax.swing.JLabel viewProfileLabel;
     private javax.swing.JPanel viewProfilePanel;
     // End of variables declaration//GEN-END:variables

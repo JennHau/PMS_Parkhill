@@ -63,12 +63,12 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="339" max="-2" attributes="0"/>
                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jLabel2" min="-2" pref="298" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="331" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -143,14 +143,23 @@
                                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                                   <Component id="squareFeetOption" min="-2" pref="98" max="-2" attributes="0"/>
                                               </Group>
-                                              <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                                  <Component id="unitPriceTF" alignment="0" max="32767" attributes="0"/>
-                                                  <Component id="jLabel13" alignment="0" min="-2" pref="163" max="-2" attributes="0"/>
-                                                  <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Group type="103" groupAlignment="0" attributes="0">
+                                                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                                          <Component id="unitPriceTF" alignment="0" max="32767" attributes="0"/>
+                                                          <Component id="jLabel13" alignment="0" min="-2" pref="163" max="-2" attributes="0"/>
+                                                          <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                      </Group>
+                                                      <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                                  <Group type="103" groupAlignment="0" attributes="0">
+                                                      <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="categoryCB" min="-2" pref="152" max="-2" attributes="0"/>
+                                                  </Group>
                                               </Group>
                                           </Group>
-                                          <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                                           <Component id="jSeparator1" min="-2" pref="11" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="103" alignment="0" groupAlignment="1" attributes="0">
@@ -182,7 +191,7 @@
                   <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                   <Component id="warningMessage" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
                           <Component id="jSeparator1" min="-2" pref="269" max="-2" attributes="0"/>
@@ -210,10 +219,16 @@
                           <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                           <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="unitPriceTF" min="-2" pref="34" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="unitPriceTF" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
+                              <Component id="categoryCB" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="modifyBt" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
                               <Component id="cancelBt" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
@@ -351,11 +366,11 @@
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="6" rowCount="0">
-                    <Column editable="false" title="NO" type="java.lang.Object"/>
                     <Column editable="false" title="FEE TYPE" type="java.lang.Object"/>
                     <Column editable="false" title="TARGET" type="java.lang.Object"/>
                     <Column editable="false" title="UNIT" type="java.lang.Object"/>
                     <Column editable="false" title="UNIT PRICE (RM)" type="java.lang.Object"/>
+                    <Column editable="false" title="CATEGORY" type="java.lang.Object"/>
                     <Column editable="false" title="ACTION" type="java.lang.Object"/>
                   </Table>
                 </Property>
@@ -424,6 +439,31 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteBtActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel7">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Yu Gothic UI" size="14" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="66" green="66" red="66" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Category:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="categoryCB">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="3">
+                <StringItem index="0" value="-PLEASE SELECT-"/>
+                <StringItem index="1" value="Utility"/>
+                <StringItem index="2" value="Pay In Advance"/>
+              </StringArray>
+            </Property>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

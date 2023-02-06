@@ -4,6 +4,7 @@
  */
 package pms_parkhill_residence;
 
+
 /**
  *
  * @author wongj
@@ -14,7 +15,8 @@ public class PMS_Parkhill_Residence {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        HomePage.main(new String[0]);
+        HomePage hp = new HomePage();
+        hp.main(new String[0]);
     }
     
 }

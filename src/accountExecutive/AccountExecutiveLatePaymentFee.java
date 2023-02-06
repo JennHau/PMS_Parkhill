@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -18,9 +19,10 @@ public class AccountExecutiveLatePaymentFee extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public AccountExecutiveLatePaymentFee(String invoiceNo) {
+    public AccountExecutiveLatePaymentFee(String invoiceNo, Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
         this.invoiceNo = invoiceNo;
         setFixData();
     }
@@ -240,6 +242,7 @@ public class AccountExecutiveLatePaymentFee extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private final Users user;
     private final String invoiceNo;
     
     private void lateChargeTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lateChargeTFActionPerformed
@@ -271,6 +274,10 @@ public class AccountExecutiveLatePaymentFee extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog (null, "Late payment fee has been charged!", 
                                 "LATE PAYMENT CHARGES", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
+                if (AccountExecutiveIssueOutstandingFee.aceOutstanding != null) {
+                    AccountExecutiveIssueOutstandingFee.aceOutstanding.dispose();
+                }
+                new AccountExecutiveIssueOutstandingFee(user).setVisible(true);
             }
         } else {
             warningLabel.setForeground(Color.red);
@@ -860,7 +867,7 @@ public class AccountExecutiveLatePaymentFee extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutiveLatePaymentFee(null).setVisible(true);
+                new AccountExecutiveLatePaymentFee(null, null).setVisible(true);
             }
         });
     }

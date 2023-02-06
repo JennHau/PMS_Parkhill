@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -19,9 +20,10 @@ public class AdminExecutiveAddComplaint extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public AdminExecutiveAddComplaint() {
+    public AdminExecutiveAddComplaint(Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
         setUnitComboBox();
         AutoCompleteDecorator.decorate(unitNoCB);
     }
@@ -50,7 +52,7 @@ public class AdminExecutiveAddComplaint extends javax.swing.JFrame {
         complaintDetailsTA = new javax.swing.JTextArea();
         jLabel13 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
         setBackground(new java.awt.Color(13, 24, 42));
         setResizable(false);
@@ -111,7 +113,7 @@ public class AdminExecutiveAddComplaint extends javax.swing.JFrame {
             }
         });
 
-        cancelBt.setText("BACK");
+        cancelBt.setText("CLOSE");
         cancelBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtActionPerformed(evt);
@@ -225,6 +227,7 @@ public class AdminExecutiveAddComplaint extends javax.swing.JFrame {
 
     FileHandling fh = new FileHandling();
     AdminExecutive ae = new AdminExecutive();
+    private final Users user;
     
     private void setUnitComboBox() {
         List<String> availableUnit = ae.extractAllProperties();
@@ -251,7 +254,10 @@ public class AdminExecutiveAddComplaint extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog (null, "Complaint has been filed!", 
                                     "FILE COMPLAINT", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
-                    new AdminExecutiveComplaintManagement().setVisible(true);
+                    if (AdminExecutiveComplaintManagement.adeComplaint != null) {
+                        AdminExecutiveComplaintManagement.adeComplaint.dispose();
+                    }   
+                    new AdminExecutiveComplaintManagement(user).setVisible(true);
                 }
         
     }//GEN-LAST:event_addBtActionPerformed
@@ -259,7 +265,7 @@ public class AdminExecutiveAddComplaint extends javax.swing.JFrame {
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveResidentTManagement().setVisible(true);
+        new AdminExecutiveResidentTManagement(user).setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
     private void complainerCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_complainerCBActionPerformed
@@ -2384,7 +2390,7 @@ public class AdminExecutiveAddComplaint extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminExecutiveAddComplaint().setVisible(true);
+                new AdminExecutiveAddComplaint(null).setVisible(true);
             }
         });
     }

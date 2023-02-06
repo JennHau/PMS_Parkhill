@@ -9,6 +9,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -19,9 +20,10 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public AccountExecutiveFeeTypeSetting() {
+    public AccountExecutiveFeeTypeSetting(Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
         setTable();
     }
 
@@ -56,6 +58,8 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
         squareFeetOption = new javax.swing.JCheckBox();
         warningMessage = new javax.swing.JLabel();
         deleteBt = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        categoryCB = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -79,12 +83,12 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(339, 339, 339)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(331, 331, 331))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -172,7 +176,7 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
 
             },
             new String [] {
-                "NO", "FEE TYPE", "TARGET", "UNIT", "UNIT PRICE (RM)", "ACTION"
+                "FEE TYPE", "TARGET", "UNIT", "UNIT PRICE (RM)", "CATEGORY", "ACTION"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -224,6 +228,12 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
             }
         });
 
+        jLabel7.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel7.setText("Category:");
+
+        categoryCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-PLEASE SELECT-", "Utility", "Pay In Advance" }));
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -248,12 +258,18 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
                                                 .addComponent(unitTF, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(18, 18, 18)
                                                 .addComponent(squareFeetOption, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(jLabel6)
-                                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                .addComponent(unitPriceTF, javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)))
-                                        .addGap(86, 86, 86)
+                                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                        .addComponent(unitPriceTF, javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING))
+                                                    .addComponent(jLabel6))
+                                                .addGap(18, 18, 18)
+                                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel7)
+                                                    .addComponent(categoryCB, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addGap(27, 27, 27)
                                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(feeTypeNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -275,7 +291,7 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addComponent(warningMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(78, 78, 78)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -300,10 +316,14 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
                         .addGap(0, 0, 0)
                         .addComponent(jLabel13)
                         .addGap(26, 26, 26)
-                        .addComponent(jLabel6)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(unitPriceTF, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(unitPriceTF, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(categoryCB, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(43, 43, 43)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(modifyBt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cancelBt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -330,6 +350,8 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private final Users user;
+    
     private void feeTypeNameTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_feeTypeNameTFActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_feeTypeNameTFActionPerformed
@@ -348,7 +370,8 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
         if(feeTypeNameTF.getText().equals("") || 
                 targetCB.getSelectedItem().equals("-PLEASE SELECT-") ||
                 (unitTF.getText().equals("") && sfcheck.equals("false"))
-                || unitPriceTF.getText().equals("")) {
+                || unitPriceTF.getText().equals("") ||
+                categoryCB.getSelectedItem().equals("-PLEASE SELECT-")) {
             warningMessage.setText("Please complete the form!");
         
         } else {
@@ -365,6 +388,8 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
             float unitP = Float.parseFloat(unitPriceTF.getText());
             String unitPrice = df.format(unitP);
             
+            String category = (String)categoryCB.getSelectedItem();
+            
             try {
                 int result = JOptionPane.showConfirmDialog(null,"Sure? You want to modify?",
                         "Modify Fee Type",
@@ -372,7 +397,7 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
                 if(result == JOptionPane.YES_OPTION){
                     AccountExecutive ae = new AccountExecutive();
-                    ae.modifyFeeTypes(feeTypesName, target, unit, unitPrice);
+                    ae.modifyFeeTypes(feeTypesName, target, unit, unitPrice, category);
                     setTable();
                     feeTypeNameTF.setText(""); targetCB.setSelectedIndex(0);
                     unitTF.setText(""); unitPriceTF.setText("");
@@ -390,7 +415,7 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        AccountExecutiveIssueInvoice aei = new AccountExecutiveIssueInvoice();
+        AccountExecutiveIssueInvoice aei = new AccountExecutiveIssueInvoice(user);
         aei.setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
@@ -457,7 +482,7 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog (null, "Fee Type has been deleted!", 
                                 "DELETE FEE TYPE", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
-                    new AccountExecutiveIssueInvoice().setVisible(true);
+                    new AccountExecutiveIssueInvoice(user).setVisible(true);
                 }
         } catch (Exception e) {
             e.printStackTrace();
@@ -474,10 +499,11 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
         
         if (column == 5) {
-            String feeTypeName = String.valueOf(tableModel.getValueAt(row, 1));
-            String target = String.valueOf(tableModel.getValueAt(row, 2));
-            String unit = String.valueOf(tableModel.getValueAt(row, 3));
-            String unitPrice = String.valueOf(tableModel.getValueAt(row, 4));
+            String feeTypeName = String.valueOf(tableModel.getValueAt(row, 0));
+            String target = String.valueOf(tableModel.getValueAt(row, 1));
+            String unit = String.valueOf(tableModel.getValueAt(row, 2));
+            String unitPrice = String.valueOf(tableModel.getValueAt(row, 3));
+            String category = String.valueOf(tableModel.getValueAt(row, 4));
             
             feeTypeNameTF.setText(feeTypeName);
             targetCB.setSelectedItem(target);
@@ -492,6 +518,7 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
             if (squareFeetOption.isSelected() == false) {
                 unitTF.setEnabled(true);
             }
+            categoryCB.setSelectedItem(category);
         }
         
     }//GEN-LAST:event_jTable1MouseClicked
@@ -515,8 +542,9 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
                 String target = feeTypesDetail[1];
                 String unit = feeTypesDetail[2];
                 String unitPrice = feeTypesDetail[3];
-                String tbData[] = {String.valueOf(i+1), feeType, target, unit,
-                    unitPrice, "SELECT"};
+                String category = feeTypesDetail[5];
+                String tbData[] = {feeType, target, unit,
+                    unitPrice, category, "SELECT"};
                 tableModel.addRow(tbData);
             }
             
@@ -814,13 +842,14 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutiveFeeTypeSetting().setVisible(true);
+                new AccountExecutiveFeeTypeSetting(null).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelBt;
+    private javax.swing.JComboBox<String> categoryCB;
     private javax.swing.JButton deleteBt;
     private javax.swing.JTextField feeTypeNameTF;
     private javax.swing.JLabel jLabel1;
@@ -831,6 +860,7 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;

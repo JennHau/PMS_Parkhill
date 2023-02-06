@@ -319,7 +319,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="cancelBt">
           <Properties>
-            <Property name="text" type="java.lang.String" value="BACK"/>
+            <Property name="text" type="java.lang.String" value="CLOSE"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelBtActionPerformed"/>

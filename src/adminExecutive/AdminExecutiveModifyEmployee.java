@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 import pms_parkhill_residence.Validation;
 
 /**
@@ -20,9 +21,10 @@ public class AdminExecutiveModifyEmployee extends javax.swing.JFrame {
      * Creates new form homePage
      * @param id
      */
-    public AdminExecutiveModifyEmployee(String id) {
+    public AdminExecutiveModifyEmployee(String id, Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
         this.id = id;
         setDefault();
     }
@@ -132,7 +134,7 @@ public class AdminExecutiveModifyEmployee extends javax.swing.JFrame {
             }
         });
 
-        cancelBt.setText("BACK");
+        cancelBt.setText("CLOSE");
         cancelBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtActionPerformed(evt);
@@ -353,6 +355,7 @@ public class AdminExecutiveModifyEmployee extends javax.swing.JFrame {
 
     FileHandling fh = new FileHandling();
     AdminExecutive ae = new AdminExecutive();
+    private final Users user;
     
     String id;
     
@@ -401,7 +404,6 @@ public class AdminExecutiveModifyEmployee extends javax.swing.JFrame {
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveEmployeeManagement().setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
     private void addBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtActionPerformed
@@ -437,7 +439,10 @@ public class AdminExecutiveModifyEmployee extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog (null, "Employee account has been modified!", 
                                         "MODIFY EMPLOYEE ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
-                    new AdminExecutiveEmployeeManagement().setVisible(true);
+                    if (AdminExecutiveEmployeeManagement.adeEmployee != null) {
+                        AdminExecutiveEmployeeManagement.adeEmployee.dispose();
+                    }
+                    new AdminExecutiveEmployeeManagement(user).setVisible(true);
                 }
                 
             } else {
@@ -473,7 +478,10 @@ public class AdminExecutiveModifyEmployee extends javax.swing.JFrame {
             JOptionPane.showMessageDialog (null, "Employee account has been deleted!", 
                                 "DELETE EMPLOYEE ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
             dispose();
-            new AdminExecutiveEmployeeManagement().setVisible(true);
+            if (AdminExecutiveEmployeeManagement.adeEmployee != null) {
+                AdminExecutiveEmployeeManagement.adeEmployee.dispose();
+            }
+            new AdminExecutiveEmployeeManagement(user).setVisible(true);
         }
     }//GEN-LAST:event_deleteBtActionPerformed
 
@@ -4610,7 +4618,7 @@ public class AdminExecutiveModifyEmployee extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminExecutiveModifyEmployee(null).setVisible(true);
+                new AdminExecutiveModifyEmployee(null, null).setVisible(true);
             }
         });
     }

@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -20,9 +21,10 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public AdminExecutiveAddUnit() {
+    public AdminExecutiveAddUnit(Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
         setTable();
     }
 
@@ -54,7 +56,7 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
         warningMessage = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
         setBackground(new java.awt.Color(13, 24, 42));
         setResizable(false);
@@ -134,7 +136,7 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
             }
         });
 
-        cancelBt.setText("BACK");
+        cancelBt.setText("CLOSE");
         cancelBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtActionPerformed(evt);
@@ -263,6 +265,7 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     FileHandling fh = new FileHandling();
+    private final Users user;
     
     private void unitNoTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unitNoTFActionPerformed
         // TODO add your handling code here:
@@ -278,8 +281,7 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
         String newUnitNo = unitNoTF.getText();
         String squareFoot = squareFootTF.getText();
         
-        if (typeCB.getSelectedIndex()!=0 && !newUnitNo.equals("") &&
-                !squareFoot.equals("")) {
+        if (!newUnitNo.equals("") && !squareFoot.equals("")) {
             warningMessage.setText("");
             AdminExecutive ae = new AdminExecutive();
             boolean check = ae.checkUnitAvailability(newUnitNo.toLowerCase());
@@ -307,7 +309,10 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog (null, "New unit has been added!", 
                                     "ADD PROPERTY UNIT", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
-                    new AdminExecutiveUnitManagement().setVisible(true);
+                    if (AdminExecutiveUnitManagement.adeUnitManage != null) {
+                        AdminExecutiveUnitManagement.adeUnitManage.dispose();
+                    }   
+                    new AdminExecutiveUnitManagement(user).setVisible(true);
                 }
                 
             } else {
@@ -321,8 +326,6 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        AdminExecutiveUnitManagement aei = new AdminExecutiveUnitManagement();
-        aei.setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
     private void typeCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeCBActionPerformed
@@ -900,7 +903,7 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminExecutiveAddUnit().setVisible(true);
+                new AdminExecutiveAddUnit(null).setVisible(true);
             }
         });
     }

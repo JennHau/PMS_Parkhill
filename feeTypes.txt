@@ -7,4 +7,4 @@ Water;Residential;Cubic Metres;0.57;01/11/2022;Utility;
 Water;Commercial;Cubic Metres;2.07;01/11/2022;Utility;
 Management Fee;Residential;Square Feet;0.30;01/11/2022;Pay In Advance;
 Management Fee;Commercial;Square Feet;0.33;01/11/2022;Pay In Advance;
-Rental Fee;Commercial;Square Feet;300.00;30/01/2023;
+Rental Fee;Commercial;Square Feet;300.00;04/02/2023;Pay In Advance;

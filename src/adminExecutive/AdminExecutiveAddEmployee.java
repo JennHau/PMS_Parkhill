@@ -9,6 +9,7 @@ import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 import pms_parkhill_residence.Validation;
 
 /**
@@ -20,9 +21,10 @@ public class AdminExecutiveAddEmployee extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public AdminExecutiveAddEmployee() {
+    public AdminExecutiveAddEmployee(Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
         setPositionCB();
     }
 
@@ -63,7 +65,7 @@ public class AdminExecutiveAddEmployee extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         genderCB = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
         setBackground(new java.awt.Color(13, 24, 42));
         setResizable(false);
@@ -136,7 +138,7 @@ public class AdminExecutiveAddEmployee extends javax.swing.JFrame {
             }
         });
 
-        cancelBt.setText("BACK");
+        cancelBt.setText("CLOSE");
         cancelBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtActionPerformed(evt);
@@ -203,9 +205,9 @@ public class AdminExecutiveAddEmployee extends javax.swing.JFrame {
         warningMessage.setForeground(new java.awt.Color(255, 0, 51));
         warningMessage.setPreferredSize(new java.awt.Dimension(138, 17));
 
+        jLabel9.setText("IDENTIFICATION NO:");
         jLabel9.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel9.setText("IDENTIFICATION NO:");
 
         identificationNoTF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -213,9 +215,9 @@ public class AdminExecutiveAddEmployee extends javax.swing.JFrame {
             }
         });
 
+        jLabel10.setText("GENDER:");
         jLabel10.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel10.setText("GENDER:");
 
         genderCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-PLEASE SELECT-", "Male", "Female" }));
 
@@ -355,6 +357,7 @@ public class AdminExecutiveAddEmployee extends javax.swing.JFrame {
 
     FileHandling fh = new FileHandling();
     AdminExecutive ae = new AdminExecutive();
+    private final Users user;
     
     private void userIDTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userIDTFActionPerformed
         // TODO add your handling code here:
@@ -378,7 +381,6 @@ public class AdminExecutiveAddEmployee extends javax.swing.JFrame {
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveEmployeeManagement().setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
     private void addBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtActionPerformed
@@ -413,7 +415,10 @@ public class AdminExecutiveAddEmployee extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog (null, "New employee account has been added!", 
                                         "ADD EMPLOYEE ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
-                    new AdminExecutiveEmployeeManagement().setVisible(true);
+                    if (AdminExecutiveEmployeeManagement.adeEmployee != null) {
+                        AdminExecutiveEmployeeManagement.adeEmployee.dispose();
+                    } 
+                    new AdminExecutiveEmployeeManagement(user).setVisible(true);
                 }
                 
             } else {
@@ -457,7 +462,7 @@ public class AdminExecutiveAddEmployee extends javax.swing.JFrame {
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveAddEmployeeType().setVisible(true);
+        new AdminExecutiveAddEmployeeType(user).setVisible(true);
     }//GEN-LAST:event_jLabel8MouseClicked
 
     private void identificationNoTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_identificationNoTFActionPerformed
@@ -2555,7 +2560,7 @@ public class AdminExecutiveAddEmployee extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminExecutiveAddEmployee().setVisible(true);
+                new AdminExecutiveAddEmployee(null).setVisible(true);
             }
         });
     }

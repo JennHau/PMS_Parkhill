@@ -1,0 +1,2 @@
+capitalAmount;allocateDate;
+450000.00;2022-11-01;

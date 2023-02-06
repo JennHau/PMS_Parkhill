@@ -20,9 +20,10 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
      * Creates new form homePage
      * @param userID
      */
-    public AdminExecutiveModifyResidentTenant(String userID) {
+    public AdminExecutiveModifyResidentTenant(String userID, Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
         this.userID = userID;
         tenantRB.setSelected(true);
         setDefault();
@@ -71,7 +72,7 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
         resetPassBt = new javax.swing.JToggleButton();
         unitNoTF = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
         setBackground(new java.awt.Color(13, 24, 42));
         setResizable(false);
@@ -138,7 +139,7 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
             }
         });
 
-        cancelBt.setText("BACK");
+        cancelBt.setText("CLOSE");
         cancelBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtActionPerformed(evt);
@@ -443,7 +444,8 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private String userID;
+    private final String userID;
+    private final Users user;
     
     FileHandling fh = new FileHandling();
     AdminExecutive ae = new AdminExecutive();
@@ -514,11 +516,14 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
                 if(result == JOptionPane.YES_OPTION){
                     Users users = new Users(userID, email, password, firstName,
                             lastName, idNo, gender, phoneNo, unitNo);
-                    users.modifyUserAccount();
+                    users.modifyOthersAccount();
                     JOptionPane.showMessageDialog (null, "User account has been modified!", 
                                     "MODIFY USER ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
-                    new AdminExecutiveResidentTManagement().setVisible(true);
+                    if (AdminExecutiveResidentTManagement.adeRTManagement != null) {
+                        AdminExecutiveResidentTManagement.adeRTManagement.dispose();
+                    }  
+                    new AdminExecutiveResidentTManagement(user).setVisible(true);
                 }
             } else {
                 warningMessage.setText("Invalid email or email existed!");
@@ -531,7 +536,6 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveResidentTManagement().setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
     private void firstNameTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstNameTFActionPerformed
@@ -622,7 +626,10 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
             JOptionPane.showMessageDialog (null, "User(s) has been deleted!", 
                             "DELETE USER ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
             dispose();
-            new AdminExecutiveResidentTManagement().setVisible(true);
+            if (AdminExecutiveResidentTManagement.adeRTManagement != null) {
+                AdminExecutiveResidentTManagement.adeRTManagement.dispose();
+            } 
+            new AdminExecutiveResidentTManagement(user).setVisible(true);
         }
     }//GEN-LAST:event_deleteBt1ActionPerformed
 
@@ -640,7 +647,7 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
 
             if(result == JOptionPane.YES_OPTION){
                 Users users = new Users();
-                users.resetPassword("Parkhill@1234", userIDTF.getText().toLowerCase());
+                users.resetPasswordtoDefault("Parkhill@1234", userIDTF.getText().toLowerCase());
                 resetPassBt.setEnabled(false);
                 JOptionPane.showMessageDialog (null, "Password Reset!", 
                                 "RESET PASSWORD", JOptionPane.INFORMATION_MESSAGE);
@@ -2735,14 +2742,13 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminExecutiveModifyResidentTenant(null).setVisible(true);
+                new AdminExecutiveModifyResidentTenant(null, null).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelBt;
-    private javax.swing.JButton deleteBt;
     private javax.swing.JButton deleteBt1;
     private javax.swing.JTextField emailTF;
     private javax.swing.JTextField firstNameTF;

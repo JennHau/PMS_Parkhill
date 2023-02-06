@@ -16,10 +16,12 @@ public class ResetPassword extends javax.swing.JFrame {
 
     /**
      * Creates new form HomePage
+     * @param email
      */
-    public ResetPassword() {
+    public ResetPassword(String email) {
         initComponents();
         setWindowIcon();
+        this.email = email;
     }
 
     /**
@@ -284,6 +286,8 @@ public class ResetPassword extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    String email;
+    
     private void jLabel9MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseEntered
         // TODO add your handling code here:
         jLabel9.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -307,7 +311,7 @@ public class ResetPassword extends javax.swing.JFrame {
                 if(check) {
                     warningMessage.setText("");
                     Users users = new Users();
-                    users.resetPassword(String.valueOf(newPasswordTF.getPassword()));
+                    users.resetPassword(String.valueOf(newPasswordTF.getPassword()), email);
                     JOptionPane.showMessageDialog (null, "Your password has been "
                             + "changed successfully.\nPlease log in to your account with your latest password.", 
                             "RESET PASSWORD", JOptionPane.INFORMATION_MESSAGE);
@@ -433,7 +437,7 @@ public class ResetPassword extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new ResetPassword().setVisible(true);
+                new ResetPassword(null).setVisible(true);
             }
         });
     }

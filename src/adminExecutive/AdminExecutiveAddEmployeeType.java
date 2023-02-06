@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Users;
 
 /**
  *
@@ -19,9 +20,10 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public AdminExecutiveAddEmployeeType() {
+    public AdminExecutiveAddEmployeeType(Users user) {
         initComponents();
         setWindowIcon();
+        this.user = user;
         setTable();
     }
 
@@ -136,7 +138,7 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
             }
         });
 
-        cancelBt.setText("BACK");
+        cancelBt.setText("CLOSE");
         cancelBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtActionPerformed(evt);
@@ -290,6 +292,7 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
     public String type;
     FileHandling fh = new FileHandling();
     AdminExecutive ae = new AdminExecutive();
+    private final Users user;
     
     private void employeeTypeTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeeTypeTFActionPerformed
         // TODO add your handling code here:
@@ -330,7 +333,7 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveAddEmployee().setVisible(true);
+        new AdminExecutiveAddEmployee(user).setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
     private void deleteBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtActionPerformed
@@ -1471,7 +1474,7 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminExecutiveAddEmployeeType().setVisible(true);
+                new AdminExecutiveAddEmployeeType(null).setVisible(true);
             }
         });
     }

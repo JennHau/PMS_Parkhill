@@ -273,8 +273,7 @@ public class ResidentTenant {
             }
             
             statementList.add(line);
-        }
-        
+        } 
         // change the paid invoice list to same data structure
         for (String eachInv : completedInvoice) {
             String[] invDet = eachInv.split(TF.sp);
@@ -288,10 +287,8 @@ public class ResidentTenant {
             for (String eachData : data) {
                 line = line + eachData + TF.sp;
             }
-            
             statementList.add(line);
-        }
-        
+        } 
         // Change the facility booking to same data structure
         ArrayList<String> bookIdList = new ArrayList<>();
         for (String eachBook : facilityBooking) {
@@ -321,7 +318,6 @@ public class ResidentTenant {
             }
         }
         
-        
         LocalDate firstDay = DTF.formatDate(DTF.changeFormatDate("01/" + monthNyear));
         LocalDate lastDay = firstDay.with(lastDayOfMonth());
         
@@ -329,12 +325,10 @@ public class ResidentTenant {
         for (String eachState : statementList) {
             String[] stateDet = eachState.split(TF.sp);
             LocalDate paymentDate = DTF.formatDate(stateDet[0]);
-            
             if ((paymentDate.isAfter(firstDay) || paymentDate.isEqual(firstDay)) && (paymentDate.isBefore(lastDay) || paymentDate.isEqual(lastDay))) {
                 monthStatement.add(eachState);
             }
         }
-        
         // change list to array
         String[] monStateList = monthStatement.toArray(String[]::new);
         
@@ -354,7 +348,6 @@ public class ResidentTenant {
                 }
             }
         }
-        
         ArrayList<String> dateList = new ArrayList<>();
         monthStatement = new ArrayList<>();
         
@@ -381,7 +374,6 @@ public class ResidentTenant {
                 monthStatement.add(stateItem);
             }
         }
-        
         return monthStatement;
     }
     

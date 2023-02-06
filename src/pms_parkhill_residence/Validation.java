@@ -39,9 +39,9 @@ public class Validation {
         
         for (int i = 1; i<userProfile.size(); i++) {
             String[] userInfo = userProfile.get(i).split(";");
-            String userID = userInfo[0];
+            String userID = userInfo[0].toLowerCase();
             String eEmail = userInfo[1].toLowerCase();
-            if (email.toLowerCase().equals(eEmail) && !userID.equals(exception)) {
+            if (email.toLowerCase().equals(eEmail) && !userID.equals(exception.toLowerCase())) {
                 return false;
             }
         } return true;
