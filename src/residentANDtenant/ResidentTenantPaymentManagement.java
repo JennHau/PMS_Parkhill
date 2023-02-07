@@ -52,7 +52,7 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
             
             double amount = RT.getTotalPricePerInvoice(itemID, incompleteInv);
 
-            String[] list = {String.valueOf(itemNo), itemID, itemDet, String.format("%.02f", amount)};
+            String[] list = {String.valueOf(itemNo), itemID.toUpperCase(), itemDet, String.format("%.02f", amount)};
 
             String combined = "";
             for (String data : list) {

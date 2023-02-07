@@ -776,7 +776,7 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
     private void registerBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBTNActionPerformed
         // TODO add your handling code here:
         complaintID = RT.getNewCompId();
-        complaintIdTF.setText(complaintID);
+        complaintIdTF.setText(complaintID.toUpperCase());
         compDetTA.setText("");
         compStatusTF.setText(Complaints.cptStatus.Pending.toString());
         
@@ -821,7 +821,7 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
         if (notFound) {
             String newInfo = this.complaintID + RT.TF.sp + user.getUserID() + RT.TF.sp +
                              compDes + RT.TF.sp + LocalDate.now() + RT.TF.sp + RT.DTF.formatTime(LocalTime.now().toString()) + RT.TF.sp +
-                             compStatus + RT.TF.sp + " " + RT.TF.sp + " " + RT.TF.sp;
+                             compStatus + RT.TF.sp + RT.TF.empty + RT.TF.sp + RT.TF.empty + RT.TF.sp;
             newCompData.add(newInfo);
         }
         

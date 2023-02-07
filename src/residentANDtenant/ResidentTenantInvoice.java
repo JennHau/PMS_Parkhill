@@ -77,7 +77,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
 
                 double totalAmount = RT.getTotalPricePerInvoice(invNo, incompList);
 
-                String[] tableData = {invNo, feeType, String.format("%.02f", totalAmount), "PAY"};
+                String[] tableData = {invNo.toUpperCase(), feeType, String.format("%.02f", totalAmount), "PAY"};
                 for (String eachData : tableData) {
                     incompletedLine = incompletedLine + eachData + RT.TF.sp;
                 }
@@ -110,7 +110,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
                 
                 double totalAmount = RT.getTotalPricePerInvoice(invNo, compList);
                 
-                String[] tableData = {payDet[0], feeType, String.format("%.02f", totalAmount), payDet[9], "VIEW"};
+                String[] tableData = {payDet[0].toUpperCase(), feeType, String.format("%.02f", totalAmount), payDet[9].toUpperCase(), "VIEW"};
                 for (String eachData : tableData) {
                     completedLine = completedLine + eachData + RT.TF.sp;
                 }

@@ -89,7 +89,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
                 String feeType = "Invoice - " + feeTypes.substring(0, feeTypes.length()-1);
                 double totalPrice = RT.getTotalPricePerInvoice(invoiceNo, receiptList);
                 String paidDate = String.valueOf(latestDate);
-                String[] data = {invoiceNo, feeType, String.format("%.02f", totalPrice), paidDate};
+                String[] data = {invoiceNo.toUpperCase(), feeType, String.format("%.02f", totalPrice), paidDate, "RECEIPT"};
 
                 for (String eachData : data) {
                     toAdd = toAdd + eachData + RT.TF.sp;
@@ -99,7 +99,10 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
             }
         }
         
-        payment.addAll(facilityPay);
+        for (String eachFac : facilityPay) {
+            String facDet = eachFac + "RECEIPT;";
+            payment.add(facDet);
+        }
         
         String[] payHist = payment.toArray(String[]::new);
         
@@ -263,7 +266,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "No.", "Item ID", "Item Description", "Amount Paid", "Paid Date", "Receipt"
+                "NO.", "ITEM ID", "ITEM DESCRIPTION", "AMOUNT PAID", "PAID DATE", "RECEIPT"
             }
         ));
         paymentHistoryTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -744,27 +747,29 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
         List<String> receiptFile = RT.fh.fileRead(RT.TF.receiptFile);
         List<String> bookingFile = RT.fh.fileRead(RT.TF.facilityBookingFile);
         
-        boolean notFound = true;
-        for (String eachReceipt : receiptFile) {
-            String[] recDet = eachReceipt.split(RT.TF.sp);
-            String recInvNo = recDet[0];
-            
-            if (recInvNo.equals(itemID)) {
-                notFound = false;
-                
-                RT.toInvoiceReceipt(user, recInvNo);
-                break;
-            }
-        }
-        
-        if (notFound) {
-            for (String eachBooking : bookingFile) {
-                String[] bookingDet = eachBooking.split(RT.TF.sp);
-                String bookingId = bookingDet[0];
-                
-                if (bookingId.equals(itemID)) {
-                    RT.toFacilityReceipt(user, bookingId);
+        if (itemID != null) {
+            boolean notFound = true;
+            for (String eachReceipt : receiptFile) {
+                String[] recDet = eachReceipt.split(RT.TF.sp);
+                String recInvNo = recDet[0];
+
+                if (recInvNo.equals(itemID)) {
+                    notFound = false;
+
+                    RT.toInvoiceReceipt(user, recInvNo);
                     break;
+                }
+            }
+
+            if (notFound) {
+                for (String eachBooking : bookingFile) {
+                    String[] bookingDet = eachBooking.split(RT.TF.sp);
+                    String bookingId = bookingDet[0];
+
+                    if (bookingId.equals(itemID.toLowerCase())) {
+                        RT.toFacilityReceipt(user, bookingId);
+                        break;
+                    }
                 }
             }
         }

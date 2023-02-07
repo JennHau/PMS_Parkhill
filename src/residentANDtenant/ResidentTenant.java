@@ -213,7 +213,7 @@ public class ResidentTenant {
                         String bookType = bookDet[2];
                         String totalPrice = bookDet[8];
                         String paidDate = bookDet[9];
-                        String[] data = {bookId, bookType, totalPrice, paidDate};
+                        String[] data = {bookId.toUpperCase(), bookType, totalPrice, paidDate};
                         for (String eachData : data) {
                             toAdd = toAdd + eachData + TF.sp;
                         }
@@ -265,7 +265,7 @@ public class ResidentTenant {
             String id = invDet[0];
             String type = invDet[2];
             String amount = invDet[7];
-            String[] data = {issuedDate, "Invoice", id + " " + type, amount, "-"};
+            String[] data = {issuedDate, "Invoice", id.toUpperCase() + " " + type, amount, "-"};
             
             String line = "";
             for (String eachData : data) {
@@ -281,7 +281,7 @@ public class ResidentTenant {
             String id = invDet[0];
             String type = invDet[2];
             String amount = invDet[7];
-            String[] data = {date, "Invoice Payment", id + " " + type + " - " + amount + " in excess payments.", "-", amount};
+            String[] data = {date, "Invoice Payment", id.toUpperCase() + " " + type + " - " + amount + " in excess payments.", "-", amount};
             
             String line = "";
             for (String eachData : data) {
@@ -299,8 +299,8 @@ public class ResidentTenant {
                 String date = bookDet[3];
                 String type = bookDet[1];
                 String amount = bookDet[2];
-                String[] data = {date, "Facility Booking", id + "-" + type, amount, "-"};
-                String[] data2 = {date, "Booking Payment", id + " - " + amount + " in excess payments.", "-", amount};
+                String[] data = {date, "Facility Booking", id.toUpperCase() + " - " + type, amount, "-"};
+                String[] data2 = {date, "Booking Payment", id.toUpperCase() + " - " + amount + " in excess payments.", "-", amount};
                 
                 String line = "";
                 for (String eachData : data) {

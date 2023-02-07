@@ -134,7 +134,7 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
 
             },
             new String [] {
-                "FEE TYPE", "ISSUE DATE", "CONSUMPTION", "UNIT", "UNIT PRICE (RM)", "PAY DATE", "TOTAL PRICE (RM)"
+                "FEE TYPE", "ISSUE DATE", "CONSUMPTION", "UNIT", "UNIT PRICE (RM)", "PAYER AND DATE", "TOTAL PRICE (RM)"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -836,14 +836,14 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
             if (compInv.equals(this.invoiceNo)) {
                 String compType = compDet[2];
                 if (feeList.contains(compType)) {
-                    String issueDate = compDet[9];
+                    String issueDate = compDet[11];
                     String consump = compDet[4];
                     String unit = compDet[5];
                     String unitPrice = compDet[6];
                     String totalPrice = compDet[7];
-                    String payDate = compDet[10];
+                    String payDate = compDet[9].toUpperCase() + " - " + compDet[10];
                     
-                    LocalDate eachDate = RT.DTF.formatDate2(payDate);
+                    LocalDate eachDate = RT.DTF.formatDate2(compDet[10]);
                     if (latestDate != null) {
                         if (eachDate.isAfter(latestDate)) {
                             latestDate = eachDate;

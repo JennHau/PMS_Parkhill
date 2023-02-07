@@ -731,6 +731,34 @@ public class BuildingExecutive extends Users{
         return jobList;
     }
     
+    public ArrayList getTableData(DefaultTableModel table) {
+        int tableColumnLength = table.getColumnCount();
+        int tableRowLength = table.getRowCount();
+        
+        ArrayList<String> tableData = new ArrayList<>();
+        
+        String header = "";
+        for (int colCount = 0; colCount < tableColumnLength; colCount++) {
+            String headerData = table.getColumnName(colCount);
+            header = header + headerData + TF.sp;
+        }
+        
+        tableData.add(header);
+        
+        for (int rowCount = 0; rowCount < tableRowLength; rowCount++) {
+            
+            String rowData = "";
+            for (int colCount = 0; colCount < tableColumnLength; colCount++) {
+                String eachData = table.getValueAt(rowCount, colCount).toString();
+                rowData = rowData + eachData + TF.sp;
+            }
+            
+            tableData.add(rowData);
+        }
+        
+        return tableData;
+    }
+    
     // Change Page Method
     public void toDashboard(JFrame frame, Users user) {
             BuildingExecutiveMainPage page;
@@ -810,7 +838,20 @@ public class BuildingExecutive extends Users{
         page.setVisible(true);
     }
     
+    public void toRepetitiveJob(Users user) {
+        BuildingExecutiveRepetitiveJobReports page = new BuildingExecutiveRepetitiveJobReports(user);
+        page.setVisible(true);
+    }
     
+    public void toAllReportsPage(Users user, String reportTitle, ArrayList tableData) {
+        BuildingExecutiveAllReportsPage page = new BuildingExecutiveAllReportsPage(user, reportTitle, tableData);
+        page.setVisible(true);
+    }
+    
+    public void toProfile(Users user) {
+        BuildingExecutiveViewProfile page = new BuildingExecutiveViewProfile(user);
+        page.setVisible(true);
+    }
 }
 
 enum cptStatus{

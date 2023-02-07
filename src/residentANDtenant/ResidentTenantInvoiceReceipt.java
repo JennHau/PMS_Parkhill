@@ -320,8 +320,8 @@ public class ResidentTenantInvoiceReceipt extends javax.swing.JFrame {
         
         RT.setTableRow(invRecTab, toReceipt);
         
-        invNoLabel.setText(invoiceNo);
-        unitNoLabel.setText(user.getUnitNo());
+        invNoLabel.setText(invoiceNo.toUpperCase());
+        unitNoLabel.setText(user.getUnitNo().toUpperCase());
         amountPaid.setText("RM" + String.format("%.02f", totalAmount));
         paymentDateLabel.setText(invoicePeriod);
     }

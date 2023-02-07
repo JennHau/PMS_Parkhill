@@ -56,7 +56,7 @@ public class Complaints {
             String complainerId = compDet[1];
             if (complainerId.equals(currentRTid)) {
                 String status = compDet[5];
-                String tableLine = compDet[0] + TF.sp + compDet[2] + TF.sp + compDet[3] + TF.sp + compDet[4] + TF.sp + compDet[5] + TF.sp;
+                String tableLine = compDet[0].toUpperCase() + TF.sp + compDet[2] + TF.sp + compDet[3] + TF.sp + compDet[4] + TF.sp + compDet[5] + TF.sp;
                 switch (status) {
                     case "Pending" -> pendingComp.add(tableLine);
                     case "Progressing" -> progressingComp.add(tableLine);

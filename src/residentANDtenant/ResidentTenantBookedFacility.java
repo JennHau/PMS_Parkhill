@@ -664,7 +664,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
                             status = "PLAYING";
                         }
                         
-                        String[] data = {bookingId, facilityName, bookingDate, status};
+                        String[] data = {bookingId.toUpperCase(), facilityName, bookingDate, status};
                 
                         String toAdd = "";
                         for (String eachData : data) {
@@ -677,7 +677,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
                 }
                 else {
                     if (bookingDateTime.isBefore(dateTimeNow) && bookingEndTime.isBefore(dateTimeNow)) {
-                        String[] data = {bookingId, facilityName, bookingDate, "RECEIPT"};
+                        String[] data = {bookingId.toUpperCase(), facilityName, bookingDate, "RECEIPT"};
                         
                         String toAdd = "";
                         for (String eachData : data) {
@@ -716,7 +716,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
                 String facilityID = RT.getFacilityId(bookingID);
 
                 fb.setFacilityDetails(facilityID);
-                RT.toManageBookedFacility(user, fb, bookingID, date);
+                RT.toManageBookedFacility(user, fb, bookingID.toLowerCase(), date);
                 
                 dispose();
             }

@@ -861,8 +861,8 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
     }
     
     private void setFixData() {
-        invoiceNoLabel.setText(invoiceNo);
-        unitNoLabel.setText(unitNo);
+        invoiceNoLabel.setText(invoiceNo.toUpperCase());
+        unitNoLabel.setText(unitNo.toUpperCase());
         totalLabel.setText("TOTAL: " + total);
     }
     
