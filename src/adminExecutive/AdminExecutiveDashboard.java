@@ -4,8 +4,15 @@
  */
 package adminExecutive;
 
+import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.List;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import pms_parkhill_residence.Dashboard;
+import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.HomePage;
 import pms_parkhill_residence.Users;
 
@@ -23,6 +30,7 @@ public class AdminExecutiveDashboard extends javax.swing.JFrame {
         setWindowIcon();
         this.user = user;
         setCurrentProfile();
+        setDefault();
     }
 
     /**
@@ -58,6 +66,26 @@ public class AdminExecutiveDashboard extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         usernameLabel = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
+        jLabel14 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        totalRsdUnitLabel = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        totalCmcUnitLabel = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        totalTntLabel = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        totalRsdLabel = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        annualComplaintPanel = new javax.swing.JPanel();
+        employeeTypePanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -516,18 +544,228 @@ public class AdminExecutiveDashboard extends javax.swing.JFrame {
                 .addContainerGap(9, Short.MAX_VALUE))
         );
 
-        jPanel6.setBackground(new java.awt.Color(226, 226, 226));
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+        jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel14.setText("DASHBOARD");
+        jLabel14.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jPanel6.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 27, 1001, 41));
+
+        jPanel2.setBackground(new java.awt.Color(13, 50, 79));
+
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(13, 24, 42));
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("RESIDENTIAL");
+
+        totalRsdUnitLabel.setFont(new java.awt.Font("MS PGothic", 1, 36)); // NOI18N
+        totalRsdUnitLabel.setForeground(new java.awt.Color(13, 50, 79));
+        totalRsdUnitLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        totalRsdUnitLabel.setText("50");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                    .addComponent(totalRsdUnitLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(totalRsdUnitLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                .addContainerGap())
         );
+
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(13, 24, 42));
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("COMMERCIAL");
+
+        totalCmcUnitLabel.setFont(new java.awt.Font("MS PGothic", 1, 36)); // NOI18N
+        totalCmcUnitLabel.setForeground(new java.awt.Color(13, 50, 79));
+        totalCmcUnitLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        totalCmcUnitLabel.setText("50");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                    .addComponent(totalCmcUnitLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel9)
+                .addGap(12, 12, 12)
+                .addComponent(totalCmcUnitLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("TOTAL PROPERTY UNIT");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        jPanel6.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 116, -1, -1));
+
+        jPanel7.setBackground(new java.awt.Color(13, 50, 79));
+
+        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(13, 24, 42));
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel10.setText("TENANT");
+
+        totalTntLabel.setFont(new java.awt.Font("MS PGothic", 1, 36)); // NOI18N
+        totalTntLabel.setForeground(new java.awt.Color(13, 50, 79));
+        totalTntLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        totalTntLabel.setText("50");
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                    .addComponent(totalTntLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(totalTntLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(13, 24, 42));
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setText("RESIDENT");
+
+        totalRsdLabel.setFont(new java.awt.Font("MS PGothic", 1, 36)); // NOI18N
+        totalRsdLabel.setForeground(new java.awt.Color(13, 50, 79));
+        totalRsdLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        totalRsdLabel.setText("50");
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                    .addComponent(totalRsdLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel11)
+                .addGap(12, 12, 12)
+                .addComponent(totalRsdLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("TOTAL USER");
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        jPanel6.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(547, 116, -1, -1));
+
+        jSeparator1.setBackground(new java.awt.Color(13, 50, 79));
+        jSeparator1.setForeground(new java.awt.Color(13, 50, 79));
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jPanel6.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(504, 166, 14, 75));
+
+        annualComplaintPanel.setLayout(new java.awt.BorderLayout());
+        jPanel6.add(annualComplaintPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(373, 340, 565, 247));
+
+        employeeTypePanel.setLayout(new java.awt.BorderLayout());
+        jPanel6.add(employeeTypePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(82, 340, 260, 247));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -554,9 +792,89 @@ public class AdminExecutiveDashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private final Users user;
+    Dashboard DB = new Dashboard();
+    FileHandling fh = new FileHandling();
     
     private void setCurrentProfile() {
         usernameLabel.setText(user.getFirstName() +" "+ user.getLastName());
+    }
+    
+    private void setDefault() {
+        String totalRsdUnit = String.valueOf(DB.countTotalUnit("Residential"));
+        String totalCmcUnit = String.valueOf(DB.countTotalUnit("Commercial"));
+        totalRsdUnitLabel.setText(totalRsdUnit);
+        totalCmcUnitLabel.setText(totalCmcUnit);
+        
+        String totalTnt = String.valueOf(DB.countTotalTenantResident("Tenant"));
+        String totalRsd = String.valueOf(DB.countTotalTenantResident("Resident"));
+        totalTntLabel.setText(totalTnt);
+        totalRsdLabel.setText(totalRsd);
+        
+        List<String> availableComplaint = fh.fileRead("complaints.txt");
+        List<String> availableYears = new ArrayList<>();
+        List<String> totalComplaints = new ArrayList<>();
+        
+        
+        // get available year
+        for(int i = 1; i<availableComplaint.size(); i++) {
+            String[] complaintDetails = availableComplaint.get(i).split(";");
+            String year = complaintDetails[3].substring(0, 4);
+            if(!availableYears.contains(year)) {
+                availableYears.add(year);
+            }
+        }
+        
+        //count total payment amount for each year
+        for(String year:availableYears) {
+            int total = 0;
+            
+            for(int i = 1; i<availableComplaint.size(); i++) {
+                String[] complaintDetails = availableComplaint.get(i).split(";");
+                String eYear = complaintDetails[3].substring(0, 4);
+
+                if(year.equals(eYear)) {
+                    total++;
+                }
+            } totalComplaints.add(String.valueOf(total));
+        } 
+        JFreeChart chart = DB.createBarChart(availableYears, totalComplaints,
+                "Annual Total Received Complaints", "Year", "Frequency");
+        //create chartPanel to display chart(graph)
+        ChartPanel barpChartPanel = new ChartPanel(chart);
+        annualComplaintPanel.removeAll();
+        annualComplaintPanel.add(barpChartPanel, BorderLayout.CENTER);
+        annualComplaintPanel.validate();
+        
+        
+        List<String> variables = new ArrayList<>();
+        List<Integer> frequency = new ArrayList<>();
+        
+        List<String> employeeType = fh.fileRead("employeeType.txt");
+        for(int i=1; i<employeeType.size(); i++) {
+            String[] details = employeeType.get(i).split(";");
+            String name = details[0];
+            variables.add(name);
+        }
+        
+        List<String> employeeList = fh.fileRead("employeeList.txt");
+        for(String eType:variables) {
+            int tFrequency = 0;
+            for(int i=1; i<employeeList.size(); i++) {
+                String[] details = employeeList.get(i).split(";");
+                String position = details[4];
+                if(eType.equals(position)) {
+                    tFrequency++;
+                }
+            }
+            frequency.add(tFrequency);
+        }
+        
+        JFreeChart piechart = DB.createPieChart(variables, frequency, "Types of Employee");
+        //create chartPanel to display chart(graph)
+        ChartPanel barChartPanel = new ChartPanel(piechart);
+        employeeTypePanel.removeAll();
+        employeeTypePanel.add(barChartPanel, BorderLayout.CENTER);
+        employeeTypePanel.validate();
     }
     
     private void unitManagePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unitManagePanelMouseEntered
@@ -860,25 +1178,45 @@ public class AdminExecutiveDashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel annualComplaintPanel;
     private javax.swing.JLabel complaintManagement;
     private javax.swing.JPanel complaintManagementPanel;
     private javax.swing.JLabel dashboardLabel;
     private javax.swing.JPanel dashboardPanel;
     private javax.swing.JLabel employeeManageLabel;
     private javax.swing.JPanel employeeManagePanel;
+    private javax.swing.JPanel employeeTypePanel;
     private javax.swing.JLabel facBookManageLabel;
     private javax.swing.JPanel facBookManagePanel;
     private javax.swing.JLabel facilityManageLabel;
     private javax.swing.JPanel facilityManagePanel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel logoutLabel;
     private javax.swing.JPanel logoutPanel;
     private javax.swing.JLabel rTManageLabel;
     private javax.swing.JPanel rTMangePanel;
+    private javax.swing.JLabel totalCmcUnitLabel;
+    private javax.swing.JLabel totalRsdLabel;
+    private javax.swing.JLabel totalRsdUnitLabel;
+    private javax.swing.JLabel totalTntLabel;
     private javax.swing.JLabel unitManageLabel;
     private javax.swing.JPanel unitManagePanel;
     private javax.swing.JLabel usernameLabel;
