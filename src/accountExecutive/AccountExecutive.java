@@ -1264,6 +1264,12 @@ public class AccountExecutive extends Users {
         } fh.fileWrite("statements.txt", false, newData);
     }
     
+    public String currencyFormat(float amount) {
+        DecimalFormat df = new DecimalFormat("0.00");
+        String unitPrice = df.format(amount);
+        return unitPrice;
+    }
+    
     public ArrayList getCurrentUnitPaymentHistory(String unitNo) {
         ArrayList<String> paymentHistory = new ArrayList<>();
         List<String> paymentFile = fh.fileRead("receipt.txt");
@@ -1417,4 +1423,5 @@ public class AccountExecutive extends Users {
         }
         return monthStatement;
     }
+    
 }
