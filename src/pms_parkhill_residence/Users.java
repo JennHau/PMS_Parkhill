@@ -76,6 +76,25 @@ public class Users{
         this.gender = gender;
         this.unitNo = unitNo;
     }
+    
+    public void Users (String userId) {
+        this.userID = userId;
+        List<String> userFile = fh.fileRead("userProfile.txt");
+        for (String eachUser : userFile) {
+            String[] userDetails = eachUser.split(";");
+            String id = userDetails[0];
+            if (this.userID.equals(id)) {
+                this.email = userDetails[1];
+                this.password = userDetails[2];
+                this.firstName = userDetails[3];
+                this.lastName = userDetails[4];
+                this.identificationNo = userDetails[5];
+                this.gender = userDetails[6];
+                this.phoneNo = userDetails[7];
+                this.unitNo = userDetails[8];
+            }
+        }
+    }
 
     /**
      * @return the userID

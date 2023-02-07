@@ -62,7 +62,7 @@ public class Dashboard {
     } 
     
     public JFreeChart createLineChart(List<String> x, List<String> y, String title, String xName, String yName){
-        //create dataset for the graph
+        // create dataset for the graph
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         // declare arrayList to store intake code
         
@@ -74,12 +74,12 @@ public class Dashboard {
         JFreeChart linechart = ChartFactory.createLineChart(title,xName,yName, 
                 dataset, PlotOrientation.VERTICAL, false,true,false);
         
-        //create plot object
+        // create plot object
         CategoryPlot lineCategoryPlot = linechart.getCategoryPlot();
-       // lineCategoryPlot.setRangeGridlinePaint(Color.BLUE);
+        // lineCategoryPlot.setRangeGridlinePaint(Color.BLUE);
         lineCategoryPlot.setBackgroundPaint(Color.white);
         
-        //create render object to change the moficy the line properties like color
+        // create render object to change the moficy the line properties like color
         LineAndShapeRenderer lineRenderer = (LineAndShapeRenderer) lineCategoryPlot.getRenderer();
         Color lineChartColor = new Color(13,50,79);
         lineRenderer.setSeriesPaint(0, lineChartColor);

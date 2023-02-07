@@ -12,6 +12,7 @@ import pms_parkhill_residence.CRUD;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import pms_parkhill_residence.Complaints;
 import pms_parkhill_residence.Facility;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.PMS_DateTimeFormatter;
@@ -27,6 +28,7 @@ public class ResidentTenant {
     TextFiles TF = new TextFiles();
     CRUD crud = new CRUD();
     PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
+    Complaints CP = new Complaints();
     
     public String[] visitorPassStatus = {"Registered", "Checked-In", "Checked-Out"};
     
@@ -37,29 +39,6 @@ public class ResidentTenant {
             String[] rowDetails = String.valueOf(arrayList.get(rowCount)).split(TF.sp);
             table.addRow(rowDetails);
         }
-    }
-    
-    public String getNewCompId() {
-        List<String> compFile = fh.fileRead(TF.complaintFiles);
-        
-        String compCode = "cmp";
-        int minimumId = 450000;
-        
-        boolean firstLine = true;
-        for (String eachComp : compFile) {
-            if (!firstLine) {
-                String[] compDet = eachComp.split(TF.sp);
-            
-                int compId = Integer.valueOf(compDet[0].replace(compCode, ""));
-                if (compId > minimumId) {
-                    minimumId = compId;
-                }
-            }
-            
-            firstLine = false;
-        }
-        
-        return compCode + (minimumId + 1);
     }
     
     public ArrayList getCurrentRTvisitor(String currentRTid) {
@@ -125,7 +104,7 @@ public class ResidentTenant {
         return issuedInvoice;
     }
     
-    public ArrayList getCurrentUnitInvoice(String unitNo) {
+    public ArrayList<ArrayList> getCurrentUnitInvoice(String unitNo) {
         ArrayList<ArrayList> combineList = new ArrayList<>();
         ArrayList<String> incompleteInvoice = new ArrayList<>();
         ArrayList<String> completeInvoice = new ArrayList<>();        

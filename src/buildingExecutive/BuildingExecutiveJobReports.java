@@ -38,7 +38,6 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
     private ArrayList getDateRange() {
         List<String> allJob = BE.getAllAssignedJob();
         
-        
         LocalDate earliestDate = null;
         LocalDate latestDate = null;
         boolean firstLine = true;

@@ -830,6 +830,7 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
                 }
             } totalAmount.add(ae.currencyFormat(total));
         }
+        
         JFreeChart linechart = DB.createLineChart(availableYears, totalAmount,
                 "Annual Total Received Payment", "Year", "Amount(RM)");
         //create chartPanel to display chart(graph)

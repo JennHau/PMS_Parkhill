@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import residentANDtenant.ResidentTenantMainPage;
+import vendor.VendorDashboard;
 
 /**
  *
@@ -260,7 +261,7 @@ public class SignInPage extends javax.swing.JFrame {
         switch (userCode) {
             case "bde" -> new BuildingExecutiveMainPage(user).setVisible(true);
             case "rsd" -> new ResidentTenantMainPage(user).setVisible(true);
-            case "vdr" -> new ResidentTenantMainPage(user).setVisible(true);
+            case "vdr" -> new VendorDashboard(user).setVisible(true);
             case "tnt" -> new ResidentTenantMainPage(user).setVisible(true);
             case "ace" -> new AccountExecutiveDashboard(user).setVisible(true);
             case "ade" -> new AdminExecutiveDashboard(user).setVisible(true);
