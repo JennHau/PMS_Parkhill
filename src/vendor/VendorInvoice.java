@@ -4,12 +4,13 @@
  */
 package vendor;
 
-import residentANDtenant.*;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
-import pms_parkhill_residence.Users;
+import javax.swing.table.TableCellRenderer;
 
 /**
  *
@@ -169,13 +170,73 @@ public class VendorInvoice extends javax.swing.JFrame {
         invoiceLabel = new javax.swing.JLabel();
         invoiceLine = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        invoiceIncompleteTable = new javax.swing.JTable();
+        invoiceIncompleteTable = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if(columnIndex == 3){
+                    componenet.setBackground(new Color(0,70,126));
+                    componenet.setForeground(new Color(255, 255, 255));
+                }
+
+                else {
+                    if (rowIndex%2 == 0) {
+                        componenet.setBackground(new Color(249, 249, 249));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    } else {
+                        componenet.setBackground(new Color(225, 225, 225));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    }
+
+                }
+
+                return componenet;
+            }
+
+        }
+
+        ;
         jLabel23 = new javax.swing.JLabel();
         paymentHistLabel = new javax.swing.JLabel();
         invoiceNoCB = new javax.swing.JComboBox<>();
         jLabel24 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        invoiceCompleteTable = new javax.swing.JTable();
+        invoiceCompleteTable = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if(columnIndex == 4){
+                    componenet.setBackground(new Color(0,70,126));
+                    componenet.setForeground(new Color(255, 255, 255));
+                }
+
+                else {
+                    if (rowIndex%2 == 0) {
+                        componenet.setBackground(new Color(249, 249, 249));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    } else {
+                        componenet.setBackground(new Color(225, 225, 225));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    }
+
+                }
+
+                return componenet;
+            }
+
+        }
+
+        ;
         jLabel25 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();

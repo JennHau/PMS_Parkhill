@@ -405,7 +405,7 @@
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
@@ -424,6 +424,9 @@
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="actionedComplaintsTableMouseClicked"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable()&#xa;{&#xa;    @Override&#xa;&#xa;    public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){&#xa;        Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);&#xa;&#xa;        Object value = getModel().getValueAt(rowIndex,columnIndex);&#xa;&#xa;        if(columnIndex == 5){&#xa;            componenet.setBackground(new Color(0,70,126));&#xa;            componenet.setForeground(new Color(255, 255, 255));&#xa;        }&#xa;&#xa;        else {&#xa;            if (rowIndex%2 == 0) {&#xa;                componenet.setBackground(new Color(249, 249, 249));&#xa;                componenet.setForeground(new Color (102, 102, 102));&#xa;            } else {&#xa;                componenet.setBackground(new Color(225, 225, 225));&#xa;                componenet.setForeground(new Color (102, 102, 102));&#xa;            }&#xa;&#xa;        }&#xa;&#xa;        return componenet;&#xa;    }&#xa;&#xa;}&#xa;"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

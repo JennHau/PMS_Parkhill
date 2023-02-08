@@ -4,12 +4,14 @@
  */
 package vendor;
 
-import residentANDtenant.*;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 /**
  *
@@ -51,7 +53,26 @@ public class VendorInvoicePayment extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        paymentTable = new javax.swing.JTable();
+        paymentTable = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                if (rowIndex%2 == 0) {
+                    componenet.setBackground(new Color(249, 249, 249));
+                    componenet.setForeground(new Color (102, 102, 102));
+                } else {
+                    componenet.setBackground(new Color(225, 225, 225));
+                    componenet.setForeground(new Color (102, 102, 102));
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         jLabel16 = new javax.swing.JLabel();
         invoiceNoLabel = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();

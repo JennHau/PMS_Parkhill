@@ -4,12 +4,14 @@
  */
 package residentANDtenant;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 
 
 /**
@@ -56,7 +58,26 @@ public class ResidentTenantStatementReport extends javax.swing.JFrame {
         doneBt = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        statementTable = new javax.swing.JTable();
+        statementTable = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                if (rowIndex%2 == 0) {
+                    componenet.setBackground(new Color(249, 249, 249));
+                    componenet.setForeground(new Color (102, 102, 102));
+                } else {
+                    componenet.setBackground(new Color(225, 225, 225));
+                    componenet.setForeground(new Color (102, 102, 102));
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         jLabel6 = new javax.swing.JLabel();
         periodLabel = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();

@@ -4,10 +4,13 @@
  */
 package residentANDtenant;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.FileHandling;
 
 /**
@@ -47,7 +50,37 @@ public class ResidentTenantFacilityBooking extends javax.swing.JFrame {
         jLabel18 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if(columnIndex == 6){
+                    componenet.setBackground(new Color(0,70,126));
+                    componenet.setForeground(new Color(255, 255, 255));
+                }
+
+                else {
+                    if (rowIndex%2 == 0) {
+                        componenet.setBackground(new Color(249, 249, 249));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    } else {
+                        componenet.setBackground(new Color(225, 225, 225));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    }
+
+                }
+
+                return componenet;
+            }
+
+        }
+
+        ;
         jLabel16 = new javax.swing.JLabel();
         searchTextField = new javax.swing.JTextField();
         clearbt = new javax.swing.JButton();

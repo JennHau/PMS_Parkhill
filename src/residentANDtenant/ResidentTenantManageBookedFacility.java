@@ -5,6 +5,8 @@
 package residentANDtenant;
 
 import adminExecutive.*;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.util.List;
@@ -13,8 +15,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.Facility;
-import pms_parkhill_residence.Users;
 
 /**
  *
@@ -64,9 +66,68 @@ public class ResidentTenantManageBookedFacility extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if(columnIndex == 4){
+                    componenet.setBackground(new Color(0,70,126));
+                    componenet.setForeground(new Color(255, 255, 255));
+                }
+
+                else {
+                    if (rowIndex%2 == 0) {
+                        componenet.setBackground(new Color(249, 249, 249));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    } else {
+                        componenet.setBackground(new Color(225, 225, 225));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    }
+
+                }
+
+                return componenet;
+            }
+
+        }
+
+        ;
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        jTable2 = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if(columnIndex == 3){
+                    componenet.setBackground(new Color(0,70,126));
+                    componenet.setForeground(new Color(255, 255, 255));
+                }
+
+                else {
+                    if (rowIndex%2 == 0) {
+                        componenet.setBackground(new Color(249, 249, 249));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    } else {
+                        componenet.setBackground(new Color(225, 225, 225));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    }
+
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         facilityTypeLabel = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
@@ -353,7 +414,7 @@ public class ResidentTenantManageBookedFacility extends javax.swing.JFrame {
                     .addComponent(bookBt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cancelBt2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(deleteBt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(13, 24, 42));
@@ -371,9 +432,9 @@ public class ResidentTenantManageBookedFacility extends javax.swing.JFrame {
             }
         });
 
+        dashBoardInnerTab.setText("Dashboard");
         dashBoardInnerTab.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         dashBoardInnerTab.setForeground(new java.awt.Color(255, 255, 255));
-        dashBoardInnerTab.setText("Dashboard");
         dashBoardInnerTab.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 dashBoardInnerTabMouseClicked(evt);
@@ -410,9 +471,9 @@ public class ResidentTenantManageBookedFacility extends javax.swing.JFrame {
             }
         });
 
+        paymentManagementInnerTab.setText("Payment Management");
         paymentManagementInnerTab.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         paymentManagementInnerTab.setForeground(new java.awt.Color(255, 255, 255));
-        paymentManagementInnerTab.setText("Payment Management");
         paymentManagementInnerTab.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 paymentManagementInnerTabMouseClicked(evt);
@@ -449,10 +510,10 @@ public class ResidentTenantManageBookedFacility extends javax.swing.JFrame {
             }
         });
 
+        facilityBookingInnerTab.setText("Facility Booking");
         facilityBookingInnerTab.setBackground(new java.awt.Color(13, 24, 42));
         facilityBookingInnerTab.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         facilityBookingInnerTab.setForeground(new java.awt.Color(255, 255, 255));
-        facilityBookingInnerTab.setText("Facility Booking");
         facilityBookingInnerTab.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 facilityBookingInnerTabMouseClicked(evt);
@@ -489,9 +550,9 @@ public class ResidentTenantManageBookedFacility extends javax.swing.JFrame {
             }
         });
 
+        complaintsInnerTab.setText("Complaints");
         complaintsInnerTab.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         complaintsInnerTab.setForeground(new java.awt.Color(255, 255, 255));
-        complaintsInnerTab.setText("Complaints");
         complaintsInnerTab.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 complaintsInnerTabMouseClicked(evt);
@@ -520,10 +581,10 @@ public class ResidentTenantManageBookedFacility extends javax.swing.JFrame {
 
         jPanel12.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel10.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
         jLabel10.setText("LOGOUT");
+        jLabel10.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
@@ -552,10 +613,10 @@ public class ResidentTenantManageBookedFacility extends javax.swing.JFrame {
             }
         });
 
-        jLabel12.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
         jLabel12.setText("VIEW PROFILE");
+        jLabel12.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel12MouseClicked(evt);
@@ -584,10 +645,10 @@ public class ResidentTenantManageBookedFacility extends javax.swing.JFrame {
 
         jPanel14.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel15.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
         jLabel15.setText("LOGOUT");
+        jLabel15.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
         jPanel14.setLayout(jPanel14Layout);
@@ -616,9 +677,9 @@ public class ResidentTenantManageBookedFacility extends javax.swing.JFrame {
             }
         });
 
+        visitorPassInnerTab.setText("Visitor Pass");
         visitorPassInnerTab.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         visitorPassInnerTab.setForeground(new java.awt.Color(255, 255, 255));
-        visitorPassInnerTab.setText("Visitor Pass");
         visitorPassInnerTab.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 visitorPassInnerTabMouseClicked(evt);

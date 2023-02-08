@@ -230,6 +230,7 @@
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0"/>
                 </Property>
+                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                 </Property>
@@ -237,6 +238,10 @@
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="statementTableMouseClicked"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable()&#xa;{&#xa;    @Override&#xa;&#xa;    public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){&#xa;        Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);&#xa;&#xa;        if (rowIndex%2 == 0) {&#xa;            componenet.setBackground(new Color(249, 249, 249));&#xa;            componenet.setForeground(new Color (102, 102, 102));&#xa;        } else {&#xa;            componenet.setBackground(new Color(225, 225, 225));&#xa;            componenet.setForeground(new Color (102, 102, 102));&#xa;        }&#xa;&#xa;        return componenet;&#xa;    }&#xa;&#xa;}&#xa;"/>
+                <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="BuildingExecutiveAllReportsPage_statementTable"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

@@ -4,6 +4,8 @@
  */
 package buildingExecutive;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -16,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.Complaints;
 import pms_parkhill_residence.FileHandling;
 
@@ -351,7 +354,36 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         jLabel23 = new javax.swing.JLabel();
         complaintIdTF = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        assignedJobTable = new javax.swing.JTable();
+        assignedJobTable = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if(columnIndex == 4){
+                    componenet.setBackground(new Color(0,70,126));
+                    componenet.setForeground(new Color(255, 255, 255));
+                }
+
+                else {
+                    if (rowIndex%2 == 0) {
+                        componenet.setBackground(new Color(249, 249, 249));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    } else {
+                        componenet.setBackground(new Color(225, 225, 225));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    }
+
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         jLabel18 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
         updateBTN = new javax.swing.JButton();

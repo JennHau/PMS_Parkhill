@@ -4,12 +4,15 @@
  */
 package buildingExecutive;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 /**
  *
@@ -129,7 +132,26 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
         pendingFeeLine2 = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jobTable = new javax.swing.JTable();
+        jobTable = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                if (rowIndex%2 == 0) {
+                    componenet.setBackground(new Color(249, 249, 249));
+                    componenet.setForeground(new Color (102, 102, 102));
+                } else {
+                    componenet.setBackground(new Color(225, 225, 225));
+                    componenet.setForeground(new Color (102, 102, 102));
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         jButton1 = new javax.swing.JButton();
         jLabel25 = new javax.swing.JLabel();
         employeeIdCB = new javax.swing.JComboBox<>();

@@ -9,17 +9,18 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.Complaints;
-import pms_parkhill_residence.Users;
 
 /**
  * 
@@ -103,6 +104,89 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         }
     }
         
+    private void setUnassignedTableDesign() {
+        // design for the table header
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setBackground(new Color(13, 24, 42));
+//        headerRenderer.setHorizontalAlignment(jLabel13.CENTER);
+        headerRenderer.setForeground(new Color(255, 255, 255));
+        for (int i = 0; i < unassignedEmplyTable.getModel().getColumnCount(); i++) {
+            unassignedEmplyTable.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
+        
+        // design for the table row
+        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
+//        rowRenderer.setHorizontalAlignment(jLabel13.CENTER);
+        for (int i = 0; i < unassignedEmplyTable.getModel().getColumnCount(); i++) {
+            if (i != 0) {
+                unassignedEmplyTable.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
+            }
+        }
+        
+        TableColumnModel columnModel = unassignedEmplyTable.getColumnModel();
+        // set first column width of the table to suitable value
+        columnModel.getColumn(0).setMaxWidth(150);
+        columnModel.getColumn(0).setMinWidth(150);
+        columnModel.getColumn(0).setPreferredWidth(150);
+
+        columnModel.getColumn(1).setMaxWidth(90);
+        columnModel.getColumn(1).setMinWidth(90);
+        columnModel.getColumn(1).setPreferredWidth(90);
+
+        columnModel.getColumn(2).setMaxWidth(120);
+        columnModel.getColumn(2).setMinWidth(120);
+        columnModel.getColumn(2).setPreferredWidth(120);
+
+        columnModel.getColumn(3).setMaxWidth(80);
+        columnModel.getColumn(3).setMinWidth(80);
+        columnModel.getColumn(3).setPreferredWidth(80);
+    }
+    
+    private void setAssignedTableDesign() {
+        // design for the table header
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setBackground(new Color(13, 24, 42));
+//        headerRenderer.setHorizontalAlignment(jLabel13.CENTER);
+        headerRenderer.setForeground(new Color(255, 255, 255));
+        for (int i = 0; i < assignedEmplyTable.getModel().getColumnCount(); i++) {
+            assignedEmplyTable.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
+        
+        // design for the table row
+        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
+//        rowRenderer.setHorizontalAlignment(jLabel13.CENTER);
+        for (int i = 0; i < assignedEmplyTable.getModel().getColumnCount(); i++) {
+            if (i != 0) {
+                assignedEmplyTable.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
+            }
+        }
+        
+        TableColumnModel columnModel = assignedEmplyTable.getColumnModel();
+        // set first column width of the table to suitable value
+        columnModel.getColumn(0).setMaxWidth(150);
+        columnModel.getColumn(0).setMinWidth(150);
+        columnModel.getColumn(0).setPreferredWidth(150);
+
+        columnModel.getColumn(1).setMaxWidth(90);
+        columnModel.getColumn(1).setMinWidth(90);
+        columnModel.getColumn(1).setPreferredWidth(90);
+
+        columnModel.getColumn(2).setMaxWidth(120);
+        columnModel.getColumn(2).setMinWidth(120);
+        columnModel.getColumn(2).setPreferredWidth(120);
+
+        columnModel.getColumn(3).setMaxWidth(80);
+        columnModel.getColumn(3).setMinWidth(80);
+        columnModel.getColumn(3).setPreferredWidth(80);
+
+        columnModel.getColumn(4).setMaxWidth(120);
+        columnModel.getColumn(4).setMinWidth(120);
+        columnModel.getColumn(4).setPreferredWidth(120);
+        
+        columnModel.getColumn(5).setMaxWidth(40);
+        columnModel.getColumn(5).setMinWidth(40);
+        columnModel.getColumn(5).setPreferredWidth(40);
+    }
     
     // To set the window Icon
     private void setWindowIcon() {
@@ -175,7 +259,39 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
                 Object value = getModel().getValueAt(rowIndex,columnIndex);
 
                 if(columnIndex == 3){
-                    componenet.setBackground(new Color(75, 162, 162));
+                    componenet.setBackground(new Color(0,70,126));
+                    componenet.setForeground(new Color(255, 255, 255));
+                }
+
+                else {
+                    if (rowIndex%2 == 0) {
+                        componenet.setBackground(new Color(249, 249, 249));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    } else {
+                        componenet.setBackground(new Color(225, 225, 225));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    }
+                }
+
+                return componenet;
+
+            }
+        };
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        assignedEmplyTable = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if(columnIndex == 5){
+                    componenet.setBackground(new Color(0,70,126));
                     componenet.setForeground(new Color(255, 255, 255));
                 }
 
@@ -193,12 +309,8 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
                 return componenet;
             }
 
-        };
-        jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        assignedEmplyTable = new javax.swing.JTable();
+        }
+        ;
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
@@ -470,10 +582,10 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
             }
         });
 
-        jLabel11.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
         jLabel11.setText("VIEW PROFILE");
+        jLabel11.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel11MouseClicked(evt);
@@ -979,7 +1091,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
             // TODO add your handling code here:
             BE.toPatrollingManagement(this, BE);
         } catch (IOException ex) {
-            Logger.getLogger(BuildingExecutiveJobManagement.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
         }
     }//GEN-LAST:event_jLabel6MouseClicked
 
@@ -989,7 +1101,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
             // TODO add your handling code here:
             BE.toPatrollingManagement(this, BE);
         } catch (IOException ex) {
-            Logger.getLogger(BuildingExecutiveJobManagement.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
         }
     }//GEN-LAST:event_jPanel9MouseClicked
 

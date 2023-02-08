@@ -4,6 +4,8 @@
  */
 package buildingExecutive;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.io.File;
@@ -16,9 +18,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 
 /**
  *
@@ -159,6 +163,68 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         remarksTA.setText("");
     }
     
+    private void setPatrollingScheduleTableDesign() {
+        // design for the table header
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setBackground(new Color(13, 24, 42));
+//        headerRenderer.setHorizontalAlignment(jLabel13.CENTER);
+        headerRenderer.setForeground(new Color(255, 255, 255));
+        for (int i = 0; i < patrollingScheduleTable.getModel().getColumnCount(); i++) {
+            patrollingScheduleTable.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
+        
+        // design for the table row
+        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
+//        rowRenderer.setHorizontalAlignment(jLabel13.CENTER);
+        for (int i = 0; i < patrollingScheduleTable.getModel().getColumnCount(); i++) {
+            if (i != 0) {
+                patrollingScheduleTable.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
+            }
+        }
+        
+        TableColumnModel columnModel = patrollingScheduleTable.getColumnModel();
+        // set first column width of the table to suitable value
+        columnModel.getColumn(0).setMaxWidth(150);
+        columnModel.getColumn(0).setMinWidth(150);
+        columnModel.getColumn(0).setPreferredWidth(150);
+
+        columnModel.getColumn(1).setMaxWidth(90);
+        columnModel.getColumn(1).setMinWidth(90);
+        columnModel.getColumn(1).setPreferredWidth(90);
+
+        columnModel.getColumn(2).setMaxWidth(120);
+        columnModel.getColumn(2).setMinWidth(120);
+        columnModel.getColumn(2).setPreferredWidth(120);
+
+        columnModel.getColumn(3).setMaxWidth(80);
+        columnModel.getColumn(3).setMinWidth(80);
+        columnModel.getColumn(3).setPreferredWidth(80);
+
+        columnModel.getColumn(4).setMaxWidth(120);
+        columnModel.getColumn(4).setMinWidth(120);
+        columnModel.getColumn(4).setPreferredWidth(120);
+        
+        columnModel.getColumn(5).setMaxWidth(40);
+        columnModel.getColumn(5).setMinWidth(40);
+        columnModel.getColumn(5).setPreferredWidth(40);
+        
+        columnModel.getColumn(6).setMaxWidth(40);
+        columnModel.getColumn(6).setMinWidth(40);
+        columnModel.getColumn(6).setPreferredWidth(40);
+        
+        columnModel.getColumn(7).setMaxWidth(40);
+        columnModel.getColumn(7).setMinWidth(40);
+        columnModel.getColumn(7).setPreferredWidth(40);
+        
+        columnModel.getColumn(8).setMaxWidth(40);
+        columnModel.getColumn(8).setMinWidth(40);
+        columnModel.getColumn(8).setPreferredWidth(40);
+        
+        columnModel.getColumn(9).setMaxWidth(40);
+        columnModel.getColumn(9).setMinWidth(40);
+        columnModel.getColumn(9).setPreferredWidth(40);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -174,7 +240,44 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel24 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        patrollingScheduleTable = new javax.swing.JTable();
+        patrollingScheduleTable = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if(columnIndex == 9){
+
+                    if(value.equals("ASSIGN")){
+                        componenet.setBackground(new Color(0,70,126));
+                        componenet.setForeground(new Color(255, 255, 255));
+                    }
+                    else {
+                        componenet.setBackground(new Color(255,0,0));
+                        componenet.setForeground(new Color(255, 255, 255));
+                    }
+
+                }
+
+                else {
+                    if (rowIndex%2 == 0) {
+                        componenet.setBackground(new Color(249, 249, 249));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    } else {
+                        componenet.setBackground(new Color(225, 225, 225));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    }
+
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         jLabel26 = new javax.swing.JLabel();
         removeEmpBTN = new javax.swing.JButton();
         jLabel30 = new javax.swing.JLabel();
@@ -611,9 +714,9 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Dashboard");
         jLabel1.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Dashboard");
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel1MouseClicked(evt);
@@ -647,9 +750,9 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             }
         });
 
+        jobAssignationInnerTab.setText("Job Assignation");
         jobAssignationInnerTab.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jobAssignationInnerTab.setForeground(new java.awt.Color(255, 255, 255));
-        jobAssignationInnerTab.setText("Job Assignation");
         jobAssignationInnerTab.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jobAssignationInnerTabMouseClicked(evt);
@@ -683,10 +786,10 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setText("Complaints");
         jLabel5.setBackground(new java.awt.Color(13, 24, 42));
         jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Complaints");
         jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel5MouseClicked(evt);
@@ -720,9 +823,9 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             }
         });
 
+        jLabel8.setText("Reports");
         jLabel8.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("Reports");
         jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel8MouseClicked(evt);
@@ -748,10 +851,10 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
         jPanel12.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel10.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
         jLabel10.setText("LOGOUT");
+        jLabel10.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
@@ -780,10 +883,10 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             }
         });
 
-        jLabel11.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
         jLabel11.setText("VIEW PROFILE");
+        jLabel11.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel11MouseClicked(evt);
@@ -817,9 +920,9 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setText("Patrolling Management");
         jLabel6.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Patrolling Management");
         jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel6MouseClicked(evt);

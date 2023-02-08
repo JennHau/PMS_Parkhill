@@ -4,6 +4,8 @@
  */
 package buildingExecutive;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.io.IOException;
@@ -13,7 +15,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.Complaints;
 import pms_parkhill_residence.FileHandling;
 
@@ -120,6 +125,94 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         BE.setTableRow(actionedComplaintsTab, statusComplaints);
     }
     
+    private void setNewCompTableDesign() {
+        // design for the table header
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setBackground(new Color(13, 24, 42));
+//        headerRenderer.setHorizontalAlignment(jLabel13.CENTER);
+        headerRenderer.setForeground(new Color(255, 255, 255));
+        for (int i = 0; i < newComplaintsTable.getModel().getColumnCount(); i++) {
+            newComplaintsTable.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
+        
+        // design for the table row
+        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
+//        rowRenderer.setHorizontalAlignment(jLabel13.CENTER);
+        for (int i = 0; i < newComplaintsTable.getModel().getColumnCount(); i++) {
+            if (i != 0) {
+                newComplaintsTable.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
+            }
+        }
+        
+        TableColumnModel columnModel = newComplaintsTable.getColumnModel();
+        // set first column width of the table to suitable value
+        columnModel.getColumn(0).setMaxWidth(150);
+        columnModel.getColumn(0).setMinWidth(150);
+        columnModel.getColumn(0).setPreferredWidth(150);
+
+        columnModel.getColumn(1).setMaxWidth(90);
+        columnModel.getColumn(1).setMinWidth(90);
+        columnModel.getColumn(1).setPreferredWidth(90);
+
+        columnModel.getColumn(2).setMaxWidth(120);
+        columnModel.getColumn(2).setMinWidth(120);
+        columnModel.getColumn(2).setPreferredWidth(120);
+
+        columnModel.getColumn(3).setMaxWidth(80);
+        columnModel.getColumn(3).setMinWidth(80);
+        columnModel.getColumn(3).setPreferredWidth(80);
+
+        columnModel.getColumn(4).setMaxWidth(120);
+        columnModel.getColumn(4).setMinWidth(120);
+        columnModel.getColumn(4).setPreferredWidth(120);
+    }
+    
+    private void setActionedCompTableDesign() {
+        // design for the table header
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setBackground(new Color(13, 24, 42));
+//        headerRenderer.setHorizontalAlignment(jLabel13.CENTER);
+        headerRenderer.setForeground(new Color(255, 255, 255));
+        for (int i = 0; i < newComplaintsTable.getModel().getColumnCount(); i++) {
+            newComplaintsTable.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
+        
+        // design for the table row
+        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
+//        rowRenderer.setHorizontalAlignment(jLabel13.CENTER);
+        for (int i = 0; i < newComplaintsTable.getModel().getColumnCount(); i++) {
+            if (i != 0) {
+                newComplaintsTable.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
+            }
+        }
+        
+        TableColumnModel columnModel = newComplaintsTable.getColumnModel();
+        // set first column width of the table to suitable value
+        columnModel.getColumn(0).setMaxWidth(150);
+        columnModel.getColumn(0).setMinWidth(150);
+        columnModel.getColumn(0).setPreferredWidth(150);
+
+        columnModel.getColumn(1).setMaxWidth(90);
+        columnModel.getColumn(1).setMinWidth(90);
+        columnModel.getColumn(1).setPreferredWidth(90);
+
+        columnModel.getColumn(2).setMaxWidth(120);
+        columnModel.getColumn(2).setMinWidth(120);
+        columnModel.getColumn(2).setPreferredWidth(120);
+
+        columnModel.getColumn(3).setMaxWidth(80);
+        columnModel.getColumn(3).setMinWidth(80);
+        columnModel.getColumn(3).setPreferredWidth(80);
+
+        columnModel.getColumn(4).setMaxWidth(120);
+        columnModel.getColumn(4).setMinWidth(120);
+        columnModel.getColumn(4).setPreferredWidth(120);
+        
+        columnModel.getColumn(5).setMaxWidth(40);
+        columnModel.getColumn(5).setMinWidth(40);
+        columnModel.getColumn(5).setPreferredWidth(40);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -142,7 +235,36 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         newComplaintsTable = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        actionedComplaintsTable = new javax.swing.JTable();
+        actionedComplaintsTable = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if(columnIndex == 5){
+                    componenet.setBackground(new Color(0,70,126));
+                    componenet.setForeground(new Color(255, 255, 255));
+                }
+
+                else {
+                    if (rowIndex%2 == 0) {
+                        componenet.setBackground(new Color(249, 249, 249));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    } else {
+                        componenet.setBackground(new Color(225, 225, 225));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    }
+
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         jLabel18 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jTextField1 = new javax.swing.JTextField();
@@ -316,6 +438,7 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
             actionedComplaintsTable.getColumnModel().getColumn(1).setResizable(false);
             actionedComplaintsTable.getColumnModel().getColumn(2).setResizable(false);
             actionedComplaintsTable.getColumnModel().getColumn(3).setResizable(false);
+            actionedComplaintsTable.getColumnModel().getColumn(4).setResizable(false);
             actionedComplaintsTable.getColumnModel().getColumn(5).setResizable(false);
         }
 

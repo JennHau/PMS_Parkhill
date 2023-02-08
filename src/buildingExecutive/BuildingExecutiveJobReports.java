@@ -2,15 +2,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
+
 package buildingExecutive;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -211,6 +217,60 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
         
         BE.setTableRow(jobTab, dateJobs);
     }
+    
+    private void setJobReportsTableDesign() {
+        // design for the table header
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setBackground(new Color(13, 24, 42));
+//        headerRenderer.setHorizontalAlignment(jLabel13.CENTER);
+        headerRenderer.setForeground(new Color(255, 255, 255));
+        for (int i = 0; i < jobTable.getModel().getColumnCount(); i++) {
+            jobTable.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
+        
+        // design for the table row
+        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
+//        rowRenderer.setHorizontalAlignment(jLabel13.CENTER);
+        for (int i = 0; i < jobTable.getModel().getColumnCount(); i++) {
+            if (i != 0) {
+                jobTable.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
+            }
+        }
+        
+        TableColumnModel columnModel = jobTable.getColumnModel();
+        // set first column width of the table to suitable value
+        columnModel.getColumn(0).setMaxWidth(150);
+        columnModel.getColumn(0).setMinWidth(150);
+        columnModel.getColumn(0).setPreferredWidth(150);
+
+        columnModel.getColumn(1).setMaxWidth(90);
+        columnModel.getColumn(1).setMinWidth(90);
+        columnModel.getColumn(1).setPreferredWidth(90);
+
+        columnModel.getColumn(2).setMaxWidth(120);
+        columnModel.getColumn(2).setMinWidth(120);
+        columnModel.getColumn(2).setPreferredWidth(120);
+
+        columnModel.getColumn(3).setMaxWidth(80);
+        columnModel.getColumn(3).setMinWidth(80);
+        columnModel.getColumn(3).setPreferredWidth(80);
+
+        columnModel.getColumn(4).setMaxWidth(120);
+        columnModel.getColumn(4).setMinWidth(120);
+        columnModel.getColumn(4).setPreferredWidth(120);
+        
+        columnModel.getColumn(5).setMaxWidth(40);
+        columnModel.getColumn(5).setMinWidth(40);
+        columnModel.getColumn(5).setPreferredWidth(40);
+        
+        columnModel.getColumn(6).setMaxWidth(40);
+        columnModel.getColumn(6).setMinWidth(40);
+        columnModel.getColumn(6).setPreferredWidth(40);
+        
+        columnModel.getColumn(7).setMaxWidth(40);
+        columnModel.getColumn(7).setMinWidth(40);
+        columnModel.getColumn(7).setPreferredWidth(40);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -234,7 +294,26 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
         jLabel24 = new javax.swing.JLabel();
         monthCB = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jobTable = new javax.swing.JTable();
+        jobTable = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                if (rowIndex%2 == 0) {
+                    componenet.setBackground(new Color(249, 249, 249));
+                    componenet.setForeground(new Color (102, 102, 102));
+                } else {
+                    componenet.setBackground(new Color(225, 225, 225));
+                    componenet.setForeground(new Color (102, 102, 102));
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         jButton1 = new javax.swing.JButton();
         jLabel25 = new javax.swing.JLabel();
         employeeIdCB = new javax.swing.JComboBox<>();
