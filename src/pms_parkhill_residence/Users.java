@@ -13,7 +13,6 @@ import java.util.List;
  * @author wongj
  */
 public class Users{
-    private Users user;
     private String userID;
     private String firstName;
     private String lastName;
@@ -22,30 +21,9 @@ public class Users{
     private String phoneNo;
     private String identificationNo;
     private String gender;
-    private String unitNo;
     FileHandling fh = new FileHandling();
     
     public Users() {}
-    
-    //Constructor for non-residents
-    public Users(String userId){
-        userID = userId;
-        List<String> userFile = fh.fileRead("userProfile.txt");
-        for (String eachUser : userFile) {
-            String[] userDetails = eachUser.split(";");
-            String id = userDetails[0];
-            if (userID.equals(id)) {
-                email = userDetails[1];
-                password = userDetails[2];
-                firstName = userDetails[3];
-                lastName = userDetails[4];
-                identificationNo = userDetails[5];
-                gender = userDetails[6];
-                phoneNo = userDetails[7];
-                unitNo = userDetails[8];
-            }
-        }
-    }
     
     //Constructor for non-redidents
     public Users(String userID, String email, String password, String firstName,
@@ -59,22 +37,6 @@ public class Users{
         this.phoneNo = phoneNo;
         this.identificationNo = identificationNo;
         this.gender = gender;
-        this.unitNo = "-";
-    }
-
-    //Constructor for redidents/tenants/vendors
-    public Users(String userID, String email, String password, String firstName,
-                 String lastName, String identificationNo, String gender, String phoneNo, 
-                 String unitNo) { 
-        this.userID = userID;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.phoneNo = phoneNo;
-        this.identificationNo = identificationNo;
-        this.gender = gender;
-        this.unitNo = unitNo;
     }
 
     /**
@@ -188,62 +150,8 @@ public class Users{
     public void setGender(String gender) {
         this.gender = gender;
     }
-
-    /**
-     * @return the unitNo
-     */
-    public String getUnitNo() {
-        return unitNo;
-    }
-
-    /**
-     * @param unitNo the unitNo to set
-     */
-    public void setUnitNo(String unitNo) {
-        this.unitNo = unitNo;
-    }
     
-//    public boolean login(String email, String password) throws IOException {
-//        List<String> userProfile = fh.fileRead("userProfile.txt");
-//        String[] userProfileArray = new String[userProfile.size()];
-//        userProfile.toArray(userProfileArray);
-//        
-//        // declare username_lst arrayList to store username in text file
-//        ArrayList<String> email_lst = new ArrayList<String>();
-//        // declare password_lst arrayList to store password in text file
-//        ArrayList<String> password_lst = new ArrayList<String>();
-//        // declare repeatedPosition arrayList to store the repeated password index in text file
-//        ArrayList<Integer> repeatedPosition = new ArrayList<Integer>();
-//        
-//        // extract data from text file
-//        for (int i = 1; i<userProfile.size(); i++){
-//            String[] userInfo = userProfileArray[i].split(";");
-//            String email_temp = userInfo[1];
-//            String password_temp = userInfo[2];
-//            email_lst.add(email_temp);
-//            password_lst.add(password_temp);
-//        } 
-//
-//        // scan for repeated password
-//        for (int i = 0; i < password_lst.size(); i++) {
-//            if (password_lst.get(i).equals(password)) {
-//                // add index of repeated password to repeatedPosition arrayList
-//                repeatedPosition.add(i);
-//            } 
-//        }
-//        // if username from text field contains in arrayList 
-//        if (email_lst.contains(email) && password_lst.contains(password) &&
-//                // and password index in password_lst contains in repeatedPosition arrayList
-//                repeatedPosition.contains(password_lst.indexOf(password))) {
-//            setCurrentSession(email);
-//            // if password from text field contains in arrayList
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-    
-    public Users login(String email, String password) throws IOException {
+    public String[] login(String email, String password) throws IOException {
         List<String> userProfile = fh.fileRead("userProfile.txt");
         for (String eachUser : userProfile){
             String[] userDet = eachUser.split(";");
@@ -251,43 +159,11 @@ public class Users{
             if (userEmail.equals(email)) {
                 String userPass = userDet[2];
                 if (userPass.equals(password)) {
-                    user = new Users(userDet[0]);
-                    return user;
+                    return userDet;
                 }
             }
         }
         return null;
-    }
-    
-    public void userRole(String email) throws IOException {
-        List<String> userProfile = fh.fileRead("userProfile.txt");
-        String[] userProfileArray = new String[userProfile.size()];
-        userProfile.toArray(userProfileArray);
-        
-        String userID = "";
-        for (int i = 1; i<userProfile.size(); i++){
-            String[] userInfo = userProfileArray[i].split(";");
-            String userID_temp = userInfo[0];
-            String email_temp = userInfo[1];
-            if (email.equals(email_temp)) {
-                userID = userID_temp;
-            }
-        } 
-        if(userID.startsWith("bdm")) {
-            
-        } else if(userID.startsWith("ace")) {
-            
-        } else if(userID.startsWith("ade")) {
-            
-        } else if(userID.startsWith("rsd")) {
-            new OwnerMainPage().setVisible(true);
-        } else if(userID.startsWith("vdr")) {
-            
-        } else if(userID.startsWith("scg")) {
-            
-        } else if(userID.startsWith("vst")) {
-            
-        }
     }
     
     public void setCurrentSession(String email) {
@@ -392,65 +268,65 @@ public class Users{
         fh.fileWrite("userProfile.txt", false, newData);
     }
     
-    public void setAllUserData(String userID) {
-        List<String> userProfile = fh.fileRead("userProfile.txt");
-        String[] userProfileArray = new String[userProfile.size()];
-        userProfile.toArray(userProfileArray);
-        
-        for (int i = 0; i<userProfile.size(); i++) {
-            String[] userInfo2 = userProfileArray[i].split(";");
-            String userID_temp = userInfo2[0];
-            String eEmail = userInfo2[1];
-            String eFirstName = userInfo2[3];
-            String eLastName = userInfo2[4];
-            String eIdentificationNo = userInfo2[5];
-            String eGender = userInfo2[6];
-            String ePhoneNo = userInfo2[7];
-            String eUnitNo = userInfo2[8];
-            
-            if (userID_temp.equals(userID.toLowerCase())) {
-                this.userID = userID;
-                this.firstName = eFirstName;
-                this.lastName = eLastName;
-                this.email = eEmail;
-                this.phoneNo = ePhoneNo;
-                this.identificationNo = eIdentificationNo;
-                this.gender = eGender;
-                this.unitNo = eUnitNo;
-            }
-        }
-    }
+//    public void setAllUserData(String userID) {
+//        List<String> userProfile = fh.fileRead("userProfile.txt");
+//        String[] userProfileArray = new String[userProfile.size()];
+//        userProfile.toArray(userProfileArray);
+//        
+//        for (int i = 0; i<userProfile.size(); i++) {
+//            String[] userInfo2 = userProfileArray[i].split(";");
+//            String userID_temp = userInfo2[0];
+//            String eEmail = userInfo2[1];
+//            String eFirstName = userInfo2[3];
+//            String eLastName = userInfo2[4];
+//            String eIdentificationNo = userInfo2[5];
+//            String eGender = userInfo2[6];
+//            String ePhoneNo = userInfo2[7];
+//            String eUnitNo = userInfo2[8];
+//            
+//            if (userID_temp.equals(userID.toLowerCase())) {
+//                this.userID = userID;
+//                this.firstName = eFirstName;
+//                this.lastName = eLastName;
+//                this.email = eEmail;
+//                this.phoneNo = ePhoneNo;
+//                this.identificationNo = eIdentificationNo;
+//                this.gender = eGender;
+//                this.unitNo = eUnitNo;
+//            }
+//        }
+//    }
     
-    public void modifyOthersAccount() {
-        String userID = this.getUserID().toLowerCase();
-        String email = this.getEmail();
-        String firstName = this.getFirstName();
-        String lastName = this.getLastName();
-        String identificationNo = this.getIdentificationNo();
-        String gender = this.getGender();
-        String phoneNo = this.getPhoneNo();
-        String unitNo = this.getUnitNo();
-        
-        List<String> userProfile = fh.fileRead("userProfile.txt");
-        String[] userProfileArray = new String[userProfile.size()];
-        userProfile.toArray(userProfileArray);
-        
-        List<String> newData = new ArrayList<>();
-        
-        for (int i = 0; i<userProfile.size(); i++) {
-            String[] userInfo = userProfileArray[i].split(";");
-            String userID_temp = userInfo[0];
-            String password_temp = userInfo[2];
-            
-            if (userID_temp.equals(userID)) {
-                newData.add(userID +";"+ email +";"+ password_temp +";"+ firstName
-                        +";"+ lastName +";"+ identificationNo +";"+ gender
-                        +";"+ phoneNo +";"+ unitNo +";");
-            } else {
-                newData.add(userProfileArray[i]);
-            }
-        } fh.fileWrite("userProfile.txt", false, newData);
-    }
+//    public void modifyOthersAccount() {
+//        String userID = this.getUserID().toLowerCase();
+//        String email = this.getEmail();
+//        String firstName = this.getFirstName();
+//        String lastName = this.getLastName();
+//        String identificationNo = this.getIdentificationNo();
+//        String gender = this.getGender();
+//        String phoneNo = this.getPhoneNo();
+//        String unitNo = this.getUnitNo();
+//        
+//        List<String> userProfile = fh.fileRead("userProfile.txt");
+//        String[] userProfileArray = new String[userProfile.size()];
+//        userProfile.toArray(userProfileArray);
+//        
+//        List<String> newData = new ArrayList<>();
+//        
+//        for (int i = 0; i<userProfile.size(); i++) {
+//            String[] userInfo = userProfileArray[i].split(";");
+//            String userID_temp = userInfo[0];
+//            String password_temp = userInfo[2];
+//            
+//            if (userID_temp.equals(userID)) {
+//                newData.add(userID +";"+ email +";"+ password_temp +";"+ firstName
+//                        +";"+ lastName +";"+ identificationNo +";"+ gender
+//                        +";"+ phoneNo +";"+ unitNo +";");
+//            } else {
+//                newData.add(userProfileArray[i]);
+//            }
+//        } fh.fileWrite("userProfile.txt", false, newData);
+//    }
     
     public void modifySelfAccount() {
         String userID = this.getUserID().toLowerCase();
@@ -461,7 +337,6 @@ public class Users{
         String identificationNo = this.getIdentificationNo();
         String gender = this.getGender();
         String phoneNo = this.getPhoneNo();
-        String unitNo = this.getUnitNo();
         
         List<String> userProfile = fh.fileRead("userProfile.txt");
         String[] userProfileArray = new String[userProfile.size()];
@@ -476,7 +351,7 @@ public class Users{
             if (userID_temp.equals(userID)) {
                 newData.add(userID +";"+ email +";"+ password +";"+ firstName
                         +";"+ lastName +";"+ identificationNo +";"+ gender
-                        +";"+ phoneNo +";"+ unitNo +";");
+                        +";"+ phoneNo +";"+ "-" +";");
             } else {
                 newData.add(userProfileArray[i]);
             }

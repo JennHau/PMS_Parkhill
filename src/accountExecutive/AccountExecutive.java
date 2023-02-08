@@ -28,6 +28,14 @@ public class AccountExecutive extends Users {
 
     FileHandling fh = new FileHandling();
 
+    public AccountExecutive() {}
+    
+    public AccountExecutive(String userID, String email, String password, String firstName,
+                 String lastName, String identificationNo, String gender, String phoneNo) {
+        super(userID, email, password,  firstName, lastName,  identificationNo,
+                gender, phoneNo);
+    }
+    
     public List<String> extractFeeTypes(String fileName) {
         List<String> feeTypes = new ArrayList<>();
 
@@ -802,7 +810,7 @@ public class AccountExecutive extends Users {
                     if (nInvoiceNo.equals(invoiceNo)
                             && nFeeType.equals("Late Payment Charges")) {
 
-                        String generatedDate = new AccountExecutive().todayDate();
+                        String generatedDate = this.todayDate();
                         newData.add(invoiceNo + ";" + nUnitNo + ";" + nFeeType + ";" + "-" + ";"
                                 + "-" + ";" + "-" + ";" + "-" + ";" + latePaymentFee + ";"
                                 + nPeriod + ";" + generatedDate + ";" + "-" +";");
@@ -813,7 +821,7 @@ public class AccountExecutive extends Users {
                 fh.fileWrite("invoices.txt", false, newData);
 
             } else if (check == false) {
-                String generatedDate = new AccountExecutive().todayDate();
+                String generatedDate = this.todayDate();
                 newData.add(invoiceNo + ";" + unitNo + ";" + "Late Payment Charges" + ";" + "-"
                         + ";" + "-" + ";" + "-" + ";" + "-" + ";" + latePaymentFee + ";"
                         + period + ";" + generatedDate + ";"+ "-" +";");

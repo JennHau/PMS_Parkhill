@@ -16,7 +16,6 @@ import pms_parkhill_residence.PMS_DateTimeFormatter;
  * @author wongj
  */
 public class AccountExecutiveViewReceipt extends javax.swing.JFrame {
-    AccountExecutive ae = new AccountExecutive();
     ResidentTenant RT = new ResidentTenant();
     PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
     FileHandling fh = new FileHandling();
@@ -24,15 +23,17 @@ public class AccountExecutiveViewReceipt extends javax.swing.JFrame {
     
     private final String invoiceNo;
     private final String unitNo;
+    private final AccountExecutive AE;
     /**
      * Creates new form custReceipt
      * @param unitNo
      * @param invoiceNo
+     * @param AE
      */
-    public AccountExecutiveViewReceipt(String unitNo, String invoiceNo) {
+    public AccountExecutiveViewReceipt(String unitNo, String invoiceNo, AccountExecutive AE) {
         initComponents();
-        
         invRecTab = (DefaultTableModel) invoiceReceiptTable.getModel();
+        this.AE = AE;
         this.invoiceNo = invoiceNo;
         this.unitNo = unitNo;
         setDefault();
@@ -292,7 +293,7 @@ public class AccountExecutiveViewReceipt extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void setDefault() {
-        ArrayList<String> invoiceList = ae.getCurrentUnitPaymentHistory(unitNo);
+        ArrayList<String> invoiceList = AE.getCurrentUnitPaymentHistory(unitNo);
         ArrayList<String> toReceipt = new ArrayList<>();
         
         String paymentDate = null;
@@ -398,7 +399,7 @@ public class AccountExecutiveViewReceipt extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutiveViewReceipt(null, null).setVisible(true);
+                new AccountExecutiveViewReceipt(null, null, null).setVisible(true);
             }
         });
     }

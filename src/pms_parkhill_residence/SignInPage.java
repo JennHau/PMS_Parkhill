@@ -4,6 +4,7 @@
  */
 package pms_parkhill_residence;
 
+import accountExecutive.AccountExecutive;
 import accountExecutive.AccountExecutiveDashboard;
 import adminExecutive.AdminExecutiveDashboard;
 import buildingExecutive.BuildingExecutiveMainPage;
@@ -12,6 +13,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import residentANDtenant.ResidentTenantMainPage;
+//import vendor.VendorDashboard;
 
 /**
  *
@@ -243,9 +245,9 @@ public class SignInPage extends javax.swing.JFrame {
     private void signInBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signInBtActionPerformed
         // TODO add your handling code here:
         try{
-            Users user = new Users().login(email.getText(), String.valueOf(password.getPassword()));
-            if (user != null) {
-                userPage(user);
+            String[] userData = new Users().login(email.getText(), String.valueOf(password.getPassword()));
+            if (userData != null) {
+                userPage(userData);
                 dispose();
             } else {
                 warningMessage.setText("Invalid email address or password!");
@@ -255,16 +257,33 @@ public class SignInPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_signInBtActionPerformed
 
-    public void userPage(Users user) {
-        String userCode = user.getUserID().substring(0, 3);
+    public void userPage(String[] user) {
+        String userCode = user[0].substring(0, 3);
+        
         switch (userCode) {
-            case "bde" -> new BuildingExecutiveMainPage(user).setVisible(true);
-            case "rsd" -> new ResidentTenantMainPage(user).setVisible(true);
-            case "vdr" -> new ResidentTenantMainPage(user).setVisible(true);
-            case "tnt" -> new ResidentTenantMainPage(user).setVisible(true);
-            case "ace" -> new AccountExecutiveDashboard(user).setVisible(true);
-            case "ade" -> new AdminExecutiveDashboard(user).setVisible(true);
-            case "bdm" -> new BuildingManagerDashboard(user).setVisible(true);
+            case "bde" -> {
+//                new BuildingExecutiveMainPage(user).setVisible(true);
+            }
+            case "rsd" -> {
+//                new ResidentTenantMainPage(user).setVisible(true);
+            }
+            case "vdr" -> {
+//                new VendorDashboard(user).setVisible(true);
+            }
+            case "tnt" -> {
+//                new ResidentTenantMainPage(user).setVisible(true);
+            }
+            case "ace" -> {
+                AccountExecutive AE = new AccountExecutive(user[0], user[1],
+                        user[2], user[3], user[4], user[5], user[6], user[7]);
+                new AccountExecutiveDashboard(AE).setVisible(true);
+            }
+            case "ade" -> {
+//                new AdminExecutiveDashboard(user).setVisible(true);
+            }
+            case "bdm" -> {
+//                new BuildingManagerDashboard(user).setVisible(true);
+            }
         }
     }
 
@@ -314,13 +333,6 @@ public class SignInPage extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(SignInPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */

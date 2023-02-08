@@ -4,11 +4,16 @@
  */
 package accountExecutive;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Toolkit;
 import java.text.DecimalFormat;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.Users;
 
 /**
@@ -19,12 +24,14 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param AE
      */
-    public AccountExecutiveAddFeeType(Users user) {
+    public AccountExecutiveAddFeeType(AccountExecutive AE) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.AE = AE;
         setTable();
+        setTableDesign();
     }
 
     /**
@@ -52,7 +59,28 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
         addBt = new javax.swing.JButton();
         cancelBt = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if (rowIndex%2 == 0) {
+                    componenet.setBackground(new Color(249, 249, 249));
+                    componenet.setForeground(new Color (102, 102, 102));
+                } else {
+                    componenet.setBackground(new Color(225, 225, 225));
+                    componenet.setForeground(new Color (102, 102, 102));
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         jSeparator1 = new javax.swing.JSeparator();
         jLabel14 = new javax.swing.JLabel();
         squareFeetOption = new javax.swing.JCheckBox();
@@ -165,7 +193,7 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
 
             },
             new String [] {
-                "NO", "FEE TYPE", "TARGET", "UNIT", "UNIT PRICE (RM)", "CATEGORY"
+                "NO", "FEE TYPE", "TARGET", "UNIT", "UNIT PRICE", "CATEGORY"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -176,6 +204,8 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        jTable1.setRowHeight(30);
         jScrollPane1.setViewportView(jTable1);
 
         jSeparator1.setForeground(new java.awt.Color(153, 153, 153));
@@ -318,7 +348,54 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private final Users user;
+    private final AccountExecutive AE;
+    
+    private void setTableDesign() {
+        // design for the table header
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setBackground(new Color(13, 24, 42));
+        headerRenderer.setHorizontalAlignment(jLabel13.CENTER);
+        headerRenderer.setForeground(new Color(255, 255, 255));
+        for (int i = 0; i < jTable1.getModel().getColumnCount(); i++) {
+            jTable1.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
+        
+        // design for the table row
+        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
+        rowRenderer.setHorizontalAlignment(jLabel13.CENTER);
+        for (int i = 0; i < jTable1.getModel().getColumnCount(); i++) {
+            if (i != 1) {
+                jTable1.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
+            }
+        }
+        
+        TableColumnModel columnModel = jTable1.getColumnModel();
+        // set first column width of the table to suitable value
+        columnModel.getColumn(0).setMaxWidth(40);
+        columnModel.getColumn(0).setMinWidth(40);
+        columnModel.getColumn(0).setPreferredWidth(40);
+
+        columnModel.getColumn(1).setMaxWidth(150);
+        columnModel.getColumn(1).setMinWidth(150);
+        columnModel.getColumn(1).setPreferredWidth(150);
+
+        columnModel.getColumn(2).setMaxWidth(90);
+        columnModel.getColumn(2).setMinWidth(90);
+        columnModel.getColumn(2).setPreferredWidth(90);
+
+        columnModel.getColumn(3).setMaxWidth(120);
+        columnModel.getColumn(3).setMinWidth(120);
+        columnModel.getColumn(3).setPreferredWidth(120);
+
+        columnModel.getColumn(4).setMaxWidth(80);
+        columnModel.getColumn(4).setMinWidth(80);
+        columnModel.getColumn(4).setPreferredWidth(80);
+
+        columnModel.getColumn(5).setMaxWidth(120);
+        columnModel.getColumn(5).setMinWidth(120);
+        columnModel.getColumn(5).setPreferredWidth(120);
+    }
+
     
     private void feeTypeNameTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_feeTypeNameTFActionPerformed
         // TODO add your handling code here:
@@ -359,8 +436,7 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
             String category = (String)categoryCB.getSelectedItem();
             
             try {
-                AccountExecutive ae = new AccountExecutive();
-                boolean check = ae.storeNewFeeTypes(feeTypesName, target, unit,
+                boolean check = AE.storeNewFeeTypes(feeTypesName, target, unit,
                         unitPrice, category);
 
                 if (check){
@@ -368,7 +444,7 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
                     warningMessage.setText("");
                     JOptionPane.showMessageDialog (null, "Fee Type has been added!", 
                                 "ADD FEE TYPE", JOptionPane.INFORMATION_MESSAGE);
-                    AccountExecutiveIssueInvoice aei = new AccountExecutiveIssueInvoice(user);
+                    AccountExecutiveIssueInvoice aei = new AccountExecutiveIssueInvoice(AE);
                     aei.setVisible(true);
                     dispose();
                 } else {
@@ -384,7 +460,7 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        AccountExecutiveIssueInvoice aei = new AccountExecutiveIssueInvoice(user);
+        AccountExecutiveIssueInvoice aei = new AccountExecutiveIssueInvoice(AE);
         aei.setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
@@ -437,8 +513,7 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
         try{
             DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
             tableModel.setRowCount(0);
-            AccountExecutive ae = new AccountExecutive();
-            List<String> feeTypesList = ae.extractFeeTypes("feeTypes.txt");
+            List<String> feeTypesList = AE.extractFeeTypes("feeTypes.txt");
             String[] feeTypes = new String[feeTypesList.size()];
             feeTypesList.toArray(feeTypes);
             for (int i=0; i<feeTypesList.size(); i++) {

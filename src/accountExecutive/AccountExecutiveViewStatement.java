@@ -19,9 +19,9 @@ import pms_parkhill_residence.FileHandling;
 public class AccountExecutiveViewStatement extends javax.swing.JFrame {
     FileHandling fh = new FileHandling();
     ResidentTenant RT = new ResidentTenant();
-    AccountExecutive AE = new AccountExecutive();
     private final String monthNyear;
     private final String unitNo;
+    private final AccountExecutive AE;
     
     DefaultTableModel stateTab;
     
@@ -29,13 +29,14 @@ public class AccountExecutiveViewStatement extends javax.swing.JFrame {
      * Creates new form custReceipt
      * @param unitNo
      * @param monthNyear
+     * @param AE
      */
-    public AccountExecutiveViewStatement(String unitNo, String monthNyear) {
+    public AccountExecutiveViewStatement(String unitNo, String monthNyear, AccountExecutive AE) {
         initComponents();
+        this.AE = AE;
         this.unitNo = unitNo;
         this.monthNyear = monthNyear;
         stateTab = (DefaultTableModel) statementTable.getModel();
-        
         setDefault();
     }
 
@@ -491,7 +492,7 @@ public class AccountExecutiveViewStatement extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutiveViewStatement(null, null).setVisible(true);
+                new AccountExecutiveViewStatement(null, null, null).setVisible(true);
             }
         });
     }
