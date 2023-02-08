@@ -22,17 +22,16 @@ import pms_parkhill_residence.Users;
 public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
     public static ResidentTenantFacilityPaymentGateway rtFacPay;
     
-    ResidentTenant RT = new ResidentTenant();
-    private final Users user;
+    private final ResidentTenant RT;
     private final Facility fb;
     /**
      * Creates new form homePage
-     * @param user
+     * @param RT
      * @param bookingList
      * @param fb
      */
-    public ResidentTenantFacilityPaymentGateway(Users user, List<String> bookingList, Facility fb) {
-        this.user = user;
+    public ResidentTenantFacilityPaymentGateway(ResidentTenant RT, List<String> bookingList, Facility fb) {
+        this.RT = RT;
         this.fb = fb;
         initComponents();
         setWindowIcon();
@@ -347,7 +346,7 @@ public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
         
         bookingIDLabel.setText(bookingID); facilityIDLabel.setText(facilityID);
         totalLabel.setText("TOTAL: RM " + totalPrice); dateLabel.setText(date);
-//        unitNoLabel.setText(this.user.getUnitNo());
+//        unitNoLabel.setText(this.RT.getUnitNo());
         unitNoLabel.setText("OKOK");
     }
     
@@ -369,12 +368,12 @@ public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
                 String startTime = bookingDetails[3];
                 String endTime = bookingDetails[4];
                 newData.add(bookingID.toLowerCase() +";"+ facilityID.toLowerCase()
-                        +";"+ facilityName +";"+ this.user.getUnitNo()
+                        +";"+ facilityName +";"+ this.RT.getUnitNo()
                         +";"+ date +";"+ startTime +";"+ endTime +";"+ unitPrice
                         +";"+ totalPrice +";"+ String.valueOf(LocalDate.now()) +";");
             } 
             
-            RT.toPaymentCredential(user, totalPrice, newData, true, false);
+            RT.toPaymentCredential(RT, totalPrice, newData, true, false);
         }
     }//GEN-LAST:event_bookBtActionPerformed
 

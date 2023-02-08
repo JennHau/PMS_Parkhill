@@ -17,18 +17,18 @@ import pms_parkhill_residence.Users;
  * @author wongj
  */
 public class ResidentTenantBookedFacility extends javax.swing.JFrame {
-    ResidentTenant RT = new ResidentTenant();
+    private final ResidentTenant RT;
     FacilityBookingPaymentByHour fb = new FacilityBookingPaymentByHour();
 
     DefaultTableModel bookedFacTab;
-    private final Users user;
     
     /**
      * Creates new form homePage
-     * @param user
+     * @param RT
      */
-    public ResidentTenantBookedFacility(Users user) {
-        this.user = user;
+    public ResidentTenantBookedFacility(ResidentTenant RT) {
+        this.RT = RT;
+        
         initComponents();
         
         bookedFacTab = (DefaultTableModel) bookedFacilityTable.getModel();
@@ -640,7 +640,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
         
         ArrayList<String> toTable = new ArrayList<>();
         ArrayList<String> bookingIdList = new ArrayList<>();
-        ArrayList<String> bookedFacility = RT.getCurrentUnitBookedFacility(this.user.getUnitNo());
+        ArrayList<String> bookedFacility = RT.getCurrentUnitBookedFacility(this.RT.getUnitNo());
         
         for (String eachBooked : bookedFacility) {
             String[] bookedDet = eachBooked.split(RT.TF.sp);
@@ -664,7 +664,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
                             status = "PLAYING";
                         }
                         
-                        String[] data = {bookingId, facilityName, bookingDate, status};
+                        String[] data = {bookingId.toUpperCase(), facilityName, bookingDate, status};
                 
                         String toAdd = "";
                         for (String eachData : data) {
@@ -677,7 +677,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
                 }
                 else {
                     if (bookingDateTime.isBefore(dateTimeNow) && bookingEndTime.isBefore(dateTimeNow)) {
-                        String[] data = {bookingId, facilityName, bookingDate, "RECEIPT"};
+                        String[] data = {bookingId.toUpperCase(), facilityName, bookingDate, "RECEIPT"};
                         
                         String toAdd = "";
                         for (String eachData : data) {
@@ -716,12 +716,12 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
                 String facilityID = RT.getFacilityId(bookingID);
 
                 fb.setFacilityDetails(facilityID);
-                RT.toManageBookedFacility(user, fb, bookingID, date);
+                RT.toManageBookedFacility(RT, fb, bookingID.toLowerCase(), date);
                 
                 dispose();
             }
             else {
-                RT.toFacilityReceipt(user, bookingID);
+                RT.toFacilityReceipt(RT, bookingID);
             }
         }
     }//GEN-LAST:event_bookedFacilityTableMouseClicked
@@ -760,7 +760,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
 
     private void dashBoardInnerTab1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashBoardInnerTab1MouseClicked
         // TODO add your handling code here:
-        RT.toResidentTenantDashboard(user);
+        RT.toResidentTenantDashboard(RT);
         this.dispose();
     }//GEN-LAST:event_dashBoardInnerTab1MouseClicked
 
@@ -771,7 +771,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
 
     private void dashboardOuterTab1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardOuterTab1MouseClicked
         // TODO add your handling code here:
-        RT.toResidentTenantDashboard(user);
+        RT.toResidentTenantDashboard(RT);
         this.dispose();
     }//GEN-LAST:event_dashboardOuterTab1MouseClicked
 
@@ -782,7 +782,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
 
     private void paymentManagementInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toPaymentManagement(user);
+        RT.toPaymentManagement(RT);
         this.dispose();
     }//GEN-LAST:event_paymentManagementInnerTabMouseClicked
 
@@ -793,7 +793,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
 
     private void paymentManagementOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toPaymentManagement(user);
+        RT.toPaymentManagement(RT);
         this.dispose();
     }//GEN-LAST:event_paymentManagementOuterTabMouseClicked
 
@@ -804,7 +804,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
 
     private void facilityBookingInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityBookingInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toBookedFacility(user);
+        RT.toBookedFacility(RT);
         this.dispose();
     }//GEN-LAST:event_facilityBookingInnerTabMouseClicked
 
@@ -815,7 +815,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
 
     private void facilityBookingOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityBookingOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toBookedFacility(user);
+        RT.toBookedFacility(RT);
         this.dispose();
     }//GEN-LAST:event_facilityBookingOuterTabMouseClicked
 
@@ -826,7 +826,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
 
     private void complaintsInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toComplaints(user);
+        RT.toComplaints(RT);
         this.dispose();
     }//GEN-LAST:event_complaintsInnerTabMouseClicked
 
@@ -837,7 +837,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
 
     private void complaintsOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toComplaints(user);
+        RT.toComplaints(RT);
         this.dispose();
     }//GEN-LAST:event_complaintsOuterTabMouseClicked
 
@@ -848,7 +848,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
 
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
         // TODO add your handling code here:
-        RT.toViewProfile(user);
+        RT.toViewProfile(RT);
         this.dispose();
     }//GEN-LAST:event_jLabel11MouseClicked
 
@@ -859,7 +859,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
 
     private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
         // TODO add your handling code here:
-        RT.toViewProfile(user);
+        RT.toViewProfile(RT);
         this.dispose();
     }//GEN-LAST:event_jPanel13MouseClicked
 
@@ -870,7 +870,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
 
     private void visitorPassInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorPassInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toVisitorPass(user);
+        RT.toVisitorPass(RT);
         this.dispose();
     }//GEN-LAST:event_visitorPassInnerTabMouseClicked
 
@@ -881,7 +881,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
 
     private void visitorPassOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorPassOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toVisitorPass(user);
+        RT.toVisitorPass(RT);
         this.dispose();
     }//GEN-LAST:event_visitorPassOuterTabMouseClicked
 
@@ -897,7 +897,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
 
     private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
         // TODO add your handling code here:
-        RT.toFacilityBookingManagement(user);
+        RT.toFacilityBookingManagement(RT);
         dispose();
     }//GEN-LAST:event_jLabel18MouseClicked
 
@@ -908,7 +908,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
 
     private void jPanel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseClicked
         // TODO add your handling code here:
-        RT.toFacilityBookingManagement(user);
+        RT.toFacilityBookingManagement(RT);
         dispose();
     }//GEN-LAST:event_jPanel5MouseClicked
 

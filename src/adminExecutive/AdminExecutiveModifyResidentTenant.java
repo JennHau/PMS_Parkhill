@@ -19,11 +19,12 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      * @param userID
+     * @param AE
      */
-    public AdminExecutiveModifyResidentTenant(String userID, Users user) {
+    public AdminExecutiveModifyResidentTenant(String userID, AdminExecutive AE) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.AE = AE;
         this.userID = userID;
         tenantRB.setSelected(true);
         setDefault();
@@ -445,25 +446,22 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private final String userID;
-    private final Users user;
+    private final AdminExecutive AE;
     
     FileHandling fh = new FileHandling();
-    AdminExecutive ae = new AdminExecutive();
     
     private void setDefault() {
         userIDTF.setText(this.userID);
+        String[] rtDetails = AE.extractRTDetails(userIDTF.getText());
         
-        Users users = new Users();
-        users.setAllUserData(userIDTF.getText());
-        
-        String unitNo = users.getUnitNo();
-        String firstName = users.getFirstName();
-        String lastName = users.getLastName();
-        String email = users.getEmail();
-        String idNo = users.getIdentificationNo();
-        String phoneNo = users.getPhoneNo();
-        String userID = users.getUserID().toUpperCase();
-        String gender = users.getGender();
+        String unitNo = rtDetails[8];
+        String firstName = rtDetails[3];
+        String lastName = rtDetails[4];
+        String email = rtDetails[1];
+        String idNo = rtDetails[5];
+        String phoneNo = rtDetails[7];
+        String userID = rtDetails[0];
+        String gender = rtDetails[6];
         
         
         if (userID.startsWith("VDR")) {
@@ -514,16 +512,15 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
                 
                 if(result == JOptionPane.YES_OPTION){
-                    Users users = new Users(userID, email, password, firstName,
+                    AE.modifyOthersAccount(userID, email, password, firstName,
                             lastName, idNo, gender, phoneNo, unitNo);
-                    users.modifyOthersAccount();
                     JOptionPane.showMessageDialog (null, "User account has been modified!", 
                                     "MODIFY USER ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
                     if (AdminExecutiveResidentTManagement.adeRTManagement != null) {
                         AdminExecutiveResidentTManagement.adeRTManagement.dispose();
                     }  
-                    new AdminExecutiveResidentTManagement(user).setVisible(true);
+                    new AdminExecutiveResidentTManagement(AE).setVisible(true);
                 }
             } else {
                 warningMessage.setText("Invalid email or email existed!");
@@ -604,8 +601,6 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
 
     private void deleteBt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBt1ActionPerformed
         // TODO add your handling code here:
-        AdminExecutive ae = new AdminExecutive();
-        
         int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
                 + "delete this user account?\nPlease be aware that deleting "
                 + "the tenant will cause resident account to be deleted as well.",
@@ -617,11 +612,11 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
             if (typeCB.getSelectedItem().equals("Commercial") || 
                     (typeCB.getSelectedItem().equals("Residential") 
                     && tenantRB.isSelected())) {
-                ae.deleteTenantResident(unitNoTF.getText());
+                AE.deleteTenantResident(unitNoTF.getText());
 
             } else if (typeCB.getSelectedItem().equals("Residential") 
                     && residentRB.isSelected()) {
-                ae.deleteResident(unitNoTF.getText());
+                AE.deleteResident(unitNoTF.getText());
             }
             JOptionPane.showMessageDialog (null, "User(s) has been deleted!", 
                             "DELETE USER ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
@@ -629,7 +624,7 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
             if (AdminExecutiveResidentTManagement.adeRTManagement != null) {
                 AdminExecutiveResidentTManagement.adeRTManagement.dispose();
             } 
-            new AdminExecutiveResidentTManagement(user).setVisible(true);
+            new AdminExecutiveResidentTManagement(AE).setVisible(true);
         }
     }//GEN-LAST:event_deleteBt1ActionPerformed
 

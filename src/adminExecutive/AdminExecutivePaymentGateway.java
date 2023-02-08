@@ -11,7 +11,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 
 /**
  *
@@ -22,11 +21,12 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      * @param bookingList
+     * @param AE
      */
-    public AdminExecutivePaymentGateway(List<String> bookingList, Users user) {
+    public AdminExecutivePaymentGateway(List<String> bookingList, AdminExecutive AE) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.AE = AE;
         this.bookingList = bookingList;
         setUnitNoCB();
         setDefault();
@@ -304,12 +304,11 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    AdminExecutive ae = new AdminExecutive();
     FileHandling fh = new FileHandling();
     List<String> bookingList = new ArrayList<>();
     String bookingID; String facilityID; String facilityName;
     String unitPrice; String totalPrice; String date; String fctNameGen;
-    private final Users user;
+    private final AdminExecutive AE;
     
     private void setDefault() {
         
@@ -327,7 +326,7 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
             tableModel.addRow(tbData);
         }
         
-        List<String> feeData = ae.extractFacilityBookingFee(facilityID.toLowerCase(),
+        List<String> feeData = AE.extractFacilityBookingFee(facilityID.toLowerCase(),
                     bookingList.size());
         for(int i = 0; i<feeData.size(); i++) {
             String[] feeDetails = feeData.get(i).split(";");
@@ -346,7 +345,7 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
     private void cancelBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBTActionPerformed
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveFacilityPreview(facilityID, user).setVisible(true);
+        new AdminExecutiveFacilityPreview(facilityID, AE).setVisible(true);
     }//GEN-LAST:event_cancelBTActionPerformed
 
     private void bookBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookBtActionPerformed
@@ -369,7 +368,7 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
             JOptionPane.showMessageDialog (null, "Facility Booking has been made!", 
                             "FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
             dispose();
-            new AdminExecutiveViewFacilityBooking(facilityID, fctNameGen, user).setVisible(true);
+            new AdminExecutiveViewFacilityBooking(facilityID, fctNameGen, AE).setVisible(true);
         }
     }//GEN-LAST:event_bookBtActionPerformed
 
@@ -387,7 +386,7 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void setUnitNoCB() {
-        List<String> availableUnit = ae.extractAllProperties("residential");
+        List<String> availableUnit = AE.extractAllProperties("residential");
         unitNoCB.addItem("-PLEASE SELECT-");
         for(int i = 0; i<availableUnit.size(); i++) {
             String[] unitDetails = availableUnit.get(i).split(";");

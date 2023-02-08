@@ -12,6 +12,7 @@ import pms_parkhill_residence.CRUD;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import pms_parkhill_residence.Complaints;
 import pms_parkhill_residence.Facility;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.PMS_DateTimeFormatter;
@@ -22,13 +23,29 @@ import pms_parkhill_residence.Users;
  *
  * @author Winson
  */
-public class ResidentTenant {
+public class ResidentTenant extends Users {
     FileHandling fh = new FileHandling();
     TextFiles TF = new TextFiles();
     CRUD crud = new CRUD();
     PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
+    Complaints CP = new Complaints();
+    
+    private String unitNo;
     
     public String[] visitorPassStatus = {"Registered", "Checked-In", "Checked-Out"};
+    
+    public ResidentTenant() {}
+    
+    public ResidentTenant(String userID, String email, String password, String firstName,
+                 String lastName, String identificationNo, String gender,
+                 String phoneNo, String unitNo) {
+        
+        super(userID, email, password, firstName,
+             lastName, identificationNo, gender,
+             phoneNo);
+        
+        this.unitNo = unitNo;
+    }
     
     public void setTableRow(DefaultTableModel table, ArrayList arrayList) {
         table.setRowCount(0);
@@ -37,29 +54,6 @@ public class ResidentTenant {
             String[] rowDetails = String.valueOf(arrayList.get(rowCount)).split(TF.sp);
             table.addRow(rowDetails);
         }
-    }
-    
-    public String getNewCompId() {
-        List<String> compFile = fh.fileRead(TF.complaintFiles);
-        
-        String compCode = "cmp";
-        int minimumId = 450000;
-        
-        boolean firstLine = true;
-        for (String eachComp : compFile) {
-            if (!firstLine) {
-                String[] compDet = eachComp.split(TF.sp);
-            
-                int compId = Integer.valueOf(compDet[0].replace(compCode, ""));
-                if (compId > minimumId) {
-                    minimumId = compId;
-                }
-            }
-            
-            firstLine = false;
-        }
-        
-        return compCode + (minimumId + 1);
     }
     
     public ArrayList getCurrentRTvisitor(String currentRTid) {
@@ -125,7 +119,7 @@ public class ResidentTenant {
         return issuedInvoice;
     }
     
-    public ArrayList getCurrentUnitInvoice(String unitNo) {
+    public ArrayList<ArrayList> getCurrentUnitInvoice(String unitNo) {
         ArrayList<ArrayList> combineList = new ArrayList<>();
         ArrayList<String> incompleteInvoice = new ArrayList<>();
         ArrayList<String> completeInvoice = new ArrayList<>();        
@@ -213,7 +207,7 @@ public class ResidentTenant {
                         String bookType = bookDet[2];
                         String totalPrice = bookDet[8];
                         String paidDate = bookDet[9];
-                        String[] data = {bookId, bookType, totalPrice, paidDate};
+                        String[] data = {bookId.toUpperCase(), bookType, totalPrice, paidDate};
                         for (String eachData : data) {
                             toAdd = toAdd + eachData + TF.sp;
                         }
@@ -244,18 +238,18 @@ public class ResidentTenant {
         return bookedFacility;
     }
     
-    public ArrayList getCurrentUnitMonthStatement(Users user, String monthNyear) throws ParseException{
+    public ArrayList getCurrentUnitMonthStatement(String monthNyear) throws ParseException{
         ArrayList<String> statementList = new ArrayList<>();
         ArrayList<String> monthStatement = new ArrayList<>();
         
         // Get all issued invoice
-        ArrayList<String> invoiceList = getCurrentUnitIssuedInvoice(user.getUnitNo());
+        ArrayList<String> invoiceList = getCurrentUnitIssuedInvoice(this.unitNo);
         
         // get all paid invoice
-        ArrayList<String> completedInvoice = getCurrentUnitPaymentHistory(user.getUnitNo());
+        ArrayList<String> completedInvoice = getCurrentUnitPaymentHistory(this.unitNo);
         
         // get all facility payment
-        ArrayList<String> facilityBooking = getCurrentUnitFacilityPayment(user.getUnitNo());
+        ArrayList<String> facilityBooking = getCurrentUnitFacilityPayment(this.unitNo);
         
         // Data Structure = Date, Transaction, Details, Amount, Payments
         // to change the issued invoice list to same data structure
@@ -265,7 +259,7 @@ public class ResidentTenant {
             String id = invDet[0];
             String type = invDet[2];
             String amount = invDet[7];
-            String[] data = {issuedDate, "Invoice", id + " " + type, amount, "-"};
+            String[] data = {issuedDate, "Invoice", id.toUpperCase() + " " + type, amount, "-"};
             
             String line = "";
             for (String eachData : data) {
@@ -281,7 +275,7 @@ public class ResidentTenant {
             String id = invDet[0];
             String type = invDet[2];
             String amount = invDet[7];
-            String[] data = {date, "Invoice Payment", id + " " + type + " - " + amount + " in excess payments.", "-", amount};
+            String[] data = {date, "Invoice Payment", id.toUpperCase() + " " + type + " - " + amount + " in excess payments.", "-", amount};
             
             String line = "";
             for (String eachData : data) {
@@ -299,8 +293,8 @@ public class ResidentTenant {
                 String date = bookDet[3];
                 String type = bookDet[1];
                 String amount = bookDet[2];
-                String[] data = {date, "Facility Booking", id + "-" + type, amount, "-"};
-                String[] data2 = {date, "Booking Payment", id + " - " + amount + " in excess payments.", "-", amount};
+                String[] data = {date, "Facility Booking", id.toUpperCase() + " - " + type, amount, "-"};
+                String[] data2 = {date, "Booking Payment", id.toUpperCase() + " - " + amount + " in excess payments.", "-", amount};
                 
                 String line = "";
                 for (String eachData : data) {
@@ -375,6 +369,23 @@ public class ResidentTenant {
             }
         }
         return monthStatement;
+    }
+    
+    public ArrayList getCurrentUnitIssuedReceipt(String unitNo) {
+        ArrayList<String> issuedReceipt = new ArrayList<>();
+        
+        List<String> receiptList = fh.fileRead(TF.receiptFile);
+        
+        for (String eachReceipt : receiptList) {
+            String[] receiptDet = eachReceipt.split(TF.sp);
+            String uNo = receiptDet[1];
+            
+            if (uNo.equals(unitNo)) {
+                issuedReceipt.add(eachReceipt);
+            }
+        }
+        
+        return issuedReceipt;
     }
     
     public String getFacilityId(String bookingId) {
@@ -469,11 +480,9 @@ public class ResidentTenant {
         return null;
     }
     
-    public double getTotalPricePerInvoice(String invoiceId) {
-        List<String> invoiceFile = fh.fileRead(TF.invoiceFile);
-        
+    public double getTotalPricePerInvoice(String invoiceId, ArrayList<String> dataList) {
         double totalAmount = 0;
-        for (String eachInv : invoiceFile) {
+        for (String eachInv : dataList) {
             String[] invDet = eachInv.split(TF.sp);
             String invNo = invDet[0];
             
@@ -485,105 +494,150 @@ public class ResidentTenant {
         
         return totalAmount;
     }
+    
+    @Override
+    public void modifySelfAccount() {
+        String userID = this.getUserID().toLowerCase();
+        String email = this.getEmail();
+        String firstName = this.getFirstName();
+        String lastName = this.getLastName();
+        String password = this.getPassword();
+        String identificationNo = this.getIdentificationNo();
+        String gender = this.getGender();
+        String phoneNo = this.getPhoneNo();
+        
+        List<String> userProfile = fh.fileRead("userProfile.txt");
+        String[] userProfileArray = new String[userProfile.size()];
+        userProfile.toArray(userProfileArray);
+        
+        List<String> newData = new ArrayList<>();
+        
+        for (int i = 0; i<userProfile.size(); i++) {
+            String[] userInfo = userProfileArray[i].split(";");
+            String userID_temp = userInfo[0];
+            
+            if (userID_temp.equals(userID)) {
+                newData.add(userID +";"+ email +";"+ password +";"+ firstName
+                        +";"+ lastName +";"+ identificationNo +";"+ gender
+                        +";"+ phoneNo +";"+ this.unitNo +";");
+            } else {
+                newData.add(userProfileArray[i]);
+            }
+        } fh.fileWrite("userProfile.txt", false, newData);
+    }
   
     // Page Navigator
-    public void toResidentTenantDashboard(Users user) {
-        ResidentTenantMainPage page = new ResidentTenantMainPage(user);
+    public void toResidentTenantDashboard(ResidentTenant RT) {
+        ResidentTenantMainPage page = new ResidentTenantMainPage(RT);
         page.setVisible(true);
     }
     
-    public void toPaymentCredential(Users user, String totalAmount, ArrayList itemId, boolean forFacility, boolean modifyBooking) {
-        ResidentTenantPaymentCredential page = new ResidentTenantPaymentCredential(user, totalAmount, itemId, forFacility, modifyBooking);
+    public void toPaymentCredential(ResidentTenant RT, String totalAmount, ArrayList itemId, boolean forFacility, boolean modifyBooking) {
+        ResidentTenantPaymentCredential page = new ResidentTenantPaymentCredential(RT, totalAmount, itemId, forFacility, modifyBooking);
         page.setVisible(true);
     }
     
-    public void toPaymentManagement(Users user) {
-        ResidentTenantPaymentManagement page = new ResidentTenantPaymentManagement(user);
+    public void toPaymentManagement(ResidentTenant RT) {
+        ResidentTenantPaymentManagement page = new ResidentTenantPaymentManagement(RT);
         page.setVisible(true);
     }
     
-    public void toPaymentHistory(Users user) {
-        ResidentTenantPaymentHistory page = new ResidentTenantPaymentHistory(user);
+    public void toPaymentHistory(ResidentTenant RT) {
+        ResidentTenantPaymentHistory page = new ResidentTenantPaymentHistory(RT);
         page.setVisible(true);
     }
     
-    public void toInvoice(Users user) {
-        ResidentTenantInvoice page = new ResidentTenantInvoice(user);
+    public void toInvoice(ResidentTenant RT) {
+        ResidentTenantInvoice page = new ResidentTenantInvoice(RT);
         page.setVisible(true);
     }
     
-    public void toInvoicePayment(String invoiceNo, Users user) {
-        ResidentTenantInvoicePayment page = new ResidentTenantInvoicePayment(invoiceNo, user);
+    public void toInvoicePayment(String invoiceNo, ResidentTenant RT, String feeTypes) {
+        ResidentTenantInvoicePayment page = new ResidentTenantInvoicePayment(invoiceNo, RT, feeTypes);
         page.setVisible(true);
     }
     
-    public void toStatement(Users user) {
-        ResidentTenantStatement page = new ResidentTenantStatement(user);
+    public void toStatement(ResidentTenant RT) {
+        ResidentTenantStatement page = new ResidentTenantStatement(RT);
         page.setVisible(true);
     }
     
-    public void toFacilityReceipt(Users user, String bookingId) {
-        ResidentTenantFacilityBookingReceipt page = new ResidentTenantFacilityBookingReceipt(user, bookingId);
+    public void toFacilityReceipt(ResidentTenant RT, String bookingId) {
+        ResidentTenantFacilityBookingReceipt page = new ResidentTenantFacilityBookingReceipt(RT, bookingId);
         page.setVisible(true);
     }
     
-    public void toBookedFacility(Users user) {
-        ResidentTenantBookedFacility page = new ResidentTenantBookedFacility(user);
+    public void toBookedFacility(ResidentTenant RT) {
+        ResidentTenantBookedFacility page = new ResidentTenantBookedFacility(RT);
         page.setVisible(true);
     }
     
-    public void toManageBookedFacility(Users user, Facility fb, String bookingID, String date) {
-        ResidentTenantManageBookedFacility page = new ResidentTenantManageBookedFacility(user, fb, bookingID, date);
+    public void toManageBookedFacility(ResidentTenant RT, Facility fb, String bookingID, String date) {
+        ResidentTenantManageBookedFacility page = new ResidentTenantManageBookedFacility(RT, fb, bookingID, date);
         page.setVisible(true);
     }
     
-    public void toFacilityBookingManagement(Users user) {
-        ResidentTenantFacilityBooking page = new ResidentTenantFacilityBooking(user);
+    public void toFacilityBookingManagement(ResidentTenant RT) {
+        ResidentTenantFacilityBooking page = new ResidentTenantFacilityBooking(RT);
         page.setVisible(true);
     }
     
-    public void toFacilityPreview(Users user, String facilityID) {
-        ResidentTenantFacilityPreview page = new ResidentTenantFacilityPreview(user, facilityID);
+    public void toFacilityPreview(ResidentTenant RT, String facilityID) {
+        ResidentTenantFacilityPreview page = new ResidentTenantFacilityPreview(RT, facilityID);
         page.setVisible(true);
     }
     
-    public void toBookFacility(Users user, Facility fb) {
-        ResidentTenantBookFacility page = new ResidentTenantBookFacility(user, fb);
+    public void toBookFacility(ResidentTenant RT, Facility fb) {
+        ResidentTenantBookFacility page = new ResidentTenantBookFacility(RT, fb);
         page.setVisible(true);
     }
     
-    public void toFacilityPaymentGateway(Users user, List<String> bookingList, Facility fb) {
-        ResidentTenantFacilityPaymentGateway page = new ResidentTenantFacilityPaymentGateway(user, bookingList, fb);
+    public void toFacilityPaymentGateway(ResidentTenant RT, List<String> bookingList, Facility fb) {
+        ResidentTenantFacilityPaymentGateway page = new ResidentTenantFacilityPaymentGateway(RT, bookingList, fb);
         page.setVisible(true);
     }
     
-    public void toViewProfile(Users user) {
-        ResidentTenantProfile page = new ResidentTenantProfile(user);
+    public void toViewProfile(ResidentTenant RT) {
+        ResidentTenantProfile page = new ResidentTenantProfile(RT);
         page.setVisible(true);
     }
     
-    public void toVisitorPass(Users user) {
-        ResidentTenantVisitorPass page = new ResidentTenantVisitorPass(user);
+    public void toVisitorPass(ResidentTenant RT) {
+        ResidentTenantVisitorPass page = new ResidentTenantVisitorPass(RT);
         page.setVisible(true);
     }
     
-    public void toComplaints(Users user) {
-        ResidentTenantComplaints page = new ResidentTenantComplaints(user);
+    public void toComplaints(ResidentTenant RT) {
+        ResidentTenantComplaints page = new ResidentTenantComplaints(RT);
         page.setVisible(true);
     }
     
-    public void toInvoiceReceipt(Users user, String invoiceNo) {
-        ResidentTenantInvoiceReceipt page = new ResidentTenantInvoiceReceipt(user, invoiceNo);
+    public void toInvoiceReceipt(ResidentTenant RT, String invoiceNo) {
+        ResidentTenantInvoiceReceipt page = new ResidentTenantInvoiceReceipt(RT, invoiceNo);
         page.setVisible(true);
     }
     
-    public void toViewPaidInvoice(Users user, String invoiceNo) {
-        ResidentTenantViewPaidInvoice page = new ResidentTenantViewPaidInvoice(invoiceNo, user);
+    public void toViewPaidInvoice(ResidentTenant RT, String invoiceNo, String feeTypes) {
+        ResidentTenantViewPaidInvoice page = new ResidentTenantViewPaidInvoice(invoiceNo, RT, feeTypes);
         page.setVisible(true);
     }
     
-    public void toStatementReport(Users user, String monthNyear) {
-        ResidentTenantStatementReport page = new ResidentTenantStatementReport(user, monthNyear);
+    public void toStatementReport(ResidentTenant RT, String monthNyear) {
+        ResidentTenantStatementReport page = new ResidentTenantStatementReport(RT, monthNyear);
         page.setVisible(true);
+    }
+
+    /**
+     * @return the unitNo
+     */
+    public String getUnitNo() {
+        return unitNo;
+    }
+
+    /**
+     * @param unitNo the unitNo to set
+     */
+    public void setUnitNo(String unitNo) {
+        this.unitNo = unitNo;
     }
 }

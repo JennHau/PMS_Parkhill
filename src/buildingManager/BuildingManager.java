@@ -22,6 +22,11 @@ public class BuildingManager extends Users{
     
     FileHandling fh = new FileHandling();
     
+    public BuildingManager (String userID, String email, String password, String firstName,
+                 String lastName, String identificationNo, String gender, String phoneNo){
+        super(userID, email, password,  firstName, lastName,  identificationNo,
+                gender, phoneNo);
+    }
     
     public List<String> extractAllUser(String type) {
         List<String> userList = fh.fileRead("userProfile.txt");
@@ -114,6 +119,45 @@ public class BuildingManager extends Users{
             
             if (!id.equals(userID)) {
                 newData.add(employeeTypeList.get(i));
+            }
+        } fh.fileWrite("userProfile.txt", false, newData);
+    }
+    
+    public String[] extractEmployeeDetails(String userID) {
+        List<String> userProfile = fh.fileRead("userProfile.txt");
+        String[] userProfileArray = new String[userProfile.size()];
+        userProfile.toArray(userProfileArray);
+        
+        for (int i = 0; i<userProfile.size(); i++) {
+            String[] userInfo2 = userProfileArray[i].split(";");
+            String userID_temp = userInfo2[0];
+            
+            if (userID_temp.equals(userID.toLowerCase())) {
+                return userInfo2;
+            }
+        } return null;
+    }
+    
+    public void modifyOthersAccount(String userID, String email, String password,
+            String firstName, String lastName, String identificationNo,
+            String gender, String phoneNo, String unitNo) {
+        List<String> userProfile = fh.fileRead("userProfile.txt");
+        String[] userProfileArray = new String[userProfile.size()];
+        userProfile.toArray(userProfileArray);
+        
+        List<String> newData = new ArrayList<>();
+        
+        for (int i = 0; i<userProfile.size(); i++) {
+            String[] userInfo = userProfileArray[i].split(";");
+            String userID_temp = userInfo[0];
+            String password_temp = userInfo[2];
+            
+            if (userID_temp.equals(userID)) {
+                newData.add(userID +";"+ email +";"+ password_temp +";"+ firstName
+                        +";"+ lastName +";"+ identificationNo +";"+ gender
+                        +";"+ phoneNo +";"+ unitNo +";");
+            } else {
+                newData.add(userProfileArray[i]);
             }
         } fh.fileWrite("userProfile.txt", false, newData);
     }

@@ -56,7 +56,7 @@ public class Complaints {
             String complainerId = compDet[1];
             if (complainerId.equals(currentRTid)) {
                 String status = compDet[5];
-                String tableLine = compDet[0] + TF.sp + compDet[2] + TF.sp + compDet[3] + TF.sp + compDet[4] + TF.sp + compDet[5] + TF.sp;
+                String tableLine = compDet[0].toUpperCase() + TF.sp + compDet[2] + TF.sp + compDet[3] + TF.sp + compDet[4] + TF.sp + status + TF.sp;
                 switch (status) {
                     case "Pending" -> pendingComp.add(tableLine);
                     case "Progressing" -> progressingComp.add(tableLine);
@@ -73,6 +73,29 @@ public class Complaints {
         combinedComp.add(completedComp);
         
         return combinedComp;
+    }
+    
+    public String getNewCompId() {
+        List<String> compFile = FH.fileRead(TF.complaintFiles);
+        
+        String compCode = "cmp";
+        int minimumId = 450000;
+        
+        boolean firstLine = true;
+        for (String eachComp : compFile) {
+            if (!firstLine) {
+                String[] compDet = eachComp.split(TF.sp);
+            
+                int compId = Integer.valueOf(compDet[0].replace(compCode, ""));
+                if (compId > minimumId) {
+                    minimumId = compId;
+                }
+            }
+            
+            firstLine = false;
+        }
+        
+        return compCode + (minimumId + 1);
     }
     
     @Override

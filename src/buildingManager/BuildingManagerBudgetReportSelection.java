@@ -18,11 +18,12 @@ public class BuildingManagerBudgetReportSelection extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param BM
      */
-    public BuildingManagerBudgetReportSelection(Users user) {
+    public BuildingManagerBudgetReportSelection(BuildingManager BM) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.BM = BM;
         setMonthYearCB();
     }
 
@@ -179,7 +180,7 @@ public class BuildingManagerBudgetReportSelection extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     FileHandling fh = new FileHandling();
-    private final Users user;
+    private final BuildingManager BM;
     
     private void setMonthYearCB() {
         List<String> availableList = fh.fileRead("budgetAllocation.txt");
@@ -212,7 +213,7 @@ public class BuildingManagerBudgetReportSelection extends javax.swing.JFrame {
         if(!year.equals("-PLEASE SELECT-")) {
             warningMessage.setText("");
             dispose();
-            new BuildingManagerBudgetReport(year, user).setVisible(true);
+            new BuildingManagerBudgetReport(year, BM).setVisible(true);
         } else {
             warningMessage.setText("Please select the desired period!");
         }

@@ -23,11 +23,12 @@ public class AdminExecutivePaymentGatewayModify extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      * @param bookingList
+     * @param AE
      */
-    public AdminExecutivePaymentGatewayModify(List<String> bookingList, Users user) {
+    public AdminExecutivePaymentGatewayModify(List<String> bookingList, AdminExecutive AE) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.AE = AE;
         this.bookingList = bookingList;
         setDefault();
     }
@@ -348,8 +349,7 @@ public class AdminExecutivePaymentGatewayModify extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private final Users user;
-    AdminExecutive ae = new AdminExecutive();
+    private final AdminExecutive AE;
     FileHandling fh = new FileHandling();
     List<String> bookingList = new ArrayList<>();
     String bookingID; String facilityID; String facilityName;
@@ -371,7 +371,7 @@ public class AdminExecutivePaymentGatewayModify extends javax.swing.JFrame {
             tableModel.addRow(tbData);
         }
         
-        List<String> feeData = ae.extractFacilityBookingFee(facilityID.toLowerCase(),
+        List<String> feeData = AE.extractFacilityBookingFee(facilityID.toLowerCase(),
                     bookingList.size());
         for(int i = 0; i<feeData.size(); i++) {
             String[] feeDetails = feeData.get(i).split(";");
@@ -386,7 +386,7 @@ public class AdminExecutivePaymentGatewayModify extends javax.swing.JFrame {
         bookingIDLabel.setText(bookingID); facilityIDLabel.setText(facilityID);
         currentChargesLabel.setText("RM " + totalPrice);
         
-        String advancedPaymentFee = ae.calculateFacilityAdvancedPayment(bookingID.toLowerCase());
+        String advancedPaymentFee = AE.calculateFacilityAdvancedPayment(bookingID.toLowerCase());
         advancedPaymentLabel.setText("RM " + advancedPaymentFee);
         
         Float pending = Float.valueOf(totalPrice) - Float.valueOf(advancedPaymentFee);
@@ -394,13 +394,13 @@ public class AdminExecutivePaymentGatewayModify extends javax.swing.JFrame {
         String totalPending = df.format(pending);
         
         totalLabel.setText("TOTAL: RM " + totalPending); dateLabel.setText(date);
-        unitNoLabel.setText(ae.extractFacilityBookingUnit(bookingID.toLowerCase()));
+        unitNoLabel.setText(AE.extractFacilityBookingUnit(bookingID.toLowerCase()));
     }
     
     private void cancelBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBTActionPerformed
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveFacilityPreview(facilityID, user).setVisible(true);
+        new AdminExecutiveFacilityPreview(facilityID, AE).setVisible(true);
     }//GEN-LAST:event_cancelBTActionPerformed
 
     private void bookBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookBtActionPerformed
@@ -420,12 +420,12 @@ public class AdminExecutivePaymentGatewayModify extends javax.swing.JFrame {
                         +";"+ date +";"+ startTime +";"+ endTime +";"+ unitPrice
                         +";"+ totalPrice +";"+ String.valueOf(LocalDate.now()) +";");
             } 
-            ae.deleteFacilityBooking(bookingID.toLowerCase());
+            AE.deleteFacilityBooking(bookingID.toLowerCase());
             fh.fileWrite("facilityBooking.txt", true, newData);
             JOptionPane.showMessageDialog (null, "Facility Booking has been modified!", 
                             "MODIFY FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
             dispose();
-            new AdminExecutiveViewFacilityBooking(facilityID, fctNameGen, user).setVisible(true);
+            new AdminExecutiveViewFacilityBooking(facilityID, fctNameGen, AE).setVisible(true);
         }
     }//GEN-LAST:event_bookBtActionPerformed
 

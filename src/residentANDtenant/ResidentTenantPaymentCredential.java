@@ -12,42 +12,40 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.PMS_DateTimeFormatter;
-import pms_parkhill_residence.Users;
 
 /**
  *
  * @author Winson
  */
 public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
-
-    private Users user;
     private ArrayList<String> itemList;
-    private boolean forFacility;
-    private boolean modifyBooking;
+    private final boolean forFacility;
+    private final boolean modifyBooking;
     
-    ResidentTenant RT = new ResidentTenant();
+    private final ResidentTenant RT;
     PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
 
     /**
      * Creates new form ResidentTenantPaymentGateway
-     * @param user
+     * @param RT
      * @param totalAmount
      * @param itemList
      * @param forFacility
+     * @param modify
      */
-    public ResidentTenantPaymentCredential(Users user, String totalAmount, ArrayList itemList, boolean forFacility, boolean modify) {
-        initComponents();
-        runDefaultSetUp(user, totalAmount, itemList, forFacility, modify);
-    }
-    
-    private void runDefaultSetUp(Users user, String totalAmount, ArrayList itemList, boolean forFacility, boolean modify) {
-        setWindowIcon();
-        amountSetUp(totalAmount);
-        
-        this.setUser(user);
+    public ResidentTenantPaymentCredential(ResidentTenant RT, String totalAmount, ArrayList itemList, boolean forFacility, boolean modify) {
+        this.RT = RT;
         this.forFacility = forFacility;
         this.modifyBooking = modify;
         this.setItemList(itemList);
+        amountSetUp(totalAmount);
+        
+        initComponents();
+        runDefaultSetUp();
+    }
+    
+    private void runDefaultSetUp() {
+        setWindowIcon();
     }
     
     private void amountSetUp(String totalAmount) {
@@ -91,6 +89,11 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
         jSeparator3 = new javax.swing.JSeparator();
         payBTN = new javax.swing.JButton();
         cancelBTN = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        messageTF = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -173,57 +176,70 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setText("16-digits");
+
+        jLabel5.setText("Card owner name");
+
+        jLabel6.setText("Card expiry date");
+
+        jLabel7.setText("3-digits");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(cardNo1TF, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(32, 32, 32)
-                                        .addComponent(cardNo2TF, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(holderNameTF, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
-                                        .addComponent(jLabel27, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(32, 32, 32)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(cardNo3TF, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(32, 32, 32)
-                                        .addComponent(cardNo4TF, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addComponent(expMonthTF, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(3, 3, 3)
-                                                .addComponent(jLabel1)
-                                                .addGap(4, 4, 4)
-                                                .addComponent(expYearTF, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(jLabel25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addGap(27, 27, 27)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(cvvNoTF)
-                                            .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                    .addComponent(totalAmountTF, javax.swing.GroupLayout.Alignment.TRAILING)))
-                            .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(3, 3, 3)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(cancelBTN)
                 .addGap(28, 28, 28)
                 .addComponent(payBTN)
                 .addGap(148, 148, 148))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                            .addComponent(cardNo1TF, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(32, 32, 32)
+                                            .addComponent(cardNo2TF, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(holderNameTF)
+                                        .addComponent(jLabel24, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGap(32, 32, 32)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                            .addComponent(cardNo3TF, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(32, 32, 32)
+                                            .addComponent(cardNo4TF, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(totalAmountTF, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                                    .addComponent(expMonthTF, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGap(3, 3, 3)
+                                                    .addComponent(jLabel1)
+                                                    .addGap(4, 4, 4)
+                                                    .addComponent(expYearTF, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(jLabel25, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addGap(27, 27, 27)
+                                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(cvvNoTF)
+                                                .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGap(3, 3, 3)))
+                    .addComponent(messageTF, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -236,7 +252,9 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
                     .addComponent(cardNo2TF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cardNo3TF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cardNo4TF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
+                .addGap(2, 2, 2)
+                .addComponent(jLabel4)
+                .addGap(23, 23, 23)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -249,7 +267,12 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
                         .addComponent(expYearTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(cvvNoTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
+                .addGap(2, 2, 2)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7))
+                .addGap(23, 23, 23)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -259,7 +282,9 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addGap(3, 3, 3)
+                .addComponent(messageTF)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(payBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cancelBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -289,103 +314,116 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
         // TODO add your handling code here:
         boolean payable;
         payable = checkCardNo();
+        
         if (payable) {
             payable = checkHolderName();
-        }
-        
-        if (payable) {
-            payable = checkExpiryDate();
-        }
-        
-        if (payable) {
-            payable = checkCVV();        
-        }
-        
-        if (payable) {
-            if (!itemList.isEmpty()) {
-                if (forFacility) {
-                    if (modifyBooking) {
-                        String bookingId = itemList.get(0).split(RT.TF.sp)[0];
-                        
-                        RT.crud.delete(RT.TF.facilityBookingFile, bookingId, 0);
-                        RT.fh.fileWrite("facilityBooking.txt", true, itemList);
-                        JOptionPane.showMessageDialog (null, "Facility Booking has been modified!", 
-                                        "MODIFY FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
-                    }
-                    else {
-                        RT.fh.fileWrite("facilityBooking.txt", true, itemList);
-                        JOptionPane.showMessageDialog (null, "Facility Booking has been made!", 
-                                        "FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
-                    }
-                }
-                else {
-                    ArrayList<String> paidInv = new ArrayList<>();
-                    ArrayList<String> incompInv = (ArrayList<String>) (RT.getCurrentUnitInvoice(user.getUnitNo())).get(0);
+            
+            if (payable) {
+                payable = checkExpiryDate();
+                
+                if (payable) {
+                    payable = checkCVV();    
+                    
+                    if (payable) {
+                        if (!itemList.isEmpty()) {
+                            if (forFacility) {
+                                if (modifyBooking) {
+                                    String bookingId = itemList.get(0).split(RT.TF.sp)[0];
 
-                    for (String eachInv : incompInv) {
-                        String[] invDet = eachInv.split(RT.TF.sp);
-                        String invNo = invDet[0];
+                                    RT.crud.delete(RT.TF.facilityBookingFile, bookingId, 0);
+                                    RT.fh.fileWrite("facilityBooking.txt", true, itemList);
+                                    JOptionPane.showMessageDialog (null, "Facility Booking has been modified!", 
+                                                    "MODIFY FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                                else {
+                                    RT.fh.fileWrite("facilityBooking.txt", true, itemList);
+                                    JOptionPane.showMessageDialog (null, "Facility Booking has been made!", 
+                                                    "FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            }
+                            else {
+                                ArrayList<String> paidInv = new ArrayList<>();
+                                ArrayList<String> incompInv = (ArrayList<String>) (RT.getCurrentUnitInvoice(RT.getUnitNo())).get(0);
 
-                        for (String eachId : itemList) {
-                            if (eachId.equals(invNo)) {
-                                String deletedID = invDet[invDet.length-1];
-                                String issuedDate = invDet[invDet.length-2];
+                                for (String eachInv : incompInv) {
+                                    String[] invDet = eachInv.split(RT.TF.sp);
+                                    String invNo = invDet[0];
 
-                                invDet[invDet.length-2] = user.getUserID();
-                                
-                                try {
-                                    invDet[invDet.length-1] = DTF.changeFormatDate2(LocalDate.now().toString());
-                                } catch (ParseException ex) {
-                                    Logger.getLogger(ResidentTenantPaymentCredential.class.getName()).log(Level.SEVERE, null, ex);
+                                    for (String eachId : itemList) {
+                                        if (eachId.equals(invNo)) {
+                                            String deletedID = invDet[invDet.length-1];
+                                            String issuedDate = invDet[invDet.length-2];
+
+                                            invDet[invDet.length-2] = RT.getUserID();
+
+                                            try {
+                                                invDet[invDet.length-1] = DTF.changeFormatDate2(LocalDate.now().toString());
+                                            } catch (ParseException ex) {
+                                                Logger.getLogger(ResidentTenantPaymentCredential.class.getName()).log(Level.SEVERE, null, ex);
+                                            }
+
+                                            String toPay = "";
+                                            for (String eachData : invDet) {
+                                                toPay = toPay + eachData + RT.TF.sp;
+                                            }
+
+                                            toPay = toPay + issuedDate + RT.TF.sp + deletedID + RT.TF.sp;
+
+                                            paidInv.add(toPay);
+                                        }
+                                    }
                                 }
 
-                                String toPay = "";
-                                for (String eachData : invDet) {
-                                    toPay = toPay + eachData + RT.TF.sp;
-                                }
-                                
-                                toPay = toPay + issuedDate + RT.TF.sp + deletedID + RT.TF.sp;
+                                RT.crud.create(RT.TF.paymentFile, paidInv);
 
-                                paidInv.add(toPay);
+                                JOptionPane.showMessageDialog (null, "Payment has been made successfully!", 
+                                "PAYMENT", JOptionPane.INFORMATION_MESSAGE);
+                            }
+
+                            if (ResidentTenantPaymentManagement.rtPayMan != null) {
+                                ResidentTenantPaymentManagement.rtPayMan.dispose();
+                            }
+
+                            if (ResidentTenantFacilityPaymentGateway.rtFacPay != null) {
+                                ResidentTenantFacilityPaymentGateway.rtFacPay.dispose();
+                            }
+
+                            if (ResidentTenantBookFacility.rtBookFacility != null) {
+                                ResidentTenantBookFacility.rtBookFacility.dispose();
+                            }
+
+                            if (ResidentTenantPaymentGatewayModifyFacilityBooking.rtPayFacMod != null) {
+                                ResidentTenantPaymentGatewayModifyFacilityBooking.rtPayFacMod.dispose();
+                            }
+
+                            if (ResidentTenantManageBookedFacility.rtManageBooked != null) {
+                                ResidentTenantManageBookedFacility.rtManageBooked.dispose();
+                            }
+
+                            this.dispose();
+
+                            if (forFacility) {
+                                RT.toBookedFacility(RT);
+                            }
+                            else {
+                                RT.toPaymentManagement(RT);
                             }
                         }
                     }
-
-                    RT.crud.create(RT.TF.paymentFile, paidInv);
-                    
-                    JOptionPane.showMessageDialog (null, "Payment has been made successfully!", 
-                    "PAYMENT", JOptionPane.INFORMATION_MESSAGE);
-                }
-
-                if (ResidentTenantPaymentManagement.rtPayMan != null) {
-                    ResidentTenantPaymentManagement.rtPayMan.dispose();
-                }
-                
-                if (ResidentTenantFacilityPaymentGateway.rtFacPay != null) {
-                    ResidentTenantFacilityPaymentGateway.rtFacPay.dispose();
-                }
-                
-                if (ResidentTenantBookFacility.rtBookFacility != null) {
-                    ResidentTenantBookFacility.rtBookFacility.dispose();
-                }
-                
-                if (ResidentTenantPaymentGatewayModifyFacilityBooking.rtPayFacMod != null) {
-                    ResidentTenantPaymentGatewayModifyFacilityBooking.rtPayFacMod.dispose();
-                }
-                
-                if (ResidentTenantManageBookedFacility.rtManageBooked != null) {
-                    ResidentTenantManageBookedFacility.rtManageBooked.dispose();
-                }
-                
-                this.dispose();
-                    
-                if (forFacility) {
-                    RT.toBookedFacility(user);
+                    else {
+                        messageTF.setText("The CVV is the 3 digit number behind the card.");
+                    }
                 }
                 else {
-                    RT.toPaymentManagement(user);
+                    messageTF.setText("Please enter a correct expiration date of the card.");
                 }
             }
+            else {
+                messageTF.setText("The card holder name is the person name who own the card.");
+            }
+        }
+        else {
+            messageTF.setText("The card number should contains only 16 digits.");
         }
     }//GEN-LAST:event_payBTNActionPerformed
 
@@ -521,11 +559,16 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JLabel messageTF;
     private javax.swing.JButton payBTN;
     private javax.swing.JTextField totalAmountTF;
     // End of variables declaration//GEN-END:variables
@@ -542,19 +585,5 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
      */
     public void setItemList(ArrayList<String> itemList) {
         this.itemList = itemList;
-    }
-
-    /**
-     * @return the user
-     */
-    public Users getUser() {
-        return user;
-    }
-
-    /**
-     * @param user the user to set
-     */
-    public void setUser(Users user) {
-        this.user = user;
     }
 }

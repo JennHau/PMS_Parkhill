@@ -6,9 +6,11 @@ package residentANDtenant;
 
 import java.awt.Cursor;
 import java.awt.Toolkit;
+import java.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.PMS_DateTimeFormatter;
 import pms_parkhill_residence.Users;
@@ -18,8 +20,7 @@ import pms_parkhill_residence.Users;
  * @author wongj
  */
 public class ResidentTenantVisitorPass extends javax.swing.JFrame {
-    private Users user;
-    ResidentTenant RT = new ResidentTenant();
+    ResidentTenant RT;
     PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
     
     DefaultTableModel regVisTable;
@@ -28,16 +29,18 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
     
     /**
      * Creates new form homePage
-     * @param user
+     * @param RT
      */
-    public ResidentTenantVisitorPass(Users user) {
+    public ResidentTenantVisitorPass(ResidentTenant RT) {
+        this.RT = RT;
+        
         initComponents();
-        runDefaultSetUp(user);
+        runDefaultSetUp();
     }
     
-    public void runDefaultSetUp(Users user) {
+    public void runDefaultSetUp() {
         regVisTable = (DefaultTableModel) registeredVisitorTable.getModel();
-        this.user = user;
+        
         setWindowIcon();
         registeredVisitorTableSetUp();
         
@@ -69,7 +72,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
     private void registeredVisitorTableSetUp() {
         String visitorStatus = statusCB.getSelectedItem().toString();
         
-        ArrayList<String> registeredVisitor = RT.getCurrentRTvisitor(user.getUserID());
+        ArrayList<String> registeredVisitor = RT.getCurrentRTvisitor(RT.getUserID());
         ArrayList<String> toTable = new ArrayList<>();
         
         for (String eachPass: registeredVisitor) {
@@ -84,7 +87,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
                     action = "MODIFY";
                 }
                 
-                String tableLine = passDet[0] + RT.TF.sp + passDet[2] + RT.TF.sp + 
+                String tableLine = passDet[0].toUpperCase() + RT.TF.sp + passDet[2] + RT.TF.sp + 
                                     passDet[3] + RT.TF.sp + passDet[5] + RT.TF.sp + 
                                     passDet[6] + RT.TF.sp + passDet[7] + RT.TF.sp + 
                                     action + RT.TF.sp;
@@ -99,7 +102,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
     }
     
     private void setCurrentUserProfile() {
-        userNameLabel.setText(user.getFirstName() + " " + user.getLastName());
+        userNameLabel.setText(RT.getFirstName() + " " + RT.getLastName());
     }
 
     /**
@@ -798,7 +801,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
     private void registerBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBTNActionPerformed
         // TODO add your handling code here:
         passID = RT.getNewPassID();
-        passIdTF.setText(passID);
+        passIdTF.setText(passID.toUpperCase());
         
         visitorIcTF.setEnabled(true);
         visitorNameTF.setEnabled(true);
@@ -834,39 +837,58 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void saveBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBTNActionPerformed
         // TODO add your handling code here:
-        ArrayList<String> updateList = new ArrayList<>();
+        // Compare selected date
+        LocalDateTime dateTimeInput = RT.DTF.combineStringDateTime(dateTimePicker.datePicker.getDate().toString(), dateTimePicker.timePicker.getTime().toString());
         
-        String data = this.passID + RT.TF.sp + visitorIcTF.getText() + RT.TF.sp + 
-                      visitorNameTF.getText() + RT.TF.sp + visitorCarPlateTF.getText() + RT.TF.sp + 
-                      visitorContactTF.getText() + RT.TF.sp + dateTimePicker.datePicker.getDate() + RT.TF.sp + 
-                      dateTimePicker.timePicker.getTime() + RT.TF.sp + RT.visitorPassStatus[0] + RT.TF.sp + 
-                      "-" + RT.TF.sp + "-" + RT.TF.sp + this.user.getUserID() + RT.TF.sp + DTF.getDateTimeNow() + RT.TF.sp;
-        
-        List<String> visitorFile = RT.fh.fileRead(RT.TF.visitorPass);
-        
-        boolean found = false;
-        for (String eachVis : visitorFile) {
-            String pId = eachVis.split(RT.TF.sp)[0];
-            updateList.add(eachVis);
-            if (pId.equals(this.passID)) {
-                found = true;
+        if (!dateTimeInput.isBefore(LocalDateTime.now())) {
+            int result = JOptionPane.showConfirmDialog(null,"Are you sure to update this visitor?",
+                "VISITOR PASS",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
+
+            if(result == JOptionPane.YES_OPTION){
+                ArrayList<String> updateList = new ArrayList<>();
+
+                String data = this.passID + RT.TF.sp + visitorIcTF.getText() + RT.TF.sp + 
+                              visitorNameTF.getText() + RT.TF.sp + visitorCarPlateTF.getText() + RT.TF.sp + 
+                              visitorContactTF.getText() + RT.TF.sp + dateTimePicker.datePicker.getDate() + RT.TF.sp + 
+                              dateTimePicker.timePicker.getTime() + RT.TF.sp + RT.visitorPassStatus[0] + RT.TF.sp + 
+                              "-" + RT.TF.sp + "-" + RT.TF.sp + this.RT.getUserID() + RT.TF.sp + DTF.getDateTimeNow() + RT.TF.sp;
+
+                List<String> visitorFile = RT.fh.fileRead(RT.TF.visitorPass);
+
+                boolean found = false;
+                
+                for (String eachVis : visitorFile) {
+                    String pId = eachVis.split(RT.TF.sp)[0];
+                    if (pId.equals(this.passID)) {
+                        found = true;
+                    }
+                }
+
+                if (found) {
+                    RT.crud.update(RT.TF.visitorPass, passID, data, 0);
+                } else {
+                    updateList.add(data);
+                    RT.crud.create(RT.TF.visitorPass, updateList);
+                }
+
+                clearField();
+                registeredVisitorTableSetUp();
+                
+                JOptionPane.showMessageDialog (null, "The visitor pass has been updated successfully", 
+                                                    "VISITOR PASS", JOptionPane.INFORMATION_MESSAGE);
             }
         }
-        
-        if (found) {
-            RT.crud.update(RT.TF.visitorPass, passID, data, 0);
-        } else {
-            updateList.add(data);
-            RT.crud.create(RT.TF.visitorPass, updateList);
+        else {
+            JOptionPane.showMessageDialog (null, "The check-in date and time selected is a past. Please select the upcoming date and time.", 
+                                                    "VISITOR PASS", JOptionPane.INFORMATION_MESSAGE);
         }
-        
-        clearField();
-        registeredVisitorTableSetUp();
     }//GEN-LAST:event_saveBTNActionPerformed
 
     private void dashBoardInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashBoardInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toResidentTenantDashboard(user);
+        RT.toResidentTenantDashboard(RT);
         this.dispose();
     }//GEN-LAST:event_dashBoardInnerTabMouseClicked
 
@@ -877,7 +899,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void dashboardOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toResidentTenantDashboard(user);
+        RT.toResidentTenantDashboard(RT);
         this.dispose();
     }//GEN-LAST:event_dashboardOuterTabMouseClicked
 
@@ -888,7 +910,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void paymentManagementInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toPaymentManagement(user);
+        RT.toPaymentManagement(RT);
         this.dispose();
     }//GEN-LAST:event_paymentManagementInnerTabMouseClicked
 
@@ -899,7 +921,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void paymentManagementOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toPaymentManagement(user);
+        RT.toPaymentManagement(RT);
         this.dispose();
     }//GEN-LAST:event_paymentManagementOuterTabMouseClicked
 
@@ -910,7 +932,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void facilityBookingInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityBookingInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toBookedFacility(user);
+        RT.toBookedFacility(RT);
         this.dispose();
     }//GEN-LAST:event_facilityBookingInnerTabMouseClicked
 
@@ -921,7 +943,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void facilityBookingOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityBookingOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toBookedFacility(user);
+        RT.toBookedFacility(RT);
         this.dispose();
     }//GEN-LAST:event_facilityBookingOuterTabMouseClicked
 
@@ -932,7 +954,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void complaintsInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toComplaints(user);
+        RT.toComplaints(RT);
         this.dispose();
     }//GEN-LAST:event_complaintsInnerTabMouseClicked
 
@@ -943,7 +965,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void complaintsOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toComplaints(user);
+        RT.toComplaints(RT);
         this.dispose();
     }//GEN-LAST:event_complaintsOuterTabMouseClicked
 
@@ -954,7 +976,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
         // TODO add your handling code here:
-        RT.toViewProfile(user);
+        RT.toViewProfile(RT);
         this.dispose();
     }//GEN-LAST:event_jLabel12MouseClicked
 
@@ -965,7 +987,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
         // TODO add your handling code here:
-        RT.toViewProfile(user);
+        RT.toViewProfile(RT);
         this.dispose();
     }//GEN-LAST:event_jPanel13MouseClicked
 
@@ -976,7 +998,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void visitorPassInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorPassInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toVisitorPass(user);
+        RT.toVisitorPass(RT);
         this.dispose();
     }//GEN-LAST:event_visitorPassInnerTabMouseClicked
 
@@ -987,7 +1009,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void visitorPassOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorPassOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toVisitorPass(user);
+        RT.toVisitorPass(RT);
         this.dispose();
     }//GEN-LAST:event_visitorPassOuterTabMouseClicked
 
@@ -1007,7 +1029,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
     
     private void tableSelected(int colSel, int rowSel, DefaultTableModel table) {
         if (colSel == 6) {
-            this.setPassID(table.getValueAt(rowSel, 0).toString());
+            this.setPassID(table.getValueAt(rowSel, 0).toString().toLowerCase());
             
             String visitorDet = RT.getVisitorDetails(passID);
             
@@ -1015,12 +1037,12 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
                 String[] visitorInfo = visitorDet.split(RT.TF.sp);
                 String visIC = visitorInfo[1];
                 String visName = visitorInfo[2];
-                String carPlate = visitorInfo[3];
+                String carPlate = visitorInfo[3].toUpperCase();
                 String contact = visitorInfo[4];
                 String date = visitorInfo[5];
                 String time = visitorInfo[6];
                 
-                passIdTF.setText(passID);
+                passIdTF.setText(passID.toUpperCase());
                 visitorIcTF.setText(visIC);
                 visitorIcTF.setEnabled(false);
                 visitorNameTF.setText(visName);
@@ -1029,14 +1051,19 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
                 visitorContactTF.setText(contact);
                 dateTimePicker.datePicker.setDate(DTF.formatDate(date));
                 dateTimePicker.timePicker.setTime(DTF.formatTime(time));
-                
-                deleteBTN.setEnabled(true);
-                saveBTN.setEnabled(true);
             }
             
             if (statusCB.getSelectedItem().toString().equals("Registered")) {
                 dateTimePicker.setEnabled(true);
                 visitorCarPlateTF.setEnabled(true);
+                deleteBTN.setEnabled(true);
+                saveBTN.setEnabled(true);
+            }
+            else {
+                dateTimePicker.setEnabled(false);
+                visitorCarPlateTF.setEnabled(false);
+                deleteBTN.setEnabled(false);
+                saveBTN.setEnabled(false);
             }
         }
     }

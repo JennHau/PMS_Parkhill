@@ -4,11 +4,9 @@
  */
 package buildingManager;
 
-import adminExecutive.*;
 import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 import pms_parkhill_residence.Validation;
 
 /**
@@ -20,11 +18,12 @@ public class BuildingManagerAddUser extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      * @param userRole
+     * @param BM
      */
-    public BuildingManagerAddUser(String userRole, Users user) {
+    public BuildingManagerAddUser(String userRole, BuildingManager BM) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.BM = BM;
         this.userRole = userRole;
         setDefault();
     }
@@ -358,16 +357,15 @@ public class BuildingManagerAddUser extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     FileHandling fh = new FileHandling();
-    BuildingManager bm = new BuildingManager();
     String userRole;
-    private final Users user;
+    private final BuildingManager BM;
     
     private void setDefault() {
         String latestUserID = "";
         if(userRole.equals("Account Executive")) {
-            latestUserID = bm.getLatestID("userProfile.txt", "ace"); 
+            latestUserID = BM.getLatestID("userProfile.txt", "ace"); 
         } else if(userRole.equals("Building Executive")) {
-            latestUserID = bm.getLatestID("userProfile.txt", "bde");
+            latestUserID = BM.getLatestID("userProfile.txt", "bde");
         }
         userRoleTF.setText(userRole);
         userIDTF.setText(latestUserID.toUpperCase());
@@ -402,7 +400,7 @@ public class BuildingManagerAddUser extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
                 
                 if(result == JOptionPane.YES_OPTION){
-                    bm.userRegistration(userID, email, password, firstName,
+                    BM.userRegistration(userID, email, password, firstName,
                             lastName, idNo, gender, phoneNo);
                     JOptionPane.showMessageDialog (null, "New user has been added!", 
                                     "USER REGISTRATION", JOptionPane.INFORMATION_MESSAGE);
@@ -410,7 +408,7 @@ public class BuildingManagerAddUser extends javax.swing.JFrame {
                     if (BuildingManagerUserManagement.bdmUserManage != null) {
                         BuildingManagerUserManagement.bdmUserManage.dispose();
                     }   
-                    new BuildingManagerUserManagement(user).setVisible(true);
+                    new BuildingManagerUserManagement(BM).setVisible(true);
                 }
             } else {
                 warningMessage.setText("Invalid email or email existed!");

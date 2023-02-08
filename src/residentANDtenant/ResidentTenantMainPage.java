@@ -4,8 +4,16 @@
  */
 package residentANDtenant;
 
+import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Toolkit;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.ArrayList;
+import java.util.List;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import pms_parkhill_residence.Dashboard;
 import pms_parkhill_residence.Users;
 
 /**
@@ -13,25 +21,163 @@ import pms_parkhill_residence.Users;
  * @author wongj
  */
 public class ResidentTenantMainPage extends javax.swing.JFrame {
-    private Users user;
-    ResidentTenant RT = new ResidentTenant();
+    private final ResidentTenant RT;
+    Dashboard DB = new Dashboard();
     
     /**
      * Creates new form homePage
-     * @param user
+     * @param RT
      */
-    public ResidentTenantMainPage(Users user) {
+    public ResidentTenantMainPage(ResidentTenant RT) {
+        this.RT = RT;
+        
         initComponents();
-        runDefaultSetUp(user);
+        runDefaultSetUp();
     }
     
-    public void runDefaultSetUp(Users user) {
-        this.user = user;
+    public void runDefaultSetUp() {
+        setCurrentUserProfile();
         setWindowIcon();
+        setData();
+        yearCBsetUp();
     }
     
     private void setCurrentUserProfile() {
-        userNameLabel.setText(user.getFirstName() + " " + user.getLastName());
+        userNameLabel.setText(RT.getFirstName() + " " + RT.getLastName());
+    }
+    
+    private void setData() {
+        // Set Complaints
+        ArrayList<ArrayList> complaints = RT.CP.getComplaints(RT.getUserID());
+        ArrayList<String> pendingComplaints = complaints.get(0);
+        ArrayList<String> completedComplaints = complaints.get(1);
+        
+        pendingComplaints.addAll(completedComplaints);
+        int compNo = pendingComplaints.size();
+        complaintsLabel.setText(String.valueOf(compNo));
+        
+        // Set today coming visitor number
+        List<String> visitor = RT.fh.fileRead(RT.TF.visitorPass);
+        int countVisitor = 0;
+        for (String eachPass : visitor) {
+            String[] passDet = eachPass.split(RT.TF.sp);
+            String rsdId = passDet[10];
+            
+            if (rsdId.equals(RT.getUserID())) {
+                LocalDate passDate = RT.DTF.formatDate(passDet[5]);
+                if (passDate.isEqual(LocalDate.now())) {
+                    countVisitor++;
+                }
+            }
+        }
+        visitorLabel.setText(String.valueOf(countVisitor));
+        
+        ArrayList<ArrayList> pendingFee = RT.getCurrentUnitInvoice(RT.getUserID());
+        ArrayList<String> unpaidInv = pendingFee.get(0);
+        double totalAmount = 0;
+        for (String eachFee : unpaidInv) {
+            double feeTotal = Double.parseDouble(eachFee.split(RT.TF.sp)[7]);
+            totalAmount += feeTotal;
+        }
+        pendingFeeLabel.setText(String.format("%.02f", totalAmount));
+        
+        ArrayList<String> facilities = RT.getCurrentUnitBookedFacility(RT.getUserID());
+        int bookedFacility = facilities.size();
+        facilityLabel.setText(String.valueOf(bookedFacility));
+    }
+    
+    private void yearCBsetUp(){
+        ArrayList<String> invYear = new ArrayList<>();
+        
+        List<String> invoices = RT.fh.fileRead(RT.TF.invoiceFile);
+        boolean firstLine = true;
+        for (String eachInv : invoices) {
+            if (!firstLine) {
+                int year = Integer.valueOf(eachInv.split(RT.TF.sp)[8].split("/")[1]);
+
+                if (!invYear.contains(String.valueOf(year))) {
+                    invYear.add(String.valueOf(year));
+                }
+            }
+            
+            firstLine = false;
+        }
+        
+        for (int count1 = 0; count1 < invYear.size()-1; count1++) {
+            for (int count2 = count1+1; count2 < invYear.size(); count2++) {
+                int year1 = Integer.valueOf(invYear.get(count1));
+                int year2 = Integer.valueOf(invYear.get(count2));
+                
+                if (year2 > year1) {
+                    invYear.set(count1, String.valueOf(year2));
+                    invYear.set(count2, String.valueOf(year1));
+                }
+            }
+        }
+        
+        yearCB.removeAllItems();
+        for (String eachYear : invYear) {
+            yearCB.addItem(eachYear);
+        }
+    }
+    
+    private void setChart() {
+        String selYear = (yearCB.getSelectedItem() != null) ? yearCB.getSelectedItem().toString() : null;
+        
+        List<String> monthValue = new ArrayList<>();
+        List<String> monthData = new ArrayList<>();
+        ArrayList<String> selYearInv = new ArrayList<>();
+        
+        if (selYear != null) {
+            List<String> invoices = RT.fh.fileRead(RT.TF.invoiceFile);
+            
+            boolean firstLine = true;
+            for (String eachInv : invoices) {
+                if (!firstLine) {
+                    String[] invDet = eachInv.split(RT.TF.sp);
+                    String unitNo = invDet[1];
+                    
+                    if (unitNo.equals(RT.getUnitNo())) {
+                        String invYear = invDet[8].split("/")[1];
+                        
+                        if (invYear.equals(selYear)) {
+                            selYearInv.add(eachInv);
+
+                            String invMonth = String.valueOf(Month.of(Integer.valueOf(invDet[8].split("/")[0])));
+
+                            if (!monthValue.contains(invMonth)) {
+                                monthValue.add(invMonth);
+                            }
+                        }
+                    }
+                }
+                
+                firstLine = false;
+            }
+            
+            for (String eachMonth : monthValue) {
+                double totalFees = 0;
+                
+                for (String eachInv : selYearInv) {
+                    String[] invDet = eachInv.split(RT.TF.sp);
+                    String invMonth = String.valueOf(Month.of(Integer.valueOf(invDet[8].split("/")[0])));
+
+                    if (invMonth.equals(eachMonth)) {
+                        double amount = Double.parseDouble(invDet[7]);
+                        totalFees += amount;
+                    }
+                }
+                
+                monthData.add(String.format("%.02f", totalFees));
+            }
+            
+            JFreeChart chart = DB.createBarChart(monthValue, monthData, "Consumption Fees for Year " + selYear, "Month", "Consumption Amount (RM)");
+            
+            ChartPanel barChartPanel = new ChartPanel(chart);
+            chartPanel.removeAll();
+            chartPanel.add(barChartPanel, BorderLayout.CENTER);
+            chartPanel.validate();
+        }
     }
 
     /**
@@ -47,6 +193,34 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         userNameLabel = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
+        jLabel14 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        complaintsLabel = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
+        visitorLabel = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jPanel11 = new javax.swing.JPanel();
+        jPanel15 = new javax.swing.JPanel();
+        jLabel16 = new javax.swing.JLabel();
+        pendingFeeLabel = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jPanel16 = new javax.swing.JPanel();
+        jPanel17 = new javax.swing.JPanel();
+        jLabel17 = new javax.swing.JLabel();
+        facilityLabel = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jSeparator2 = new javax.swing.JSeparator();
+        jSeparator3 = new javax.swing.JSeparator();
+        jSeparator4 = new javax.swing.JSeparator();
+        jLabel24 = new javax.swing.JLabel();
+        yearCB = new javax.swing.JComboBox<>();
+        chartPanel = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         dashboardOuterTab = new javax.swing.JPanel();
@@ -95,7 +269,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(userNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+                .addComponent(userNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
         jPanel3Layout.setVerticalGroup(
@@ -110,15 +284,347 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(226, 226, 226));
 
+        jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel14.setText("DASHBOARD");
+        jLabel14.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+        jPanel4.setBackground(new java.awt.Color(13, 50, 79));
+
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(13, 24, 42));
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("TOTAL COMPLAINTS");
+
+        complaintsLabel.setFont(new java.awt.Font("MS PGothic", 1, 36)); // NOI18N
+        complaintsLabel.setForeground(new java.awt.Color(13, 50, 79));
+        complaintsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        complaintsLabel.setText("50");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(complaintsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(complaintsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("COMPLAINTS");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(6, 6, 6))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jPanel9.setBackground(new java.awt.Color(13, 50, 79));
+
+        jPanel10.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(13, 24, 42));
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel13.setText("COMING TODAY");
+
+        visitorLabel.setFont(new java.awt.Font("MS PGothic", 1, 36)); // NOI18N
+        visitorLabel.setForeground(new java.awt.Color(13, 50, 79));
+        visitorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        visitorLabel.setText("50");
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(visitorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                .addContainerGap())
+            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel13)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(visitorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("VISITOR");
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(6, 6, 6))
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jPanel11.setBackground(new java.awt.Color(13, 50, 79));
+
+        jPanel15.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(13, 24, 42));
+        jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel16.setText("TOTAL AMOUNT");
+
+        pendingFeeLabel.setFont(new java.awt.Font("MS PGothic", 1, 36)); // NOI18N
+        pendingFeeLabel.setForeground(new java.awt.Color(13, 50, 79));
+        pendingFeeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pendingFeeLabel.setText("50");
+
+        javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
+        jPanel15.setLayout(jPanel15Layout);
+        jPanel15Layout.setHorizontalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel15Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(pendingFeeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                .addContainerGap())
+            .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel15Layout.setVerticalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel15Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pendingFeeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("PENDING FEE");
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(6, 6, 6))
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jPanel16.setBackground(new java.awt.Color(13, 50, 79));
+
+        jPanel17.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(13, 24, 42));
+        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel17.setText("TODAY BOOKED");
+
+        facilityLabel.setFont(new java.awt.Font("MS PGothic", 1, 36)); // NOI18N
+        facilityLabel.setForeground(new java.awt.Color(13, 50, 79));
+        facilityLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        facilityLabel.setText("50");
+
+        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
+        jPanel17.setLayout(jPanel17Layout);
+        jPanel17Layout.setHorizontalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel17Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(facilityLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                .addContainerGap())
+            .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel17Layout.setVerticalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel17Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel17)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(facilityLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("FACILITY");
+
+        javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
+        jPanel16.setLayout(jPanel16Layout);
+        jPanel16Layout.setHorizontalGroup(
+            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel16Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(6, 6, 6))
+        );
+        jPanel16Layout.setVerticalGroup(
+            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel16Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jSeparator1.setBackground(new java.awt.Color(13, 50, 79));
+        jSeparator1.setForeground(new java.awt.Color(13, 50, 79));
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        jSeparator2.setBackground(new java.awt.Color(13, 50, 79));
+        jSeparator2.setForeground(new java.awt.Color(13, 50, 79));
+        jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        jSeparator3.setBackground(new java.awt.Color(13, 50, 79));
+        jSeparator3.setForeground(new java.awt.Color(13, 50, 79));
+        jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        jLabel24.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel24.setText("Year:");
+
+        yearCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        yearCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                yearCBActionPerformed(evt);
+            }
+        });
+
+        chartPanel.setLayout(new java.awt.BorderLayout());
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1013, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(80, 80, 80)
+                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(24, 24, 24)
+                                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(25, 25, 25)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(25, 25, 25)
+                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(79, 79, 79)
+                                .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(yearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(57, 57, 57)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(chartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 905, Short.MAX_VALUE)
+                                    .addComponent(jSeparator4))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 625, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(59, 59, 59)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(59, 59, 59)
+                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(29, 29, 29)
+                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(yearCB)
+                    .addComponent(jLabel24))
+                .addGap(8, 8, 8)
+                .addComponent(chartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33))
         );
 
         jPanel2.setBackground(new java.awt.Color(13, 24, 42));
@@ -489,7 +995,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void dashBoardInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashBoardInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toResidentTenantDashboard(user);
+        RT.toResidentTenantDashboard(RT);
         this.dispose();
     }//GEN-LAST:event_dashBoardInnerTabMouseClicked
 
@@ -500,7 +1006,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void dashboardOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toResidentTenantDashboard(user);
+        RT.toResidentTenantDashboard(RT);
         this.dispose();
     }//GEN-LAST:event_dashboardOuterTabMouseClicked
 
@@ -511,7 +1017,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void paymentManagementInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toPaymentManagement(user);
+        RT.toPaymentManagement(RT);
         this.dispose();
     }//GEN-LAST:event_paymentManagementInnerTabMouseClicked
 
@@ -522,7 +1028,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void paymentManagementOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toPaymentManagement(user);
+        RT.toPaymentManagement(RT);
         this.dispose();
     }//GEN-LAST:event_paymentManagementOuterTabMouseClicked
 
@@ -533,7 +1039,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void facilityBookingInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityBookingInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toBookedFacility(user);
+        RT.toBookedFacility(RT);
         this.dispose();
     }//GEN-LAST:event_facilityBookingInnerTabMouseClicked
 
@@ -544,7 +1050,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void facilityBookingOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityBookingOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toBookedFacility(user);
+        RT.toBookedFacility(RT);
         this.dispose();
     }//GEN-LAST:event_facilityBookingOuterTabMouseClicked
 
@@ -555,7 +1061,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void complaintsInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toComplaints(user);
+        RT.toComplaints(RT);
         this.dispose();
     }//GEN-LAST:event_complaintsInnerTabMouseClicked
 
@@ -566,7 +1072,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void complaintsOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toComplaints(user);
+        RT.toComplaints(RT);
         this.dispose();
     }//GEN-LAST:event_complaintsOuterTabMouseClicked
 
@@ -577,7 +1083,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
         // TODO add your handling code here:
-        RT.toViewProfile(user);
+        RT.toViewProfile(RT);
         this.dispose();
     }//GEN-LAST:event_jLabel12MouseClicked
 
@@ -588,7 +1094,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
         // TODO add your handling code here:
-        RT.toViewProfile(user);
+        RT.toViewProfile(RT);
         this.dispose();
     }//GEN-LAST:event_jPanel13MouseClicked
 
@@ -599,7 +1105,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void visitorPassInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorPassInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toVisitorPass(user);
+        RT.toVisitorPass(RT);
         this.dispose();
     }//GEN-LAST:event_visitorPassInnerTabMouseClicked
 
@@ -610,7 +1116,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void visitorPassOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorPassOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toVisitorPass(user);
+        RT.toVisitorPass(RT);
         this.dispose();
     }//GEN-LAST:event_visitorPassOuterTabMouseClicked
 
@@ -618,6 +1124,11 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         visitorPassOuterTab.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_visitorPassOuterTabMouseEntered
+
+    private void yearCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yearCBActionPerformed
+        // TODO add your handling code here:
+        setChart();
+    }//GEN-LAST:event_yearCBActionPerformed
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
@@ -722,28 +1233,60 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel chartPanel;
     private javax.swing.JLabel complaintsInnerTab;
+    private javax.swing.JLabel complaintsLabel;
     private javax.swing.JPanel complaintsOuterTab;
     private javax.swing.JLabel dashBoardInnerTab;
     private javax.swing.JPanel dashboardOuterTab;
     private javax.swing.JLabel facilityBookingInnerTab;
     private javax.swing.JPanel facilityBookingOuterTab;
+    private javax.swing.JLabel facilityLabel;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
     private javax.swing.JLabel paymentManagementInnerTab;
     private javax.swing.JPanel paymentManagementOuterTab;
+    private javax.swing.JLabel pendingFeeLabel;
+    private javax.swing.JLabel totalUpcomingJob1;
     private javax.swing.JLabel userNameLabel;
+    private javax.swing.JLabel visitorLabel;
     private javax.swing.JLabel visitorPassInnerTab;
     private javax.swing.JPanel visitorPassOuterTab;
+    private javax.swing.JComboBox<String> yearCB;
     // End of variables declaration//GEN-END:variables
 
 }

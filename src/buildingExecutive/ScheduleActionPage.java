@@ -19,9 +19,8 @@ import pms_parkhill_residence.Users;
  * @author Winson
  */
 public class ScheduleActionPage extends javax.swing.JFrame {
-    private Users user;
     FileHandling fh = new FileHandling();
-    BuildingExecutive BE = new BuildingExecutive();
+    private final BuildingExecutive BE;
     
     private final String patrollingScheduleFile;
     
@@ -30,24 +29,23 @@ public class ScheduleActionPage extends javax.swing.JFrame {
     
     /**
      * Creates new form EmployeeJobAssignation
-     * @param users
-     * @param scheduleId
+     * @param BE
      * @param inputDate
      * @param file
-     * @throws java.io.IOException
      */
-    public ScheduleActionPage(Users users, LocalDate inputDate, String file){
+    public ScheduleActionPage(BuildingExecutive BE, LocalDate inputDate, String file){
+        this.BE = BE;
+        this.setCurrentBEid(BE.getUserID());
+        setInputDate(inputDate);
+        
         initComponents();
-        runDefaultSetUp(users, inputDate);
+        runDefaultSetUp();
+        
         this.patrollingScheduleFile = file;
     }
     
-    private void runDefaultSetUp(Users users, LocalDate inputDate) {
-        this.user = users;
-        this.setCurrentBEid(user.getUserID());
-        
+    private void runDefaultSetUp() {
         setWindowIcon();
-        setInputDate(inputDate);
         
         blockComboBoxSetUp();
         
@@ -406,7 +404,7 @@ public class ScheduleActionPage extends javax.swing.JFrame {
             if (BuildingExecutivePatrollingManagement.BEpatrollingManagement != null) {
                 BuildingExecutivePatrollingManagement.BEpatrollingManagement.dispose();
             }
-            BE.toPatrollingManagement(this, user);
+            BE.toPatrollingManagement(this, BE);
         } catch (IOException ex) {
             Logger.getLogger(ScheduleActionPage.class.getName()).log(Level.SEVERE, null, ex);
         }

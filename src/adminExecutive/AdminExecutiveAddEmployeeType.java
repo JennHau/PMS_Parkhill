@@ -19,11 +19,12 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param AE
      */
-    public AdminExecutiveAddEmployeeType(Users user) {
+    public AdminExecutiveAddEmployeeType(AdminExecutive AE) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.AE = AE;
         setTable();
     }
 
@@ -291,8 +292,7 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
 
     public String type;
     FileHandling fh = new FileHandling();
-    AdminExecutive ae = new AdminExecutive();
-    private final Users user;
+    private final AdminExecutive AE;
     
     private void employeeTypeTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeeTypeTFActionPerformed
         // TODO add your handling code here:
@@ -307,7 +307,7 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
         String employeeType = employeeTypeTF.getText();
         String initialise = initialiseTF.getText().toLowerCase();
         
-        boolean check = ae.addEmployeeTypeValidation(employeeType.toLowerCase(),
+        boolean check = AE.addEmployeeTypeValidation(employeeType.toLowerCase(),
                                         initialise);
         
         if (check) {
@@ -319,7 +319,7 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
                 
                 if(result == JOptionPane.YES_OPTION){
-                    ae.addEmployeeType(employeeType, initialise);
+                    AE.addEmployeeType(employeeType, initialise);
                     setTable(); clearAllBtActionPerformed(evt);
                     JOptionPane.showMessageDialog (null, "New employee type has been added!", 
                                         "ADD EMPLOYEE TYPE", JOptionPane.INFORMATION_MESSAGE);
@@ -333,7 +333,7 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveAddEmployee(user).setVisible(true);
+        new AdminExecutiveAddEmployee(AE).setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
     private void deleteBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtActionPerformed
@@ -345,7 +345,7 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
         JOptionPane.QUESTION_MESSAGE);
 
         if(result == JOptionPane.YES_OPTION){
-            ae.deleteEmployeeType(employeeTypeTF.getText().toLowerCase());
+            AE.deleteEmployeeType(employeeTypeTF.getText().toLowerCase());
             setTable(); clearAllBtActionPerformed(evt);
             JOptionPane.showMessageDialog (null, "Employee type has been deleted!", 
                                 "DELETE EMPLOYEE TYPE", JOptionPane.INFORMATION_MESSAGE);
@@ -404,7 +404,7 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
     private void setTable() {
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
         tableModel.setRowCount(0);
-        List<String> availableList = ae.extractEmployeeType();
+        List<String> availableList = AE.extractEmployeeType();
         
         for (int i = 0; i < availableList.size(); i++) {
             String[] propertyDetails = availableList.get(i).split(";");

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 
 /**
  *
@@ -22,10 +21,10 @@ public class BuildingManagerAddAllocation extends javax.swing.JFrame {
      * Creates new form homePage
      * @param fundBalance
      */
-    public BuildingManagerAddAllocation(String fundBalance, Users user) {
+    public BuildingManagerAddAllocation(String fundBalance, BuildingManager BM) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.BM = BM;
         this.fundBalance = fundBalance;
         setDefault();
     }
@@ -306,12 +305,11 @@ public class BuildingManagerAddAllocation extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     FileHandling fh = new FileHandling();
-    BuildingManager bm = new BuildingManager();
     String fundBalance;
-    private final Users user;
+    private final BuildingManager BM;
     
     private void setDefault() {
-        String latestID = bm.getLatestID("budgetAllocation.txt", "alc");
+        String latestID = BM.getLatestID("budgetAllocation.txt", "alc");
         allocationIDTF.setText(latestID.toUpperCase());
         
         fundBalanceLabel.setText("RM " + fundBalance);
@@ -326,7 +324,7 @@ public class BuildingManagerAddAllocation extends javax.swing.JFrame {
         String id = allocationIDTF.getText().toLowerCase();
         String type = (String)typeCB.getSelectedItem();
         String desc = descTF.getText();
-        String amount = bm.currencyFormat
+        String amount = BM.currencyFormat
                 (Float.parseFloat(allocationAmountLabel.getText()));
         
         if(!type.equals("-PLEASE SELECT-") && !desc.equals("")&& !amount.equals("")
@@ -350,7 +348,7 @@ public class BuildingManagerAddAllocation extends javax.swing.JFrame {
                 if (BuildingManagerBudgetPlanning.bmBudgetPlanning != null) {
                     BuildingManagerBudgetPlanning.bmBudgetPlanning.dispose();
                 }
-                new BuildingManagerBudgetPlanning(user).setVisible(true);
+                new BuildingManagerBudgetPlanning(BM).setVisible(true);
             }
         } else{
             warningMessage.setText("Please complete the form!");

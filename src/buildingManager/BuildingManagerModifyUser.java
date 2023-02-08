@@ -4,7 +4,6 @@
  */
 package buildingManager;
 
-import adminExecutive.*;
 import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.FileHandling;
@@ -20,11 +19,12 @@ public class BuildingManagerModifyUser extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      * @param userID
+     * @param BM
      */
-    public BuildingManagerModifyUser(String userID, Users user) {
+    public BuildingManagerModifyUser(String userID, BuildingManager BM) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.BM = BM;
         this.userID = userID;
         setDefault();
     }
@@ -384,9 +384,8 @@ public class BuildingManagerModifyUser extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     FileHandling fh = new FileHandling();
-    BuildingManager bm = new BuildingManager();
     String userID;
-    private final Users user;
+    private final BuildingManager BM;
     
     private void setDefault() {
         if(userID.startsWith("ACE")) {
@@ -395,15 +394,14 @@ public class BuildingManagerModifyUser extends javax.swing.JFrame {
             userRoleTF.setText("Building Executive");
         }
         
-        Users users = new Users();
-        users.setAllUserData(userID);
+        String[] employeeDetails = BM.extractEmployeeDetails(userID);
         
-        String firstName = users.getFirstName();
-        String lastName = users.getLastName();
-        String email = users.getEmail();
-        String idNo = users.getIdentificationNo();
-        String phoneNo = users.getPhoneNo();
-        String gender = users.getGender();
+        String firstName = employeeDetails[3];
+        String lastName = employeeDetails[4];
+        String email = employeeDetails[1];
+        String idNo = employeeDetails[5];
+        String phoneNo = employeeDetails[7];
+        String gender = employeeDetails[6];
         
         userIDTF.setText(userID);
         firstNameTF.setText(firstName); lastNameTF.setText(lastName);
@@ -471,16 +469,15 @@ public class BuildingManagerModifyUser extends javax.swing.JFrame {
                     JOptionPane.QUESTION_MESSAGE);
 
                 if(result == JOptionPane.YES_OPTION){
-                    Users users = new Users(userID, email, password, firstName,
+                    BM.modifyOthersAccount(userID, email, password, firstName,
                         lastName, idNo, gender, phoneNo, "-");
-                    users.modifyOthersAccount();
                     JOptionPane.showMessageDialog (null, "User account has been modified!",
                         "MODIFY USER ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
                     if (BuildingManagerUserManagement.bdmUserManage != null) {
                         BuildingManagerUserManagement.bdmUserManage.dispose();
                     }   
-                    new BuildingManagerUserManagement(user).setVisible(true);
+                    new BuildingManagerUserManagement(BM).setVisible(true);
                 }
             } else {
                 warningMessage.setText("Invalid email or email existed!");
@@ -499,7 +496,7 @@ public class BuildingManagerModifyUser extends javax.swing.JFrame {
             JOptionPane.QUESTION_MESSAGE);
 
         if(result == JOptionPane.YES_OPTION){
-            bm.deleteUser(userIDTF.getText().toLowerCase());
+            BM.deleteUser(userIDTF.getText().toLowerCase());
             
             JOptionPane.showMessageDialog (null, "User has been deleted!",
                 "DELETE USER ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
@@ -507,7 +504,7 @@ public class BuildingManagerModifyUser extends javax.swing.JFrame {
             if (BuildingManagerUserManagement.bdmUserManage != null) {
                 BuildingManagerUserManagement.bdmUserManage.dispose();
             }   
-            new BuildingManagerUserManagement(user).setVisible(true);
+            new BuildingManagerUserManagement(BM).setVisible(true);
         }
     }//GEN-LAST:event_deleteBt1ActionPerformed
 

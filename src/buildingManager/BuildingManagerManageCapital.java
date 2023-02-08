@@ -19,11 +19,12 @@ public class BuildingManagerManageCapital extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param BM
      */
-    public BuildingManagerManageCapital(Users user) {
+    public BuildingManagerManageCapital(BuildingManager BM) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.BM = BM;
         setTable();
     }
 
@@ -232,8 +233,7 @@ public class BuildingManagerManageCapital extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     FileHandling fh = new FileHandling();
-    BuildingManager bm = new BuildingManager();
-    private final Users user;
+    private final BuildingManager BM;
     
     private void capitalAmountTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_capitalAmountTFActionPerformed
         // TODO add your handling code here:
@@ -249,8 +249,8 @@ public class BuildingManagerManageCapital extends javax.swing.JFrame {
 
         if(result == JOptionPane.YES_OPTION){
             String newAmount = capitalAmountTF.getText();
-            String fAmount = bm.currencyFormat(Float.parseFloat(newAmount));
-            bm.addFinancialCapital(fAmount);
+            String fAmount = BM.currencyFormat(Float.parseFloat(newAmount));
+            BM.addFinancialCapital(fAmount);
             setTable();
             capitalAmountTF.setText("");
             JOptionPane.showMessageDialog (null, "Financial Capital has been added!", 
@@ -263,7 +263,7 @@ public class BuildingManagerManageCapital extends javax.swing.JFrame {
         if (BuildingManagerBudgetPlanning.bmBudgetPlanning != null) {
             BuildingManagerBudgetPlanning.bmBudgetPlanning.dispose();
         }
-        new BuildingManagerBudgetPlanning(user).setVisible(true);
+        new BuildingManagerBudgetPlanning(BM).setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
     private void capitalAmountTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_capitalAmountTFKeyTyped
@@ -317,7 +317,7 @@ public class BuildingManagerManageCapital extends javax.swing.JFrame {
             if(result == JOptionPane.YES_OPTION){
                 String amount = String.valueOf(tableModel.getValueAt(row, 1));
                 String date = String.valueOf(tableModel.getValueAt(row, 2));
-                bm.deleteFinancialCapital(amount, date);
+                BM.deleteFinancialCapital(amount, date);
                 setTable();
                 JOptionPane.showMessageDialog (null, "Financial Capital has been deleted!", 
                     "DELETE FINANCIAL CAPITAL", JOptionPane.INFORMATION_MESSAGE);

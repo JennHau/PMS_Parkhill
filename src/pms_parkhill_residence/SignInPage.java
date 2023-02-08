@@ -4,16 +4,15 @@
  */
 package pms_parkhill_residence;
 
-import accountExecutive.AccountExecutive;
-import accountExecutive.AccountExecutiveDashboard;
-import adminExecutive.AdminExecutiveDashboard;
+import buildingExecutive.BuildingExecutive;
 import buildingExecutive.BuildingExecutiveMainPage;
-import buildingManager.BuildingManagerDashboard;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Toolkit;
+import residentANDtenant.ResidentTenant;
 import residentANDtenant.ResidentTenantMainPage;
-//import vendor.VendorDashboard;
+import vendor.Vendor;
+import vendor.VendorDashboard;
 
 /**
  *
@@ -235,7 +234,7 @@ public class SignInPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         jLabel9.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_jLabel9MouseEntered
-
+    
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
         // TODO add your handling code here:
         dispose();
@@ -262,21 +261,23 @@ public class SignInPage extends javax.swing.JFrame {
         
         switch (userCode) {
             case "bde" -> {
-//                new BuildingExecutiveMainPage(user).setVisible(true);
+                BuildingExecutive BE = new BuildingExecutive(user[0], user[1], user[2], user[3], user[4], user[5], user[6], user[7]);
+                new BuildingExecutiveMainPage(BE).setVisible(true);
             }
             case "rsd" -> {
-//                new ResidentTenantMainPage(user).setVisible(true);
+                ResidentTenant RT = new ResidentTenant(user[0], user[1], user[2], user[3], user[4], user[5], user[6], user[7], user[8]);
+                new ResidentTenantMainPage(RT).setVisible(true);
             }
             case "vdr" -> {
-//                new VendorDashboard(user).setVisible(true);
+                Vendor VD = new Vendor(user[0], user[1], user[2], user[3], user[4], user[5], user[6], user[7], user[8]);
+                new VendorDashboard(VD).setVisible(true);
             }
             case "tnt" -> {
-//                new ResidentTenantMainPage(user).setVisible(true);
+                ResidentTenant RT = new ResidentTenant(user[0], user[1], user[2], user[3], user[4], user[5], user[6], user[7], user[8]);
+                new ResidentTenantMainPage(RT).setVisible(true);
             }
             case "ace" -> {
-                AccountExecutive AE = new AccountExecutive(user[0], user[1],
-                        user[2], user[3], user[4], user[5], user[6], user[7]);
-                new AccountExecutiveDashboard(AE).setVisible(true);
+//                new AccountExecutiveDashboard(user).setVisible(true);
             }
             case "ade" -> {
 //                new AdminExecutiveDashboard(user).setVisible(true);

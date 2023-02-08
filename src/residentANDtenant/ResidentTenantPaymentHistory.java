@@ -22,8 +22,7 @@ import pms_parkhill_residence.Users;
  * @author wongj
  */
 public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
-    private Users user;
-    ResidentTenant RT = new ResidentTenant();
+    private final ResidentTenant RT;
     PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
     
     DefaultTableModel payHisTab;
@@ -31,16 +30,17 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
     
     /**
      * Creates new form homePage
-     * @param user
+     * @param RT
      */
-    public ResidentTenantPaymentHistory(Users user) {
+    public ResidentTenantPaymentHistory(ResidentTenant RT) {
+        this.RT = RT;
+
         initComponents();
-        runDefaultSetUp(user);
+        runDefaultSetUp();
     }
     
-    private void runDefaultSetUp(Users user) {
+    private void runDefaultSetUp() {
         payHisTab = (DefaultTableModel) paymentHistoryTable.getModel();
-        this.user = user;
         setWindowIcon();
         try {
             paymentHistoryTableSetUp();
@@ -50,8 +50,8 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
     }
     
     private void paymentHistoryTableSetUp() throws ParseException {
-        ArrayList<String> paymentHist = RT.getCurrentUnitPaymentHistory(this.user.getUnitNo());
-        ArrayList<String> facilityPay = RT.getCurrentUnitFacilityPayment(this.user.getUnitNo());
+        ArrayList<String> receiptList = RT.getCurrentUnitIssuedReceipt(this.RT.getUnitNo());
+        ArrayList<String> facilityPay = RT.getCurrentUnitFacilityPayment(this.RT.getUnitNo());
         ArrayList<String> sortedList;
         
         ArrayList<String> arrangedList = new ArrayList<>();
@@ -59,17 +59,37 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
         
         ArrayList<String> existedIdList = new ArrayList<>();
                 
-        for (String eachHist : paymentHist) {
+        for (String eachHist : receiptList) {
             String[] histData = eachHist.split(RT.TF.sp);
-            
             String invoiceNo = histData[0];
+            
+            LocalDate latestDate = null;
+            String feeTypes = "";
             if (!existedIdList.contains(invoiceNo)) {
+                for (String hist : receiptList) {
+                    String[] eachHistData = hist.split(RT.TF.sp);
+                    String histInv = eachHistData[0];
+                    if (histInv.equals(invoiceNo)) {
+                        String type = eachHistData[2];
+                        feeTypes = feeTypes + type + ",";
+                        
+                        LocalDate paymentDate = RT.DTF.formatDate2(eachHistData[10]);
+                        if (latestDate != null) {
+                            if (paymentDate.isAfter(latestDate)) {
+                                latestDate = paymentDate;
+                            }
+                        }
+                        else {
+                            latestDate = paymentDate;
+                        }
+                    }
+                }
                 String toAdd = "";
             
-                String feeType = "Invoice for " + histData[8];
-                double totalPrice = RT.getTotalPricePerInvoice(invoiceNo);
-                String paidDate = DTF.changeFormatDate(histData[10]);
-                String[] data = {invoiceNo, feeType, String.format("%.02f", totalPrice), paidDate};
+                String feeType = "Invoice - " + feeTypes.substring(0, feeTypes.length()-1);
+                double totalPrice = RT.getTotalPricePerInvoice(invoiceNo, receiptList);
+                String paidDate = String.valueOf(latestDate);
+                String[] data = {invoiceNo.toUpperCase(), feeType, String.format("%.02f", totalPrice), paidDate, "RECEIPT"};
 
                 for (String eachData : data) {
                     toAdd = toAdd + eachData + RT.TF.sp;
@@ -79,7 +99,10 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
             }
         }
         
-        payment.addAll(facilityPay);
+        for (String eachFac : facilityPay) {
+            String facDet = eachFac + "RECEIPT;";
+            payment.add(facDet);
+        }
         
         String[] payHist = payment.toArray(String[]::new);
         
@@ -110,7 +133,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
     }
     
     private void setCurrentUserProfile() {
-        userNameLabel.setText(user.getFirstName() + " " + user.getLastName());
+        userNameLabel.setText(RT.getFirstName() + " " + RT.getLastName());
     }
 
     /**
@@ -243,7 +266,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "No.", "Item ID", "Item Description", "Amount Paid", "Paid Date", "Receipt"
+                "NO.", "ITEM ID", "ITEM DESCRIPTION", "AMOUNT PAID", "PAID DATE", "RECEIPT"
             }
         ));
         paymentHistoryTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -704,13 +727,13 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
 
     private void invoiceLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_invoiceLabelMouseClicked
         // TODO add your handling code here:
-        RT.toInvoice(user);
+        RT.toInvoice(RT);
         this.dispose();
     }//GEN-LAST:event_invoiceLabelMouseClicked
 
     private void viewStatementBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewStatementBTNActionPerformed
         // TODO add your handling code here:
-        RT.toStatement(user);
+        RT.toStatement(RT);
         this.dispose();
     }//GEN-LAST:event_viewStatementBTNActionPerformed
 
@@ -724,25 +747,29 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
         List<String> receiptFile = RT.fh.fileRead(RT.TF.receiptFile);
         List<String> bookingFile = RT.fh.fileRead(RT.TF.facilityBookingFile);
         
-        boolean notFound = true;
-        for (String eachReceipt : receiptFile) {
-            String[] recDet = eachReceipt.split(RT.TF.sp);
-            String recInvNo = recDet[0];
-            
-            if (recInvNo.equals(itemID)) {
-                notFound = false;
-                
-                RT.toInvoiceReceipt(user, recInvNo);
+        if (itemID != null) {
+            boolean notFound = true;
+            for (String eachReceipt : receiptFile) {
+                String[] recDet = eachReceipt.split(RT.TF.sp);
+                String recInvNo = recDet[0];
+
+                if (recInvNo.equals(itemID)) {
+                    notFound = false;
+
+                    RT.toInvoiceReceipt(RT, recInvNo);
+                    break;
+                }
             }
-        }
-        
-        if (notFound) {
-            for (String eachBooking : bookingFile) {
-                String[] bookingDet = eachBooking.split(RT.TF.sp);
-                String bookingId = bookingDet[0];
-                
-                if (bookingId.equals(itemID)) {
-                    RT.toFacilityReceipt(user, bookingId);
+
+            if (notFound) {
+                for (String eachBooking : bookingFile) {
+                    String[] bookingDet = eachBooking.split(RT.TF.sp);
+                    String bookingId = bookingDet[0];
+
+                    if (bookingId.equals(itemID.toLowerCase())) {
+                        RT.toFacilityReceipt(RT, bookingId);
+                        break;
+                    }
                 }
             }
         }
@@ -750,7 +777,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
 
     private void dashBoardInnerTab1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashBoardInnerTab1MouseClicked
         // TODO add your handling code here:
-        RT.toResidentTenantDashboard(user);
+        RT.toResidentTenantDashboard(RT);
         this.dispose();
     }//GEN-LAST:event_dashBoardInnerTab1MouseClicked
 
@@ -761,7 +788,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
 
     private void dashboardOuterTab1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardOuterTab1MouseClicked
         // TODO add your handling code here:
-        RT.toResidentTenantDashboard(user);
+        RT.toResidentTenantDashboard(RT);
         this.dispose();
     }//GEN-LAST:event_dashboardOuterTab1MouseClicked
 
@@ -772,7 +799,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
 
     private void paymentManagementInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toPaymentManagement(user);
+        RT.toPaymentManagement(RT);
         this.dispose();
     }//GEN-LAST:event_paymentManagementInnerTabMouseClicked
 
@@ -783,7 +810,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
 
     private void paymentManagementOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toPaymentManagement(user);
+        RT.toPaymentManagement(RT);
         this.dispose();
     }//GEN-LAST:event_paymentManagementOuterTabMouseClicked
 
@@ -794,7 +821,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
 
     private void facilityBookingInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityBookingInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toBookedFacility(user);
+        RT.toBookedFacility(RT);
         this.dispose();
     }//GEN-LAST:event_facilityBookingInnerTabMouseClicked
 
@@ -805,7 +832,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
 
     private void facilityBookingOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityBookingOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toBookedFacility(user);
+        RT.toBookedFacility(RT);
         this.dispose();
     }//GEN-LAST:event_facilityBookingOuterTabMouseClicked
 
@@ -816,7 +843,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
 
     private void complaintsInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toComplaints(user);
+        RT.toComplaints(RT);
         this.dispose();
     }//GEN-LAST:event_complaintsInnerTabMouseClicked
 
@@ -827,7 +854,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
 
     private void complaintsOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toComplaints(user);
+        RT.toComplaints(RT);
         this.dispose();
     }//GEN-LAST:event_complaintsOuterTabMouseClicked
 
@@ -838,7 +865,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
         // TODO add your handling code here:
-        RT.toViewProfile(user);
+        RT.toViewProfile(RT);
         this.dispose();
     }//GEN-LAST:event_jLabel12MouseClicked
 
@@ -849,7 +876,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
 
     private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
         // TODO add your handling code here:
-        RT.toViewProfile(user);
+        RT.toViewProfile(RT);
         this.dispose();
     }//GEN-LAST:event_jPanel13MouseClicked
 
@@ -860,7 +887,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
 
     private void visitorPassInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorPassInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toVisitorPass(user);
+        RT.toVisitorPass(RT);
         this.dispose();
     }//GEN-LAST:event_visitorPassInnerTabMouseClicked
 
@@ -871,7 +898,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
 
     private void visitorPassOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorPassOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toVisitorPass(user);
+        RT.toVisitorPass(RT);
         this.dispose();
     }//GEN-LAST:event_visitorPassOuterTabMouseClicked
 
@@ -887,7 +914,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
 
     private void pendingFeeLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pendingFeeLabelMouseClicked
         // TODO add your handling code here:
-        RT.toPaymentManagement(user);
+        RT.toPaymentManagement(RT);
         this.dispose();
     }//GEN-LAST:event_pendingFeeLabelMouseClicked
 
@@ -898,7 +925,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
 
     private void statementLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statementLabelMouseClicked
         // TODO add your handling code here:
-        RT.toStatement(user);
+        RT.toStatement(RT);
         this.dispose();
     }//GEN-LAST:event_statementLabelMouseClicked
 
@@ -909,7 +936,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
 
     private void paymentHistLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentHistLabelMouseClicked
         // TODO add your handling code here:
-        RT.toPaymentHistory(user);
+        RT.toPaymentHistory(RT);
         this.dispose();
     }//GEN-LAST:event_paymentHistLabelMouseClicked
 

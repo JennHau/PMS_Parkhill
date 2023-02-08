@@ -15,20 +15,20 @@ import pms_parkhill_residence.Users;
  * @author wongj
  */
 public class ResidentTenantInvoicePaymentGateway extends javax.swing.JFrame {
-    ResidentTenant RT = new ResidentTenant();
+    private final ResidentTenant RT;
     
     /**
      * Creates new form homePage
      * @param invoiceNo
-     * @param user
+     * @param RT
      * @param total
      */
-    public ResidentTenantInvoicePaymentGateway(String invoiceNo, Users user, String total) {
+    public ResidentTenantInvoicePaymentGateway(String invoiceNo, ResidentTenant RT, String total) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.RT = RT;
         this.invoiceNo = invoiceNo;
-        this.unitNo = this.user.getUnitNo();
+        this.unitNo = this.RT.getUnitNo();
         this.total = total;
         setUserData();
         setFixData();
@@ -414,7 +414,6 @@ public class ResidentTenantInvoicePaymentGateway extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
-    private final Users user;
     private final String invoiceNo;
     private final String unitNo;
     private final String total;
@@ -429,7 +428,7 @@ public class ResidentTenantInvoicePaymentGateway extends javax.swing.JFrame {
 
     private void cancelBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBTActionPerformed
         // TODO add your handling code here:
-        RT.toInvoice(user);
+        RT.toInvoice(RT);
         dispose();
     }//GEN-LAST:event_cancelBTActionPerformed
 
@@ -448,7 +447,7 @@ public class ResidentTenantInvoicePaymentGateway extends javax.swing.JFrame {
         if(result == JOptionPane.YES_OPTION){
             ArrayList<String> itemId = new ArrayList<>();
             itemId.add(invoiceNo);
-            RT.toPaymentCredential(user, total, itemId, false, false);
+            RT.toPaymentCredential(RT, total, itemId, false, false);
         }
         
     }//GEN-LAST:event_payBTActionPerformed
@@ -474,11 +473,11 @@ public class ResidentTenantInvoicePaymentGateway extends javax.swing.JFrame {
     }//GEN-LAST:event_payerTFKeyTyped
 
     private void setUserData() {
-        payerTF.setText(this.user.getFirstName() + " " + this.user.getLastName());
-        userIDTF.setText(this.user.getUserID());
-        phoneNoTF.setText(this.user.getPhoneNo());
-        emailTF.setText(this.user.getEmail());
-        identificationNOTF.setText(this.user.getIdentificationNo());
+        payerTF.setText(this.RT.getFirstName() + " " + this.RT.getLastName());
+        userIDTF.setText(this.RT.getUserID());
+        phoneNoTF.setText(this.RT.getPhoneNo());
+        emailTF.setText(this.RT.getEmail());
+        identificationNOTF.setText(this.RT.getIdentificationNo());
     }
     
     private void setFixData() {

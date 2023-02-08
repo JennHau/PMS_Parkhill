@@ -27,8 +27,8 @@ import pms_parkhill_residence.Users;
  */
 public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
     public static BuildingExecutiveJobManagement BEjobManagement;
-    BuildingExecutive BE = new BuildingExecutive();
-    private Users user;
+    
+    private final BuildingExecutive BE;
     private Complaints complaint;
     
     private DefaultTableModel assignedEmployeeTable;
@@ -46,25 +46,25 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
     
     /**
      * Creates new form homePage
-     * @param user
+     * @param BE
      * @param complaint
      * @param fromComplaintsPage
      * @throws java.io.IOException
      */
-    public BuildingExecutiveJobManagement(Users user, Complaints complaint, boolean fromComplaintsPage) throws IOException 
+    public BuildingExecutiveJobManagement(BuildingExecutive BE, Complaints complaint, boolean fromComplaintsPage) throws IOException 
     {
         BEjobManagement = this;
+        this.BE = BE;
+        this.complaint = complaint;
+        
+        this.setCurrentBEid(BE.getUserID());
+        
         initComponents();
-        runDefaultSetUp(user, complaint, fromComplaintsPage);
+        runDefaultSetUp(fromComplaintsPage);
     }
     
     // Method to run all default setting when page is open
-    private void runDefaultSetUp(Users user, Complaints complaint, boolean fromComplaintsPage) throws IOException {
-        this.user = user;
-        this.complaint = complaint;
-        
-        this.setCurrentBEid(user.getUserID());
-        
+    private void runDefaultSetUp(boolean fromComplaintsPage) throws IOException {
         assignedEmployeeTable = (DefaultTableModel) assignedEmplyTable.getModel();
         unassignedEmployeeTable = (DefaultTableModel) unassignedEmplyTable.getModel();
         
@@ -73,15 +73,15 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         // employee job table set up (both table)
         employeeJobTableSetup();
         
-        // set user profile
+        // set BE profile
         setUserProfile();
         
         // check is from complaint page
         setFromComplaintPage(fromComplaintsPage);
         
         // set complaint ID
-        if (complaint!=null) {
-            setComplaintId(complaint.getComplaintID());
+        if (this.complaint!=null) {
+            setComplaintId(this.complaint.getComplaintID());
         }
         
         // if is from complaint page (run this action)
@@ -121,12 +121,12 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         updateTable();
     }
     
-    // Method to set current user (Business Executive) profile
+    // Method to set current BE (Business Executive) profile
     private void setUserProfile() throws IOException {
-        // get current user details
+        // get current BE details
         // Set text field
         if (currentBEid != null) {
-            String beName = user.getFirstName() + " " + user.getLastName();
+            String beName = BE.getFirstName() + " " + BE.getLastName();
             usernameLabel.setText(beName);
         }
     }
@@ -154,10 +154,10 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
-        jPanel13 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
         jPanel14 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
+        jPanel13 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         usernameLabel = new javax.swing.JLabel();
@@ -239,6 +239,9 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 BEdashboardInnerPanelMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                BEdashboardInnerPanelMouseEntered(evt);
+            }
         });
 
         javax.swing.GroupLayout BEdashboardOuterPanelLayout = new javax.swing.GroupLayout(BEdashboardOuterPanel);
@@ -275,6 +278,9 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jobAssignationInnerPanelMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jobAssignationInnerPanelMouseEntered(evt);
+            }
         });
 
         javax.swing.GroupLayout jobAssignationOuterPanelLayout = new javax.swing.GroupLayout(jobAssignationOuterPanel);
@@ -299,6 +305,9 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jPanel8MouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jPanel8MouseEntered(evt);
+            }
         });
 
         jLabel5.setText("Complaints");
@@ -308,6 +317,9 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel5MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel5MouseEntered(evt);
             }
         });
 
@@ -332,6 +344,9 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         jPanel9.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jPanel9MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jPanel9MouseEntered(evt);
             }
         });
 
@@ -362,10 +377,23 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         );
 
         jPanel10.setBackground(new java.awt.Color(13, 24, 42));
+        jPanel10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel10MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jPanel10MouseEntered(evt);
+            }
+        });
 
         jLabel8.setText("Reports");
         jLabel8.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel8MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -408,30 +436,6 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel13.setBackground(new java.awt.Color(13, 24, 42));
-
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
-        jLabel11.setText("VIEW PROFILE");
-        jLabel11.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
-        jPanel13.setLayout(jPanel13Layout);
-        jPanel13Layout.setHorizontalGroup(
-            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75))
-        );
-        jPanel13Layout.setVerticalGroup(
-            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel13Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel11)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         jPanel14.setBackground(new java.awt.Color(13, 24, 42));
 
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
@@ -456,23 +460,63 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jPanel13.setBackground(new java.awt.Color(13, 24, 42));
+        jPanel13.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel13MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jPanel13MouseEntered(evt);
+            }
+        });
+
+        jLabel11.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
+        jLabel11.setText("VIEW PROFILE");
+        jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel11MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(75, 75, 75))
+        );
+        jPanel13Layout.setVerticalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel11)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(80, 80, 80)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(BEdashboardOuterPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jobAssignationOuterPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(80, 80, 80)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(BEdashboardOuterPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jobAssignationOuterPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel13, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(10, 10, 10)
@@ -848,22 +892,22 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
 
     private void jobAssignationInnerPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationInnerPanelMouseClicked
         // TODO add your handling code here:
-        BE.toJobManagement(this, user, null, false);
+        BE.toJobManagement(this, BE, null, false);
     }//GEN-LAST:event_jobAssignationInnerPanelMouseClicked
 
     private void jobAssignationOuterPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationOuterPanelMouseClicked
         // TODO add your handling code here:
-        BE.toJobManagement(this, user, null, false);
+        BE.toJobManagement(this, BE, null, false);
     }//GEN-LAST:event_jobAssignationOuterPanelMouseClicked
 
     private void BEdashboardInnerPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BEdashboardInnerPanelMouseClicked
         // TODO add your handling code here:
-        BE.toDashboard(this, user);
+        BE.toDashboard(this, BE);
     }//GEN-LAST:event_BEdashboardInnerPanelMouseClicked
 
     private void BEdashboardOuterPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BEdashboardOuterPanelMouseClicked
         // TODO add your handling code here:
-        BE.toDashboard(this, user);
+        BE.toDashboard(this, BE);
     }//GEN-LAST:event_BEdashboardOuterPanelMouseClicked
 
     private void jobAssignationOuterPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationOuterPanelMouseEntered
@@ -880,7 +924,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         
         if (employeeData != null) {
             setSelectedEmployee(employeeData.toLowerCase());
-            BE.toEmployeeJobAssignation(this.user, selectedEmployeeId, jobId, complaint, fromComplaintPage);
+            BE.toEmployeeJobAssignation(this.BE, selectedEmployeeId, jobId, complaint, fromComplaintPage);
         }
     }//GEN-LAST:event_unassignedEmplyTableMouseClicked
 
@@ -916,24 +960,24 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
             setSelectedEmployee(employeeData);
             this.jobId = (String) assignedEmployeeTable.getValueAt(selectedRow, 3);
             this.selectedEmployeeId = (String) assignedEmployeeTable.getValueAt(selectedRow, 0);
-            BE.toEmployeeJobAssignation(this.user, selectedEmployeeId, jobId, complaint, fromComplaintPage);
+            BE.toEmployeeJobAssignation(this.BE, selectedEmployeeId, jobId, complaint, fromComplaintPage);
         }
     }//GEN-LAST:event_assignedEmplyTableMouseClicked
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         // TODO add your handling code here:
-        BE.toComplaints(this, this.user);
+        BE.toComplaints(this, this.BE);
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jPanel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseClicked
         // TODO add your handling code here:
-        BE.toComplaints(this, this.user);
+        BE.toComplaints(this, this.BE);
     }//GEN-LAST:event_jPanel8MouseClicked
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, user);
+            BE.toPatrollingManagement(this, BE);
         } catch (IOException ex) {
             Logger.getLogger(BuildingExecutiveJobManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -943,11 +987,67 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, user);
+            BE.toPatrollingManagement(this, BE);
         } catch (IOException ex) {
             Logger.getLogger(BuildingExecutiveJobManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jPanel9MouseClicked
+
+    private void BEdashboardInnerPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BEdashboardInnerPanelMouseEntered
+        // TODO add your handling code here:
+        BEdashboardInnerPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_BEdashboardInnerPanelMouseEntered
+
+    private void jobAssignationInnerPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationInnerPanelMouseEntered
+        // TODO add your handling code here:
+        jobAssignationInnerPanel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jobAssignationInnerPanelMouseEntered
+
+    private void jLabel5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel5MouseEntered
+
+    private void jPanel8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseEntered
+        // TODO add your handling code here:
+        jPanel8.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jPanel8MouseEntered
+
+    private void jPanel9MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseEntered
+        // TODO add your handling code here:
+        jPanel9.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jPanel9MouseEntered
+
+    private void jPanel10MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseEntered
+        // TODO add your handling code here:
+        jPanel10.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jPanel10MouseEntered
+
+    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
+        // TODO add your handling code here:
+        BE.toPatrollingReports(this, BE);
+    }//GEN-LAST:event_jLabel8MouseClicked
+
+    private void jPanel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseClicked
+        // TODO add your handling code here:
+        BE.toPatrollingReports(this, BE);
+    }//GEN-LAST:event_jPanel10MouseClicked
+
+    private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
+        // TODO add your handling code here:
+        BE.toProfile(BE);
+        this.dispose();
+    }//GEN-LAST:event_jLabel11MouseClicked
+
+    private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
+        // TODO add your handling code here:
+        BE.toProfile(BE);
+        this.dispose();
+    }//GEN-LAST:event_jPanel13MouseClicked
+
+    private void jPanel13MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseEntered
+        // TODO add your handling code here:
+        jPanel13.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jPanel13MouseEntered
 
     private void updateTable() throws IOException {
         // Red Error from here

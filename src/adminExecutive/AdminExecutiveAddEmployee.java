@@ -21,10 +21,10 @@ public class AdminExecutiveAddEmployee extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public AdminExecutiveAddEmployee(Users user) {
+    public AdminExecutiveAddEmployee(AdminExecutive AE) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.AE = AE;
         setPositionCB();
     }
 
@@ -356,8 +356,7 @@ public class AdminExecutiveAddEmployee extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     FileHandling fh = new FileHandling();
-    AdminExecutive ae = new AdminExecutive();
-    private final Users user;
+    private final AdminExecutive AE;
     
     private void userIDTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userIDTFActionPerformed
         // TODO add your handling code here:
@@ -410,7 +409,7 @@ public class AdminExecutiveAddEmployee extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
                 
                 if(result == JOptionPane.YES_OPTION){
-                    ae.addEmployee(id, email, firstName, lastName, phoneNo, position,
+                    AE.addEmployee(id, email, firstName, lastName, phoneNo, position,
                             identificationNo, gender);
                     JOptionPane.showMessageDialog (null, "New employee account has been added!", 
                                         "ADD EMPLOYEE ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
@@ -418,7 +417,7 @@ public class AdminExecutiveAddEmployee extends javax.swing.JFrame {
                     if (AdminExecutiveEmployeeManagement.adeEmployee != null) {
                         AdminExecutiveEmployeeManagement.adeEmployee.dispose();
                     } 
-                    new AdminExecutiveEmployeeManagement(user).setVisible(true);
+                    new AdminExecutiveEmployeeManagement(AE).setVisible(true);
                 }
                 
             } else {
@@ -449,7 +448,7 @@ public class AdminExecutiveAddEmployee extends javax.swing.JFrame {
             String initial = employeeTypeDetails[1];
             
             if (position.equals(employeeType)) {
-                userIDTF.setText(ae.getLatestID("employeeList.txt", initial).toUpperCase());
+                userIDTF.setText(AE.getLatestID("employeeList.txt", initial).toUpperCase());
             }
         }
     }//GEN-LAST:event_positionCBActionPerformed
@@ -462,7 +461,7 @@ public class AdminExecutiveAddEmployee extends javax.swing.JFrame {
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveAddEmployeeType(user).setVisible(true);
+        new AdminExecutiveAddEmployeeType(AE).setVisible(true);
     }//GEN-LAST:event_jLabel8MouseClicked
 
     private void identificationNoTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_identificationNoTFActionPerformed

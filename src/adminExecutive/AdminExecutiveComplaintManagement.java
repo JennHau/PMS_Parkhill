@@ -19,11 +19,12 @@ public class AdminExecutiveComplaintManagement extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param AE
      */
-    public AdminExecutiveComplaintManagement(Users user) {
+    public AdminExecutiveComplaintManagement(AdminExecutive AE) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.AE = AE;
         setCurrentProfile();
         setTable();
         
@@ -673,11 +674,11 @@ public class AdminExecutiveComplaintManagement extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private final Users user;
+    private final AdminExecutive AE;
     public static AdminExecutiveComplaintManagement adeComplaint;
     
     private void setCurrentProfile() {
-        usernameLabel.setText(user.getFirstName() +" "+ user.getLastName());
+        usernameLabel.setText(AE.getFirstName() +" "+ AE.getLastName());
     }
     
     private void clearbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearbtActionPerformed
@@ -699,12 +700,12 @@ public class AdminExecutiveComplaintManagement extends javax.swing.JFrame {
 
     private void addPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addPanelMouseClicked
         // TODO add your handling code here:
-        new AdminExecutiveAddComplaint(user).setVisible(true);
+        new AdminExecutiveAddComplaint(AE).setVisible(true);
     }//GEN-LAST:event_addPanelMouseClicked
 
     private void addLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addLabelMouseClicked
         // TODO add your handling code here:
-        new AdminExecutiveAddComplaint(user).setVisible(true);
+        new AdminExecutiveAddComplaint(AE).setVisible(true);
     }//GEN-LAST:event_addLabelMouseClicked
 
     
@@ -719,7 +720,7 @@ public class AdminExecutiveComplaintManagement extends javax.swing.JFrame {
             String complaintID = String.valueOf(tableModel.getValueAt(row, 0)).toLowerCase();
             String complainerID = String.valueOf(tableModel.getValueAt(row, 1));
             String status = String.valueOf(tableModel.getValueAt(row, 5));
-            new AdminExecutiveModifyComplaint(complaintID, complainerID, status, user)
+            new AdminExecutiveModifyComplaint(complaintID, complainerID, status, AE)
                     .setVisible(true);
         }
     }//GEN-LAST:event_jTable1MouseClicked
@@ -752,7 +753,7 @@ public class AdminExecutiveComplaintManagement extends javax.swing.JFrame {
     private void dashboardLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabel2MouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveDashboard(user).setVisible(true);
+        new AdminExecutiveDashboard(AE).setVisible(true);
     }//GEN-LAST:event_dashboardLabel2MouseClicked
 
     private void dashboardLabel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabel2MouseEntered
@@ -763,7 +764,7 @@ public class AdminExecutiveComplaintManagement extends javax.swing.JFrame {
     private void dashboardPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanel2MouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveDashboard(user).setVisible(true);
+        new AdminExecutiveDashboard(AE).setVisible(true);
     }//GEN-LAST:event_dashboardPanel2MouseClicked
 
     private void dashboardPanel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanel2MouseEntered
@@ -774,7 +775,7 @@ public class AdminExecutiveComplaintManagement extends javax.swing.JFrame {
     private void unitManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unitManageLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveUnitManagement(user).setVisible(true);
+        new AdminExecutiveUnitManagement(AE).setVisible(true);
     }//GEN-LAST:event_unitManageLabelMouseClicked
 
     private void unitManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unitManageLabelMouseEntered
@@ -785,7 +786,7 @@ public class AdminExecutiveComplaintManagement extends javax.swing.JFrame {
     private void unitManagePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unitManagePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveUnitManagement(user).setVisible(true);
+        new AdminExecutiveUnitManagement(AE).setVisible(true);
     }//GEN-LAST:event_unitManagePanelMouseClicked
 
     private void unitManagePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unitManagePanelMouseEntered
@@ -796,7 +797,7 @@ public class AdminExecutiveComplaintManagement extends javax.swing.JFrame {
     private void rTManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rTManageLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveResidentTManagement(user).setVisible(true);
+        new AdminExecutiveResidentTManagement(AE).setVisible(true);
     }//GEN-LAST:event_rTManageLabelMouseClicked
 
     private void rTManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rTManageLabelMouseEntered
@@ -807,7 +808,7 @@ public class AdminExecutiveComplaintManagement extends javax.swing.JFrame {
     private void rTMangePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rTMangePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveResidentTManagement(user).setVisible(true);
+        new AdminExecutiveResidentTManagement(AE).setVisible(true);
     }//GEN-LAST:event_rTMangePanelMouseClicked
 
     private void rTMangePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rTMangePanelMouseEntered
@@ -840,7 +841,7 @@ public class AdminExecutiveComplaintManagement extends javax.swing.JFrame {
     private void employeeManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeManageLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveEmployeeManagement(user).setVisible(true);
+        new AdminExecutiveEmployeeManagement(AE).setVisible(true);
     }//GEN-LAST:event_employeeManageLabelMouseClicked
 
     private void employeeManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeManageLabelMouseEntered
@@ -851,7 +852,7 @@ public class AdminExecutiveComplaintManagement extends javax.swing.JFrame {
     private void employeeManagePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeManagePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveEmployeeManagement(user).setVisible(true);
+        new AdminExecutiveEmployeeManagement(AE).setVisible(true);
     }//GEN-LAST:event_employeeManagePanelMouseClicked
 
     private void employeeManagePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeManagePanelMouseEntered
@@ -884,7 +885,7 @@ public class AdminExecutiveComplaintManagement extends javax.swing.JFrame {
     private void viewProfileLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveViewProfile(user).setVisible(true);
+        new AdminExecutiveViewProfile(AE).setVisible(true);
     }//GEN-LAST:event_viewProfileLabelMouseClicked
 
     private void viewProfileLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileLabelMouseEntered
@@ -900,7 +901,7 @@ public class AdminExecutiveComplaintManagement extends javax.swing.JFrame {
     private void facilityManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityManageLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveFacilityManagement(user).setVisible(true);
+        new AdminExecutiveFacilityManagement(AE).setVisible(true);
     }//GEN-LAST:event_facilityManageLabelMouseClicked
 
     private void facilityManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityManageLabelMouseEntered
@@ -911,7 +912,7 @@ public class AdminExecutiveComplaintManagement extends javax.swing.JFrame {
     private void facilityManagePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityManagePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveFacilityManagement(user).setVisible(true);
+        new AdminExecutiveFacilityManagement(AE).setVisible(true);
     }//GEN-LAST:event_facilityManagePanelMouseClicked
 
     private void facilityManagePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityManagePanelMouseEntered
@@ -922,7 +923,7 @@ public class AdminExecutiveComplaintManagement extends javax.swing.JFrame {
     private void facBookManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facBookManageLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveFacilityBookingManagement(user).setVisible(true);
+        new AdminExecutiveFacilityBookingManagement(AE).setVisible(true);
     }//GEN-LAST:event_facBookManageLabelMouseClicked
 
     private void facBookManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facBookManageLabelMouseEntered
@@ -933,7 +934,7 @@ public class AdminExecutiveComplaintManagement extends javax.swing.JFrame {
     private void facBookManagePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facBookManagePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveFacilityBookingManagement(user).setVisible(true);
+        new AdminExecutiveFacilityBookingManagement(AE).setVisible(true);
     }//GEN-LAST:event_facBookManagePanelMouseClicked
 
     private void facBookManagePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facBookManagePanelMouseEntered
@@ -944,7 +945,7 @@ public class AdminExecutiveComplaintManagement extends javax.swing.JFrame {
     private void viewProfilePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfilePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveViewProfile(user).setVisible(true);
+        new AdminExecutiveViewProfile(AE).setVisible(true);
     }//GEN-LAST:event_viewProfilePanelMouseClicked
     
     private void setWindowIcon() {
@@ -955,8 +956,7 @@ public class AdminExecutiveComplaintManagement extends javax.swing.JFrame {
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
         tableModel.setRowCount(0);
             
-        AdminExecutive ae = new AdminExecutive();
-        List<String> availableList = ae.extractComplaintDetails();
+        List<String> availableList = AE.extractComplaintDetails();
         
         for (int i = 0; i < availableList.size(); i++) {
             String[] complaintDetails = availableList.get(i).split(";");

@@ -20,12 +20,13 @@ public class BuildingManagerUtitlityReport extends javax.swing.JFrame {
      * Creates new form custReceipt
      * @param utilityType
      * @param monthYear
+     * @param BM
      */
-    public BuildingManagerUtitlityReport(String utilityType, String monthYear, Users user) {
+    public BuildingManagerUtitlityReport(String utilityType, String monthYear, BuildingManager BM) {
         initComponents();
         this.utilityType = utilityType;
         this.monthYear = monthYear;
-        this.user = user;
+        this.BM = BM;
         setDefault();
         setTable();
     }
@@ -340,16 +341,15 @@ public class BuildingManagerUtitlityReport extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     FileHandling fh = new FileHandling();
-    BuildingManager bm = new BuildingManager();
     String utilityType; String monthYear; String unit; float totalConsumption;
     float totalPrice;
-    private final Users user;
+    private final BuildingManager BM;
     
     
     private void setDefault() {
         utilityTypeLabel.setText(this.utilityType);
         monthYearLabel.setText(this.monthYear);
-        reportDataNTime.setText("Report Generated @ " + bm.currentDateTime());
+        reportDataNTime.setText("Report Generated @ " + BM.currentDateTime());
     }
     
     private void setTable() {
@@ -375,8 +375,8 @@ public class BuildingManagerUtitlityReport extends javax.swing.JFrame {
                 totalPrice += Float.parseFloat(price);
                 totalConsumption += Float.parseFloat(consumption);
             }
-        } tConsumptionLabel.setText(bm.currencyFormat(totalConsumption) +" "+ unit);
-        totalPriceLabel.setText("RM " + bm.currencyFormat(totalPrice));
+        } tConsumptionLabel.setText(BM.currencyFormat(totalConsumption) +" "+ unit);
+        totalPriceLabel.setText("RM " + BM.currencyFormat(totalPrice));
                 
     }
     

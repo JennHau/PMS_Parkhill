@@ -24,10 +24,10 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
      * @param squareFoot
      */
     public AdminExecutiveModifyUnit(String propertyType, String unitNo, 
-            String squareFoot, Users user) {
+            String squareFoot, AdminExecutive AE) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.AE = AE;
         this.type = propertyType; this.unitNo = unitNo; this.squareFoot = squareFoot;
         setTable();
         setDefault();
@@ -296,7 +296,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
 
     public String type; public String unitNo; public String squareFoot;
     FileHandling fh = new FileHandling();
-    private final Users user;
+    private final AdminExecutive AE;
     
     private void unitNoTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unitNoTFActionPerformed
         // TODO add your handling code here:
@@ -318,8 +318,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
             String type = String.valueOf(typeCB.getSelectedItem());
             String unitNo = unitNoTF.getText();
             String squareFoot = squareFootTF.getText();
-            AdminExecutive ae = new AdminExecutive();
-            ae.modifyUnitDetails(unitNo, type, squareFoot);
+            AE.modifyUnitDetails(unitNo, type, squareFoot);
             
             JOptionPane.showMessageDialog (null, "Property unit has been modified!", 
                          "MODIFY PROPERTY UNIT", JOptionPane.INFORMATION_MESSAGE);
@@ -327,14 +326,14 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
             if (AdminExecutiveUnitManagement.adeUnitManage != null) {
                 AdminExecutiveUnitManagement.adeUnitManage.dispose();
             }
-            new AdminExecutiveUnitManagement(user).setVisible(true);
+            new AdminExecutiveUnitManagement(AE).setVisible(true);
         }
     }//GEN-LAST:event_modifyBtActionPerformed
 
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        AdminExecutiveUnitManagement ae = new AdminExecutiveUnitManagement(user);
+        AdminExecutiveUnitManagement ae = new AdminExecutiveUnitManagement(AE);
         ae.setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
@@ -388,8 +387,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
 
     private void deleteBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtActionPerformed
         // TODO add your handling code here:
-        AdminExecutive ae = new AdminExecutive();
-        boolean check = ae.checkOutstandingFee(unitNo);
+        boolean check = AE.checkOutstandingFee(unitNo);
         
         if (check) {
             warningMessage.setText("");
@@ -401,7 +399,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
             JOptionPane.QUESTION_MESSAGE);
 
             if(result == JOptionPane.YES_OPTION){
-                ae.deleteUnit(unitNo);
+                AE.deleteUnit(unitNo);
                 JOptionPane.showMessageDialog (null, "The property unit and its "
                         + "respective user(s) have been deleted!", 
                         "DELETE PROPERTY UNIT", JOptionPane.INFORMATION_MESSAGE);
@@ -409,7 +407,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
                 if (AdminExecutiveUnitManagement.adeUnitManage != null) {
                     AdminExecutiveUnitManagement.adeUnitManage.dispose();
                 }   
-                new AdminExecutiveUnitManagement(user).setVisible(true);
+                new AdminExecutiveUnitManagement(AE).setVisible(true);
             }
         } else {
             warningMessage.setText("The property unit contains outstanding fee!");
@@ -425,9 +423,8 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
     private void setTable() {
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
         tableModel.setRowCount(0);
-        AdminExecutive ae = new AdminExecutive();
         List<String> availableList = 
-                ae.extractAllProperties(type.toLowerCase());
+                AE.extractAllProperties(type.toLowerCase());
         
         String[] propertiesArray = new String[availableList.size()];
         availableList.toArray(propertiesArray);

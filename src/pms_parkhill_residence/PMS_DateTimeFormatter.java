@@ -34,9 +34,8 @@ public class PMS_DateTimeFormatter{
     }
     
     public String currentDateTime() {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        LocalDateTime dateTimeNow = LocalDateTime.parse(String.valueOf(LocalDateTime.now()), dateTimeFormatter);
-        String dateTime = String.valueOf(dateTimeNow);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String dateTime = LocalDateTime.now().format(dateTimeFormatter);
         return dateTime;
     }
     
@@ -59,7 +58,7 @@ public class PMS_DateTimeFormatter{
     public LocalTime formatTime(String time) {
         java.time.format.DateTimeFormatter timeFormatter = java.time.format.DateTimeFormatter.ofPattern("HH:mm");
         
-        LocalTime localTime = LocalTime.parse(LocalTime.parse(time).format(timeFormatter)).withSecond(1);
+        LocalTime localTime = LocalTime.parse(LocalTime.parse(time).format(timeFormatter));
         
         return localTime;
     }

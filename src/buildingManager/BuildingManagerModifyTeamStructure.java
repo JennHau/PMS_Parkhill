@@ -4,7 +4,6 @@
  */
 package buildingManager;
 
-import adminExecutive.*;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
@@ -28,11 +27,12 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param BM
      */
-    public BuildingManagerModifyTeamStructure(Users user) {
+    public BuildingManagerModifyTeamStructure(BuildingManager BM) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.BM = BM;
         setTable();
     }
 
@@ -319,8 +319,7 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
 
     public String type;
     FileHandling fh = new FileHandling();
-    BuildingManager bm = new BuildingManager();
-    private final Users user;
+    private final BuildingManager BM;
     
     private final String defaultFilePath = "src\\images\\";
     private final String defaultFileExtension = "jpg";
@@ -344,7 +343,7 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
         JOptionPane.QUESTION_MESSAGE);
 
         if(result == JOptionPane.YES_OPTION){
-            bm.modifyTeamStructureSlot(roleTitleTF.getText(), displayNameTF.getText());
+            BM.modifyTeamStructureSlot(roleTitleTF.getText(), displayNameTF.getText());
             if (filePath!=null) {
                 try {
                     replaceFile(filePath, previousProfilePicPath);
@@ -358,7 +357,7 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
             if (BuildingManagerTeamStructure.bdmTeamStructure != null) {
                 BuildingManagerTeamStructure.bdmTeamStructure.dispose();
             }
-            new BuildingManagerTeamStructure(user).setVisible(true);
+            new BuildingManagerTeamStructure(BM).setVisible(true);
         }
         
     }//GEN-LAST:event_modifyBtActionPerformed
@@ -377,14 +376,14 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
         JOptionPane.QUESTION_MESSAGE);
 
         if(result == JOptionPane.YES_OPTION){
-            bm.deleteTeamStructureSlot(roleTitleTF.getText());
+            BM.deleteTeamStructureSlot(roleTitleTF.getText());
             JOptionPane.showMessageDialog (null, "Person has been deleted!", 
                     "DELETE TEAM STRUCTURE", JOptionPane.INFORMATION_MESSAGE);
             dispose();
             if (BuildingManagerTeamStructure.bdmTeamStructure != null) {
                 BuildingManagerTeamStructure.bdmTeamStructure.dispose();
             }
-            new BuildingManagerTeamStructure(user).setVisible(true);
+            new BuildingManagerTeamStructure(BM).setVisible(true);
         }
     }//GEN-LAST:event_deleteBtActionPerformed
 
@@ -406,7 +405,7 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
     }//GEN-LAST:event_displayNameTFKeyTyped
 
     private void setImage(String imageName) {
-        boolean exist = bm.checkImageFile(imageName);
+        boolean exist = BM.checkImageFile(imageName);
         ImageIcon imageicon;
         
         try{
@@ -463,7 +462,7 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void browseBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseBtActionPerformed
-         //To allow user upload the image from the file explorer
+         //To allow BM upload the image from the file explorer
         JFileChooser saveFileChooser = new JFileChooser();
         saveFileChooser.setFileFilter(new FileNameExtensionFilter("JPEG Images", "jpg"));
 

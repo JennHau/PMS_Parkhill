@@ -8,7 +8,6 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 
 /**
  *
@@ -18,11 +17,12 @@ public class BuildingManagerUtilityReportSelection extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param BM
      */
-    public BuildingManagerUtilityReportSelection(Users user) {
+    public BuildingManagerUtilityReportSelection(BuildingManager BM) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.BM = BM;
         setUtitlityTypeCB();
     }
 
@@ -199,7 +199,7 @@ public class BuildingManagerUtilityReportSelection extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     FileHandling fh = new FileHandling();
-    private final Users user;
+    private final BuildingManager BM;
     
     private void setUtitlityTypeCB() {
         List<String> availableList = fh.fileRead("feeTypes.txt");
@@ -257,7 +257,7 @@ public class BuildingManagerUtilityReportSelection extends javax.swing.JFrame {
         if(!monthYear.equals("-PLEASE SELECT-")) {
             warningMessage.setText("");
             dispose();
-            new BuildingManagerUtitlityReport(utilityType, monthYear, user).setVisible(true);
+            new BuildingManagerUtitlityReport(utilityType, monthYear, BM).setVisible(true);
         } else {
             warningMessage.setText("Please select the desired period!");
         }

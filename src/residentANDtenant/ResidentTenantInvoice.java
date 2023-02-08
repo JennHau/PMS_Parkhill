@@ -15,8 +15,7 @@ import pms_parkhill_residence.Users;
  * @author wongj
  */
 public class ResidentTenantInvoice extends javax.swing.JFrame {
-    private Users user;
-    ResidentTenant RT = new ResidentTenant();
+    private final ResidentTenant RT;
     
     DefaultTableModel invIncompTab;
     DefaultTableModel invCompTab;
@@ -25,17 +24,17 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
     
     /**
      * Creates new form homePage
-     * @param user
      */
-    public ResidentTenantInvoice(Users user) {
+    public ResidentTenantInvoice(ResidentTenant RT) {
+        this.RT = RT;
+
         initComponents();
-        runDefaultSetUp(user);
+        runDefaultSetUp();
     }
     
-    private void runDefaultSetUp(Users user) {
+    private void runDefaultSetUp() {
         invIncompTab = (DefaultTableModel) invoiceIncompleteTable.getModel();
         invCompTab = (DefaultTableModel) invoiceCompleteTable.getModel();
-        this.user = user;
         
         invoiceTableSetUp();
         invoiceComboBoxSetUp();
@@ -47,28 +46,45 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
         ArrayList<String> incompleteInvoice = new ArrayList<>();
         ArrayList<String> completeInvoice = new ArrayList<>();
         
-        invoiceNoList = RT.getCurrentUnitInvoice(this.user.getUnitNo());
+        invoiceNoList = RT.getCurrentUnitInvoice(this.RT.getUnitNo());
         ArrayList<String> incompList = invoiceNoList.get(0);
         ArrayList<String> compList = invoiceNoList.get(1);
         
-        ArrayList<String> invCode = new ArrayList<>();
+        ArrayList<String> incompInvCode = new ArrayList<>();
+        ArrayList<String> compInvCode = new ArrayList<>();
+        
         
         for (String eachIncomp : incompList) {
             String[] invDet = eachIncomp.split(RT.TF.sp);
             String invNo = invDet[0];
             
-            if (!invCode.contains(invNo)) {
+            String feeType = "";
+            if (!incompInvCode.contains(invNo)) {
+                for (String secIncomp : incompList) {
+                    String[] eachIncompDet = secIncomp.split(RT.TF.sp);
+                    String incompInvNo = eachIncompDet[0];
+                    
+                    if (incompInvNo.equals(invNo)) {
+                        String type = eachIncompDet[2];
+                        feeType = feeType + type + ",";
+                    }
+                }
+                
+                feeType = feeType.substring(0, feeType.length()-1);
+                    
                 String incompletedLine = "";
-                
-                double totalAmount = RT.getTotalPricePerInvoice(invNo);
-                
-                String[] tableData = {invNo, invDet[1], invDet[9], String.format("%.02f", totalAmount), "PAY"};
+
+                double totalAmount = RT.getTotalPricePerInvoice(invNo, incompList);
+
+                String[] tableData = {invNo.toUpperCase(), feeType, String.format("%.02f", totalAmount), "PAY"};
                 for (String eachData : tableData) {
                     incompletedLine = incompletedLine + eachData + RT.TF.sp;
                 }
 
                 incompleteInvoice.add(incompletedLine);
-                invCode.add(invNo);
+                
+                
+                incompInvCode.add(invNo);
             }
         }
         
@@ -76,18 +92,30 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
             String[] payDet = eachComp.split(RT.TF.sp);
             String invNo = payDet[0];
             
-            if (!invCode.contains(invNo)) {
+            String feeType = "";
+            if (!compInvCode.contains(invNo)) {
+                for (String newEachComp : compList) {
+                    String[] compPayDet = newEachComp.split(RT.TF.sp);
+                    String compInvNo = compPayDet[0];
+                    if (compInvNo.equals(invNo)) {
+                        String type = compPayDet[2];
+                        feeType = feeType + type + ",";
+                    }
+                }
+                
+                feeType = feeType.substring(0, feeType.length()-1);
+                
                 String completedLine = "";
                 
-                double totalAmount = RT.getTotalPricePerInvoice(invNo);
+                double totalAmount = RT.getTotalPricePerInvoice(invNo, compList);
                 
-                String[] tableData = {payDet[0], String.format("%.02f", totalAmount), payDet[9], payDet[10], "VIEW"};
+                String[] tableData = {payDet[0].toUpperCase(), feeType, String.format("%.02f", totalAmount), payDet[9].toUpperCase(), "VIEW"};
                 for (String eachData : tableData) {
                     completedLine = completedLine + eachData + RT.TF.sp;
                 }
 
                 completeInvoice.add(completedLine);
-                invCode.add(invNo);
+                compInvCode.add(invNo);
             }
         }
         
@@ -117,7 +145,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
     }
     
     private void setCurrentUserProfile() {
-        userNameLabel.setText(user.getFirstName() + " " + user.getLastName());
+        userNameLabel.setText(RT.getFirstName() + " " + RT.getLastName());
     }
 
     /**
@@ -245,13 +273,13 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
 
         invoiceIncompleteTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "INVOICE NO.", "UNIT", "ISSUED DATE", "TOTAL PRICE (RM)", "ACTION"
+                "INVOICE NO.", "FEE TYPE", "TOTAL PRICE (RM)", "ACTION"
             }
         ));
         invoiceIncompleteTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -261,7 +289,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(invoiceIncompleteTable);
         if (invoiceIncompleteTable.getColumnModel().getColumnCount() > 0) {
-            invoiceIncompleteTable.getColumnModel().getColumn(3).setResizable(false);
+            invoiceIncompleteTable.getColumnModel().getColumn(2).setResizable(false);
         }
 
         jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
@@ -299,7 +327,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "INVOICE NO.", "TOTAL PRICE (RM)", "PAID BY", "PAID AT", "ACTION"
+                "INVOICE NO.", "FEE TYPE", "TOTAL PRICE (RM)", "PAID BY", "ACTION"
             }
         ));
         invoiceCompleteTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -757,16 +785,17 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
         int selCol = invoiceIncompleteTable.getSelectedColumn();
         int selRow = invoiceIncompleteTable.getSelectedRow();
         
-        String invoiceNo = RT.validateTableSelectionAndGetValue(invIncompTab, selCol, selRow, 4, 0);
+        String invoiceNo = RT.validateTableSelectionAndGetValue(invIncompTab, selCol, selRow, 3, 0);
+        String feeTypes = RT.validateTableSelectionAndGetValue(invIncompTab, selCol, selRow, 3, 1);
         if (invoiceNo != null) {
-            RT.toInvoicePayment(invoiceNo, user);
+            RT.toInvoicePayment(invoiceNo, RT, feeTypes);
             this.dispose();
         }
     }//GEN-LAST:event_invoiceIncompleteTableMouseClicked
 
     private void dashBoardInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashBoardInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toResidentTenantDashboard(user);
+        RT.toResidentTenantDashboard(RT);
         this.dispose();
     }//GEN-LAST:event_dashBoardInnerTabMouseClicked
 
@@ -777,7 +806,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
 
     private void dashboardOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toResidentTenantDashboard(user);
+        RT.toResidentTenantDashboard(RT);
         this.dispose();
     }//GEN-LAST:event_dashboardOuterTabMouseClicked
 
@@ -788,7 +817,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
 
     private void paymentManagementInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toPaymentManagement(user);
+        RT.toPaymentManagement(RT);
         this.dispose();
     }//GEN-LAST:event_paymentManagementInnerTabMouseClicked
 
@@ -799,7 +828,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
 
     private void paymentManagementOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toPaymentManagement(user);
+        RT.toPaymentManagement(RT);
         this.dispose();
     }//GEN-LAST:event_paymentManagementOuterTabMouseClicked
 
@@ -810,7 +839,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
 
     private void facilityBookingInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityBookingInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toBookedFacility(user);
+        RT.toBookedFacility(RT);
         this.dispose();
     }//GEN-LAST:event_facilityBookingInnerTabMouseClicked
 
@@ -821,7 +850,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
 
     private void facilityBookingOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityBookingOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toBookedFacility(user);
+        RT.toBookedFacility(RT);
         this.dispose();
     }//GEN-LAST:event_facilityBookingOuterTabMouseClicked
 
@@ -832,7 +861,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
 
     private void complaintsInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toComplaints(user);
+        RT.toComplaints(RT);
         this.dispose();
     }//GEN-LAST:event_complaintsInnerTabMouseClicked
 
@@ -843,7 +872,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
 
     private void complaintsOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toComplaints(user);
+        RT.toComplaints(RT);
         this.dispose();
     }//GEN-LAST:event_complaintsOuterTabMouseClicked
 
@@ -854,7 +883,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
         // TODO add your handling code here:
-        RT.toViewProfile(user);
+        RT.toViewProfile(RT);
         this.dispose();
     }//GEN-LAST:event_jLabel12MouseClicked
 
@@ -865,7 +894,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
 
     private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
         // TODO add your handling code here:
-        RT.toViewProfile(user);
+        RT.toViewProfile(RT);
         this.dispose();
     }//GEN-LAST:event_jPanel13MouseClicked
 
@@ -876,7 +905,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
 
     private void visitorPassInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorPassInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toVisitorPass(user);
+        RT.toVisitorPass(RT);
         this.dispose();
     }//GEN-LAST:event_visitorPassInnerTabMouseClicked
 
@@ -887,7 +916,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
 
     private void visitorPassOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorPassOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toVisitorPass(user);
+        RT.toVisitorPass(RT);
         this.dispose();
     }//GEN-LAST:event_visitorPassOuterTabMouseClicked
 
@@ -898,7 +927,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
 
     private void pendingFeeLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pendingFeeLabelMouseClicked
         // TODO add your handling code here:
-        RT.toPaymentManagement(user);
+        RT.toPaymentManagement(RT);
         this.dispose();
     }//GEN-LAST:event_pendingFeeLabelMouseClicked
 
@@ -909,7 +938,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
 
     private void paymentHistLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentHistLabelMouseClicked
         // TODO add your handling code here:
-        RT.toPaymentHistory(user);
+        RT.toPaymentHistory(RT);
         this.dispose();
     }//GEN-LAST:event_paymentHistLabelMouseClicked
 
@@ -920,7 +949,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
 
     private void statementLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statementLabelMouseClicked
         // TODO add your handling code here:
-        RT.toStatement(user);
+        RT.toStatement(RT);
         this.dispose();
     }//GEN-LAST:event_statementLabelMouseClicked
 
@@ -935,8 +964,9 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
         int selRow = invoiceCompleteTable.getSelectedRow();
         
         String invoiceNo = RT.validateTableSelectionAndGetValue(invCompTab, selCol, selRow, 4, 0);
+        String feeTypes = RT.validateTableSelectionAndGetValue(invCompTab, selCol, selRow, 4, 1);
         if (invoiceNo != null) {
-            RT.toViewPaidInvoice(user, invoiceNo);
+            RT.toViewPaidInvoice(RT, invoiceNo, feeTypes);
             this.dispose();
         }
     }//GEN-LAST:event_invoiceCompleteTableMouseClicked
