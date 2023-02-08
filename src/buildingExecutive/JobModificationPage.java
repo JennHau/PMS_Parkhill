@@ -14,8 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.Complaints;
 import pms_parkhill_residence.FileHandling;
 
@@ -70,6 +72,8 @@ public class JobModificationPage extends javax.swing.JFrame {
         updateBTN.setEnabled(false);
         
         jobTF.setText("");
+        
+        setPatrollingReportTableDesign();
     }
     
     private void tableJobSetUp(String positionCode) throws IOException {
@@ -147,6 +151,12 @@ public class JobModificationPage extends javax.swing.JFrame {
         }
         
         return false;
+    }
+    
+    private void setPatrollingReportTableDesign() {
+        int[] columnIgnore = {1};
+        int[] columnLength = {60, 245, 90, 120, 80};
+        BE.setTableDesign(jobsTableUI, jLabel2, columnLength, columnIgnore);
     }
     
     /**
@@ -238,6 +248,10 @@ public class JobModificationPage extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jobsTableUI.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jobsTableUI.setForeground(new java.awt.Color(51, 51, 51));
+        jobsTableUI.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        jobsTableUI.setRowHeight(25);
         jobsTableUI.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jobsTableUIMouseClicked(evt);

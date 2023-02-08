@@ -30,7 +30,6 @@ public class ComplaintsDetails extends javax.swing.JFrame {
     /**
      * Creates new form EmployeeJobAssignation
      * @param BE
-     * @param users
      * @param complaint
      */
     public ComplaintsDetails(BuildingExecutive BE, Complaints complaint) {

@@ -290,7 +290,7 @@ public class BuildingExecutiveAllReportsPage extends javax.swing.JFrame {
     private void setField(String reportTitle) {
         reportTitleLabel.setText(reportTitle);
         todayDateLabel.setText(LocalDate.now().toString());
-        currentIdTF.setText(this.BE.getUserID());
+        currentIdTF.setText(this.BE.getUserID().toUpperCase());
    }
     
     /**

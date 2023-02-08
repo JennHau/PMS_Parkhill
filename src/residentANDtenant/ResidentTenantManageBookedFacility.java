@@ -227,6 +227,10 @@ public class ResidentTenantManageBookedFacility extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jTable1.setForeground(new java.awt.Color(51, 51, 51));
+        jTable1.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        jTable1.setRowHeight(25);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -250,6 +254,10 @@ public class ResidentTenantManageBookedFacility extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jTable2.setForeground(new java.awt.Color(51, 51, 51));
+        jTable2.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        jTable2.setRowHeight(25);
         jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable2MouseClicked(evt);
@@ -801,6 +809,17 @@ public class ResidentTenantManageBookedFacility extends javax.swing.JFrame {
             }
         }
         datePicker1.setDate(LocalDate.parse(date));
+        
+        setTableDesign();
+    }
+    
+    private void setTableDesign() {
+        int[] columnIgnore = {0};
+        int[] columnLength = {192, 192, 192, 192, 192};
+        RT.setTableDesign(jTable1, jLabel2, columnLength, columnIgnore);
+        
+        int[] columnLength2 = {240, 240, 240, 240};
+        RT.setTableDesign(jTable2, jLabel2, columnLength2, columnIgnore);
     }
     
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked

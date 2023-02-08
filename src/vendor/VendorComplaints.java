@@ -70,6 +70,16 @@ public class VendorComplaints extends javax.swing.JFrame {
         
         VD.setTableRow(pendingProgressTable, pendingComp);
         VD.setTableRow(completedTable, completedComp);
+        
+        tableDesignSetUp();
+    }
+    
+    private void tableDesignSetUp() {
+        int[] columnIgnore = {1};
+        int[] columnLength = {100, 194, 90, 90, 100, 80};
+        VD.setTableDesign(penProgCompTable, jLabel2, columnLength, columnIgnore);
+        
+        VD.setTableDesign(completedCompTable, jLabel2, columnLength, columnIgnore);
     }
     
     private void setCurrentUserProfile() {
@@ -196,7 +206,7 @@ public class VendorComplaints extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(13, 24, 42));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("PARKHILL RESIDENCE RESIDENT & TENANT");
+        jLabel2.setText("PARKHILL RESIDENCE VENDOR");
 
         userNameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         userNameLabel.setForeground(new java.awt.Color(102, 102, 102));
@@ -231,6 +241,8 @@ public class VendorComplaints extends javax.swing.JFrame {
         jLabel23.setForeground(new java.awt.Color(51, 51, 51));
         jLabel23.setText("Pending & Progressing Complaints:");
 
+        penProgCompTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        penProgCompTable.setForeground(new java.awt.Color(51, 51, 51));
         penProgCompTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -242,6 +254,8 @@ public class VendorComplaints extends javax.swing.JFrame {
                 "COMPLAINT ID", "DESCRIPTION", "DATE", "TIME", "STATUS", "ACTION"
             }
         ));
+        penProgCompTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        penProgCompTable.setRowHeight(25);
         penProgCompTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 penProgCompTableMouseClicked(evt);
@@ -361,6 +375,8 @@ public class VendorComplaints extends javax.swing.JFrame {
         jLabel26.setForeground(new java.awt.Color(51, 51, 51));
         jLabel26.setText("Completed Complaints:");
 
+        completedCompTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        completedCompTable.setForeground(new java.awt.Color(51, 51, 51));
         completedCompTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -372,6 +388,8 @@ public class VendorComplaints extends javax.swing.JFrame {
                 "COMPLAINT ID", "DESCRIPTION", "DATE", "TIME", "STATUS", "ACTION"
             }
         ));
+        completedCompTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        completedCompTable.setRowHeight(25);
         completedCompTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 completedCompTableMouseClicked(evt);

@@ -4,14 +4,20 @@
  */
 package residentANDtenant;
 
+import java.awt.Color;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import pms_parkhill_residence.CRUD;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.Complaints;
 import pms_parkhill_residence.Facility;
 import pms_parkhill_residence.FileHandling;
@@ -493,6 +499,39 @@ public class ResidentTenant extends Users {
         }
         
         return totalAmount;
+    }
+    
+    public void setTableDesign(JTable jTable, JLabel jLabel, int[] columnLength, int[] ignoreColumn) {
+        // design for the table header
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setBackground(new Color(13, 24, 42));
+        headerRenderer.setHorizontalAlignment(jLabel.CENTER);
+        headerRenderer.setForeground(new Color(255, 255, 255));
+        for (int i = 0; i < jTable.getModel().getColumnCount(); i++) {
+            jTable.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
+        
+        ArrayList<Integer> ignoreColumnList = new ArrayList<>();
+        for (int i : ignoreColumn) {
+            ignoreColumnList.add(i);
+        }
+        
+        // design for the table row
+        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
+        rowRenderer.setHorizontalAlignment(jLabel.CENTER);
+        for (int i = 0; i < jTable.getModel().getColumnCount(); i++) {
+            if (!ignoreColumnList.contains(i)) {
+                jTable.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
+            }
+        }
+        
+        TableColumnModel columnModel = jTable.getColumnModel();
+        // set first column width of the table to suitable value
+        for (int count = 0; count < columnLength.length; count++) {
+            columnModel.getColumn(count).setMaxWidth(columnLength[count]);
+            columnModel.getColumn(count).setMinWidth(columnLength[count]);
+            columnModel.getColumn(count).setPreferredWidth(columnLength[count]);
+        }
     }
     
     @Override

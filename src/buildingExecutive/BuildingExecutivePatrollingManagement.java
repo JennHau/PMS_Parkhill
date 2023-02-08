@@ -18,10 +18,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.FileHandling;
 
 /**
@@ -74,6 +72,10 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         securityIdComboBox.removeAllItems();
         
         disableManageButton();
+        
+        setPatrollingScheduleTableDesign();
+        
+        setUserProfile();
     }
     
     private void getTodayDay() {
@@ -116,6 +118,14 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                 
                 if (inputDateTime.isBefore(dateTimeNow)) {
                     action = "PAST";
+                }
+                
+                if (patStatus.equals("Checked")) {
+                    action = "VIEW";
+                }
+                
+                if (action.equals("PAST")) {
+                    patStatus = "Unassign";
                 }
                     
                 forTableSetup.add(patSlot + BE.TF.sp + patBlock + BE.TF.sp + 
@@ -163,66 +173,19 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         remarksTA.setText("");
     }
     
+     private void setUserProfile() throws IOException {
+        // get current BE details
+        // Set text field
+        if (currentBEid != null) {
+            String beName = BE.getFirstName() + " " + BE.getLastName();
+            jLabel7.setText(beName);
+        }
+    }
+    
     private void setPatrollingScheduleTableDesign() {
-        // design for the table header
-        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
-        headerRenderer.setBackground(new Color(13, 24, 42));
-//        headerRenderer.setHorizontalAlignment(jLabel13.CENTER);
-        headerRenderer.setForeground(new Color(255, 255, 255));
-        for (int i = 0; i < patrollingScheduleTable.getModel().getColumnCount(); i++) {
-            patrollingScheduleTable.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
-        }
-        
-        // design for the table row
-        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
-//        rowRenderer.setHorizontalAlignment(jLabel13.CENTER);
-        for (int i = 0; i < patrollingScheduleTable.getModel().getColumnCount(); i++) {
-            if (i != 0) {
-                patrollingScheduleTable.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
-            }
-        }
-        
-        TableColumnModel columnModel = patrollingScheduleTable.getColumnModel();
-        // set first column width of the table to suitable value
-        columnModel.getColumn(0).setMaxWidth(150);
-        columnModel.getColumn(0).setMinWidth(150);
-        columnModel.getColumn(0).setPreferredWidth(150);
-
-        columnModel.getColumn(1).setMaxWidth(90);
-        columnModel.getColumn(1).setMinWidth(90);
-        columnModel.getColumn(1).setPreferredWidth(90);
-
-        columnModel.getColumn(2).setMaxWidth(120);
-        columnModel.getColumn(2).setMinWidth(120);
-        columnModel.getColumn(2).setPreferredWidth(120);
-
-        columnModel.getColumn(3).setMaxWidth(80);
-        columnModel.getColumn(3).setMinWidth(80);
-        columnModel.getColumn(3).setPreferredWidth(80);
-
-        columnModel.getColumn(4).setMaxWidth(120);
-        columnModel.getColumn(4).setMinWidth(120);
-        columnModel.getColumn(4).setPreferredWidth(120);
-        
-        columnModel.getColumn(5).setMaxWidth(40);
-        columnModel.getColumn(5).setMinWidth(40);
-        columnModel.getColumn(5).setPreferredWidth(40);
-        
-        columnModel.getColumn(6).setMaxWidth(40);
-        columnModel.getColumn(6).setMinWidth(40);
-        columnModel.getColumn(6).setPreferredWidth(40);
-        
-        columnModel.getColumn(7).setMaxWidth(40);
-        columnModel.getColumn(7).setMinWidth(40);
-        columnModel.getColumn(7).setPreferredWidth(40);
-        
-        columnModel.getColumn(8).setMaxWidth(40);
-        columnModel.getColumn(8).setMinWidth(40);
-        columnModel.getColumn(8).setPreferredWidth(40);
-        
-        columnModel.getColumn(9).setMaxWidth(40);
-        columnModel.getColumn(9).setMinWidth(40);
-        columnModel.getColumn(9).setPreferredWidth(40);
+        int[] columnIgnore = {6};
+        int[] columnLength = {80, 70, 120, 100, 110, 100, 172, 120, 100, 100};
+        BE.setTableDesign(patrollingScheduleTable, jLabel2, columnLength, columnIgnore);
     }
     
     /**
@@ -396,6 +359,10 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        patrollingScheduleTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        patrollingScheduleTable.setForeground(new java.awt.Color(51, 51, 51));
+        patrollingScheduleTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        patrollingScheduleTable.setRowHeight(25);
         patrollingScheduleTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 patrollingScheduleTableMouseClicked(evt);
@@ -552,7 +519,6 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1)
-                    .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel33, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -616,7 +582,8 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(selectDateBTN)
                         .addGap(653, 653, 653)
-                        .addComponent(manageScheduleBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(manageScheduleBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1))
                 .addGap(10, 10, 10))
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(361, 361, 361)

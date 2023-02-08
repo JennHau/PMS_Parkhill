@@ -42,6 +42,8 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
         invoiceComboBoxSetUp();
         
         setWindowIcon();
+        
+        setCurrentUserProfile();
     }
     
     private void invoiceTableSetUp() {
@@ -123,6 +125,17 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
         
         RT.setTableRow(invIncompTab, incompleteInvoice);
         RT.setTableRow(invCompTab, completeInvoice);
+        
+        tableDesignSetUp();
+    }
+    
+    private void tableDesignSetUp() {
+        int[] columnIgnore = {1};
+        int[] columnLength = {245, 366, 183, 183};
+        RT.setTableDesign(invoiceIncompleteTable, jLabel2, columnLength, columnIgnore);
+        
+        int[] columnLength2 = {180, 367, 150, 150, 130};
+        RT.setTableDesign(invoiceCompleteTable, jLabel2, columnLength2, columnIgnore);
     }
     
     private void invoiceComboBoxSetUp() {
@@ -329,6 +342,8 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
         invoiceLine.setForeground(new java.awt.Color(13, 24, 42));
         invoiceLine.setText("jTextField1");
 
+        invoiceIncompleteTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        invoiceIncompleteTable.setForeground(new java.awt.Color(51, 51, 51));
         invoiceIncompleteTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -340,6 +355,8 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
                 "INVOICE NO.", "FEE TYPE", "TOTAL PRICE (RM)", "ACTION"
             }
         ));
+        invoiceIncompleteTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        invoiceIncompleteTable.setRowHeight(25);
         invoiceIncompleteTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 invoiceIncompleteTableMouseClicked(evt);
@@ -377,6 +394,8 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
         jLabel24.setForeground(new java.awt.Color(51, 51, 51));
         jLabel24.setText("Incomplete Invoice:  ");
 
+        invoiceCompleteTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        invoiceCompleteTable.setForeground(new java.awt.Color(51, 51, 51));
         invoiceCompleteTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -388,6 +407,8 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
                 "INVOICE NO.", "FEE TYPE", "TOTAL PRICE (RM)", "PAID BY", "ACTION"
             }
         ));
+        invoiceCompleteTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        invoiceCompleteTable.setRowHeight(25);
         invoiceCompleteTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 invoiceCompleteTableMouseClicked(evt);
@@ -422,8 +443,8 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 977, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel25)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 977, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel25)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)

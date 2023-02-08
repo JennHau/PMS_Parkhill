@@ -31,6 +31,23 @@ public class ResidentTenantFacilityBooking extends javax.swing.JFrame {
         setTable();
         
         rtFacBook = this;
+        
+        setUserProfile();
+    }
+    
+    private void tableDesignSetUp() {
+        int[] columnIgnore = {};
+        int[] columnLength = {130, 228, 120, 120, 120, 120, 120};
+        RT.setTableDesign(jTable1, jLabel2, columnLength, columnIgnore);
+    }
+    
+    private void setUserProfile() {
+        // get current BE details
+        // Set text field
+        if (RT.getUserID() != null) {
+            String beName = RT.getFirstName() + " " + RT.getLastName();
+            jLabel7.setText(beName);
+        }
     }
 
     /**
@@ -116,7 +133,7 @@ public class ResidentTenantFacilityBooking extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(13, 24, 42));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("ADMIN EXECUTIVE");
+        jLabel2.setText("PARKHILL RESIDENCE RESIDENT & TENANT");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(102, 102, 102));
@@ -193,6 +210,8 @@ public class ResidentTenantFacilityBooking extends javax.swing.JFrame {
         jLabel14.setText("FACILITY BOOKING");
         jLabel14.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
+        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jTable1.setForeground(new java.awt.Color(51, 51, 51));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -209,6 +228,8 @@ public class ResidentTenantFacilityBooking extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        jTable1.setRowHeight(30);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -873,6 +894,8 @@ public class ResidentTenantFacilityBooking extends javax.swing.JFrame {
             }
             
         }
+        
+        tableDesignSetUp();
     }
 
     /**

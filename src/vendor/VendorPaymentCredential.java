@@ -13,7 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.PMS_DateTimeFormatter;
-import pms_parkhill_residence.Users;
 
 /**
  *
@@ -32,12 +31,14 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
      * @param itemList
      */
     public VendorPaymentCredential(Vendor VD, String totalAmount, ArrayList itemList) {
-        amountSetUp(totalAmount);
-        
         this.VD = VD;
         this.setItemList(itemList);
         
         initComponents();
+        
+        amountSetUp(totalAmount);
+
+        
         setWindowIcon();
     }
     

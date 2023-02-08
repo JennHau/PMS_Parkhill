@@ -17,8 +17,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.Complaints;
 import pms_parkhill_residence.FileHandling;
 
@@ -84,6 +86,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         formInitialSetUp();
         formAdditionalDetailsSetUp();
         setJobTable();
+        setJobListTableDesign();
     }
 
     private void setWindowIcon() {
@@ -123,7 +126,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         if (jobID != null) {
             String[] jobDetails = BE.getSpecificJobDetails(selectedEmployeeId, jobID);
             
-            this.complaintsId = (jobDetails[2].equals("null")) ? null : jobDetails[2];
+            this.complaintsId = (jobDetails[2].equals(BE.TF.empty)) ? null : jobDetails[2];
             
             String jobToAssign = jobDetails[3];
             int repitition = Integer.valueOf(jobDetails[4]);
@@ -232,7 +235,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             String eachDay = "";
             if (!dayToRepeat.equals(BE.TF.empty)) {
                 for (String day : dayToRepeat.split(",")) {
-                    eachDay += day.toUpperCase()+ " ";
+                    eachDay += day.substring(0, 3).toUpperCase()+ " ";
                 }
             }
                      
@@ -252,11 +255,17 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             }
             
             if (add) {
-                listForTable.add(jobId.toUpperCase() + BE.TF.sp + jobDesc + BE.TF.sp + combineDate + BE.TF.sp + assigneeId.toUpperCase() + BE.TF.sp);
+                listForTable.add(jobId.toUpperCase() + BE.TF.sp + jobDesc + BE.TF.sp + combineDate + BE.TF.sp + assigneeId.toUpperCase() + BE.TF.sp + "MODIFY" + BE.TF.sp);
             }
         }
         
         BE.setTableRow(employeeJobTable, listForTable);
+    }
+    
+    private void setJobListTableDesign() {
+        int[] columnIgnore = {2};
+        int[] columnLength = {80, 165, 265, 80, 80};
+        BE.setTableDesign(assignedJobTable, jLabel2, columnLength, columnIgnore);
     }
     
     private void jobComboBoxSetUp() throws IOException {
@@ -592,6 +601,10 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        assignedJobTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        assignedJobTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        assignedJobTable.setName(""); // NOI18N
+        assignedJobTable.setRowHeight(25);
         assignedJobTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 assignedJobTableMouseClicked(evt);
@@ -750,12 +763,13 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(438, 438, 438)
+                        .addGap(479, 479, 479)
                         .addComponent(editJobBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, 0))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -813,7 +827,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                                     .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addContainerGap()
+                                .addGap(8, 8, 8)
                                 .addComponent(editJobBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -867,7 +881,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addContainerGap(483, Short.MAX_VALUE))
+                .addContainerGap(523, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -109,7 +109,7 @@ public class VendorInvoicePayment extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(13, 24, 42));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("ACCOUNT EXECUTIVE");
+        jLabel2.setText("PARKHILL RESIDENCE VENDOR");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(102, 102, 102));
@@ -145,6 +145,8 @@ public class VendorInvoicePayment extends javax.swing.JFrame {
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setText("INVOICE");
 
+        paymentTable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        paymentTable.setForeground(new java.awt.Color(51, 51, 51));
         paymentTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -161,6 +163,8 @@ public class VendorInvoicePayment extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        paymentTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        paymentTable.setRowHeight(30);
         jScrollPane1.setViewportView(paymentTable);
 
         jLabel16.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
@@ -700,6 +704,14 @@ public class VendorInvoicePayment extends javax.swing.JFrame {
         
         total = String.format("%.02f", totalAmount);
         VD.setTableRow(payTab, toTable);
+        
+        tableDesignSetUp();
+    }
+    
+    private void tableDesignSetUp() {
+        int[] columnIgnore = {0};
+        int[] columnLength = {180, 156, 156, 156, 156, 156};
+        VD.setTableDesign(paymentTable, jLabel2, columnLength, columnIgnore);
     }
     
     private void setFixData() {

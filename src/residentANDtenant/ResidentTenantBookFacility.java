@@ -13,7 +13,11 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.Facility;
 
 /**
@@ -51,6 +55,8 @@ public class ResidentTenantBookFacility extends javax.swing.JFrame {
         setTable();
         
         rtBookFacility = this;
+        
+        setUserProfile();
     }
 
     /**
@@ -172,7 +178,7 @@ public class ResidentTenantBookFacility extends javax.swing.JFrame {
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(153, 153, 153), null, null));
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("ADMIN EXECUTIVE");
+        jLabel2.setText("PARKHILL RESIDENCES RESIDENT & TENANT");
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(13, 24, 42));
 
@@ -227,6 +233,9 @@ public class ResidentTenantBookFacility extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setForeground(new java.awt.Color(51, 51, 51));
+        jTable1.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        jTable1.setRowHeight(25);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -250,6 +259,9 @@ public class ResidentTenantBookFacility extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable2.setForeground(new java.awt.Color(51, 51, 51));
+        jTable2.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        jTable2.setRowHeight(25);
         jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable2MouseClicked(evt);
@@ -766,8 +778,6 @@ public class ResidentTenantBookFacility extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-
     
     private void setDefault() {
         datePicker1.setDate(LocalDate.now());
@@ -783,8 +793,27 @@ public class ResidentTenantBookFacility extends javax.swing.JFrame {
                 variationCB.addItem(facilityName +" "+ i);
             }
         }
+        
+        setTableDesign();
     }
     
+    private void setTableDesign() {
+        int[] columnIgnore = {};
+        int[] columnLength = {192, 192, 192, 192, 192};
+        RT.setTableDesign(jTable1, jLabel2, columnLength, columnIgnore);
+        
+        int[] columnLength2 = {240, 240, 240, 240};
+        RT.setTableDesign(jTable2, jLabel2, columnLength2, columnIgnore);
+    }
+    
+    private void setUserProfile() {
+        // get current BE details
+        // Set text field
+        if (RT.getUserID() != null) {
+            String beName = RT.getFirstName() + " " + RT.getLastName();
+            jLabel7.setText(beName);
+        }
+    }
     
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:

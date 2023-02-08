@@ -105,7 +105,7 @@
               <Color blue="2a" green="18" red="d" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="ACCOUNT EXECUTIVE"/>
+            <Property name="text" type="java.lang.String" value="PARKHILL RESIDENCE VENDOR"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel7">
@@ -226,6 +226,12 @@
           <SubComponents>
             <Component class="javax.swing.JTable" name="paymentTable">
               <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="14" style="1"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="33" green="33" red="33" type="rgb"/>
+                </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="6" rowCount="0">
                     <Column editable="false" title="FEE TYPE" type="java.lang.Object"/>
@@ -236,6 +242,10 @@
                     <Column editable="false" title="TOTAL PRICE (RM)" type="java.lang.Object"/>
                   </Table>
                 </Property>
+                <Property name="intercellSpacing" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[2, 2]"/>
+                </Property>
+                <Property name="rowHeight" type="int" value="30"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable()&#xa;{&#xa;    @Override&#xa;&#xa;    public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){&#xa;        Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);&#xa;&#xa;        if (rowIndex%2 == 0) {&#xa;            componenet.setBackground(new Color(249, 249, 249));&#xa;            componenet.setForeground(new Color (102, 102, 102));&#xa;        } else {&#xa;            componenet.setBackground(new Color(225, 225, 225));&#xa;            componenet.setForeground(new Color (102, 102, 102));&#xa;        }&#xa;&#xa;        return componenet;&#xa;    }&#xa;&#xa;}&#xa;"/>

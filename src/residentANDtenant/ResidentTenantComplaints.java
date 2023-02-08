@@ -73,10 +73,20 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
         
         RT.setTableRow(pendingProgressTable, pendingComp);
         RT.setTableRow(completedTable, completedComp);
+        
+        tableDesignSetUp();
     }
     
     private void setCurrentUserProfile() {
         userNameLabel.setText(RT.getFirstName() + " " + RT.getLastName());
+    }
+    
+    private void tableDesignSetUp() {
+        int[] columnIgnore = {1};
+        int[] columnLength = {100, 194, 90, 90, 100, 80};
+        RT.setTableDesign(penProgCompTable, jLabel2, columnLength, columnIgnore);
+        
+        RT.setTableDesign(completedCompTable, jLabel2, columnLength, columnIgnore);
     }
 
     /**
@@ -240,6 +250,8 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
         jLabel23.setForeground(new java.awt.Color(51, 51, 51));
         jLabel23.setText("Pending & Progressing Complaints:");
 
+        penProgCompTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        penProgCompTable.setForeground(new java.awt.Color(51, 51, 51));
         penProgCompTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -251,6 +263,8 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
                 "COMPLAINT ID", "DESCRIPTION", "DATE", "TIME", "STATUS", "ACTION"
             }
         ));
+        penProgCompTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        penProgCompTable.setRowHeight(25);
         penProgCompTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 penProgCompTableMouseClicked(evt);
@@ -370,6 +384,8 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
         jLabel26.setForeground(new java.awt.Color(51, 51, 51));
         jLabel26.setText("Completed Complaints:");
 
+        completedCompTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        completedCompTable.setForeground(new java.awt.Color(51, 51, 51));
         completedCompTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -381,6 +397,8 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
                 "COMPLAINT ID", "DESCRIPTION", "DATE", "TIME", "STATUS", "ACTION"
             }
         ));
+        completedCompTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        completedCompTable.setRowHeight(25);
         completedCompTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 completedCompTableMouseClicked(evt);
@@ -403,8 +421,8 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel26, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1)
-                            .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1))
                         .addGap(10, 10, 10)))
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)

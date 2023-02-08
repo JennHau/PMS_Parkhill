@@ -39,6 +39,8 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
         
         setWindowIcon();
         pendingFeeTableSetUp();
+        
+        setCurrentUserProfile();
     }
     
     private void pendingFeeTableSetUp() {
@@ -69,10 +71,18 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
         
         RT.setTableRow(penFeeTab, toTable);
         totalPendingFeeTF.setText(String.format("%.02f", totalAmount));
+        
+        tableDesignSetUp();
     }
     
     private void setCurrentUserProfile() {
         userNameLabel.setText(RT.getFirstName() + " " + RT.getLastName());
+    }
+    
+    private void tableDesignSetUp() {
+        int[] columnIgnore = {2};
+        int[] columnLength = {121, 210, 386, 210};
+        RT.setTableDesign(pendingFeeTable, jLabel2, columnLength, columnIgnore);
     }
 
     /**
@@ -227,6 +237,8 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
             }
         });
 
+        pendingFeeTable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        pendingFeeTable.setForeground(new java.awt.Color(51, 51, 51));
         pendingFeeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -238,6 +250,8 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
                 "NO.", "ITEM ID", "ITEM NAME", "AMOUNT (RM)"
             }
         ));
+        pendingFeeTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        pendingFeeTable.setRowHeight(30);
         jScrollPane1.setViewportView(pendingFeeTable);
 
         jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
@@ -340,7 +354,7 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
                 .addComponent(jLabel23)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)

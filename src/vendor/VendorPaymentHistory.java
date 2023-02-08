@@ -50,6 +50,8 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(VendorPaymentHistory.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        setCurrentUserProfile();
     }
     
     private void paymentHistoryTableSetUp() throws ParseException {
@@ -127,10 +129,18 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
         }
         
         VD.setTableRow(payHisTab, arrangedList);
+        
+        tableDesignSetUp();
     }
     
     private void setCurrentUserProfile() {
         userNameLabel.setText(VD.getFirstName() + " " + VD.getLastName());
+    }
+    
+    private void tableDesignSetUp() {
+        int[] columnIgnore = {2};
+        int[] columnLength = {60, 160, 317, 160, 160, 120};
+        VD.setTableDesign(paymentHistoryTable, jLabel2, columnLength, columnIgnore);
     }
 
     /**
@@ -279,6 +289,8 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
             }
         });
 
+        paymentHistoryTable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        paymentHistoryTable.setForeground(new java.awt.Color(51, 51, 51));
         paymentHistoryTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -290,6 +302,8 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
                 "NO.", "ITEM ID", "ITEM DESCRIPTION", "AMOUNT PAID", "PAID DATE", "RECEIPT"
             }
         ));
+        paymentHistoryTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        paymentHistoryTable.setRowHeight(30);
         paymentHistoryTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 paymentHistoryTableMouseClicked(evt);

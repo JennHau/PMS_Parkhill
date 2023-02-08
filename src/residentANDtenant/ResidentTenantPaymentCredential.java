@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -347,6 +348,9 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
 
                                 for (String eachInv : incompInv) {
                                     String[] invDet = eachInv.split(RT.TF.sp);
+                                    
+                                    System.out.println(Arrays.toString(invDet));
+                                    
                                     String invNo = invDet[0];
 
                                     for (String eachId : itemList) {

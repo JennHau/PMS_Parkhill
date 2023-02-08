@@ -50,6 +50,8 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         initComponents();
         
         runDefaultSetUp();
+        
+        setUserProfile();
     }
     
     public final void runDefaultSetUp(){
@@ -58,6 +60,9 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         
         setWindowIcon();
         complaintTableSetUp();
+        
+        // Table design
+        tableDesignSetUp();
     }
     
     private void complaintTableSetUp() {
@@ -125,92 +130,22 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         BE.setTableRow(actionedComplaintsTab, statusComplaints);
     }
     
-    private void setNewCompTableDesign() {
-        // design for the table header
-        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
-        headerRenderer.setBackground(new Color(13, 24, 42));
-//        headerRenderer.setHorizontalAlignment(jLabel13.CENTER);
-        headerRenderer.setForeground(new Color(255, 255, 255));
-        for (int i = 0; i < newComplaintsTable.getModel().getColumnCount(); i++) {
-            newComplaintsTable.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
-        }
+    private void tableDesignSetUp() {
+        int[] columnIgnore = {};
+        int[] columnLength = {95, 105, 87, 95, 80};
+        BE.setTableDesign(newComplaintsTable, jLabel2, columnLength, columnIgnore);
         
-        // design for the table row
-        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
-//        rowRenderer.setHorizontalAlignment(jLabel13.CENTER);
-        for (int i = 0; i < newComplaintsTable.getModel().getColumnCount(); i++) {
-            if (i != 0) {
-                newComplaintsTable.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
-            }
-        }
-        
-        TableColumnModel columnModel = newComplaintsTable.getColumnModel();
-        // set first column width of the table to suitable value
-        columnModel.getColumn(0).setMaxWidth(150);
-        columnModel.getColumn(0).setMinWidth(150);
-        columnModel.getColumn(0).setPreferredWidth(150);
-
-        columnModel.getColumn(1).setMaxWidth(90);
-        columnModel.getColumn(1).setMinWidth(90);
-        columnModel.getColumn(1).setPreferredWidth(90);
-
-        columnModel.getColumn(2).setMaxWidth(120);
-        columnModel.getColumn(2).setMinWidth(120);
-        columnModel.getColumn(2).setPreferredWidth(120);
-
-        columnModel.getColumn(3).setMaxWidth(80);
-        columnModel.getColumn(3).setMinWidth(80);
-        columnModel.getColumn(3).setPreferredWidth(80);
-
-        columnModel.getColumn(4).setMaxWidth(120);
-        columnModel.getColumn(4).setMinWidth(120);
-        columnModel.getColumn(4).setPreferredWidth(120);
+        int[] columnLength2 = {93, 99, 100, 89, 120, 78};
+        BE.setTableDesign(actionedComplaintsTable, jLabel2, columnLength2, columnIgnore);
     }
     
-    private void setActionedCompTableDesign() {
-        // design for the table header
-        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
-        headerRenderer.setBackground(new Color(13, 24, 42));
-//        headerRenderer.setHorizontalAlignment(jLabel13.CENTER);
-        headerRenderer.setForeground(new Color(255, 255, 255));
-        for (int i = 0; i < newComplaintsTable.getModel().getColumnCount(); i++) {
-            newComplaintsTable.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+    private void setUserProfile() throws IOException {
+        // get current BE details
+        // Set text field
+        if (currentBEid != null) {
+            String beName = BE.getFirstName() + " " + BE.getLastName();
+            jLabel7.setText(beName);
         }
-        
-        // design for the table row
-        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
-//        rowRenderer.setHorizontalAlignment(jLabel13.CENTER);
-        for (int i = 0; i < newComplaintsTable.getModel().getColumnCount(); i++) {
-            if (i != 0) {
-                newComplaintsTable.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
-            }
-        }
-        
-        TableColumnModel columnModel = newComplaintsTable.getColumnModel();
-        // set first column width of the table to suitable value
-        columnModel.getColumn(0).setMaxWidth(150);
-        columnModel.getColumn(0).setMinWidth(150);
-        columnModel.getColumn(0).setPreferredWidth(150);
-
-        columnModel.getColumn(1).setMaxWidth(90);
-        columnModel.getColumn(1).setMinWidth(90);
-        columnModel.getColumn(1).setPreferredWidth(90);
-
-        columnModel.getColumn(2).setMaxWidth(120);
-        columnModel.getColumn(2).setMinWidth(120);
-        columnModel.getColumn(2).setPreferredWidth(120);
-
-        columnModel.getColumn(3).setMaxWidth(80);
-        columnModel.getColumn(3).setMinWidth(80);
-        columnModel.getColumn(3).setPreferredWidth(80);
-
-        columnModel.getColumn(4).setMaxWidth(120);
-        columnModel.getColumn(4).setMinWidth(120);
-        columnModel.getColumn(4).setPreferredWidth(120);
-        
-        columnModel.getColumn(5).setMaxWidth(40);
-        columnModel.getColumn(5).setMinWidth(40);
-        columnModel.getColumn(5).setPreferredWidth(40);
     }
     
     /**
@@ -233,7 +168,37 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         statusCB = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        newComplaintsTable = new javax.swing.JTable();
+        newComplaintsTable = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if(columnIndex == 4){
+                    componenet.setBackground(new Color(0,70,126));
+                    componenet.setForeground(new Color(255, 255, 255));
+                }
+
+                else {
+                    if (rowIndex%2 == 0) {
+                        componenet.setBackground(new Color(249, 249, 249));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    } else {
+                        componenet.setBackground(new Color(225, 225, 225));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    }
+
+                }
+
+                return componenet;
+            }
+
+        }
+
+        ;
         jScrollPane2 = new javax.swing.JScrollPane();
         actionedComplaintsTable = new javax.swing.JTable()
         {
@@ -361,6 +326,7 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
             }
         });
 
+        newComplaintsTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         newComplaintsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -387,6 +353,9 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        newComplaintsTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        newComplaintsTable.setRowHeight(25);
+        newComplaintsTable.setSelectionForeground(new java.awt.Color(51, 51, 51));
         newComplaintsTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 newComplaintsTableMouseClicked(evt);
@@ -401,6 +370,7 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
             newComplaintsTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
+        actionedComplaintsTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         actionedComplaintsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -427,6 +397,9 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        actionedComplaintsTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        actionedComplaintsTable.setRowHeight(25);
+        actionedComplaintsTable.setSelectionForeground(new java.awt.Color(51, 51, 51));
         actionedComplaintsTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 actionedComplaintsTableMouseClicked(evt);
@@ -1007,7 +980,7 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
     public void removeRow(JTable jTable, DefaultTableModel tableModel, String complaintCode) {
         for (int i=0; i<tableModel.getRowCount(); i++) {
             // get module code from table
-            String tmodule_code = String.valueOf(jTable.getValueAt(i, 1)).toUpperCase();
+            String tmodule_code = String.valueOf(jTable.getValueAt(i, 0)).toUpperCase();
             // if module code not contain in search bar
             if (!tmodule_code.contains(complaintCode)) {
                 // remove module from table
@@ -1024,14 +997,10 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         this.complaintID = BE.validateTableSelectionAndGetValue(tableModel, selectedCol, selectedRow, expectedCol, 0);
         
         if (this.complaintID != null) {
-            Complaints complaint = new Complaints(this.complaintID);
+            Complaints complaint = new Complaints(this.complaintID.toLowerCase());
         
             BE.toComplaintDetailsPage(this.BE, complaint);
         }
-    }
-    
-    private void statusComboBoxSetUp() {
-        
     }
     
     private void setWindowIcon() {

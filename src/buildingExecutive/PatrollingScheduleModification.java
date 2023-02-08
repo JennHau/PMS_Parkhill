@@ -13,8 +13,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.FileHandling;
 
 /**
@@ -68,6 +70,8 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         setEachComboBox();
         
         patrollingSchedule = this;
+        
+        setPatrollingReportTableDesign();
     }
     
     private void fileSetUp(String file) {
@@ -86,7 +90,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         for (String eachSche : fileDet) {
             if (!firstLine) {
                 String[] sche = eachSche.split(BE.TF.sp);
-                toTable.add(sche[1] + BE.TF.sp + sche[2] + BE.TF.sp + sche[3] + BE.TF.sp + sche[4] + BE.TF.sp + sche[5] + BE.TF.sp);
+                toTable.add(sche[1] + BE.TF.sp + sche[2] + BE.TF.sp + sche[3] + BE.TF.sp + sche[4] + BE.TF.sp + sche[5] + BE.TF.sp + "MODIFY" + BE.TF.sp);
             }
             
             firstLine = false;
@@ -222,6 +226,12 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
     
+    private void setPatrollingReportTableDesign() {
+        int[] columnIgnore = {};
+        int[] columnLength = {130, 100, 157, 140, 130, 140};
+        BE.setTableDesign(scheduleJT, jLabel2, columnLength, columnIgnore);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -331,6 +341,10 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
                 "SLOT", "BLOCK", "LEVEL", "CHECKPOINTS", "CHECK BEFORE", "ACTION"
             }
         ));
+        scheduleJT.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        scheduleJT.setForeground(new java.awt.Color(51, 51, 51));
+        scheduleJT.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        scheduleJT.setRowHeight(25);
         scheduleJT.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 scheduleJTMouseClicked(evt);

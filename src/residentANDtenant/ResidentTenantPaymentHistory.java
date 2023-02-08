@@ -49,6 +49,8 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(ResidentTenantPaymentHistory.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        setCurrentUserProfile();
     }
     
     private void paymentHistoryTableSetUp() throws ParseException {
@@ -132,10 +134,18 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
         }
         
         RT.setTableRow(payHisTab, arrangedList);
+        
+        tableDesignSetUp();
     }
     
     private void setCurrentUserProfile() {
         userNameLabel.setText(RT.getFirstName() + " " + RT.getLastName());
+    }
+    
+    private void tableDesignSetUp() {
+        int[] columnIgnore = {2};
+        int[] columnLength = {60, 160, 317, 160, 160, 120};
+        RT.setTableDesign(paymentHistoryTable, jLabel2, columnLength, columnIgnore);
     }
 
     /**
@@ -290,6 +300,8 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
             }
         });
 
+        paymentHistoryTable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        paymentHistoryTable.setForeground(new java.awt.Color(51, 51, 51));
         paymentHistoryTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -301,6 +313,8 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
                 "NO.", "ITEM ID", "ITEM DESCRIPTION", "AMOUNT PAID", "PAID DATE", "RECEIPT"
             }
         ));
+        paymentHistoryTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        paymentHistoryTable.setRowHeight(30);
         paymentHistoryTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 paymentHistoryTableMouseClicked(evt);
@@ -358,14 +372,14 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(448, 448, 448)
+                        .addComponent(viewStatementBTN))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 977, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(448, 448, 448)
-                        .addComponent(viewStatementBTN)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(0, 17, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -387,7 +401,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
                 .addGap(4, 4, 4)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(viewStatementBTN, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
+                .addComponent(viewStatementBTN, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
                 .addGap(12, 12, 12))
         );
 

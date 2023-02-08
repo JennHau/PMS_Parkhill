@@ -41,6 +41,10 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
         comboBoxSetUp();
         
         setWindowIcon();
+        
+        setPatrollingReportTableDesign();
+        
+        setUserProfile();
     }
     
     private void tableSetup() {
@@ -114,6 +118,21 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
         }
         
         dateCB.setSelectedItem(0);
+    }
+    
+    private void setPatrollingReportTableDesign() {
+        int[] columnIgnore = {6};
+        int[] columnLength = {60, 110, 131, 100, 90, 100, 172, 120, 90};
+        BE.setTableDesign(patrollingReportTable, jLabel2, columnLength, columnIgnore);
+    }
+    
+    private void setUserProfile() {
+        // get current BE details
+        // Set text field
+        if (BE.getUserID() != null) {
+            String beName = BE.getFirstName() + " " + BE.getLastName();
+            jLabel7.setText(beName);
+        }
     }
 
     /**
@@ -283,6 +302,8 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
             }
         });
 
+        patrollingReportTable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        patrollingReportTable.setForeground(new java.awt.Color(51, 51, 51));
         patrollingReportTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null, null},
@@ -302,6 +323,8 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        patrollingReportTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        patrollingReportTable.setRowHeight(30);
         jScrollPane1.setViewportView(patrollingReportTable);
         if (patrollingReportTable.getColumnModel().getColumnCount() > 0) {
             patrollingReportTable.getColumnModel().getColumn(1).setResizable(false);
@@ -326,29 +349,26 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pendingFeeLine, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(pendingFeeLine, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel6Layout.createSequentialGroup()
-                                        .addComponent(patrollingLabel)
-                                        .addGap(8, 8, 8)
-                                        .addComponent(complaintsLabel)))
+                                .addComponent(patrollingLabel)
                                 .addGap(8, 8, 8)
-                                .addComponent(employeeJobLabel)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(complaintsLabel)))
+                        .addGap(8, 8, 8)
+                        .addComponent(employeeJobLabel)
+                        .addGap(0, 777, Short.MAX_VALUE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(14, 14, 14)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane1)
+                                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel6Layout.createSequentialGroup()
-                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                                .addComponent(jLabel24)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(dateCB, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(0, 0, Short.MAX_VALUE)))))
-                        .addGap(20, 20, 20))))
+                                        .addComponent(jLabel24)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(dateCB, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 811, Short.MAX_VALUE))))))
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(458, 458, 458)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -374,9 +394,9 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel24)
                     .addComponent(dateCB))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(10, 10, 10)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(14, 14, 14)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10))
         );

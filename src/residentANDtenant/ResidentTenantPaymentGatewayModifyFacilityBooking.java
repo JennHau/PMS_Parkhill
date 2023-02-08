@@ -196,6 +196,8 @@ public class ResidentTenantPaymentGatewayModifyFacilityBooking extends javax.swi
         jLabel5.setForeground(new java.awt.Color(102, 102, 102));
         jLabel5.setText("Booking Unit No:");
 
+        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jTable1.setForeground(new java.awt.Color(51, 51, 51));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -212,6 +214,8 @@ public class ResidentTenantPaymentGatewayModifyFacilityBooking extends javax.swi
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        jTable1.setRowHeight(25);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -429,6 +433,14 @@ public class ResidentTenantPaymentGatewayModifyFacilityBooking extends javax.swi
         
         totalLabel.setText("TOTAL: RM " + totalPending); dateLabel.setText(date);
         unitNoLabel.setText(ae.extractFacilityBookingUnit(bookingID.toLowerCase()));
+        
+        tableDesignSetUp();
+    }
+    
+    private void tableDesignSetUp() {
+        int[] columnIgnore = {};
+        int[] columnLength = {216, 160, 160, 160};
+        RT.setTableDesign(jTable1, jLabel2, columnLength, columnIgnore);
     }
     
     private void cancelBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBTActionPerformed
@@ -468,7 +480,6 @@ public class ResidentTenantPaymentGatewayModifyFacilityBooking extends javax.swi
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseClicked
 
-    
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }

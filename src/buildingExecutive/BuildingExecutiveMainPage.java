@@ -90,7 +90,7 @@ public class BuildingExecutiveMainPage extends javax.swing.JFrame {
     
     private void setData() {
         // find total upcoming job
-        List<String> jobFile = BE.fh.fileRead(BE.TF.jobListFile);
+        List<String> jobFile = BE.fh.fileRead(BE.TF.employeeJobFile);
         int jobCount = jobFile.size();
         totalUpcomingJob.setText(String.valueOf(jobCount));
         

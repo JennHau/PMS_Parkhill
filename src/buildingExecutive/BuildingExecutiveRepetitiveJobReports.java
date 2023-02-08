@@ -11,8 +11,10 @@ import java.awt.Toolkit;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -34,6 +36,8 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
         setWindowIcon();
         
         employeeComboBoxSetUp();
+        
+        setUserProfile();
     }
     
     private void employeeComboBoxSetUp() {
@@ -110,6 +114,23 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
         }
         
         BE.setTableRow(jobTab, employeeJobs);
+        
+        setEmployeeJobReportTableDesign();
+    }
+    
+    private void setUserProfile() {
+        // get current BE details
+        // Set text field
+        if (BE.getUserID() != null) {
+            String beName = BE.getFirstName() + " " + BE.getLastName();
+            jLabel7.setText(beName);
+        }
+    }
+    
+    private void setEmployeeJobReportTableDesign() {
+        int[] columnIgnore = {2, 5};
+        int[] columnLength = {100, 110, 232, 100, 100, 232, 100};
+        BE.setTableDesign(jobTable, jLabel2, columnLength, columnIgnore);
     }
 
     /**
@@ -262,6 +283,8 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
         jLabel23.setForeground(new java.awt.Color(51, 51, 51));
         jLabel23.setText("Repetitive Job Report");
 
+        jobTable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jobTable.setForeground(new java.awt.Color(51, 51, 51));
         jobTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
@@ -281,6 +304,8 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jobTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        jobTable.setRowHeight(30);
         jScrollPane1.setViewportView(jobTable);
         if (jobTable.getColumnModel().getColumnCount() > 0) {
             jobTable.getColumnModel().getColumn(0).setResizable(false);
