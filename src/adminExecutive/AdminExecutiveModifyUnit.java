@@ -4,12 +4,14 @@
  */
 package adminExecutive;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 
 /**
  *
@@ -22,6 +24,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
      * @param propertyType
      * @param unitNo
      * @param squareFoot
+     * @param AE
      */
     public AdminExecutiveModifyUnit(String propertyType, String unitNo, 
             String squareFoot, AdminExecutive AE) {
@@ -31,6 +34,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
         this.type = propertyType; this.unitNo = unitNo; this.squareFoot = squareFoot;
         setTable();
         setDefault();
+        setTableDesign();
     }
 
     /**
@@ -55,7 +59,28 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
         modifyBt = new javax.swing.JButton();
         cancelBt = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if (rowIndex%2 == 0) {
+                    componenet.setBackground(new Color(249, 249, 249));
+                    componenet.setForeground(new Color (102, 102, 102));
+                } else {
+                    componenet.setBackground(new Color(225, 225, 225));
+                    componenet.setForeground(new Color (102, 102, 102));
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         jSeparator1 = new javax.swing.JSeparator();
         jLabel14 = new javax.swing.JLabel();
         warningMessage = new javax.swing.JLabel();
@@ -71,11 +96,11 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(13, 24, 42));
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(153, 153, 153), null, null));
 
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("MODIFY PROPERTY UNIT");
         jLabel2.setBackground(new java.awt.Color(13, 24, 42));
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("MODIFY PROPERTY UNIT");
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/parkhillLogo.png"))); // NOI18N
@@ -110,20 +135,20 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("UNIT NO:");
         jLabel1.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel1.setText("UNIT NO:");
 
+        jLabel4.setText("Property Type:");
         jLabel4.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel4.setText("Property Type:");
 
         typeCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-PLEASE SELECT-", "Residential", "Commercial" }));
         typeCB.setEnabled(false);
 
+        jLabel5.setText("SQUARE FOOT:");
         jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel5.setText("SQUARE FOOT:");
 
         squareFootTF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -142,10 +167,10 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
             }
         });
 
-        modifyBt.setBackground(new java.awt.Color(13, 50, 79));
-        modifyBt.setForeground(new java.awt.Color(255, 255, 255));
         modifyBt.setText("MODIFY");
+        modifyBt.setBackground(new java.awt.Color(13, 50, 79));
         modifyBt.setEnabled(false);
+        modifyBt.setForeground(new java.awt.Color(255, 255, 255));
         modifyBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 modifyBtActionPerformed(evt);
@@ -175,27 +200,30 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        jTable1.setRowHeight(30);
         jScrollPane1.setViewportView(jTable1);
 
-        jSeparator1.setForeground(new java.awt.Color(153, 153, 153));
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jSeparator1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jSeparator1.setForeground(new java.awt.Color(153, 153, 153));
 
-        jLabel14.setForeground(new java.awt.Color(153, 153, 153));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel14.setText("Existing Unit Details:");
+        jLabel14.setForeground(new java.awt.Color(153, 153, 153));
 
-        warningMessage.setForeground(new java.awt.Color(255, 0, 51));
         warningMessage.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        warningMessage.setForeground(new java.awt.Color(255, 0, 51));
         warningMessage.setPreferredSize(new java.awt.Dimension(138, 17));
 
-        jLabel15.setForeground(new java.awt.Color(153, 153, 153));
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel15.setText("e.g. A-01-04 | S-04-09");
+        jLabel15.setForeground(new java.awt.Color(153, 153, 153));
 
+        deleteBt.setText("DELETE");
         deleteBt.setBackground(new java.awt.Color(204, 0, 0));
         deleteBt.setForeground(new java.awt.Color(255, 255, 255));
-        deleteBt.setText("DELETE");
         deleteBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteBtActionPerformed(evt);
@@ -444,6 +472,12 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
     
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
+    }
+    
+    private void setTableDesign() {
+        int[] colummnIgnore = {};
+        int[] columnLength = {40, 135, 135, 135, 140};
+        AE.setTableDesign(jTable1, jLabel14, columnLength, colummnIgnore);
     }
     
     /**

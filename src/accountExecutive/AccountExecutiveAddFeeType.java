@@ -4,7 +4,6 @@
  */
 package accountExecutive;
 
-import adminExecutive.AdminExecutiveEmployeeManagement;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Toolkit;
@@ -15,7 +14,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import pms_parkhill_residence.Users;
 
 /**
  *
@@ -351,53 +349,6 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
 
     private final AccountExecutive AE;
     
-    private void setTableDesign() {
-        // design for the table header
-        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
-        headerRenderer.setBackground(new Color(13, 24, 42));
-        headerRenderer.setHorizontalAlignment(jLabel13.CENTER);
-        headerRenderer.setForeground(new Color(255, 255, 255));
-        for (int i = 0; i < jTable1.getModel().getColumnCount(); i++) {
-            jTable1.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
-        }
-        
-        // design for the table row
-        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
-        rowRenderer.setHorizontalAlignment(jLabel13.CENTER);
-        for (int i = 0; i < jTable1.getModel().getColumnCount(); i++) {
-            if (i != 1) {
-                jTable1.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
-            }
-        }
-        
-        TableColumnModel columnModel = jTable1.getColumnModel();
-        // set first column width of the table to suitable value
-        columnModel.getColumn(0).setMaxWidth(40);
-        columnModel.getColumn(0).setMinWidth(40);
-        columnModel.getColumn(0).setPreferredWidth(40);
-
-        columnModel.getColumn(1).setMaxWidth(150);
-        columnModel.getColumn(1).setMinWidth(150);
-        columnModel.getColumn(1).setPreferredWidth(150);
-
-        columnModel.getColumn(2).setMaxWidth(90);
-        columnModel.getColumn(2).setMinWidth(90);
-        columnModel.getColumn(2).setPreferredWidth(90);
-
-        columnModel.getColumn(3).setMaxWidth(120);
-        columnModel.getColumn(3).setMinWidth(120);
-        columnModel.getColumn(3).setPreferredWidth(120);
-
-        columnModel.getColumn(4).setMaxWidth(80);
-        columnModel.getColumn(4).setMinWidth(80);
-        columnModel.getColumn(4).setPreferredWidth(80);
-
-        columnModel.getColumn(5).setMaxWidth(120);
-        columnModel.getColumn(5).setMinWidth(120);
-        columnModel.getColumn(5).setPreferredWidth(120);
-    }
-
-    
     private void feeTypeNameTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_feeTypeNameTFActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_feeTypeNameTFActionPerformed
@@ -537,6 +488,12 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
     
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
+    }
+    
+    private void setTableDesign() {
+        int[] colummnIgnore = {1};
+        int[] columnLength = {40, 150, 90, 120, 80, 120};
+        AE.setTableDesign(jTable1, jLabel1, columnLength, colummnIgnore);
     }
     
     /**

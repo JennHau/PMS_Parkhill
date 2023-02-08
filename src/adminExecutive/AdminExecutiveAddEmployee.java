@@ -9,7 +9,6 @@ import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 import pms_parkhill_residence.Validation;
 
 /**
@@ -20,12 +19,15 @@ public class AdminExecutiveAddEmployee extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param AE
      */
     public AdminExecutiveAddEmployee(AdminExecutive AE) {
         initComponents();
         setWindowIcon();
         this.AE = AE;
         setPositionCB();
+        
+        adeAddEmploy = this;
     }
 
     /**
@@ -357,6 +359,7 @@ public class AdminExecutiveAddEmployee extends javax.swing.JFrame {
 
     FileHandling fh = new FileHandling();
     private final AdminExecutive AE;
+    public static AdminExecutiveAddEmployee adeAddEmploy;
     
     private void userIDTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userIDTFActionPerformed
         // TODO add your handling code here:

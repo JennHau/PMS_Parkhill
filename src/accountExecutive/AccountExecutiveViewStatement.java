@@ -10,10 +10,8 @@ import residentANDtenant.*;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.FileHandling;
 
 
@@ -430,45 +428,9 @@ public class AccountExecutiveViewStatement extends javax.swing.JFrame {
     }//GEN-LAST:event_statementTableMouseClicked
 
     private void setTableDesign() {
-        // design for the table header
-        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
-        headerRenderer.setBackground(new Color(13, 24, 42));
-        headerRenderer.setHorizontalAlignment(jLabel3.CENTER);
-        headerRenderer.setForeground(new Color(255, 255, 255));
-        for (int i = 0; i < statementTable.getModel().getColumnCount(); i++) {
-            statementTable.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
-        }
-        
-        // design for the table row
-        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
-        rowRenderer.setHorizontalAlignment(jLabel3.CENTER);
-        for (int i = 0; i < statementTable.getModel().getColumnCount(); i++) {
-            if(i!=1 && i!=2) {
-                statementTable.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
-            }
-        }
-        
-        TableColumnModel columnModel = statementTable.getColumnModel();
-        // set first column width of the table to suitable value
-        columnModel.getColumn(0).setMaxWidth(130);
-        columnModel.getColumn(0).setMinWidth(130);
-        columnModel.getColumn(0).setPreferredWidth(130);
-
-        columnModel.getColumn(1).setMaxWidth(130);
-        columnModel.getColumn(1).setMinWidth(130);
-        columnModel.getColumn(1).setPreferredWidth(130);
-
-        columnModel.getColumn(2).setMaxWidth(330);
-        columnModel.getColumn(2).setMinWidth(330);
-        columnModel.getColumn(2).setPreferredWidth(330);
-
-        columnModel.getColumn(3).setMaxWidth(140);
-        columnModel.getColumn(3).setMinWidth(140);
-        columnModel.getColumn(3).setPreferredWidth(140);
-        
-        columnModel.getColumn(3).setMaxWidth(140);
-        columnModel.getColumn(3).setMinWidth(140);
-        columnModel.getColumn(3).setPreferredWidth(140);
+        int[] colummnIgnore = {1, 2};
+        int[] columnLength = {130, 130, 330, 140, 140};
+        AE.setTableDesign(statementTable, jLabel3, columnLength, colummnIgnore);
     }
     
     /**

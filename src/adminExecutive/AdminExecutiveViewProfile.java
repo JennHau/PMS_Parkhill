@@ -4,17 +4,11 @@
  */
 package adminExecutive;
 
-import accountExecutive.*;
 import java.awt.Cursor;
 import java.awt.Toolkit;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.HomePage;
-import pms_parkhill_residence.Users;
 import pms_parkhill_residence.Validation;
-import residentANDtenant.ResidentTenantProfile;
 
 /**
  *

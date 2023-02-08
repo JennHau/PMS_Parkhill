@@ -4,12 +4,14 @@
  */
 package buildingManager;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.HomePage;
-import pms_parkhill_residence.Users;
 
 /**
  *
@@ -19,6 +21,7 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param BM
      */
     public BuildingManagerUserManagement(BuildingManager BM) {
         initComponents();
@@ -26,6 +29,7 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
         this.BM = BM;
         setCurrentProfile();
         setTable();
+        setTableDesign();
         
         bdmUserManage = this;
     }
@@ -47,7 +51,38 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         clearbt = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if(columnIndex == 5){
+
+                    componenet.setBackground(new Color(0,70,126));
+                    componenet.setForeground(new Color(255, 255, 255));
+
+                }
+
+                else {
+                    if (rowIndex%2 == 0) {
+                        componenet.setBackground(new Color(249, 249, 249));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    } else {
+                        componenet.setBackground(new Color(225, 225, 225));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    }
+
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         userRoleCB = new javax.swing.JComboBox<>();
@@ -133,6 +168,7 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
             }
         });
 
+        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -152,6 +188,8 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        jTable1.setRowHeight(30);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -888,6 +926,12 @@ public class BuildingManagerUserManagement extends javax.swing.JFrame {
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
+    }
+    
+    private void setTableDesign() {
+        int[] colummnIgnore = {1, 2};
+        int[] columnLength = {125, 230, 235, 125, 125, 130};
+        BM.setTableDesign(jTable1, jLabel14, columnLength, colummnIgnore);
     }
     
     /**

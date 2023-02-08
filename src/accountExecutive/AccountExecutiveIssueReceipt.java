@@ -11,10 +11,8 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.HomePage;
 
 /**
@@ -1050,51 +1048,9 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
     }
     
     private void setTableDesign() {
-        // design for the table header
-        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
-        headerRenderer.setBackground(new Color(13, 24, 42));
-        headerRenderer.setHorizontalAlignment(jLabel2.CENTER);
-        headerRenderer.setForeground(new Color(255, 255, 255));
-        for (int i = 0; i < jTable1.getModel().getColumnCount(); i++) {
-            jTable1.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
-        }
-        
-        // design for the table row
-        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
-        rowRenderer.setHorizontalAlignment(jLabel2.CENTER);
-        for (int i = 0; i < jTable1.getModel().getColumnCount(); i++) {
-            jTable1.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
-        }
-        
-        TableColumnModel columnModel = jTable1.getColumnModel();
-        // set first column width of the table to suitable value
-        columnModel.getColumn(0).setMaxWidth(137);
-        columnModel.getColumn(0).setMinWidth(137);
-        columnModel.getColumn(0).setPreferredWidth(137);
-
-        columnModel.getColumn(1).setMaxWidth(137);
-        columnModel.getColumn(1).setMinWidth(137);
-        columnModel.getColumn(1).setPreferredWidth(137);
-
-        columnModel.getColumn(2).setMaxWidth(138);
-        columnModel.getColumn(2).setMinWidth(138);
-        columnModel.getColumn(2).setPreferredWidth(138);
-
-        columnModel.getColumn(3).setMaxWidth(137);
-        columnModel.getColumn(3).setMinWidth(137);
-        columnModel.getColumn(3).setPreferredWidth(137);
-
-        columnModel.getColumn(4).setMaxWidth(137);
-        columnModel.getColumn(4).setMinWidth(137);
-        columnModel.getColumn(4).setPreferredWidth(137);
-
-        columnModel.getColumn(5).setMaxWidth(137);
-        columnModel.getColumn(5).setMinWidth(137);
-        columnModel.getColumn(5).setPreferredWidth(137);
-        
-        columnModel.getColumn(5).setMaxWidth(137);
-        columnModel.getColumn(5).setMinWidth(137);
-        columnModel.getColumn(5).setPreferredWidth(137);
+        int[] colummnIgnore = {};
+        int[] columnLength = {137, 137, 138, 137, 137, 137, 137};
+        AE.setTableDesign(jTable1, jLabel16, columnLength, colummnIgnore);
     }
     
     /**

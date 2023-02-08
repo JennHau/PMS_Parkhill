@@ -4,12 +4,17 @@
  */
 package adminExecutive;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Toolkit;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.FileHandling;
 
 /**
@@ -30,6 +35,7 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
         this.bookingList = bookingList;
         setUnitNoCB();
         setDefault();
+        setTableDesign();
     }
 
     /**
@@ -56,14 +62,35 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         unitNoCB = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if (rowIndex%2 == 0) {
+                    componenet.setBackground(new Color(249, 249, 249));
+                    componenet.setForeground(new Color (102, 102, 102));
+                } else {
+                    componenet.setBackground(new Color(225, 225, 225));
+                    componenet.setForeground(new Color (102, 102, 102));
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         bookingIDLabel = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         facilityIDLabel = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         dateLabel = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
         setBackground(new java.awt.Color(13, 24, 42));
         setResizable(false);
@@ -167,6 +194,7 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
             }
         });
 
+        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -183,6 +211,8 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        jTable1.setRowHeight(30);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -345,7 +375,6 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
     private void cancelBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBTActionPerformed
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveFacilityPreview(facilityID, AE).setVisible(true);
     }//GEN-LAST:event_cancelBTActionPerformed
 
     private void bookBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookBtActionPerformed
@@ -368,6 +397,9 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
             JOptionPane.showMessageDialog (null, "Facility Booking has been made!", 
                             "FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
             dispose();
+            if (AdminExecutiveBookFacility.adeBookFacility != null) {
+                AdminExecutiveBookFacility.adeBookFacility.dispose();
+            }
             new AdminExecutiveViewFacilityBooking(facilityID, fctNameGen, AE).setVisible(true);
         }
     }//GEN-LAST:event_bookBtActionPerformed
@@ -400,6 +432,12 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
     
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
+    }
+    
+    private void setTableDesign() {
+        int[] colummnIgnore = {0};
+        int[] columnLength = {230, 150, 150, 150};
+        AE.setTableDesign(jTable1, jLabel14, columnLength, colummnIgnore);
     }
     
     /**

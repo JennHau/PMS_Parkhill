@@ -4,13 +4,15 @@
  */
 package adminExecutive;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.FacilityBookingPaymentByHour;
 import pms_parkhill_residence.HomePage;
-import pms_parkhill_residence.Users;
 
 /**
  *
@@ -32,6 +34,7 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
         this.facilityID = facilityID; this.facilityName = facilityName;
         setDefault();
         setTable();
+        setTableDesign();
     }
 
     /**
@@ -49,7 +52,38 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if(columnIndex == 7){
+
+                    componenet.setBackground(new Color(0,70,126));
+                    componenet.setForeground(new Color(255, 255, 255));
+
+                }
+
+                else {
+                    if (rowIndex%2 == 0) {
+                        componenet.setBackground(new Color(249, 249, 249));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    } else {
+                        componenet.setBackground(new Color(225, 225, 225));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    }
+
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         jLabel16 = new javax.swing.JLabel();
         searchTextField = new javax.swing.JTextField();
         clearbt = new javax.swing.JButton();
@@ -89,16 +123,16 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(153, 153, 153), null, null));
 
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("ADMIN EXECUTIVE");
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(13, 24, 42));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel2.setText("ADMIN EXECUTIVE");
 
+        usernameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        usernameLabel.setForeground(new java.awt.Color(102, 102, 102));
         usernameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         usernameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
         usernameLabel.setText("USERNAME");
-        usernameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        usernameLabel.setForeground(new java.awt.Color(102, 102, 102));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -123,12 +157,13 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(226, 226, 226));
 
+        jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(102, 102, 102));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setText("FACILITY BOOKING LIST");
         jLabel14.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(102, 102, 102));
 
+        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -145,6 +180,8 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        jTable1.setRowHeight(30);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -152,9 +189,9 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jLabel16.setText("BOOKING ID:");
         jLabel16.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel16.setText("BOOKING ID:");
 
         searchTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -174,10 +211,10 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
             }
         });
 
-        facilityTypeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        facilityTypeLabel.setText("FACILITY ID - FACILITY NAME");
         facilityTypeLabel.setFont(new java.awt.Font("Yu Gothic UI", 1, 12)); // NOI18N
         facilityTypeLabel.setForeground(new java.awt.Color(153, 153, 153));
+        facilityTypeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        facilityTypeLabel.setText("FACILITY ID - FACILITY NAME");
 
         addPanel.setBackground(new java.awt.Color(13, 50, 79));
         addPanel.setToolTipText("");
@@ -190,9 +227,9 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
             }
         });
 
+        addLabel.setForeground(new java.awt.Color(255, 255, 255));
         addLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         addLabel.setText("NEW BOOKING");
-        addLabel.setForeground(new java.awt.Color(255, 255, 255));
         addLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 addLabelMouseClicked(evt);
@@ -222,8 +259,8 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
             }
         });
 
-        jLabel17.setText("STATUS:");
         jLabel17.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel17.setText("STATUS:");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -285,9 +322,9 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
             }
         });
 
-        dashboardLabel.setText("Dashboard");
         dashboardLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         dashboardLabel.setForeground(new java.awt.Color(255, 255, 255));
+        dashboardLabel.setText("Dashboard");
         dashboardLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 dashboardLabelMouseClicked(evt);
@@ -324,9 +361,9 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
             }
         });
 
-        unitManageLabel.setText("Unit Management");
         unitManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         unitManageLabel.setForeground(new java.awt.Color(255, 255, 255));
+        unitManageLabel.setText("Unit Management");
         unitManageLabel.setPreferredSize(new java.awt.Dimension(150, 25));
         unitManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -364,10 +401,10 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
             }
         });
 
-        rTManageLabel.setText("Resident/ Tenant Management");
         rTManageLabel.setBackground(new java.awt.Color(13, 24, 42));
         rTManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         rTManageLabel.setForeground(new java.awt.Color(255, 255, 255));
+        rTManageLabel.setText("Resident/ Tenant Management");
         rTManageLabel.setPreferredSize(new java.awt.Dimension(250, 25));
         rTManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -410,9 +447,9 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
             }
         });
 
-        complaintManagement.setText("Complaint Management");
         complaintManagement.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         complaintManagement.setForeground(new java.awt.Color(255, 255, 255));
+        complaintManagement.setText("Complaint Management");
         complaintManagement.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 complaintManagementMouseClicked(evt);
@@ -449,9 +486,9 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
             }
         });
 
-        employeeManageLabel.setText("Employee Management");
         employeeManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         employeeManageLabel.setForeground(new java.awt.Color(255, 255, 255));
+        employeeManageLabel.setText("Employee Management");
         employeeManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 employeeManageLabelMouseClicked(evt);
@@ -488,10 +525,10 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
             }
         });
 
-        logoutLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
-        logoutLabel.setText("LOGOUT");
         logoutLabel.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
         logoutLabel.setForeground(new java.awt.Color(255, 255, 255));
+        logoutLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
+        logoutLabel.setText("LOGOUT");
         logoutLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 logoutLabelMouseClicked(evt);
@@ -528,10 +565,10 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
             }
         });
 
-        viewProfileLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
-        viewProfileLabel.setText("VIEW PROFILE");
         viewProfileLabel.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
         viewProfileLabel.setForeground(new java.awt.Color(255, 255, 255));
+        viewProfileLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
+        viewProfileLabel.setText("VIEW PROFILE");
         viewProfileLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 viewProfileLabelMouseClicked(evt);
@@ -568,9 +605,9 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
             }
         });
 
-        facilityManageLabel.setText("Facility Management");
         facilityManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         facilityManageLabel.setForeground(new java.awt.Color(255, 255, 255));
+        facilityManageLabel.setText("Facility Management");
         facilityManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 facilityManageLabelMouseClicked(evt);
@@ -607,9 +644,9 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
             }
         });
 
-        facBookManageLabel.setText("Facility Booking Management");
         facBookManageLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         facBookManageLabel.setForeground(new java.awt.Color(255, 255, 255));
+        facBookManageLabel.setText("Facility Booking Management");
         facBookManageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 facBookManageLabelMouseClicked(evt);
@@ -740,10 +777,11 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
         if (column == 7 && status.equals("UPCOMING")) {
             String bookingID = String.valueOf(tableModel.getValueAt(row, 0)).toLowerCase();
             String date = String.valueOf(tableModel.getValueAt(row, 3));
+            String variation = String.valueOf(tableModel.getValueAt(row, 1));
             dispose();
             FacilityBookingPaymentByHour fb = new FacilityBookingPaymentByHour();
             fb.setFacilityDetails(facilityID);
-            new AdminExecutiveManageBookedFacility(fb, bookingID, date, AE).setVisible(true);
+            new AdminExecutiveManageBookedFacility(fb, bookingID, date, AE, variation).setVisible(true);
             
         } else if(column == 7 && status.equals("HISTORY") &&
                 tableModel.getValueAt(row, 7).equals("VIEW RECEIPT")) {
@@ -1043,6 +1081,12 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
                 startTime, endTime, payment, action};
             tableModel.addRow(tbData);
         }
+    }
+    
+    private void setTableDesign() {
+        int[] colummnIgnore = {};
+        int[] columnLength = {110, 190, 110, 110, 110, 110, 110, 110};
+        AE.setTableDesign(jTable1, jLabel14, columnLength, colummnIgnore);
     }
 
     /**

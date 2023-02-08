@@ -4,12 +4,17 @@
  */
 package adminExecutive;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.Facility;
 import pms_parkhill_residence.HomePage;
 
@@ -33,6 +38,9 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
         this.quantity = fb.getQuantity();
         setDefault();
         setTable();
+        setTableDesign();
+        
+        adeBookFacility = this;
     }
 
     /**
@@ -50,9 +58,73 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if(columnIndex == 4){
+                    if(value.equals("SELECT")) {
+                        componenet.setBackground(new Color(0,70,126));
+                        componenet.setForeground(new Color(255, 255, 255));
+                    } else if(value.equals("SELECTED")) {
+                        componenet.setBackground(new Color(51,51,51));
+                        componenet.setForeground(new Color(255, 255, 255));
+                    }
+
+                }
+
+                else {
+                    if (rowIndex%2 == 0) {
+                        componenet.setBackground(new Color(249, 249, 249));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    } else {
+                        componenet.setBackground(new Color(225, 225, 225));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    }
+
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        jTable2 = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if(columnIndex == 3){
+                    componenet.setBackground(new Color(147,0,0));
+                    componenet.setForeground(new Color(255, 255, 255));
+                }
+
+                else {
+                    if (rowIndex%2 == 0) {
+                        componenet.setBackground(new Color(249, 249, 249));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    } else {
+                        componenet.setBackground(new Color(225, 225, 225));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    }
+
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         facilityTypeLabel = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
@@ -153,6 +225,9 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        jTable1.setRowHeight(30);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -176,6 +251,9 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jTable2.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        jTable2.setRowHeight(30);
         jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable2MouseClicked(evt);
@@ -769,6 +847,7 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
     String facilityID; String facilityName; String bookingID; Integer quantity;
     
     private final AdminExecutive AE;
+    public static AdminExecutiveBookFacility adeBookFacility;
     
     private void setCurrentProfile() {
         usernameLabel.setText(AE.getFirstName() +" "+ AE.getLastName());
@@ -865,7 +944,6 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
             availableList.add(bkgID +";"+ fctID +";"+ fctName +";"+ startTime
                     +";"+ endTime +";"+ date +";"+ fctNameGen);
         }
-        dispose();
         new AdminExecutivePaymentGateway(availableList, AE).setVisible(true);
     }//GEN-LAST:event_bookBtActionPerformed
 
@@ -1124,6 +1202,16 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
         } else {
             bookBt.setEnabled(false);
         }
+    }
+    
+    private void setTableDesign() {
+        int[] colummnIgnore = {0};
+        int[] columnLength = {250, 175, 175, 175, 184};
+        AE.setTableDesign(jTable1, jLabel3, columnLength, colummnIgnore);
+        
+        int[] colummnIgnore2 = {0};
+        int[] columnLength2 = {296, 221, 221, 221};
+        AE.setTableDesign(jTable2, jLabel3, columnLength2, colummnIgnore2);
     }
 
     /**
