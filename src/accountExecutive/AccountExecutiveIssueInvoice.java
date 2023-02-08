@@ -16,7 +16,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.HomePage;
-import pms_parkhill_residence.Users;
 
 /**
  *
@@ -35,6 +34,8 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
         setCurrentProfile();
         setTable();
         setTableDesign();
+        
+        aceIssueInvoice = this;
     }
 
     /**
@@ -63,7 +64,7 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
 
                 if(columnIndex == 5){
 
-                    if(value.equals("Issue Invoice"))
+                    if(value.equals("ISSUE INVOICE"))
                     {
 
                         componenet.setBackground(new Color(0,70,126));
@@ -704,6 +705,7 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private final AccountExecutive AE;
+    public static AccountExecutiveIssueInvoice aceIssueInvoice;
     
     private void setTableDesign() {
         // design for the table header
@@ -763,7 +765,6 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
     private void jLabel15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseClicked
         // TODO add your handling code here:
         new AccountExecutiveAddFeeType(AE).setVisible(true);
-        dispose();
     }//GEN-LAST:event_jLabel15MouseClicked
 
     private void jPanel5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseEntered
@@ -1036,7 +1037,7 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
                 String unit = feeTypesDetail[2];
                 String unitPrice = feeTypesDetail[3];
                 String tbData[] = {String.valueOf(i+1), feeType, target, unit,
-                    unitPrice, "Issue Invoice"};
+                    unitPrice, "ISSUE INVOICE"};
                 tableModel.addRow(tbData);
             }
             

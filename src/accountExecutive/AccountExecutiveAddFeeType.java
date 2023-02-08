@@ -4,6 +4,7 @@
  */
 package accountExecutive;
 
+import adminExecutive.AdminExecutiveEmployeeManagement;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Toolkit;
@@ -88,7 +89,7 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         categoryCB = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
         setBackground(new java.awt.Color(13, 24, 42));
         setResizable(false);
@@ -444,6 +445,9 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
                     warningMessage.setText("");
                     JOptionPane.showMessageDialog (null, "Fee Type has been added!", 
                                 "ADD FEE TYPE", JOptionPane.INFORMATION_MESSAGE);
+                    if (AccountExecutiveIssueInvoice.aceIssueInvoice != null) {
+                        AccountExecutiveIssueInvoice.aceIssueInvoice.dispose();
+                    } 
                     AccountExecutiveIssueInvoice aei = new AccountExecutiveIssueInvoice(AE);
                     aei.setVisible(true);
                     dispose();
@@ -460,8 +464,6 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        AccountExecutiveIssueInvoice aei = new AccountExecutiveIssueInvoice(AE);
-        aei.setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
     private void unitPriceTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_unitPriceTFKeyTyped

@@ -5,6 +5,7 @@
 package accountExecutive;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.io.BufferedReader;
@@ -12,9 +13,11 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.HomePage;
-import pms_parkhill_residence.Users;
 
 /**
  *
@@ -34,6 +37,7 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
         setFeeTypeNameLabel();
         setMonthYearCB();
         setTable();
+        setTableDesign();
     }
 
     /**
@@ -51,7 +55,35 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if(columnIndex == 6){
+                    componenet.setBackground(new Color(0,70,126));
+                    componenet.setForeground(new Color(255, 255, 255));
+                }
+                else {
+                    if (rowIndex%2 == 0) {
+                        componenet.setBackground(new Color(249, 249, 249));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    } else {
+                        componenet.setBackground(new Color(225, 225, 225));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    }
+
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         jLabel16 = new javax.swing.JLabel();
         searchTextField = new javax.swing.JTextField();
         clearbt = new javax.swing.JButton();
@@ -131,6 +163,7 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
         jLabel14.setText("ISSUE INVOICE");
         jLabel14.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
+        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -147,6 +180,8 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        jTable1.setRowHeight(30);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -832,6 +867,7 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                 }
             } else if (statusCB.getSelectedItem() == "ISSUED"){
                 dispose();
+                System.out.println(invoiceNo);
                 new AccountExecutiveViewInvoice(invoiceNo, unitNo, AE).setVisible(true);
             }
         }
@@ -1127,6 +1163,56 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
         }
         
         
+    }
+    
+    private void setTableDesign() {
+        // design for the table header
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setBackground(new Color(13, 24, 42));
+        headerRenderer.setHorizontalAlignment(jLabel13.CENTER);
+        headerRenderer.setForeground(new Color(255, 255, 255));
+        for (int i = 0; i < jTable1.getModel().getColumnCount(); i++) {
+            jTable1.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
+        
+        // design for the table row
+        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
+        rowRenderer.setHorizontalAlignment(jLabel13.CENTER);
+        for (int i = 0; i < jTable1.getModel().getColumnCount(); i++) {
+            if (i != 1) {
+                jTable1.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
+            }
+        }
+        
+        TableColumnModel columnModel = jTable1.getColumnModel();
+        // set first column width of the table to suitable value
+        columnModel.getColumn(0).setMaxWidth(40);
+        columnModel.getColumn(0).setMinWidth(40);
+        columnModel.getColumn(0).setPreferredWidth(40);
+
+        columnModel.getColumn(1).setMaxWidth(130);
+        columnModel.getColumn(1).setMinWidth(130);
+        columnModel.getColumn(1).setPreferredWidth(130);
+
+        columnModel.getColumn(2).setMaxWidth(160);
+        columnModel.getColumn(2).setMinWidth(160);
+        columnModel.getColumn(2).setPreferredWidth(160);
+
+        columnModel.getColumn(3).setMaxWidth(160);
+        columnModel.getColumn(3).setMinWidth(160);
+        columnModel.getColumn(3).setPreferredWidth(160);
+
+        columnModel.getColumn(4).setMaxWidth(160);
+        columnModel.getColumn(4).setMinWidth(160);
+        columnModel.getColumn(4).setPreferredWidth(160);
+
+        columnModel.getColumn(5).setMaxWidth(160);
+        columnModel.getColumn(5).setMinWidth(160);
+        columnModel.getColumn(5).setPreferredWidth(160);
+        
+        columnModel.getColumn(5).setMaxWidth(160);
+        columnModel.getColumn(5).setMinWidth(160);
+        columnModel.getColumn(5).setPreferredWidth(160);
     }
 
     /**

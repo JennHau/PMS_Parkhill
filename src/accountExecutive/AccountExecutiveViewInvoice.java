@@ -5,11 +5,16 @@
 package accountExecutive;
 
 import accountExecutive.*;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.time.LocalDate;
 import java.util.List;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.HomePage;
 
 /**
@@ -32,6 +37,7 @@ public class AccountExecutiveViewInvoice extends javax.swing.JFrame {
         this.unitNo = unitNo;
         setFixData();
         setTable();
+        setTableDesign();
     }
 
     /**
@@ -49,7 +55,35 @@ public class AccountExecutiveViewInvoice extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if(columnIndex == 5){
+                    componenet.setBackground(new Color(0,70,126));
+                    componenet.setForeground(new Color(255, 255, 255));
+                }
+                else {
+                    if (rowIndex%2 == 0) {
+                        componenet.setBackground(new Color(249, 249, 249));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    } else {
+                        componenet.setBackground(new Color(225, 225, 225));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    }
+
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         jLabel16 = new javax.swing.JLabel();
         invoiceNoLabel = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
@@ -128,6 +162,7 @@ public class AccountExecutiveViewInvoice extends javax.swing.JFrame {
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setText("INVOICE");
 
+        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -144,6 +179,8 @@ public class AccountExecutiveViewInvoice extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        jTable1.setRowHeight(30);
         jScrollPane1.setViewportView(jTable1);
 
         jLabel16.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
@@ -901,14 +938,12 @@ public class AccountExecutiveViewInvoice extends javax.swing.JFrame {
     }
     
     private void setTable() {
-        List<String> paymentFeesDetails = AE.extractPaymentFees(invoiceNo);
-        String[] feesDetailsArray = new String[paymentFeesDetails.size()];
-        paymentFeesDetails.toArray(feesDetailsArray);
+        List<String> paymentFeesDetails = AE.extractOneInvoiceDetails(invoiceNo);
         float subTotal = 0.00f;
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
         
         for (int i=0; i<paymentFeesDetails.size(); i++) {
-            String[] paymentDetails = feesDetailsArray[i].split(";");
+            String[] paymentDetails = paymentFeesDetails.get(i).split(";");
             String feeType = paymentDetails[0];
             String issueDate = paymentDetails[1];
             String consump = paymentDetails[2];
@@ -929,6 +964,51 @@ public class AccountExecutiveViewInvoice extends javax.swing.JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
     
+    private void setTableDesign() {
+        // design for the table header
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setBackground(new Color(13, 24, 42));
+        headerRenderer.setHorizontalAlignment(jLabel2.CENTER);
+        headerRenderer.setForeground(new Color(255, 255, 255));
+        for (int i = 0; i < jTable1.getModel().getColumnCount(); i++) {
+            jTable1.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
+        
+        // design for the table row
+        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
+        rowRenderer.setHorizontalAlignment(jLabel2.CENTER);
+        for (int i = 0; i < jTable1.getModel().getColumnCount(); i++) {
+            if(i!=0) {
+                jTable1.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
+            }
+        }
+        
+        TableColumnModel columnModel = jTable1.getColumnModel();
+        // set first column width of the table to suitable value
+        columnModel.getColumn(0).setMaxWidth(175);
+        columnModel.getColumn(0).setMinWidth(175);
+        columnModel.getColumn(0).setPreferredWidth(175);
+
+        columnModel.getColumn(1).setMaxWidth(157);
+        columnModel.getColumn(1).setMinWidth(157);
+        columnModel.getColumn(1).setPreferredWidth(157);
+
+        columnModel.getColumn(2).setMaxWidth(157);
+        columnModel.getColumn(2).setMinWidth(157);
+        columnModel.getColumn(2).setPreferredWidth(157);
+
+        columnModel.getColumn(3).setMaxWidth(157);
+        columnModel.getColumn(3).setMinWidth(157);
+        columnModel.getColumn(3).setPreferredWidth(157);
+
+        columnModel.getColumn(4).setMaxWidth(157);
+        columnModel.getColumn(4).setMinWidth(157);
+        columnModel.getColumn(4).setPreferredWidth(157);
+
+        columnModel.getColumn(5).setMaxWidth(157);
+        columnModel.getColumn(5).setMinWidth(157);
+        columnModel.getColumn(5).setPreferredWidth(157);
+    }
     /**
      * @param args the command line arguments
      */

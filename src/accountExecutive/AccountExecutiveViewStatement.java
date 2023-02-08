@@ -4,11 +4,16 @@
  */
 package accountExecutive;
 
+import java.awt.Color;
+import java.awt.Component;
 import residentANDtenant.*;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.FileHandling;
 
 
@@ -38,6 +43,7 @@ public class AccountExecutiveViewStatement extends javax.swing.JFrame {
         this.monthNyear = monthNyear;
         stateTab = (DefaultTableModel) statementTable.getModel();
         setDefault();
+        setTableDesign();
     }
 
     /**
@@ -59,7 +65,28 @@ public class AccountExecutiveViewStatement extends javax.swing.JFrame {
         doneBt = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        statementTable = new javax.swing.JTable();
+        statementTable = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if (rowIndex%2 == 0) {
+                    componenet.setBackground(new Color(249, 249, 249));
+                    componenet.setForeground(new Color (102, 102, 102));
+                } else {
+                    componenet.setBackground(new Color(225, 225, 225));
+                    componenet.setForeground(new Color (102, 102, 102));
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         jLabel6 = new javax.swing.JLabel();
         periodLabel = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -134,12 +161,13 @@ public class AccountExecutiveViewStatement extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("STATEMENT REPORT");
 
+        statementTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         statementTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "DATE", "TRANSACTION", "DETAILS", "AMOUNT", "PAYMENT"
+                "DATE", "TRANSACTION", "DETAILS", "AMOUNT (RM)", "PAYMENT"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -150,6 +178,8 @@ public class AccountExecutiveViewStatement extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        statementTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        statementTable.setRowHeight(30);
         statementTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 statementTableMouseClicked(evt);
@@ -221,7 +251,7 @@ public class AccountExecutiveViewStatement extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(periodLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(146, 146, 146)
+                        .addGap(312, 312, 312)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8)
                             .addComponent(unitNoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -248,7 +278,7 @@ public class AccountExecutiveViewStatement extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(paymentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 905, Short.MAX_VALUE)
                             .addComponent(jSeparator3)
                             .addComponent(jSeparator5)
                             .addComponent(jSeparator6, javax.swing.GroupLayout.Alignment.TRAILING))))
@@ -256,7 +286,7 @@ public class AccountExecutiveViewStatement extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(doneBt)
-                .addGap(267, 267, 267))
+                .addGap(441, 441, 441))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -399,6 +429,48 @@ public class AccountExecutiveViewStatement extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_statementTableMouseClicked
 
+    private void setTableDesign() {
+        // design for the table header
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setBackground(new Color(13, 24, 42));
+        headerRenderer.setHorizontalAlignment(jLabel3.CENTER);
+        headerRenderer.setForeground(new Color(255, 255, 255));
+        for (int i = 0; i < statementTable.getModel().getColumnCount(); i++) {
+            statementTable.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
+        
+        // design for the table row
+        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
+        rowRenderer.setHorizontalAlignment(jLabel3.CENTER);
+        for (int i = 0; i < statementTable.getModel().getColumnCount(); i++) {
+            if(i!=1 && i!=2) {
+                statementTable.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
+            }
+        }
+        
+        TableColumnModel columnModel = statementTable.getColumnModel();
+        // set first column width of the table to suitable value
+        columnModel.getColumn(0).setMaxWidth(130);
+        columnModel.getColumn(0).setMinWidth(130);
+        columnModel.getColumn(0).setPreferredWidth(130);
+
+        columnModel.getColumn(1).setMaxWidth(130);
+        columnModel.getColumn(1).setMinWidth(130);
+        columnModel.getColumn(1).setPreferredWidth(130);
+
+        columnModel.getColumn(2).setMaxWidth(330);
+        columnModel.getColumn(2).setMinWidth(330);
+        columnModel.getColumn(2).setPreferredWidth(330);
+
+        columnModel.getColumn(3).setMaxWidth(140);
+        columnModel.getColumn(3).setMinWidth(140);
+        columnModel.getColumn(3).setPreferredWidth(140);
+        
+        columnModel.getColumn(3).setMaxWidth(140);
+        columnModel.getColumn(3).setMinWidth(140);
+        columnModel.getColumn(3).setPreferredWidth(140);
+    }
+    
     /**
      * @param args the command line arguments
      */
