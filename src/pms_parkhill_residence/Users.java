@@ -13,7 +13,6 @@ import java.util.List;
  * @author wongj
  */
 public class Users{
-    private Users user;
     private String userID;
     private String firstName;
     private String lastName;
@@ -26,7 +25,7 @@ public class Users{
     
     public Users() {}
     
-    //Constructor for non-redidents
+    //Constructor for users
     public Users(String userID, String email, String password, String firstName,
                  String lastName, String identificationNo, String gender,
                  String phoneNo) { 
