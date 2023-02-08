@@ -20,14 +20,13 @@ import pms_parkhill_residence.Users;
  * @author Winson
  */
 public class PatrollingScheduleModification extends javax.swing.JFrame {
-    private Users user;
+    private final BuildingExecutive BE;
     
     public static PatrollingScheduleModification patrollingSchedule;
     ArrayList<String> blockList;
 
     
     FileHandling fh = new FileHandling();
-    BuildingExecutive BE = new BuildingExecutive();
     DefaultTableModel scheduleTable;
     
     private String currentBEid;
@@ -43,22 +42,22 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
     
     /**
      * Creates new form EmployeeJobAssignation
-     * @param users
+     * @param BE
      * @param file
      * @param inputDate
      */
-    public PatrollingScheduleModification(Users users, String file, LocalDate inputDate) {
+    public PatrollingScheduleModification(BuildingExecutive BE, String file, LocalDate inputDate) {
+        this.BE = BE;
+        this.setCurrentBEid(BE.getUserID());
+        this.setInputDate(inputDate);
+
         initComponents();
-        runDefaultSetUp(users, file, inputDate);
+        runDefaultSetUp(file);
     }
     
-    private void runDefaultSetUp(Users users, String file, LocalDate inputDate){
-        this.user = users;
-        this.setCurrentBEid(user.getUserID());
-        
+    private void runDefaultSetUp(String file){
         scheduleTable = (DefaultTableModel) scheduleJT.getModel();
         setWindowIcon();
-        this.setInputDate(inputDate);
         
         fileSetUp(file);
         getIntervalSet();
@@ -703,7 +702,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
             fh.fileWrite(BE.TF.employeeJobFile, false, removePat);
 
             try {
-                BE.toPatrollingManagement(this, user);
+                BE.toPatrollingManagement(this, BE);
             } catch (IOException ex) {
                 java.util.logging.Logger.getLogger(PatrollingScheduleModification.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
@@ -890,7 +889,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
             }
 
             try {
-                BE.toPatrollingManagement(this, user);
+                BE.toPatrollingManagement(this, BE);
             } catch (IOException ex) {
                 java.util.logging.Logger.getLogger(PatrollingScheduleModification.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }

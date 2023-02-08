@@ -24,22 +24,23 @@ import pms_parkhill_residence.Users;
  * @author wongj
  */
 public class BuildingExecutiveMainPage extends javax.swing.JFrame {
-    private Users user;
-    BuildingExecutive BE = new BuildingExecutive();
+    private final BuildingExecutive BE;
     Dashboard DB = new Dashboard();
     
     private String currentBEid;
     /**
      * Creates new form homePage
-     * @param user
+     * @param BE
      */
-    public BuildingExecutiveMainPage(Users user) {
+    public BuildingExecutiveMainPage(BuildingExecutive BE) {
         initComponents();
-        runDefaultSetUp(user);
+        
+        this.BE = BE;
+        
+        runDefaultSetUp();
     }
     
-    public void runDefaultSetUp(Users user) {
-        this.user = user;
+    public final void runDefaultSetUp() {
         setCurrentBEid();
         setWindowIcon();
         setCurrentUserProfile();
@@ -48,7 +49,7 @@ public class BuildingExecutiveMainPage extends javax.swing.JFrame {
     }
     
     private void setCurrentUserProfile() {
-        userNameLabel.setText(user.getFirstName() + " " + user.getLastName());
+        userNameLabel.setText(BE.getFirstName() + " " + BE.getLastName());
     }
     
     private void setComboBox() {
@@ -901,28 +902,28 @@ public class BuildingExecutiveMainPage extends javax.swing.JFrame {
 
     private void jobAssignationTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationTabMouseClicked
         // TODO add your handling code here:
-        BE.toJobManagement(this, user, null, false);
+        BE.toJobManagement(this, BE, null, false);
     }//GEN-LAST:event_jobAssignationTabMouseClicked
 
     private void jobAssignationInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationInnerTabMouseClicked
         // TODO add your handling code here:
-        BE.toJobManagement(this, user, null, false);
+        BE.toJobManagement(this, BE, null, false);
     }//GEN-LAST:event_jobAssignationInnerTabMouseClicked
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         // TODO add your handling code here:
-        BE.toComplaints(this, user);
+        BE.toComplaints(this, BE);
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jPanel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseClicked
         // TODO add your handling code here:
-        BE.toComplaints(this, user);
+        BE.toComplaints(this, BE);
     }//GEN-LAST:event_jPanel8MouseClicked
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, user);
+            BE.toPatrollingManagement(this, BE);
         } catch (IOException ex) {
             Logger.getLogger(BuildingExecutiveMainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -932,7 +933,7 @@ public class BuildingExecutiveMainPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, user);
+            BE.toPatrollingManagement(this, BE);
         } catch (IOException ex) {
             Logger.getLogger(BuildingExecutiveMainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -964,23 +965,23 @@ public class BuildingExecutiveMainPage extends javax.swing.JFrame {
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
         // TODO add your handling code here:
-        BE.toPatrollingReports(this, user);
+        BE.toPatrollingReports(this, BE);
     }//GEN-LAST:event_jLabel8MouseClicked
 
     private void jPanel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseClicked
         // TODO add your handling code here:
-        BE.toPatrollingReports(this, user);
+        BE.toPatrollingReports(this, BE);
     }//GEN-LAST:event_jPanel10MouseClicked
 
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
         // TODO add your handling code here:
-        BE.toProfile(user);
+        BE.toProfile(BE);
         this.dispose();
     }//GEN-LAST:event_jLabel11MouseClicked
 
     private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
         // TODO add your handling code here:
-        BE.toProfile(user);
+        BE.toProfile(BE);
         this.dispose();
     }//GEN-LAST:event_jPanel13MouseClicked
 
@@ -1090,6 +1091,6 @@ public class BuildingExecutiveMainPage extends javax.swing.JFrame {
     /**
      */
     public void setCurrentBEid() {
-        this.currentBEid = user.getUserID();
+        this.currentBEid = BE.getUserID();
     }
 }

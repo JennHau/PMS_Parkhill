@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 
 
 /**
@@ -17,22 +16,21 @@ import pms_parkhill_residence.Users;
  */
 public class BuildingExecutiveAllReportsPage extends javax.swing.JFrame {
     FileHandling fh = new FileHandling();
-    BuildingExecutive BE = new BuildingExecutive();
-    private final Users user;
+    private final BuildingExecutive BE;
     
     DefaultTableModel stateTab;
     
     /**
      * Creates new form custReceipt
-     * @param user
+     * @param BE
      * @param reportTitle
      * @param tableData
      */
-    public BuildingExecutiveAllReportsPage(Users user, String reportTitle, ArrayList tableData) {
+    public BuildingExecutiveAllReportsPage(BuildingExecutive BE, String reportTitle, ArrayList tableData) {
         initComponents();
-        this.user = user;
+        this.BE = BE;
         
-        if (this.user != null) {
+        if (this.BE != null) {
             stateTab = (DefaultTableModel) statementTable.getModel();
         
             setDefault(tableData);
@@ -269,7 +267,7 @@ public class BuildingExecutiveAllReportsPage extends javax.swing.JFrame {
     private void setField(String reportTitle) {
         reportTitleLabel.setText(reportTitle);
         todayDateLabel.setText(LocalDate.now().toString());
-        currentIdTF.setText(this.user.getUserID());
+        currentIdTF.setText(this.BE.getUserID());
    }
     
     /**

@@ -25,8 +25,7 @@ import pms_parkhill_residence.Validation;
  * @author wongj
  */
 public class VendorProfile extends javax.swing.JFrame {
-    private Users user;
-    Vendor VD = new Vendor();
+    private Vendor VD;
     
     private String defaultFilePath = "src\\userProfilePic\\";
     
@@ -37,15 +36,16 @@ public class VendorProfile extends javax.swing.JFrame {
     
     /**
      * Creates new form homePage
-     * @param user
+     * @param VD
      */
-    public VendorProfile(Users user) {
+    public VendorProfile(Vendor VD) {
+        this.VD = VD;
+
         initComponents();
-        runDefaultSetUp(user);
+        runDefaultSetUp();
     }
     
-    public void runDefaultSetUp(Users user) {
-        this.user = user;
+    public void runDefaultSetUp() {
         setWindowIcon();
         profileFormSetUp();
         setCurrentUserProfile();
@@ -53,26 +53,26 @@ public class VendorProfile extends javax.swing.JFrame {
     }
     
     private void profileFormSetUp() {
-        previousProfilePicPath = defaultFilePath + this.user.getUserID() + "." + defaultFileExtension;
+        previousProfilePicPath = defaultFilePath + this.VD.getUserID() + "." + defaultFileExtension;
         
         try {
             setImageIcon(previousProfilePicPath);
             
-            rsdIdTF.setText(this.user.getUserID().toUpperCase());
-            unitNoTF.setText(this.user.getUnitNo().toUpperCase());
-            firstNameTF.setText(this.user.getFirstName());
-            lastNameTF.setText(this.user.getLastName());
-            contactTF.setText(this.user.getPhoneNo());
-            emailTF.setText(this.user.getEmail());
-            icTF.setText(this.user.getIdentificationNo());
-            genderCB.setSelectedItem(this.user.getGender());
+            rsdIdTF.setText(this.VD.getUserID().toUpperCase());
+            unitNoTF.setText(this.VD.getUnitNo().toUpperCase());
+            firstNameTF.setText(this.VD.getFirstName());
+            lastNameTF.setText(this.VD.getLastName());
+            contactTF.setText(this.VD.getPhoneNo());
+            emailTF.setText(this.VD.getEmail());
+            icTF.setText(this.VD.getIdentificationNo());
+            genderCB.setSelectedItem(this.VD.getGender());
         } catch (IOException ex) {
             Logger.getLogger(VendorProfile.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     private void setCurrentUserProfile() {
-        userNameLabel.setText(user.getFirstName() + " " + user.getLastName());
+        userNameLabel.setText(VD.getFirstName() + " " + VD.getLastName());
     }
 
     /**
@@ -783,7 +783,7 @@ public class VendorProfile extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void uploadImageBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadImageBTNActionPerformed
-        //To allow user upload the image from the file explorer
+        //To allow VD upload the image from the file explorer
         JFileChooser saveFileChooser = new JFileChooser();
         saveFileChooser.setFileFilter(new FileNameExtensionFilter("JPEG Images", "jpg"));
         
@@ -837,13 +837,14 @@ public class VendorProfile extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
 
                 if(result == JOptionPane.YES_OPTION){
-                    Users user_temp = new Users(userID, email, password, firstName, lastName, idNo, gender, phoneNo, unitNo);
+                    Vendor user_temp = new Vendor(userID, email, password, firstName, lastName, idNo, gender, phoneNo, unitNo);
                     user_temp.modifySelfAccount();
-                    user = new Users(userID.toLowerCase());
+                    VD = user_temp;
+                    
                     JOptionPane.showMessageDialog (null, "Personal profile has been updated!", 
                                     "UPDATE PERSONAL PROFILE", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
-                    VD.toViewProfile(user);
+                    VD.toViewProfile(VD);
                 }
             } else {
                 warningMessage.setText("Invalid password!");
@@ -867,7 +868,7 @@ public class VendorProfile extends javax.swing.JFrame {
 
     private void dashBoardInnerTab2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashBoardInnerTab2MouseClicked
         // TODO add your handling code here:
-        VD.toResidentTenantDashboard(user);
+        VD.toVendorDashboard(VD);
         this.dispose();
     }//GEN-LAST:event_dashBoardInnerTab2MouseClicked
 
@@ -878,7 +879,7 @@ public class VendorProfile extends javax.swing.JFrame {
 
     private void dashboardOuterTab2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardOuterTab2MouseClicked
         // TODO add your handling code here:
-        VD.toResidentTenantDashboard(user);
+        VD.toVendorDashboard(VD);
         this.dispose();
     }//GEN-LAST:event_dashboardOuterTab2MouseClicked
 
@@ -889,7 +890,7 @@ public class VendorProfile extends javax.swing.JFrame {
 
     private void paymentManagementInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementInnerTabMouseClicked
         // TODO add your handling code here:
-        VD.toPaymentManagement(user);
+        VD.toPaymentManagement(VD);
         this.dispose();
     }//GEN-LAST:event_paymentManagementInnerTabMouseClicked
 
@@ -900,7 +901,7 @@ public class VendorProfile extends javax.swing.JFrame {
 
     private void paymentManagementOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementOuterTabMouseClicked
         // TODO add your handling code here:
-        VD.toPaymentManagement(user);
+        VD.toPaymentManagement(VD);
         this.dispose();
     }//GEN-LAST:event_paymentManagementOuterTabMouseClicked
 
@@ -911,7 +912,7 @@ public class VendorProfile extends javax.swing.JFrame {
 
     private void complaintsInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsInnerTabMouseClicked
         // TODO add your handling code here:
-        VD.toComplaints(user);
+        VD.toComplaints(VD);
         this.dispose();
     }//GEN-LAST:event_complaintsInnerTabMouseClicked
 
@@ -922,7 +923,7 @@ public class VendorProfile extends javax.swing.JFrame {
 
     private void complaintsOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsOuterTabMouseClicked
         // TODO add your handling code here:
-        VD.toComplaints(user);
+        VD.toComplaints(VD);
         this.dispose();
     }//GEN-LAST:event_complaintsOuterTabMouseClicked
 
@@ -933,7 +934,7 @@ public class VendorProfile extends javax.swing.JFrame {
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
         // TODO add your handling code here:
-        VD.toViewProfile(user);
+        VD.toViewProfile(VD);
         this.dispose();
     }//GEN-LAST:event_jLabel12MouseClicked
 
@@ -944,7 +945,7 @@ public class VendorProfile extends javax.swing.JFrame {
 
     private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
         // TODO add your handling code here:
-        VD.toViewProfile(user);
+        VD.toViewProfile(VD);
         this.dispose();
     }//GEN-LAST:event_jPanel13MouseClicked
 

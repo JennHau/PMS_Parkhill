@@ -17,11 +17,11 @@ import pms_parkhill_residence.Users;
  * @author Winson
  */
 public class ComplaintsDetails extends javax.swing.JFrame {
-    private Users user;
-    private Users complainer;
-    private Complaints complaint;
+    private final BuildingExecutive BE;
+    
+//    private Users complainer;
+    private final Complaints complaint;
     FileHandling fh = new FileHandling();
-    BuildingExecutive BE = new BuildingExecutive();
     
     private String complaintID;
     private String complainerID;
@@ -29,19 +29,20 @@ public class ComplaintsDetails extends javax.swing.JFrame {
     
     /**
      * Creates new form EmployeeJobAssignation
+     * @param BE
      * @param users
      * @param complaint
      */
-    public ComplaintsDetails(Users users, Complaints complaint) {
-        initComponents();
-        runDefaultSetUp(users, complaint);
-    }
-    
-    private void runDefaultSetUp(Users users, Complaints complaint) {
-        this.user = users;
+    public ComplaintsDetails(BuildingExecutive BE, Complaints complaint) {
+        this.BE = BE;
         this.complaint = complaint;
         
-        this.setCurrentBEid(this.user.getUserID());
+        initComponents();
+        runDefaultSetUp();
+    }
+    
+    private void runDefaultSetUp() {
+        this.setCurrentBEid(this.BE.getUserID());
         
         setWindowIcon();
         setComplaintId(complaint.getComplaintID());
@@ -55,17 +56,18 @@ public class ComplaintsDetails extends javax.swing.JFrame {
     
     private void complaintFormSetUp() {
         this.setComplainerID(complaint.getComplainerID());
-        complainer = new Users(this.complainerID);
+        
+        String[] complainer = BE.findComplainerDetails(this.complainerID);
         
         String description = complaint.getComplaintDetails();
         LocalDate issueDate = BE.DTF.formatDate(complaint.getComplaintDate());
         LocalTime issueTime = BE.DTF.formatTime(complaint.getComplaintTime());
         String complaintStatus = complaint.getComplaintStatus();
         
-        String complainerName = complainer.getFirstName() + " " + complainer.getLastName();
-        String unitNo = (complainer.getUnitNo() != null) ? complainer.getUnitNo() : "-";
-        String contactNo = complainer.getPhoneNo();
-        String email = complainer.getEmail();
+        String complainerName = complainer[3] + " " + complainer[4];
+        String unitNo = complainer[8];
+        String contactNo = complainer[7];
+        String email = complainer[1];
         
         complaintIdTF.setText(this.getComplaintID().toUpperCase());
         complainerIdTF.setText(this.getComplainerID().toUpperCase());
@@ -408,7 +410,7 @@ public class ComplaintsDetails extends javax.swing.JFrame {
             BuildingExecutiveComplaints.BEcomplaints.dispose();
         }
         
-        BE.toComplaints(this, user);
+        BE.toComplaints(this, BE);
     }//GEN-LAST:event_backBTNActionPerformed
 
     private void assignBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assignBTNActionPerformed
@@ -416,7 +418,7 @@ public class ComplaintsDetails extends javax.swing.JFrame {
         if (BuildingExecutiveComplaints.BEcomplaints != null) {
             BuildingExecutiveComplaints.BEcomplaints.dispose();
         }
-        BE.toJobManagement(this, user, complaint, true);
+        BE.toJobManagement(this, BE, complaint, true);
     }//GEN-LAST:event_assignBTNActionPerformed
 
     private void statusBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusBTNActionPerformed
@@ -436,7 +438,7 @@ public class ComplaintsDetails extends javax.swing.JFrame {
             }
         }
         
-        complaint.setStatusUpdatedBy(this.user.getUserID());
+        complaint.setStatusUpdatedBy(this.BE.getUserID());
         complaint.setLastUpdateDateTime(BE.DTF.getDateTimeNow());
         
         BE.updateComplaintStatus(this.complaint);

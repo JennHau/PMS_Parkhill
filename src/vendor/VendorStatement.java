@@ -21,25 +21,25 @@ import pms_parkhill_residence.Users;
  * @author wongj
  */
 public class VendorStatement extends javax.swing.JFrame {
-    private Users user;
-    Vendor VD = new Vendor();
+    private final Vendor VD;
     
     DefaultTableModel stateTab;
     private String monthNyear;
     
     /**
      * Creates new form homePage
-     * @param user
+     * @param VD
      */
-    public VendorStatement(Users user) {
+    public VendorStatement(Vendor VD) {
+        this.VD = VD;
+
         initComponents();
-        runDefaultSetUp(user);
+        runDefaultSetUp();
     }
     
-    private void runDefaultSetUp(Users user) {
+    private void runDefaultSetUp() {
         stateTab = (DefaultTableModel) statementTableSetUp.getModel();
         
-        this.user = user;
         setWindowIcon();
         
         try {
@@ -52,14 +52,14 @@ public class VendorStatement extends javax.swing.JFrame {
     private void statementTableSetUp() throws ParseException {
         stateTab.setRowCount(0);
         
-        ArrayList<String> monthStatement = VD.getCurrentUnitMonthStatement(user, monthNyear);
+        ArrayList<String> monthStatement = VD.getCurrentUnitMonthStatement(monthNyear);
         
         // Set table row
         VD.setTableRow(stateTab, monthStatement);
     }
     
     private void monthComboBoxSetUp() throws ParseException {
-        ArrayList<String> issuedInvoice = VD.getIssuedStatement(this.user.getUnitNo());
+        ArrayList<String> issuedInvoice = VD.getIssuedStatement(this.VD.getUnitNo());
         
         String[] sortDate = issuedInvoice.toArray(String[]::new);
         
@@ -600,31 +600,31 @@ public class VendorStatement extends javax.swing.JFrame {
 
     private void pendingFeeLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pendingFeeLabelMouseClicked
         // TODO add your handling code here:
-        VD.toPaymentManagement(user);
+        VD.toPaymentManagement(VD);
         this.dispose();
         
     }//GEN-LAST:event_pendingFeeLabelMouseClicked
 
     private void paymentHistLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentHistLabelMouseClicked
         // TODO add your handling code here:
-        VD.toPaymentHistory(user);
+        VD.toPaymentHistory(VD);
         this.dispose();
     }//GEN-LAST:event_paymentHistLabelMouseClicked
 
     private void invoiceLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_invoiceLabelMouseClicked
         // TODO add your handling code here:
-        VD.toInvoice(user);
+        VD.toInvoice(VD);
         this.dispose();
     }//GEN-LAST:event_invoiceLabelMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        VD.toStatementReport(user, monthNyear);
+        VD.toStatementReport(VD, monthNyear);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void dashBoardInnerTab2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashBoardInnerTab2MouseClicked
         // TODO add your handling code here:
-        VD.toResidentTenantDashboard(user);
+        VD.toVendorDashboard(VD);
         this.dispose();
     }//GEN-LAST:event_dashBoardInnerTab2MouseClicked
 
@@ -635,7 +635,7 @@ public class VendorStatement extends javax.swing.JFrame {
 
     private void dashboardOuterTab2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardOuterTab2MouseClicked
         // TODO add your handling code here:
-        VD.toResidentTenantDashboard(user);
+        VD.toVendorDashboard(VD);
         this.dispose();
     }//GEN-LAST:event_dashboardOuterTab2MouseClicked
 
@@ -646,7 +646,7 @@ public class VendorStatement extends javax.swing.JFrame {
 
     private void paymentManagementInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementInnerTabMouseClicked
         // TODO add your handling code here:
-        VD.toPaymentManagement(user);
+        VD.toPaymentManagement(VD);
         this.dispose();
     }//GEN-LAST:event_paymentManagementInnerTabMouseClicked
 
@@ -657,7 +657,7 @@ public class VendorStatement extends javax.swing.JFrame {
 
     private void paymentManagementOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementOuterTabMouseClicked
         // TODO add your handling code here:
-        VD.toPaymentManagement(user);
+        VD.toPaymentManagement(VD);
         this.dispose();
     }//GEN-LAST:event_paymentManagementOuterTabMouseClicked
 
@@ -668,7 +668,7 @@ public class VendorStatement extends javax.swing.JFrame {
 
     private void complaintsInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsInnerTabMouseClicked
         // TODO add your handling code here:
-        VD.toComplaints(user);
+        VD.toComplaints(VD);
         this.dispose();
     }//GEN-LAST:event_complaintsInnerTabMouseClicked
 
@@ -679,7 +679,7 @@ public class VendorStatement extends javax.swing.JFrame {
 
     private void complaintsOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsOuterTabMouseClicked
         // TODO add your handling code here:
-        VD.toComplaints(user);
+        VD.toComplaints(VD);
         this.dispose();
     }//GEN-LAST:event_complaintsOuterTabMouseClicked
 
@@ -690,7 +690,7 @@ public class VendorStatement extends javax.swing.JFrame {
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
         // TODO add your handling code here:
-        VD.toViewProfile(user);
+        VD.toViewProfile(VD);
         this.dispose();
     }//GEN-LAST:event_jLabel12MouseClicked
 
@@ -701,7 +701,7 @@ public class VendorStatement extends javax.swing.JFrame {
 
     private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
         // TODO add your handling code here:
-        VD.toViewProfile(user);
+        VD.toViewProfile(VD);
         this.dispose();
     }//GEN-LAST:event_jPanel13MouseClicked
 

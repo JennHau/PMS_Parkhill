@@ -20,8 +20,7 @@ import pms_parkhill_residence.Users;
  * @author wongj
  */
 public class ResidentTenantVisitorPass extends javax.swing.JFrame {
-    private Users user;
-    ResidentTenant RT = new ResidentTenant();
+    ResidentTenant RT;
     PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
     
     DefaultTableModel regVisTable;
@@ -30,16 +29,18 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
     
     /**
      * Creates new form homePage
-     * @param user
+     * @param RT
      */
-    public ResidentTenantVisitorPass(Users user) {
+    public ResidentTenantVisitorPass(ResidentTenant RT) {
+        this.RT = RT;
+        
         initComponents();
-        runDefaultSetUp(user);
+        runDefaultSetUp();
     }
     
-    public void runDefaultSetUp(Users user) {
+    public void runDefaultSetUp() {
         regVisTable = (DefaultTableModel) registeredVisitorTable.getModel();
-        this.user = user;
+        
         setWindowIcon();
         registeredVisitorTableSetUp();
         
@@ -71,7 +72,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
     private void registeredVisitorTableSetUp() {
         String visitorStatus = statusCB.getSelectedItem().toString();
         
-        ArrayList<String> registeredVisitor = RT.getCurrentRTvisitor(user.getUserID());
+        ArrayList<String> registeredVisitor = RT.getCurrentRTvisitor(RT.getUserID());
         ArrayList<String> toTable = new ArrayList<>();
         
         for (String eachPass: registeredVisitor) {
@@ -101,7 +102,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
     }
     
     private void setCurrentUserProfile() {
-        userNameLabel.setText(user.getFirstName() + " " + user.getLastName());
+        userNameLabel.setText(RT.getFirstName() + " " + RT.getLastName());
     }
 
     /**
@@ -852,7 +853,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
                               visitorNameTF.getText() + RT.TF.sp + visitorCarPlateTF.getText() + RT.TF.sp + 
                               visitorContactTF.getText() + RT.TF.sp + dateTimePicker.datePicker.getDate() + RT.TF.sp + 
                               dateTimePicker.timePicker.getTime() + RT.TF.sp + RT.visitorPassStatus[0] + RT.TF.sp + 
-                              "-" + RT.TF.sp + "-" + RT.TF.sp + this.user.getUserID() + RT.TF.sp + DTF.getDateTimeNow() + RT.TF.sp;
+                              "-" + RT.TF.sp + "-" + RT.TF.sp + this.RT.getUserID() + RT.TF.sp + DTF.getDateTimeNow() + RT.TF.sp;
 
                 List<String> visitorFile = RT.fh.fileRead(RT.TF.visitorPass);
 
@@ -887,7 +888,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void dashBoardInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashBoardInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toResidentTenantDashboard(user);
+        RT.toResidentTenantDashboard(RT);
         this.dispose();
     }//GEN-LAST:event_dashBoardInnerTabMouseClicked
 
@@ -898,7 +899,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void dashboardOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toResidentTenantDashboard(user);
+        RT.toResidentTenantDashboard(RT);
         this.dispose();
     }//GEN-LAST:event_dashboardOuterTabMouseClicked
 
@@ -909,7 +910,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void paymentManagementInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toPaymentManagement(user);
+        RT.toPaymentManagement(RT);
         this.dispose();
     }//GEN-LAST:event_paymentManagementInnerTabMouseClicked
 
@@ -920,7 +921,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void paymentManagementOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toPaymentManagement(user);
+        RT.toPaymentManagement(RT);
         this.dispose();
     }//GEN-LAST:event_paymentManagementOuterTabMouseClicked
 
@@ -931,7 +932,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void facilityBookingInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityBookingInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toBookedFacility(user);
+        RT.toBookedFacility(RT);
         this.dispose();
     }//GEN-LAST:event_facilityBookingInnerTabMouseClicked
 
@@ -942,7 +943,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void facilityBookingOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityBookingOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toBookedFacility(user);
+        RT.toBookedFacility(RT);
         this.dispose();
     }//GEN-LAST:event_facilityBookingOuterTabMouseClicked
 
@@ -953,7 +954,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void complaintsInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toComplaints(user);
+        RT.toComplaints(RT);
         this.dispose();
     }//GEN-LAST:event_complaintsInnerTabMouseClicked
 
@@ -964,7 +965,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void complaintsOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toComplaints(user);
+        RT.toComplaints(RT);
         this.dispose();
     }//GEN-LAST:event_complaintsOuterTabMouseClicked
 
@@ -975,7 +976,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
         // TODO add your handling code here:
-        RT.toViewProfile(user);
+        RT.toViewProfile(RT);
         this.dispose();
     }//GEN-LAST:event_jLabel12MouseClicked
 
@@ -986,7 +987,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
         // TODO add your handling code here:
-        RT.toViewProfile(user);
+        RT.toViewProfile(RT);
         this.dispose();
     }//GEN-LAST:event_jPanel13MouseClicked
 
@@ -997,7 +998,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void visitorPassInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorPassInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toVisitorPass(user);
+        RT.toVisitorPass(RT);
         this.dispose();
     }//GEN-LAST:event_visitorPassInnerTabMouseClicked
 
@@ -1008,7 +1009,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void visitorPassOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorPassOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toVisitorPass(user);
+        RT.toVisitorPass(RT);
         this.dispose();
     }//GEN-LAST:event_visitorPassOuterTabMouseClicked
 

@@ -17,7 +17,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import pms_parkhill_residence.Users;
 import pms_parkhill_residence.Validation;
 
 /**
@@ -25,10 +24,9 @@ import pms_parkhill_residence.Validation;
  * @author wongj
  */
 public class ResidentTenantProfile extends javax.swing.JFrame {
-    private Users user;
-    ResidentTenant RT = new ResidentTenant();
+    private ResidentTenant RT;
     
-    private String defaultFilePath = "src\\userProfilePic\\";
+    private final String defaultFilePath = "src\\userProfilePic\\";
     
     private final String defaultFileExtension = "jpg";
     
@@ -37,15 +35,16 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
     
     /**
      * Creates new form homePage
-     * @param user
+     * @param RT
      */
-    public ResidentTenantProfile(Users user) {
+    public ResidentTenantProfile(ResidentTenant RT) {
+        this.RT = RT;
+        
         initComponents();
-        runDefaultSetUp(user);
+        runDefaultSetUp();
     }
     
-    public void runDefaultSetUp(Users user) {
-        this.user = user;
+    public void runDefaultSetUp() {
         setWindowIcon();
         profileFormSetUp();
         setCurrentUserProfile();
@@ -53,26 +52,26 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
     }
     
     private void profileFormSetUp() {
-        previousProfilePicPath = defaultFilePath + this.user.getUserID() + "." + defaultFileExtension;
+        previousProfilePicPath = defaultFilePath + this.RT.getUserID() + "." + defaultFileExtension;
         
         try {
             setImageIcon(previousProfilePicPath);
             
-            rsdIdTF.setText(this.user.getUserID().toUpperCase());
-            unitNoTF.setText(this.user.getUnitNo().toUpperCase());
-            firstNameTF.setText(this.user.getFirstName());
-            lastNameTF.setText(this.user.getLastName());
-            contactTF.setText(this.user.getPhoneNo());
-            emailTF.setText(this.user.getEmail());
-            icTF.setText(this.user.getIdentificationNo());
-            genderCB.setSelectedItem(this.user.getGender());
+            rsdIdTF.setText(this.RT.getUserID().toUpperCase());
+            unitNoTF.setText(this.RT.getUnitNo().toUpperCase());
+            firstNameTF.setText(this.RT.getFirstName());
+            lastNameTF.setText(this.RT.getLastName());
+            contactTF.setText(this.RT.getPhoneNo());
+            emailTF.setText(this.RT.getEmail());
+            icTF.setText(this.RT.getIdentificationNo());
+            genderCB.setSelectedItem(this.RT.getGender());
         } catch (IOException ex) {
             Logger.getLogger(ResidentTenantProfile.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     private void setCurrentUserProfile() {
-        userNameLabel.setText(user.getFirstName() + " " + user.getLastName());
+        userNameLabel.setText(RT.getFirstName() + " " + RT.getLastName());
     }
 
     /**
@@ -875,7 +874,7 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void uploadImageBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadImageBTNActionPerformed
-        //To allow user upload the image from the file explorer
+        //To allow RT upload the image from the file explorer
         JFileChooser saveFileChooser = new JFileChooser();
         saveFileChooser.setFileFilter(new FileNameExtensionFilter("JPEG Images", "jpg"));
         
@@ -929,13 +928,13 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
 
                 if(result == JOptionPane.YES_OPTION){
-                    Users user_temp = new Users(userID, email, password, firstName, lastName, idNo, gender, phoneNo, unitNo);
+                    ResidentTenant user_temp = new ResidentTenant(userID, email, password, firstName, lastName, idNo, gender, phoneNo, unitNo);
                     user_temp.modifySelfAccount();
-                    user = new Users(userID.toLowerCase());
+                    RT = user_temp;
                     JOptionPane.showMessageDialog (null, "Personal profile has been updated!", 
                                     "UPDATE PERSONAL PROFILE", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
-                    RT.toViewProfile(user);
+                    RT.toViewProfile(RT);
                 }
             } else {
                 warningMessage.setText("Invalid password!");
@@ -959,7 +958,7 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
 
     private void dashBoardInnerTab2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashBoardInnerTab2MouseClicked
         // TODO add your handling code here:
-        RT.toResidentTenantDashboard(user);
+        RT.toResidentTenantDashboard(RT);
         this.dispose();
     }//GEN-LAST:event_dashBoardInnerTab2MouseClicked
 
@@ -970,7 +969,7 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
 
     private void dashboardOuterTab2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardOuterTab2MouseClicked
         // TODO add your handling code here:
-        RT.toResidentTenantDashboard(user);
+        RT.toResidentTenantDashboard(RT);
         this.dispose();
     }//GEN-LAST:event_dashboardOuterTab2MouseClicked
 
@@ -981,7 +980,7 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
 
     private void paymentManagementInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toPaymentManagement(user);
+        RT.toPaymentManagement(RT);
         this.dispose();
     }//GEN-LAST:event_paymentManagementInnerTabMouseClicked
 
@@ -992,7 +991,7 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
 
     private void paymentManagementOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toPaymentManagement(user);
+        RT.toPaymentManagement(RT);
         this.dispose();
     }//GEN-LAST:event_paymentManagementOuterTabMouseClicked
 
@@ -1003,7 +1002,7 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
 
     private void facilityBookingInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityBookingInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toBookedFacility(user);
+        RT.toBookedFacility(RT);
         this.dispose();
     }//GEN-LAST:event_facilityBookingInnerTabMouseClicked
 
@@ -1014,7 +1013,7 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
 
     private void facilityBookingOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityBookingOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toBookedFacility(user);
+        RT.toBookedFacility(RT);
         this.dispose();
     }//GEN-LAST:event_facilityBookingOuterTabMouseClicked
 
@@ -1025,7 +1024,7 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
 
     private void complaintsInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toComplaints(user);
+        RT.toComplaints(RT);
         this.dispose();
     }//GEN-LAST:event_complaintsInnerTabMouseClicked
 
@@ -1036,7 +1035,7 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
 
     private void complaintsOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toComplaints(user);
+        RT.toComplaints(RT);
         this.dispose();
     }//GEN-LAST:event_complaintsOuterTabMouseClicked
 
@@ -1047,7 +1046,7 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
         // TODO add your handling code here:
-        RT.toViewProfile(user);
+        RT.toViewProfile(RT);
         this.dispose();
     }//GEN-LAST:event_jLabel12MouseClicked
 
@@ -1058,7 +1057,7 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
 
     private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
         // TODO add your handling code here:
-        RT.toViewProfile(user);
+        RT.toViewProfile(RT);
         this.dispose();
     }//GEN-LAST:event_jPanel13MouseClicked
 
@@ -1069,7 +1068,7 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
 
     private void visitorPassInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorPassInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toVisitorPass(user);
+        RT.toVisitorPass(RT);
         this.dispose();
     }//GEN-LAST:event_visitorPassInnerTabMouseClicked
 
@@ -1080,7 +1079,7 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
 
     private void visitorPassOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorPassOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toVisitorPass(user);
+        RT.toVisitorPass(RT);
         this.dispose();
     }//GEN-LAST:event_visitorPassOuterTabMouseClicked
 
@@ -1138,19 +1137,6 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
     private void jLabel16MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MouseExited
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabel16MouseExited
-
-    private boolean replaceFile(String fileLocation, String destination) throws IOException {
-        File dest = new File(destination);
-        File fileLoc = new File(fileLocation);
-        
-        if (dest.exists()) {
-            dest.delete();
-        }
-        
-        Files.copy(fileLoc.toPath(), dest.toPath());
-        
-        return dest.exists();
-    }
     
     private void setImageIcon(String fileLocation) throws IOException {
         profilePicLabel.setText("");
@@ -1190,134 +1176,6 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ResidentTenantProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

@@ -4,7 +4,6 @@
  */
 package vendor;
 
-import residentANDtenant.*;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.time.LocalDate;
@@ -13,16 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.Complaints;
-import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 
 /**
  *
  * @author wongj
  */
 public class VendorComplaints extends javax.swing.JFrame {
-    private Users user;
-    Vendor VD = new Vendor();
+    private final Vendor VD;
     
     DefaultTableModel pendingProgressTable;
     DefaultTableModel completedTable;
@@ -31,18 +27,19 @@ public class VendorComplaints extends javax.swing.JFrame {
     
     /**
      * Creates new form homePage
-     * @param user
+     * @param VD
      */
-    public VendorComplaints(Users user) {
+    public VendorComplaints(Vendor VD) {
+        this.VD = VD;
+
         initComponents();
-        runDefaultSetUp(user);
+        runDefaultSetUp();
     }
     
-    public void runDefaultSetUp(Users user) {
+    public void runDefaultSetUp() {
         pendingProgressTable = (DefaultTableModel) penProgCompTable.getModel();
         completedTable = (DefaultTableModel) completedCompTable.getModel();
         
-        this.user = user;
         setCurrentUserProfile();
         
         setWindowIcon();
@@ -63,7 +60,7 @@ public class VendorComplaints extends javax.swing.JFrame {
     }
     
     private void complaintsTableSetUp() {
-        ArrayList<ArrayList> currentRTcomplaints = VD.CP.getComplaints(user.getUserID());
+        ArrayList<ArrayList> currentRTcomplaints = VD.CP.getComplaints(VD.getUserID());
         
         ArrayList<String> pendingComp = currentRTcomplaints.get(0);
         ArrayList<String> completedComp = currentRTcomplaints.get(1);
@@ -73,7 +70,7 @@ public class VendorComplaints extends javax.swing.JFrame {
     }
     
     private void setCurrentUserProfile() {
-        userNameLabel.setText(user.getFirstName() + " " + user.getLastName());
+        userNameLabel.setText(VD.getFirstName() + " " + VD.getLastName());
     }
 
     /**
@@ -674,7 +671,7 @@ public class VendorComplaints extends javax.swing.JFrame {
             String compId = eachComp.split(VD.TF.sp)[0];
             
             if (compId.equals(this.complaintID)) {
-                String updateInfo = this.complaintID + VD.TF.sp + user.getUserID() + VD.TF.sp + 
+                String updateInfo = this.complaintID + VD.TF.sp + VD.getUserID() + VD.TF.sp + 
                                     compDes + VD.TF.sp + LocalDate.now() + VD.TF.sp + VD.DTF.formatTime(LocalTime.now().toString()) + VD.TF.sp +
                                     compStatus + VD.TF.sp + eachComp.split(VD.TF.sp)[6] + VD.TF.sp + 
                                     eachComp.split(VD.TF.sp)[7] + VD.TF.sp; 
@@ -687,7 +684,7 @@ public class VendorComplaints extends javax.swing.JFrame {
         }
         
         if (notFound) {
-            String newInfo = this.complaintID + VD.TF.sp + user.getUserID() + VD.TF.sp +
+            String newInfo = this.complaintID + VD.TF.sp + VD.getUserID() + VD.TF.sp +
                              compDes + VD.TF.sp + LocalDate.now() + VD.TF.sp + VD.DTF.formatTime(LocalTime.now().toString()) + VD.TF.sp +
                              compStatus + VD.TF.sp + VD.TF.empty + VD.TF.sp + VD.TF.empty + VD.TF.sp;
             newCompData.add(newInfo);
@@ -702,7 +699,7 @@ public class VendorComplaints extends javax.swing.JFrame {
 
     private void dashBoardInnerTab2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashBoardInnerTab2MouseClicked
         // TODO add your handling code here:
-        VD.toResidentTenantDashboard(user);
+        VD.toVendorDashboard(VD);
         this.dispose();
     }//GEN-LAST:event_dashBoardInnerTab2MouseClicked
 
@@ -713,7 +710,7 @@ public class VendorComplaints extends javax.swing.JFrame {
 
     private void dashboardOuterTab2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardOuterTab2MouseClicked
         // TODO add your handling code here:
-        VD.toResidentTenantDashboard(user);
+        VD.toVendorDashboard(VD);
         this.dispose();
     }//GEN-LAST:event_dashboardOuterTab2MouseClicked
 
@@ -724,7 +721,7 @@ public class VendorComplaints extends javax.swing.JFrame {
 
     private void paymentManagementInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementInnerTabMouseClicked
         // TODO add your handling code here:
-        VD.toPaymentManagement(user);
+        VD.toPaymentManagement(VD);
         this.dispose();
     }//GEN-LAST:event_paymentManagementInnerTabMouseClicked
 
@@ -735,7 +732,7 @@ public class VendorComplaints extends javax.swing.JFrame {
 
     private void paymentManagementOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementOuterTabMouseClicked
         // TODO add your handling code here:
-        VD.toPaymentManagement(user);
+        VD.toPaymentManagement(VD);
         this.dispose();
     }//GEN-LAST:event_paymentManagementOuterTabMouseClicked
 
@@ -746,7 +743,7 @@ public class VendorComplaints extends javax.swing.JFrame {
 
     private void complaintsInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsInnerTabMouseClicked
         // TODO add your handling code here:
-        VD.toComplaints(user);
+        VD.toComplaints(VD);
         this.dispose();
     }//GEN-LAST:event_complaintsInnerTabMouseClicked
 
@@ -757,7 +754,7 @@ public class VendorComplaints extends javax.swing.JFrame {
 
     private void complaintsOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsOuterTabMouseClicked
         // TODO add your handling code here:
-        VD.toComplaints(user);
+        VD.toComplaints(VD);
         this.dispose();
     }//GEN-LAST:event_complaintsOuterTabMouseClicked
 
@@ -768,7 +765,7 @@ public class VendorComplaints extends javax.swing.JFrame {
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
         // TODO add your handling code here:
-        VD.toViewProfile(user);
+        VD.toViewProfile(VD);
         this.dispose();
     }//GEN-LAST:event_jLabel12MouseClicked
 
@@ -779,7 +776,7 @@ public class VendorComplaints extends javax.swing.JFrame {
 
     private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
         // TODO add your handling code here:
-        VD.toViewProfile(user);
+        VD.toViewProfile(VD);
         this.dispose();
     }//GEN-LAST:event_jPanel13MouseClicked
 

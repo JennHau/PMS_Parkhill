@@ -20,30 +20,25 @@ import pms_parkhill_residence.Users;
  * @author Winson
  */
 public class VendorPaymentCredential extends javax.swing.JFrame {
-
-    private Users user;
     private ArrayList<String> itemList;
     
-    Vendor VD = new Vendor();
+    private final Vendor VD;
     PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
 
     /**
      * Creates new form ResidentTenantPaymentGateway
-     * @param user
+     * @param VD
      * @param totalAmount
      * @param itemList
      */
-    public VendorPaymentCredential(Users user, String totalAmount, ArrayList itemList) {
-        initComponents();
-        runDefaultSetUp(user, totalAmount, itemList);
-    }
-    
-    private void runDefaultSetUp(Users user, String totalAmount, ArrayList itemList) {
-        setWindowIcon();
+    public VendorPaymentCredential(Vendor VD, String totalAmount, ArrayList itemList) {
         amountSetUp(totalAmount);
         
-        this.setUser(user);
+        this.VD = VD;
         this.setItemList(itemList);
+        
+        initComponents();
+        setWindowIcon();
     }
     
     private void amountSetUp(String totalAmount) {
@@ -325,7 +320,7 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
                     if (payable) {
                         if (!itemList.isEmpty()) {
                             ArrayList<String> paidInv = new ArrayList<>();
-                            ArrayList<String> incompInv = (ArrayList<String>) (VD.getCurrentUnitInvoice(user.getUnitNo())).get(0);
+                            ArrayList<String> incompInv = (ArrayList<String>) (VD.getCurrentUnitInvoice(VD.getUnitNo())).get(0);
 
                             for (String eachInv : incompInv) {
                                 String[] invDet = eachInv.split(VD.TF.sp);
@@ -336,7 +331,7 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
                                         String deletedID = invDet[invDet.length-1];
                                         String issuedDate = invDet[invDet.length-2];
 
-                                        invDet[invDet.length-2] = user.getUserID();
+                                        invDet[invDet.length-2] = VD.getUserID();
 
                                         try {
                                             invDet[invDet.length-1] = DTF.changeFormatDate2(LocalDate.now().toString());
@@ -382,7 +377,7 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
                             }
 
                             this.dispose();
-                            VD.toPaymentManagement(user);
+                            VD.toPaymentManagement(VD);
                         }
                     }
                     else {
@@ -564,19 +559,5 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
      */
     public void setItemList(ArrayList<String> itemList) {
         this.itemList = itemList;
-    }
-
-    /**
-     * @return the user
-     */
-    public Users getUser() {
-        return user;
-    }
-
-    /**
-     * @param user the user to set
-     */
-    public void setUser(Users user) {
-        this.user = user;
     }
 }

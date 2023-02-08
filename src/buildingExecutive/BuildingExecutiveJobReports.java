@@ -11,23 +11,23 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
-import pms_parkhill_residence.Users;
 
 /**
  *
  * @author wongj
  */
 public class BuildingExecutiveJobReports extends javax.swing.JFrame {
-    BuildingExecutive BE = new BuildingExecutive();
-    private final Users user;
+    private final BuildingExecutive BE;
     DefaultTableModel jobTab;
     /**
      * Creates new form homePage
-     * @param user
+     * @param BE
      */
-    public BuildingExecutiveJobReports(Users user) {
-        this.user = user;
+    public BuildingExecutiveJobReports(BuildingExecutive BE) {
+        this.BE = BE;
+        
         initComponents();
+        
         jobTab = (DefaultTableModel) jobTable.getModel();
         setWindowIcon();
         
@@ -818,7 +818,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
 
     private void patrollingLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_patrollingLabelMouseClicked
         // TODO add your handling code here:
-        BE.toPatrollingReports(this, user);
+        BE.toPatrollingReports(this, BE);
     }//GEN-LAST:event_patrollingLabelMouseClicked
 
     private void monthCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthCBActionPerformed
@@ -831,7 +831,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
         String reportTitle = monthCB.getSelectedItem().toString() + " - " + employeeIdCB.getSelectedItem().toString();
         
         if (!tableData.isEmpty()) {
-            BE.toAllReportsPage(user, reportTitle, tableData);
+            BE.toAllReportsPage(BE, reportTitle, tableData);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -842,7 +842,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        BE.toRepetitiveJob(user);
+        BE.toRepetitiveJob(BE);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -857,12 +857,12 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
 
     private void jobAssignationInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationInnerTabMouseClicked
         // TODO add your handling code here:
-        BE.toJobManagement(this, user, null, false);
+        BE.toJobManagement(this, BE, null, false);
     }//GEN-LAST:event_jobAssignationInnerTabMouseClicked
 
     private void jobAssignationTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationTabMouseClicked
         // TODO add your handling code here:
-        BE.toJobManagement(this, user, null, false);
+        BE.toJobManagement(this, BE, null, false);
     }//GEN-LAST:event_jobAssignationTabMouseClicked
 
     private void jobAssignationTabMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationTabMouseEntered
@@ -872,12 +872,12 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         // TODO add your handling code here:
-        BE.toComplaints(this, user);
+        BE.toComplaints(this, BE);
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jPanel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseClicked
         // TODO add your handling code here:
-        BE.toComplaints(this, user);
+        BE.toComplaints(this, BE);
     }//GEN-LAST:event_jPanel8MouseClicked
 
     private void jPanel8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseEntered
@@ -887,12 +887,12 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
         // TODO add your handling code here:
-        BE.toPatrollingReports(this, user);
+        BE.toPatrollingReports(this, BE);
     }//GEN-LAST:event_jLabel8MouseClicked
 
     private void jPanel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseClicked
         // TODO add your handling code here:
-        BE.toPatrollingReports(this, user);
+        BE.toPatrollingReports(this, BE);
     }//GEN-LAST:event_jPanel10MouseClicked
 
     private void jPanel10MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseEntered
@@ -902,13 +902,13 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
 
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
         // TODO add your handling code here:
-        BE.toProfile(user);
+        BE.toProfile(BE);
         this.dispose();
     }//GEN-LAST:event_jLabel11MouseClicked
 
     private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
         // TODO add your handling code here:
-        BE.toProfile(user);
+        BE.toProfile(BE);
         this.dispose();
     }//GEN-LAST:event_jPanel13MouseClicked
 
@@ -920,7 +920,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, user);
+            BE.toPatrollingManagement(this, BE);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -930,7 +930,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, user);
+            BE.toPatrollingManagement(this, BE);
         } catch (IOException ex) {
             System.out.println(ex);
         }
@@ -943,7 +943,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
 
     private void complaintsLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsLabelMouseClicked
         // TODO add your handling code here:
-        BE.toComplaintsReports(user);
+        BE.toComplaintsReports(BE);
         this.dispose();
     }//GEN-LAST:event_complaintsLabelMouseClicked
 
@@ -953,7 +953,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
 
     private void employeeJobLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeJobLabelMouseClicked
         // TODO add your handling code here:
-        BE.toJobReports(user);
+        BE.toJobReports(BE);
         this.dispose();
     }//GEN-LAST:event_employeeJobLabelMouseClicked
 

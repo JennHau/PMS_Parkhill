@@ -4,14 +4,12 @@
  */
 package buildingExecutive;
 
-import accountExecutive.*;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import pms_parkhill_residence.HomePage;
 import pms_parkhill_residence.Users;
 import pms_parkhill_residence.Validation;
 
@@ -20,15 +18,17 @@ import pms_parkhill_residence.Validation;
  * @author wongj
  */
 public class BuildingExecutiveViewProfile extends javax.swing.JFrame {
-    BuildingExecutive BE = new BuildingExecutive();
+    private BuildingExecutive BE;
     /**
      * Creates new form homePage
-     * @param user
+     * @param BE
      */
-    public BuildingExecutiveViewProfile(Users user) {
+    public BuildingExecutiveViewProfile(BuildingExecutive BE) {
         initComponents();
+        
+        this.BE = BE;
+        
         setWindowIcon();
-        this.user = user;
         setCurrentProfile();
         profileFormSetUp();
     }
@@ -759,21 +759,19 @@ public class BuildingExecutiveViewProfile extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private Users user;
-    
     private void setCurrentProfile() {
-        usernameLabel.setText(user.getFirstName() +" "+ user.getLastName());
+        usernameLabel.setText(BE.getFirstName() +" "+ BE.getLastName());
     }
     
     private void profileFormSetUp() {
-            firstNameTF.setText(this.user.getFirstName());
-            lastNameTF.setText(this.user.getLastName());
-            contactTF.setText(this.user.getPhoneNo());
-            emailTF.setText(this.user.getEmail());
-            icTF.setText(this.user.getIdentificationNo());
-            genderCB.setSelectedItem(this.user.getGender());
-            passwordTF.setText(this.user.getPassword());
-            userIDLabel.setText(this.user.getUserID().toUpperCase());
+            firstNameTF.setText(this.BE.getFirstName());
+            lastNameTF.setText(this.BE.getLastName());
+            contactTF.setText(this.BE.getPhoneNo());
+            emailTF.setText(this.BE.getEmail());
+            icTF.setText(this.BE.getIdentificationNo());
+            genderCB.setSelectedItem(this.BE.getGender());
+            passwordTF.setText(this.BE.getPassword());
+            userIDLabel.setText(this.BE.getUserID().toUpperCase());
     }
     
     private void editContactBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editContactBTNActionPerformed
@@ -810,13 +808,13 @@ public class BuildingExecutiveViewProfile extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
 
                 if(result == JOptionPane.YES_OPTION){
-                    Users user_temp = new Users(userID, email, password, firstName, lastName, idNo, gender, phoneNo);
+                    BuildingExecutive user_temp = new BuildingExecutive(userID, email, password, firstName, lastName, idNo, gender, phoneNo);
                     user_temp.modifySelfAccount();
-                    user = new Users(userID.toLowerCase());
+                    BE = user_temp;
                     JOptionPane.showMessageDialog (null, "Personal profile has been updated!", 
                                     "UPDATE PERSONAL PROFILE", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
-                    new BuildingExecutiveViewProfile(user).setVisible(true);
+                    new BuildingExecutiveViewProfile(BE).setVisible(true);
                 }
             } else {
                 warningMessage.setText("Invalid password!");
@@ -888,12 +886,12 @@ public class BuildingExecutiveViewProfile extends javax.swing.JFrame {
 
     private void jobAssignationInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationInnerTabMouseClicked
         // TODO add your handling code here:
-        BE.toJobManagement(this, user, null, false);
+        BE.toJobManagement(this, BE, null, false);
     }//GEN-LAST:event_jobAssignationInnerTabMouseClicked
 
     private void jobAssignationTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationTabMouseClicked
         // TODO add your handling code here:
-        BE.toJobManagement(this, user, null, false);
+        BE.toJobManagement(this, BE, null, false);
     }//GEN-LAST:event_jobAssignationTabMouseClicked
 
     private void jobAssignationTabMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationTabMouseEntered
@@ -903,12 +901,12 @@ public class BuildingExecutiveViewProfile extends javax.swing.JFrame {
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         // TODO add your handling code here:
-        BE.toComplaints(this, user);
+        BE.toComplaints(this, BE);
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jPanel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseClicked
         // TODO add your handling code here:
-        BE.toComplaints(this, user);
+        BE.toComplaints(this, BE);
     }//GEN-LAST:event_jPanel8MouseClicked
 
     private void jPanel8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseEntered
@@ -918,12 +916,12 @@ public class BuildingExecutiveViewProfile extends javax.swing.JFrame {
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
         // TODO add your handling code here:
-        BE.toPatrollingReports(this, user);
+        BE.toPatrollingReports(this, BE);
     }//GEN-LAST:event_jLabel8MouseClicked
 
     private void jPanel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseClicked
         // TODO add your handling code here:
-        BE.toPatrollingReports(this, user);
+        BE.toPatrollingReports(this, BE);
     }//GEN-LAST:event_jPanel10MouseClicked
 
     private void jPanel10MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseEntered
@@ -933,13 +931,13 @@ public class BuildingExecutiveViewProfile extends javax.swing.JFrame {
 
     private void jLabel16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MouseClicked
         // TODO add your handling code here:
-        BE.toProfile(user);
+        BE.toProfile(BE);
         this.dispose();
     }//GEN-LAST:event_jLabel16MouseClicked
 
     private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
         // TODO add your handling code here:
-        BE.toProfile(user);
+        BE.toProfile(BE);
         this.dispose();
     }//GEN-LAST:event_jPanel13MouseClicked
 
@@ -951,7 +949,7 @@ public class BuildingExecutiveViewProfile extends javax.swing.JFrame {
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, user);
+            BE.toPatrollingManagement(this, BE);
         } catch (IOException ex) {
             Logger.getLogger(BuildingExecutiveMainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -961,7 +959,7 @@ public class BuildingExecutiveViewProfile extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, user);
+            BE.toPatrollingManagement(this, BE);
         } catch (IOException ex) {
             Logger.getLogger(BuildingExecutiveMainPage.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -16,18 +16,30 @@ import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.PMS_DateTimeFormatter;
 import pms_parkhill_residence.TextFiles;
 import pms_parkhill_residence.Users;
-import residentANDtenant.ResidentTenantPaymentCredential;
 
 /**
  *
  * @author Winson
  */
-public class Vendor {
+public class Vendor extends Users{
     FileHandling fh = new FileHandling();
     TextFiles TF = new TextFiles();
     CRUD crud = new CRUD();
     PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
     Complaints CP = new Complaints();
+    
+    private String unitNo;
+    
+    public Vendor(String userID, String email, String password, String firstName,
+                 String lastName, String identificationNo, String gender,
+                 String phoneNo, String unitNo) {
+        
+        super(userID, email, password, firstName,
+             lastName, identificationNo, gender,
+             phoneNo);
+        
+        this.unitNo = unitNo;
+    }
     
     // Main method
     public void setTableRow(DefaultTableModel table, ArrayList arrayList) {
@@ -183,15 +195,15 @@ public class Vendor {
         return statement;
     }
     
-    public ArrayList getCurrentUnitMonthStatement(Users user, String monthNyear) throws ParseException{
+    public ArrayList getCurrentUnitMonthStatement(String monthNyear) throws ParseException{
         ArrayList<String> statementList = new ArrayList<>();
         ArrayList<String> monthStatement = new ArrayList<>();
         
         // Get all issued invoice
-        ArrayList<String> invoiceList = getCurrentUnitIssuedInvoice(user.getUnitNo());
+        ArrayList<String> invoiceList = getCurrentUnitIssuedInvoice(this.getUnitNo());
         
         // get all paid invoice
-        ArrayList<String> completedInvoice = getCurrentUnitPaymentHistory(user.getUnitNo());
+        ArrayList<String> completedInvoice = getCurrentUnitPaymentHistory(this.getUnitNo());
         
         // Data Structure = Date, Transaction, Details, Amount, Payments
         // to change the issued invoice list to same data structure
@@ -285,64 +297,109 @@ public class Vendor {
         return monthStatement;
     }
     
+    @Override
+    public void modifySelfAccount() {
+        String userID = this.getUserID().toLowerCase();
+        String email = this.getEmail();
+        String firstName = this.getFirstName();
+        String lastName = this.getLastName();
+        String password = this.getPassword();
+        String identificationNo = this.getIdentificationNo();
+        String gender = this.getGender();
+        String phoneNo = this.getPhoneNo();
+        
+        List<String> userProfile = fh.fileRead("userProfile.txt");
+        String[] userProfileArray = new String[userProfile.size()];
+        userProfile.toArray(userProfileArray);
+        
+        List<String> newData = new ArrayList<>();
+        
+        for (int i = 0; i<userProfile.size(); i++) {
+            String[] userInfo = userProfileArray[i].split(";");
+            String userID_temp = userInfo[0];
+            
+            if (userID_temp.equals(userID)) {
+                newData.add(userID +";"+ email +";"+ password +";"+ firstName
+                        +";"+ lastName +";"+ identificationNo +";"+ gender
+                        +";"+ phoneNo +";"+ this.unitNo +";");
+            } else {
+                newData.add(userProfileArray[i]);
+            }
+        } fh.fileWrite("userProfile.txt", false, newData);
+    }
+    
     // Page navigator
-    public void toResidentTenantDashboard(Users user) {
-        VendorDashboard page = new VendorDashboard(user);
+    public void toVendorDashboard(Vendor VD) {
+        VendorDashboard page = new VendorDashboard(VD);
         page.setVisible(true);
     }
     
-    public void toPaymentManagement(Users user) {
-        VendorPaymentManagement page = new VendorPaymentManagement(user);
+    public void toPaymentManagement(Vendor VD) {
+        VendorPaymentManagement page = new VendorPaymentManagement(VD);
         page.setVisible(true);
     }
     
-    public void toComplaints(Users user) {
-        VendorComplaints page = new VendorComplaints(user);
+    public void toComplaints(Vendor VD) {
+        VendorComplaints page = new VendorComplaints(VD);
         page.setVisible(true);
     }
     
-    public void toPaymentHistory(Users user) {
-        VendorPaymentHistory page = new VendorPaymentHistory(user);
+    public void toPaymentHistory(Vendor VD) {
+        VendorPaymentHistory page = new VendorPaymentHistory(VD);
         page.setVisible(true);
     }
     
-    public void toInvoice(Users user) {
-        VendorInvoice page = new VendorInvoice(user);
+    public void toInvoice(Vendor VD) {
+        VendorInvoice page = new VendorInvoice(VD);
         page.setVisible(true);
     }
     
-    public void toInvoiceReceipt(Users user, String invoiceNo) {
-        VendorInvoiceReceipt page = new VendorInvoiceReceipt(user, invoiceNo);
+    public void toInvoiceReceipt(Vendor VD, String invoiceNo) {
+        VendorInvoiceReceipt page = new VendorInvoiceReceipt(VD, invoiceNo);
         page.setVisible(true);
     }
     
-    public void toInvoicePayment(String invoiceNo, Users user, String feeTypes) {
-        VendorInvoicePayment page = new VendorInvoicePayment(invoiceNo, user, feeTypes);
+    public void toInvoicePayment(String invoiceNo, Vendor VD, String feeTypes) {
+        VendorInvoicePayment page = new VendorInvoicePayment(invoiceNo, VD, feeTypes);
         page.setVisible(true);
     }
     
-    public void toViewPaidInvoice(Users user, String invoiceNo, String feeTypes) {
-        VendorViewPaidInvoice page = new VendorViewPaidInvoice(invoiceNo, user, feeTypes);
+    public void toViewPaidInvoice(Vendor VD, String invoiceNo, String feeTypes) {
+        VendorViewPaidInvoice page = new VendorViewPaidInvoice(invoiceNo, VD, feeTypes);
         page.setVisible(true);
     }
     
-    public void toStatement(Users user) {
-        VendorStatement page = new VendorStatement(user);
+    public void toStatement(Vendor VD) {
+        VendorStatement page = new VendorStatement(VD);
         page.setVisible(true);
     }
     
-    public void toStatementReport(Users user, String monthNyear) {
-        VendorStatementReport page = new VendorStatementReport(user, monthNyear);
+    public void toStatementReport(Vendor VD, String monthNyear) {
+        VendorStatementReport page = new VendorStatementReport(VD, monthNyear);
         page.setVisible(true);
     }
     
-    public void toViewProfile(Users user) {
-        VendorProfile page = new VendorProfile(user);
+    public void toViewProfile(Vendor VD) {
+        VendorProfile page = new VendorProfile(VD);
         page.setVisible(true);
     }
     
-    public void toPaymentCredential(Users user, String totalAmount, ArrayList itemId) {
-        VendorPaymentCredential page = new VendorPaymentCredential(user, totalAmount, itemId);
+    public void toPaymentCredential(Vendor VD, String totalAmount, ArrayList itemId) {
+        VendorPaymentCredential page = new VendorPaymentCredential(VD, totalAmount, itemId);
         page.setVisible(true);
+    }
+
+    /**
+     * @return the unitNo
+     */
+    public String getUnitNo() {
+        return unitNo;
+    }
+
+    /**
+     * @param unitNo the unitNo to set
+     */
+    public void setUnitNo(String unitNo) {
+        this.unitNo = unitNo;
     }
 }

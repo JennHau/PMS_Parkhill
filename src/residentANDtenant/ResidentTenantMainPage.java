@@ -21,21 +21,21 @@ import pms_parkhill_residence.Users;
  * @author wongj
  */
 public class ResidentTenantMainPage extends javax.swing.JFrame {
-    private Users user;
-    ResidentTenant RT = new ResidentTenant();
+    private final ResidentTenant RT;
     Dashboard DB = new Dashboard();
     
     /**
      * Creates new form homePage
-     * @param user
+     * @param RT
      */
-    public ResidentTenantMainPage(Users user) {
+    public ResidentTenantMainPage(ResidentTenant RT) {
+        this.RT = RT;
+        
         initComponents();
-        runDefaultSetUp(user);
+        runDefaultSetUp();
     }
     
-    public void runDefaultSetUp(Users user) {
-        this.user = user;
+    public void runDefaultSetUp() {
         setCurrentUserProfile();
         setWindowIcon();
         setData();
@@ -43,12 +43,12 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
     }
     
     private void setCurrentUserProfile() {
-        userNameLabel.setText(user.getFirstName() + " " + user.getLastName());
+        userNameLabel.setText(RT.getFirstName() + " " + RT.getLastName());
     }
     
     private void setData() {
         // Set Complaints
-        ArrayList<ArrayList> complaints = RT.CP.getComplaints(user.getUserID());
+        ArrayList<ArrayList> complaints = RT.CP.getComplaints(RT.getUserID());
         ArrayList<String> pendingComplaints = complaints.get(0);
         ArrayList<String> completedComplaints = complaints.get(1);
         
@@ -63,7 +63,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
             String[] passDet = eachPass.split(RT.TF.sp);
             String rsdId = passDet[10];
             
-            if (rsdId.equals(user.getUserID())) {
+            if (rsdId.equals(RT.getUserID())) {
                 LocalDate passDate = RT.DTF.formatDate(passDet[5]);
                 if (passDate.isEqual(LocalDate.now())) {
                     countVisitor++;
@@ -72,7 +72,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
         }
         visitorLabel.setText(String.valueOf(countVisitor));
         
-        ArrayList<ArrayList> pendingFee = RT.getCurrentUnitInvoice(user.getUserID());
+        ArrayList<ArrayList> pendingFee = RT.getCurrentUnitInvoice(RT.getUserID());
         ArrayList<String> unpaidInv = pendingFee.get(0);
         double totalAmount = 0;
         for (String eachFee : unpaidInv) {
@@ -81,7 +81,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
         }
         pendingFeeLabel.setText(String.format("%.02f", totalAmount));
         
-        ArrayList<String> facilities = RT.getCurrentUnitBookedFacility(user.getUserID());
+        ArrayList<String> facilities = RT.getCurrentUnitBookedFacility(RT.getUserID());
         int bookedFacility = facilities.size();
         facilityLabel.setText(String.valueOf(bookedFacility));
     }
@@ -137,7 +137,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
                     String[] invDet = eachInv.split(RT.TF.sp);
                     String unitNo = invDet[1];
                     
-                    if (unitNo.equals(user.getUnitNo())) {
+                    if (unitNo.equals(RT.getUnitNo())) {
                         String invYear = invDet[8].split("/")[1];
                         
                         if (invYear.equals(selYear)) {
@@ -995,7 +995,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void dashBoardInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashBoardInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toResidentTenantDashboard(user);
+        RT.toResidentTenantDashboard(RT);
         this.dispose();
     }//GEN-LAST:event_dashBoardInnerTabMouseClicked
 
@@ -1006,7 +1006,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void dashboardOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toResidentTenantDashboard(user);
+        RT.toResidentTenantDashboard(RT);
         this.dispose();
     }//GEN-LAST:event_dashboardOuterTabMouseClicked
 
@@ -1017,7 +1017,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void paymentManagementInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toPaymentManagement(user);
+        RT.toPaymentManagement(RT);
         this.dispose();
     }//GEN-LAST:event_paymentManagementInnerTabMouseClicked
 
@@ -1028,7 +1028,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void paymentManagementOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toPaymentManagement(user);
+        RT.toPaymentManagement(RT);
         this.dispose();
     }//GEN-LAST:event_paymentManagementOuterTabMouseClicked
 
@@ -1039,7 +1039,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void facilityBookingInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityBookingInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toBookedFacility(user);
+        RT.toBookedFacility(RT);
         this.dispose();
     }//GEN-LAST:event_facilityBookingInnerTabMouseClicked
 
@@ -1050,7 +1050,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void facilityBookingOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityBookingOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toBookedFacility(user);
+        RT.toBookedFacility(RT);
         this.dispose();
     }//GEN-LAST:event_facilityBookingOuterTabMouseClicked
 
@@ -1061,7 +1061,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void complaintsInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toComplaints(user);
+        RT.toComplaints(RT);
         this.dispose();
     }//GEN-LAST:event_complaintsInnerTabMouseClicked
 
@@ -1072,7 +1072,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void complaintsOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toComplaints(user);
+        RT.toComplaints(RT);
         this.dispose();
     }//GEN-LAST:event_complaintsOuterTabMouseClicked
 
@@ -1083,7 +1083,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
         // TODO add your handling code here:
-        RT.toViewProfile(user);
+        RT.toViewProfile(RT);
         this.dispose();
     }//GEN-LAST:event_jLabel12MouseClicked
 
@@ -1094,7 +1094,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
         // TODO add your handling code here:
-        RT.toViewProfile(user);
+        RT.toViewProfile(RT);
         this.dispose();
     }//GEN-LAST:event_jPanel13MouseClicked
 
@@ -1105,7 +1105,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void visitorPassInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorPassInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toVisitorPass(user);
+        RT.toVisitorPass(RT);
         this.dispose();
     }//GEN-LAST:event_visitorPassInnerTabMouseClicked
 
@@ -1116,7 +1116,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
 
     private void visitorPassOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorPassOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toVisitorPass(user);
+        RT.toVisitorPass(RT);
         this.dispose();
     }//GEN-LAST:event_visitorPassOuterTabMouseClicked
 

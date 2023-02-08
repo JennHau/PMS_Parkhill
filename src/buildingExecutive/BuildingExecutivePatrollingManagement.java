@@ -26,10 +26,10 @@ import pms_parkhill_residence.Users;
  */
 public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     public static BuildingExecutivePatrollingManagement BEpatrollingManagement;
-    private Users user;
+    private final BuildingExecutive BE;
     
     FileHandling fh = new FileHandling();
-    BuildingExecutive BE = new BuildingExecutive();
+    
     String patrollingScheduleFile;
     String patrollingScheduleFileFormat = "patrollingScheduleFiles/patrollingFile_";
     DefaultTableModel scheduleTable;
@@ -44,19 +44,19 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     
     /**
      * Creates new form homePage
-     * @param users
+     * @param BE
      * @throws java.io.IOException
      */
-    public BuildingExecutivePatrollingManagement(Users users) throws IOException {
+    public BuildingExecutivePatrollingManagement(BuildingExecutive BE) throws IOException {
+        this.BE = BE;
+        this.setCurrentBEid(BE.getUserID());
+        
         initComponents();
-        runDefaultSetUp(users);
+        runDefaultSetUp();
         BEpatrollingManagement = this;
     }
     
-    private void runDefaultSetUp(Users users) throws IOException {
-        this.user = users;
-        this.setCurrentBEid(user.getUserID());
-        
+    private void runDefaultSetUp() throws IOException {
         scheduleTable = (DefaultTableModel) patrollingScheduleTable.getModel();
         
         setWindowIcon();
@@ -1128,7 +1128,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
     private void manageScheduleBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageScheduleBTNActionPerformed
         // TODO add your handling code here:
-        BE.toScheduleModification(this.user, patrollingScheduleFile, inputDate);
+        BE.toScheduleModification(this.BE, patrollingScheduleFile, inputDate);
         this.dispose();
     }//GEN-LAST:event_manageScheduleBTNActionPerformed
 
@@ -1165,7 +1165,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
     private void addSlotBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSlotBTNActionPerformed
         // TODO add your handling code here:
-        ScheduleActionPage page = new ScheduleActionPage(user, inputDate, patrollingScheduleFile);
+        ScheduleActionPage page = new ScheduleActionPage(BE, inputDate, patrollingScheduleFile);
         page.setVisible(true);
     }//GEN-LAST:event_addSlotBTNActionPerformed
 
@@ -1180,12 +1180,12 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
     private void jobAssignationInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationInnerTabMouseClicked
         // TODO add your handling code here:
-        BE.toJobManagement(this, user, null, false);
+        BE.toJobManagement(this, BE, null, false);
     }//GEN-LAST:event_jobAssignationInnerTabMouseClicked
 
     private void jobAssignationTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationTabMouseClicked
         // TODO add your handling code here:
-        BE.toJobManagement(this, user, null, false);
+        BE.toJobManagement(this, BE, null, false);
     }//GEN-LAST:event_jobAssignationTabMouseClicked
 
     private void jobAssignationTabMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobAssignationTabMouseEntered
@@ -1195,12 +1195,12 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         // TODO add your handling code here:
-        BE.toComplaints(this, user);
+        BE.toComplaints(this, BE);
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jPanel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseClicked
         // TODO add your handling code here:
-        BE.toComplaints(this, user);
+        BE.toComplaints(this, BE);
     }//GEN-LAST:event_jPanel8MouseClicked
 
     private void jPanel8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseEntered
@@ -1210,12 +1210,12 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
         // TODO add your handling code here:
-        BE.toPatrollingReports(this, user);
+        BE.toPatrollingReports(this, BE);
     }//GEN-LAST:event_jLabel8MouseClicked
 
     private void jPanel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseClicked
         // TODO add your handling code here:
-        BE.toPatrollingReports(this, user);
+        BE.toPatrollingReports(this, BE);
     }//GEN-LAST:event_jPanel10MouseClicked
 
     private void jPanel10MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseEntered
@@ -1225,13 +1225,13 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
         // TODO add your handling code here:
-        BE.toProfile(user);
+        BE.toProfile(BE);
         this.dispose();
     }//GEN-LAST:event_jLabel11MouseClicked
 
     private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
         // TODO add your handling code here:
-        BE.toProfile(user);
+        BE.toProfile(BE);
         this.dispose();
     }//GEN-LAST:event_jPanel13MouseClicked
 
@@ -1243,7 +1243,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, user);
+            BE.toPatrollingManagement(this, BE);
         } catch (IOException ex) {
             Logger.getLogger(BuildingExecutiveMainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1253,7 +1253,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, user);
+            BE.toPatrollingManagement(this, BE);
         } catch (IOException ex) {
             Logger.getLogger(BuildingExecutiveMainPage.class.getName()).log(Level.SEVERE, null, ex);
         }

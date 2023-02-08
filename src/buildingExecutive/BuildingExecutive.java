@@ -47,6 +47,15 @@ public class BuildingExecutive extends Users{
     final int assignedEmployee = 1;
     final int unassignedEmployee = 0;
     
+    public BuildingExecutive(String userID, String email, String password, String firstName,
+                 String lastName, String identificationNo, String gender,
+                 String phoneNo) {
+        
+        super(userID, email, password, firstName,
+             lastName, identificationNo, gender,
+             phoneNo);
+    }
+    
     private ArrayList getEmployeeJobList(LocalDate localDate, LocalTime localTime) throws IOException {
         List<String> employeeList = fh.fileRead(TF.fullEmployeeList);
         
@@ -759,18 +768,30 @@ public class BuildingExecutive extends Users{
         return tableData;
     }
     
+    public String[] findComplainerDetails(String complainerId) {
+        List<String> userProfile = fh.fileRead(TF.userProfile);
+        for (String eachUser : userProfile) {
+            String[] userData = eachUser.split(TF.sp);
+            if (userData[0].equals(complainerId)) {
+                return userData;
+            }
+        }
+        
+        return null;
+    }
+    
     // Change Page Method
-    public void toDashboard(JFrame frame, Users user) {
+    public void toDashboard(JFrame frame, BuildingExecutive BE) {
             BuildingExecutiveMainPage page;
-            page = new BuildingExecutiveMainPage(user);
+            page = new BuildingExecutiveMainPage(BE);
             page.setVisible(true);
             frame.dispose();
     }
     
-    public void toJobManagement(JFrame frame, Users user, Complaints complaint, boolean fromComplaintPage) {
+    public void toJobManagement(JFrame frame, BuildingExecutive BE, Complaints complaint, boolean fromComplaintPage) {
         try {
             BuildingExecutiveJobManagement page;
-            page = new BuildingExecutiveJobManagement(user, complaint, fromComplaintPage);
+            page = new BuildingExecutiveJobManagement(BE, complaint, fromComplaintPage);
             page.setVisible(true);
             frame.dispose();
         } catch (IOException ex) {
@@ -778,10 +799,10 @@ public class BuildingExecutive extends Users{
         }
     }
     
-    public void toComplaints(JFrame frame, Users users) {
+    public void toComplaints(JFrame frame, BuildingExecutive BE) {
         try {
             BuildingExecutiveComplaints page;
-            page = new BuildingExecutiveComplaints(users);
+            page = new BuildingExecutiveComplaints(BE);
             page.setVisible(true);
             frame.dispose();
         } catch (IOException ex) {
@@ -789,67 +810,67 @@ public class BuildingExecutive extends Users{
         }
     }
     
-    public void toPatrollingManagement(JFrame frame, Users users) throws IOException {
+    public void toPatrollingManagement(JFrame frame, BuildingExecutive BE) throws IOException {
         BuildingExecutivePatrollingManagement page;
-        page = new BuildingExecutivePatrollingManagement(users);
+        page = new BuildingExecutivePatrollingManagement(BE);
         page.setVisible(true);
         frame.dispose();
     }
     
-    public void toPatrollingReports(JFrame frame, Users user) {
+    public void toPatrollingReports(JFrame frame, BuildingExecutive BE) {
         BuildingExecutivePatrollingReports page;
-        page = new BuildingExecutivePatrollingReports(user);
+        page = new BuildingExecutivePatrollingReports(BE);
         page.setVisible(true);
         frame.dispose();
     }
     
-    public void toComplaintsReports(Users user) {
-        BuildingExecutiveComplaintsReports page = new BuildingExecutiveComplaintsReports(user);
+    public void toComplaintsReports(BuildingExecutive BE) {
+        BuildingExecutiveComplaintsReports page = new BuildingExecutiveComplaintsReports(BE);
         page.setVisible(true);
     }
     
-    public void toJobReports(Users user) {
-        BuildingExecutiveJobReports page = new BuildingExecutiveJobReports(user);
+    public void toJobReports(BuildingExecutive BE) {
+        BuildingExecutiveJobReports page = new BuildingExecutiveJobReports(BE);
         page.setVisible(true);
     }
     
-    public void toEmployeeJobAssignation(Users user, String employeeID, String jobID, Complaints complaint, boolean fromComplaintPage) {
+    public void toEmployeeJobAssignation(BuildingExecutive BE, String employeeID, String jobID, Complaints complaint, boolean fromComplaintPage) {
         EmployeeJobAssignation EJA;
         try {
-            EJA = new EmployeeJobAssignation(user, employeeID, jobID, complaint, fromComplaintPage);
+            EJA = new EmployeeJobAssignation(BE, employeeID, jobID, complaint, fromComplaintPage);
             EJA.setVisible(true);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
     
-    public void toJobModificationPage(Users users, String positionCode, String jobID, Complaints complaint, String employeeID) throws IOException {
-        JobModificationPage page = new JobModificationPage(users, positionCode, jobID, complaint, employeeID);
+    public void toJobModificationPage(BuildingExecutive BE, String positionCode, String jobID, Complaints complaint, String employeeID) throws IOException {
+        JobModificationPage page = new JobModificationPage(BE, positionCode, jobID, complaint, employeeID);
         page.setVisible(true);
     }
     
-    public void toComplaintDetailsPage(Users users, Complaints complaint) {
-        ComplaintsDetails page = new ComplaintsDetails(users, complaint);
+    public void toComplaintDetailsPage(BuildingExecutive BE, Complaints complaint) {
+        ComplaintsDetails page = new ComplaintsDetails(BE, complaint);
         page.setVisible(true);
     }
     
-    public void toScheduleModification(Users users, String file, LocalDate inputDate) {
-        PatrollingScheduleModification page = new PatrollingScheduleModification(users, file, inputDate);
+    public void toScheduleModification(BuildingExecutive BE, String file, LocalDate inputDate) {
+        PatrollingScheduleModification page = new PatrollingScheduleModification(BE, file, inputDate);
         page.setVisible(true);
     }
     
-    public void toRepetitiveJob(Users user) {
-        BuildingExecutiveRepetitiveJobReports page = new BuildingExecutiveRepetitiveJobReports(user);
+    public void toRepetitiveJob(BuildingExecutive BE) {
+        BuildingExecutiveRepetitiveJobReports page = new BuildingExecutiveRepetitiveJobReports(BE);
         page.setVisible(true);
     }
     
-    public void toAllReportsPage(Users user, String reportTitle, ArrayList tableData) {
-        BuildingExecutiveAllReportsPage page = new BuildingExecutiveAllReportsPage(user, reportTitle, tableData);
+    public void toAllReportsPage(BuildingExecutive BE, String reportTitle, ArrayList tableData) {
+        BuildingExecutiveAllReportsPage page = new BuildingExecutiveAllReportsPage(BE, reportTitle, tableData);
         page.setVisible(true);
     }
     
-    public void toProfile(Users user) {
-        BuildingExecutiveViewProfile page = new BuildingExecutiveViewProfile(user);
+    public void toProfile(BuildingExecutive BE) {
+        BuildingExecutiveViewProfile page = new BuildingExecutiveViewProfile(BE);
         page.setVisible(true);
     }
 }

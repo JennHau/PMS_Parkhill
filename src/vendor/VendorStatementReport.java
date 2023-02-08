@@ -19,20 +19,19 @@ import pms_parkhill_residence.Users;
  */
 public class VendorStatementReport extends javax.swing.JFrame {
     FileHandling fh = new FileHandling();
-    Vendor VD = new Vendor();
+    private final Vendor VD;
     private final String monthNyear;
-    private final Users user;
     
     DefaultTableModel stateTab;
     
     /**
      * Creates new form custReceipt
-     * @param user
+     * @param VD
      * @param monthNyear
      */
-    public VendorStatementReport(Users user, String monthNyear) {
+    public VendorStatementReport(Vendor VD, String monthNyear) {
         initComponents();
-        this.user = user;
+        this.VD = VD;
         this.monthNyear = monthNyear;
         stateTab = (DefaultTableModel) statementTable.getModel();
         
@@ -334,7 +333,7 @@ public class VendorStatementReport extends javax.swing.JFrame {
     
     private void setDefault() {
         try {
-            ArrayList<String> statementList = VD.getCurrentUnitMonthStatement(user, monthNyear);
+            ArrayList<String> statementList = VD.getCurrentUnitMonthStatement(monthNyear);
             
             VD.setTableRow(stateTab, statementList);
             
@@ -377,7 +376,7 @@ public class VendorStatementReport extends javax.swing.JFrame {
             String statePeriod = stateDet[0];
             String stateUnit = stateDet[0];
             
-            if (statePeriod.equals(this.monthNyear) && stateUnit.equals(this.user.getUnitNo())) {
+            if (statePeriod.equals(this.monthNyear) && stateUnit.equals(this.VD.getUnitNo())) {
                 // Set issued date
                 issuedDateLabel.setText(stateDet[2]);
             }
@@ -386,7 +385,7 @@ public class VendorStatementReport extends javax.swing.JFrame {
     
     private void setReportDetails() {
         periodLabel.setText(monthNyear);
-        unitNoLabel.setText(user.getUnitNo());
+        unitNoLabel.setText(VD.getUnitNo());
         setIssuedDate();
     }
     

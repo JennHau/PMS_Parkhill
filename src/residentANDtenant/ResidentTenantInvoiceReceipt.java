@@ -15,23 +15,22 @@ import pms_parkhill_residence.Users;
  * @author wongj
  */
 public class ResidentTenantInvoiceReceipt extends javax.swing.JFrame {
-    ResidentTenant RT = new ResidentTenant();
+    private final ResidentTenant RT;
     FileHandling fh = new FileHandling();
     DefaultTableModel invRecTab;
     
     private final String invoiceNo;
-    private final Users user;
     /**
      * Creates new form custReceipt
-     * @param user
+     * @param RT
      * @param invoiceNo
      */
-    public ResidentTenantInvoiceReceipt(Users user, String invoiceNo) {
+    public ResidentTenantInvoiceReceipt(ResidentTenant RT, String invoiceNo) {
         initComponents();
         
         invRecTab = (DefaultTableModel) invoiceReceiptTable.getModel();
         this.invoiceNo = invoiceNo;
-        this.user = user;
+        this.RT = RT;
         setDefault();
     }
 
@@ -289,7 +288,7 @@ public class ResidentTenantInvoiceReceipt extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void setDefault() {
-        ArrayList<String> invoiceList = RT.getCurrentUnitIssuedReceipt(user.getUnitNo());
+        ArrayList<String> invoiceList = RT.getCurrentUnitIssuedReceipt(RT.getUnitNo());
         ArrayList<String> toReceipt = new ArrayList<>();
         
         String invoicePeriod = null;
@@ -321,7 +320,7 @@ public class ResidentTenantInvoiceReceipt extends javax.swing.JFrame {
         RT.setTableRow(invRecTab, toReceipt);
         
         invNoLabel.setText(invoiceNo.toUpperCase());
-        unitNoLabel.setText(user.getUnitNo().toUpperCase());
+        unitNoLabel.setText(RT.getUnitNo().toUpperCase());
         amountPaid.setText("RM" + String.format("%.02f", totalAmount));
         paymentDateLabel.setText(invoicePeriod);
     }

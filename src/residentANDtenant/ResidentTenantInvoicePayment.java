@@ -19,22 +19,22 @@ import pms_parkhill_residence.Users;
  * @author wongj
  */
 public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
-    ResidentTenant RT = new ResidentTenant();
+    private final ResidentTenant RT;
     DefaultTableModel payTab;   
     
     /**
      * Creates new form homePage
      * @param invoiceNo
-     * @param user
+     * @param RT
      */
-    public ResidentTenantInvoicePayment(String invoiceNo, Users user, String feeTypes) {
+    public ResidentTenantInvoicePayment(String invoiceNo, ResidentTenant RT, String feeTypes) {
         initComponents();
         payTab = (DefaultTableModel) paymentTable.getModel();
         
         setWindowIcon();
         this.invoiceNo = invoiceNo;
-        this.user = user;
-        this.unitNo = this.user.getUnitNo();
+        this.RT = RT;
+        this.unitNo = this.RT.getUnitNo();
         setTable(feeTypes);
         setFixData();
     }
@@ -661,12 +661,11 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
 
     private final String invoiceNo;
     private final String unitNo;
-    private final Users user;
     private String total;
     
     private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
         // TODO add your handling code here:
-        new ResidentTenantInvoicePaymentGateway(invoiceNo, user, total).setVisible(true);
+        new ResidentTenantInvoicePaymentGateway(invoiceNo, RT, total).setVisible(true);
         dispose();
     }//GEN-LAST:event_jLabel18MouseClicked
 
@@ -677,7 +676,7 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
 
     private void jPanel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseClicked
         // TODO add your handling code here:
-        new ResidentTenantInvoicePaymentGateway(invoiceNo, user, total).setVisible(true);
+        new ResidentTenantInvoicePaymentGateway(invoiceNo, RT, total).setVisible(true);
         dispose();
     }//GEN-LAST:event_jPanel5MouseClicked
 
@@ -688,7 +687,7 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
 
     private void dashBoardInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashBoardInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toResidentTenantDashboard(user);
+        RT.toResidentTenantDashboard(RT);
         this.dispose();
     }//GEN-LAST:event_dashBoardInnerTabMouseClicked
 
@@ -699,7 +698,7 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
 
     private void dashboardOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toResidentTenantDashboard(user);
+        RT.toResidentTenantDashboard(RT);
         this.dispose();
     }//GEN-LAST:event_dashboardOuterTabMouseClicked
 
@@ -710,7 +709,7 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
 
     private void paymentManagementInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toPaymentManagement(user);
+        RT.toPaymentManagement(RT);
         this.dispose();
     }//GEN-LAST:event_paymentManagementInnerTabMouseClicked
 
@@ -721,7 +720,7 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
 
     private void paymentManagementOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toPaymentManagement(user);
+        RT.toPaymentManagement(RT);
         this.dispose();
     }//GEN-LAST:event_paymentManagementOuterTabMouseClicked
 
@@ -732,7 +731,7 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
 
     private void facilityBookingInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityBookingInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toBookedFacility(user);
+        RT.toBookedFacility(RT);
         this.dispose();
     }//GEN-LAST:event_facilityBookingInnerTabMouseClicked
 
@@ -743,7 +742,7 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
 
     private void facilityBookingOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityBookingOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toBookedFacility(user);
+        RT.toBookedFacility(RT);
         this.dispose();
     }//GEN-LAST:event_facilityBookingOuterTabMouseClicked
 
@@ -754,7 +753,7 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
 
     private void complaintsInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toComplaints(user);
+        RT.toComplaints(RT);
         this.dispose();
     }//GEN-LAST:event_complaintsInnerTabMouseClicked
 
@@ -765,7 +764,7 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
 
     private void complaintsOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toComplaints(user);
+        RT.toComplaints(RT);
         this.dispose();
     }//GEN-LAST:event_complaintsOuterTabMouseClicked
 
@@ -776,7 +775,7 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
         // TODO add your handling code here:
-        RT.toViewProfile(user);
+        RT.toViewProfile(RT);
         this.dispose();
     }//GEN-LAST:event_jLabel12MouseClicked
 
@@ -787,7 +786,7 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
 
     private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
         // TODO add your handling code here:
-        RT.toViewProfile(user);
+        RT.toViewProfile(RT);
         this.dispose();
     }//GEN-LAST:event_jPanel13MouseClicked
 
@@ -798,7 +797,7 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
 
     private void visitorPassInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorPassInnerTabMouseClicked
         // TODO add your handling code here:
-        RT.toVisitorPass(user);
+        RT.toVisitorPass(RT);
         this.dispose();
     }//GEN-LAST:event_visitorPassInnerTabMouseClicked
 
@@ -809,7 +808,7 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
 
     private void visitorPassOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorPassOuterTabMouseClicked
         // TODO add your handling code here:
-        RT.toVisitorPass(user);
+        RT.toVisitorPass(RT);
         this.dispose();
     }//GEN-LAST:event_visitorPassOuterTabMouseClicked
 
@@ -826,7 +825,7 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
         
         ArrayList<String> feeList = new ArrayList<>(Arrays.asList(feeTypeList));
         
-        ArrayList<ArrayList> invoiceList = RT.getCurrentUnitInvoice(this.user.getUnitNo());
+        ArrayList<ArrayList> invoiceList = RT.getCurrentUnitInvoice(this.RT.getUnitNo());
         ArrayList<String> incompList = invoiceList.get(0);
         
         double totalAmount = 0;

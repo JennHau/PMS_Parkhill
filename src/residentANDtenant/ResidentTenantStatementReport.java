@@ -18,20 +18,19 @@ import pms_parkhill_residence.Users;
  */
 public class ResidentTenantStatementReport extends javax.swing.JFrame {
     FileHandling fh = new FileHandling();
-    ResidentTenant RT = new ResidentTenant();
+    private final ResidentTenant RT;
     private final String monthNyear;
-    private final Users user;
     
     DefaultTableModel stateTab;
     
     /**
      * Creates new form custReceipt
-     * @param user
+     * @param RT
      * @param monthNyear
      */
-    public ResidentTenantStatementReport(Users user, String monthNyear) {
+    public ResidentTenantStatementReport(ResidentTenant RT, String monthNyear) {
         initComponents();
-        this.user = user;
+        this.RT = RT;
         this.monthNyear = monthNyear;
         stateTab = (DefaultTableModel) statementTable.getModel();
         
@@ -288,11 +287,12 @@ public class ResidentTenantStatementReport extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel49)
-                            .addComponent(paymentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(amountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel49)
+                                .addComponent(paymentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(amountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -332,7 +332,7 @@ public class ResidentTenantStatementReport extends javax.swing.JFrame {
     
     private void setDefault() {
         try {
-            ArrayList<String> statementList = RT.getCurrentUnitMonthStatement(user, monthNyear);
+            ArrayList<String> statementList = RT.getCurrentUnitMonthStatement(monthNyear);
             
             RT.setTableRow(stateTab, statementList);
             
@@ -375,7 +375,7 @@ public class ResidentTenantStatementReport extends javax.swing.JFrame {
             String statePeriod = stateDet[0];
             String stateUnit = stateDet[0];
             
-            if (statePeriod.equals(this.monthNyear) && stateUnit.equals(this.user.getUnitNo())) {
+            if (statePeriod.equals(this.monthNyear) && stateUnit.equals(this.RT.getUnitNo())) {
                 // Set issued date
                 issuedDateLabel.setText(stateDet[2]);
             }
@@ -384,7 +384,7 @@ public class ResidentTenantStatementReport extends javax.swing.JFrame {
     
     private void setReportDetails() {
         periodLabel.setText(monthNyear);
-        unitNoLabel.setText(user.getUnitNo());
+        unitNoLabel.setText(RT.getUnitNo());
         setIssuedDate();
     }
     

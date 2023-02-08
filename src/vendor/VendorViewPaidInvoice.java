@@ -18,20 +18,20 @@ import pms_parkhill_residence.Users;
  * @author wongj
  */
 public class VendorViewPaidInvoice extends javax.swing.JFrame {
-    Vendor VD = new Vendor();
+    private final Vendor VD;
     DefaultTableModel paidTab;
     /**
      * Creates new form homePage
      * @param invoiceNo
-     * @param user
+     * @param VD
      */
-    public VendorViewPaidInvoice(String invoiceNo, Users user, String feeTypes) {
+    public VendorViewPaidInvoice(String invoiceNo, Vendor VD, String feeTypes) {
         initComponents();
         paidTab = (DefaultTableModel) paidTable.getModel();
         setWindowIcon();
         this.invoiceNo = invoiceNo;
-        this.user = user;
-        this.unitNo = this.user.getUnitNo();
+        this.VD = VD;
+        this.unitNo = this.VD.getUnitNo();
         setTable(feeTypes);
         setFixData();
     }
@@ -529,12 +529,11 @@ public class VendorViewPaidInvoice extends javax.swing.JFrame {
     
     private final String invoiceNo;
     private final String unitNo;
-    private final Users user;
     private String total;
     
     private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
         // TODO add your handling code here:
-        VD.toInvoice(user);
+        VD.toInvoice(VD);
         this.dispose();
     }//GEN-LAST:event_jLabel18MouseClicked
 
@@ -545,7 +544,7 @@ public class VendorViewPaidInvoice extends javax.swing.JFrame {
 
     private void jPanel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseClicked
         // TODO add your handling code here:
-        new ResidentTenantInvoicePaymentGateway(invoiceNo, user, total).setVisible(true);
+        new VendorInvoicePaymentGateway(invoiceNo, VD, total).setVisible(true);
         dispose();
     }//GEN-LAST:event_jPanel5MouseClicked
 
@@ -556,7 +555,7 @@ public class VendorViewPaidInvoice extends javax.swing.JFrame {
 
     private void dashBoardInnerTab2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashBoardInnerTab2MouseClicked
         // TODO add your handling code here:
-        VD.toResidentTenantDashboard(user);
+        VD.toVendorDashboard(VD);
         this.dispose();
     }//GEN-LAST:event_dashBoardInnerTab2MouseClicked
 
@@ -567,7 +566,7 @@ public class VendorViewPaidInvoice extends javax.swing.JFrame {
 
     private void dashboardOuterTab2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardOuterTab2MouseClicked
         // TODO add your handling code here:
-        VD.toResidentTenantDashboard(user);
+        VD.toVendorDashboard(VD);
         this.dispose();
     }//GEN-LAST:event_dashboardOuterTab2MouseClicked
 
@@ -578,7 +577,7 @@ public class VendorViewPaidInvoice extends javax.swing.JFrame {
 
     private void paymentManagementInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementInnerTabMouseClicked
         // TODO add your handling code here:
-        VD.toPaymentManagement(user);
+        VD.toPaymentManagement(VD);
         this.dispose();
     }//GEN-LAST:event_paymentManagementInnerTabMouseClicked
 
@@ -589,7 +588,7 @@ public class VendorViewPaidInvoice extends javax.swing.JFrame {
 
     private void paymentManagementOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementOuterTabMouseClicked
         // TODO add your handling code here:
-        VD.toPaymentManagement(user);
+        VD.toPaymentManagement(VD);
         this.dispose();
     }//GEN-LAST:event_paymentManagementOuterTabMouseClicked
 
@@ -600,7 +599,7 @@ public class VendorViewPaidInvoice extends javax.swing.JFrame {
 
     private void complaintsInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsInnerTabMouseClicked
         // TODO add your handling code here:
-        VD.toComplaints(user);
+        VD.toComplaints(VD);
         this.dispose();
     }//GEN-LAST:event_complaintsInnerTabMouseClicked
 
@@ -611,7 +610,7 @@ public class VendorViewPaidInvoice extends javax.swing.JFrame {
 
     private void complaintsOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsOuterTabMouseClicked
         // TODO add your handling code here:
-        VD.toComplaints(user);
+        VD.toComplaints(VD);
         this.dispose();
     }//GEN-LAST:event_complaintsOuterTabMouseClicked
 
@@ -622,7 +621,7 @@ public class VendorViewPaidInvoice extends javax.swing.JFrame {
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
         // TODO add your handling code here:
-        VD.toViewProfile(user);
+        VD.toViewProfile(VD);
         this.dispose();
     }//GEN-LAST:event_jLabel12MouseClicked
 
@@ -633,7 +632,7 @@ public class VendorViewPaidInvoice extends javax.swing.JFrame {
 
     private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
         // TODO add your handling code here:
-        VD.toViewProfile(user);
+        VD.toViewProfile(VD);
         this.dispose();
     }//GEN-LAST:event_jPanel13MouseClicked
 
@@ -650,7 +649,7 @@ public class VendorViewPaidInvoice extends javax.swing.JFrame {
         
         ArrayList<String> feeList = new ArrayList<>(Arrays.asList(feeTypeList));
         
-        ArrayList<ArrayList> invoiceList = VD.getCurrentUnitInvoice(this.user.getUnitNo());
+        ArrayList<ArrayList> invoiceList = VD.getCurrentUnitInvoice(this.VD.getUnitNo());
         ArrayList<String> compList = invoiceList.get(1);
         
         LocalDate latestDate = null;

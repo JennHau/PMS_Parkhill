@@ -21,21 +21,21 @@ import pms_parkhill_residence.Users;
  * @author wongj
  */
 public class VendorDashboard extends javax.swing.JFrame {
-    private Users user;
-    Vendor VD = new Vendor();
+    private final Vendor VD;
     Dashboard DB = new Dashboard();
     
     /**
      * Creates new form homePage
-     * @param user
+     * @param VD
      */
-    public VendorDashboard(Users user) {
+    public VendorDashboard(Vendor VD) {
+        this.VD = VD;
+
         initComponents();
-        runDefaultSetUp(user);
+        runDefaultSetUp();
     }
     
-    public void runDefaultSetUp(Users user) {
-        this.user = user;
+    public void runDefaultSetUp() {
         setCurrentUserProfile();
         setWindowIcon();
         setData();
@@ -43,12 +43,12 @@ public class VendorDashboard extends javax.swing.JFrame {
     }
     
     private void setCurrentUserProfile() {
-        userNameLabel.setText(user.getFirstName() + " " + user.getLastName());
+        userNameLabel.setText(VD.getFirstName() + " " + VD.getLastName());
     }
     
     private void setData() {
         // Set Complaints
-        ArrayList<ArrayList> complaints = VD.CP.getComplaints(user.getUserID());
+        ArrayList<ArrayList> complaints = VD.CP.getComplaints(VD.getUserID());
         ArrayList<String> pendingComp = complaints.get(0);
         ArrayList<String> completedComp = complaints.get(1);
         
@@ -70,7 +70,7 @@ public class VendorDashboard extends javax.swing.JFrame {
         completedCompLabel.setText(String.valueOf(completedComp.size()));
         
         // Set pending fee amount
-        ArrayList<ArrayList> pendingFee = VD.getCurrentUnitInvoice(user.getUserID());
+        ArrayList<ArrayList> pendingFee = VD.getCurrentUnitInvoice(VD.getUserID());
         ArrayList<String> unpaidInv = pendingFee.get(0);
         ArrayList<String> paidInv = pendingFee.get(1);
         
@@ -140,7 +140,7 @@ public class VendorDashboard extends javax.swing.JFrame {
                     String[] invDet = eachInv.split(VD.TF.sp);
                     String unitNo = invDet[1];
                     
-                    if (unitNo.equals(user.getUnitNo())) {
+                    if (unitNo.equals(VD.getUnitNo())) {
                         String invYear = invDet[8].split("/")[1];
                         
                         if (invYear.equals(selYear)) {
@@ -838,7 +838,7 @@ public class VendorDashboard extends javax.swing.JFrame {
 
     private void dashBoardInnerTab2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashBoardInnerTab2MouseClicked
         // TODO add your handling code here:
-        VD.toResidentTenantDashboard(user);
+        VD.toVendorDashboard(VD);
         this.dispose();
     }//GEN-LAST:event_dashBoardInnerTab2MouseClicked
 
@@ -849,7 +849,7 @@ public class VendorDashboard extends javax.swing.JFrame {
 
     private void dashboardOuterTab2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardOuterTab2MouseClicked
         // TODO add your handling code here:
-        VD.toResidentTenantDashboard(user);
+        VD.toVendorDashboard(VD);
         this.dispose();
     }//GEN-LAST:event_dashboardOuterTab2MouseClicked
 
@@ -860,7 +860,7 @@ public class VendorDashboard extends javax.swing.JFrame {
 
     private void paymentManagementInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementInnerTabMouseClicked
         // TODO add your handling code here:
-        VD.toPaymentManagement(user);
+        VD.toPaymentManagement(VD);
         this.dispose();
     }//GEN-LAST:event_paymentManagementInnerTabMouseClicked
 
@@ -871,7 +871,7 @@ public class VendorDashboard extends javax.swing.JFrame {
 
     private void paymentManagementOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentManagementOuterTabMouseClicked
         // TODO add your handling code here:
-        VD.toPaymentManagement(user);
+        VD.toPaymentManagement(VD);
         this.dispose();
     }//GEN-LAST:event_paymentManagementOuterTabMouseClicked
 
@@ -882,7 +882,7 @@ public class VendorDashboard extends javax.swing.JFrame {
 
     private void complaintsInnerTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsInnerTabMouseClicked
         // TODO add your handling code here:
-        VD.toComplaints(user);
+        VD.toComplaints(VD);
         this.dispose();
     }//GEN-LAST:event_complaintsInnerTabMouseClicked
 
@@ -893,7 +893,7 @@ public class VendorDashboard extends javax.swing.JFrame {
 
     private void complaintsOuterTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsOuterTabMouseClicked
         // TODO add your handling code here:
-        VD.toComplaints(user);
+        VD.toComplaints(VD);
         this.dispose();
     }//GEN-LAST:event_complaintsOuterTabMouseClicked
 
@@ -904,7 +904,7 @@ public class VendorDashboard extends javax.swing.JFrame {
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
         // TODO add your handling code here:
-        VD.toViewProfile(user);
+        VD.toViewProfile(VD);
         this.dispose();
     }//GEN-LAST:event_jLabel12MouseClicked
 
@@ -915,7 +915,7 @@ public class VendorDashboard extends javax.swing.JFrame {
 
     private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
         // TODO add your handling code here:
-        VD.toViewProfile(user);
+        VD.toViewProfile(VD);
         this.dispose();
     }//GEN-LAST:event_jPanel13MouseClicked
 

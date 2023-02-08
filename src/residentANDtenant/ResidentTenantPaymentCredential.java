@@ -12,42 +12,40 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.PMS_DateTimeFormatter;
-import pms_parkhill_residence.Users;
 
 /**
  *
  * @author Winson
  */
 public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
-
-    private Users user;
     private ArrayList<String> itemList;
-    private boolean forFacility;
-    private boolean modifyBooking;
+    private final boolean forFacility;
+    private final boolean modifyBooking;
     
-    ResidentTenant RT = new ResidentTenant();
+    private final ResidentTenant RT;
     PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
 
     /**
      * Creates new form ResidentTenantPaymentGateway
-     * @param user
+     * @param RT
      * @param totalAmount
      * @param itemList
      * @param forFacility
+     * @param modify
      */
-    public ResidentTenantPaymentCredential(Users user, String totalAmount, ArrayList itemList, boolean forFacility, boolean modify) {
-        initComponents();
-        runDefaultSetUp(user, totalAmount, itemList, forFacility, modify);
-    }
-    
-    private void runDefaultSetUp(Users user, String totalAmount, ArrayList itemList, boolean forFacility, boolean modify) {
-        setWindowIcon();
-        amountSetUp(totalAmount);
-        
-        this.setUser(user);
+    public ResidentTenantPaymentCredential(ResidentTenant RT, String totalAmount, ArrayList itemList, boolean forFacility, boolean modify) {
+        this.RT = RT;
         this.forFacility = forFacility;
         this.modifyBooking = modify;
         this.setItemList(itemList);
+        amountSetUp(totalAmount);
+        
+        initComponents();
+        runDefaultSetUp();
+    }
+    
+    private void runDefaultSetUp() {
+        setWindowIcon();
     }
     
     private void amountSetUp(String totalAmount) {
@@ -345,7 +343,7 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
                             }
                             else {
                                 ArrayList<String> paidInv = new ArrayList<>();
-                                ArrayList<String> incompInv = (ArrayList<String>) (RT.getCurrentUnitInvoice(user.getUnitNo())).get(0);
+                                ArrayList<String> incompInv = (ArrayList<String>) (RT.getCurrentUnitInvoice(RT.getUnitNo())).get(0);
 
                                 for (String eachInv : incompInv) {
                                     String[] invDet = eachInv.split(RT.TF.sp);
@@ -356,7 +354,7 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
                                             String deletedID = invDet[invDet.length-1];
                                             String issuedDate = invDet[invDet.length-2];
 
-                                            invDet[invDet.length-2] = user.getUserID();
+                                            invDet[invDet.length-2] = RT.getUserID();
 
                                             try {
                                                 invDet[invDet.length-1] = DTF.changeFormatDate2(LocalDate.now().toString());
@@ -405,10 +403,10 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
                             this.dispose();
 
                             if (forFacility) {
-                                RT.toBookedFacility(user);
+                                RT.toBookedFacility(RT);
                             }
                             else {
-                                RT.toPaymentManagement(user);
+                                RT.toPaymentManagement(RT);
                             }
                         }
                     }
@@ -587,19 +585,5 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
      */
     public void setItemList(ArrayList<String> itemList) {
         this.itemList = itemList;
-    }
-
-    /**
-     * @return the user
-     */
-    public Users getUser() {
-        return user;
-    }
-
-    /**
-     * @param user the user to set
-     */
-    public void setUser(Users user) {
-        this.user = user;
     }
 }

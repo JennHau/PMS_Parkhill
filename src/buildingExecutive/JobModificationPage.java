@@ -22,12 +22,11 @@ import pms_parkhill_residence.Users;
  * @author Winson
  */
 public class JobModificationPage extends javax.swing.JFrame {
-    private Users user;
     private String currentBEid;
     private Complaints complaint;
     
     DefaultTableModel jobTable;
-    BuildingExecutive BE = new BuildingExecutive();
+    private final BuildingExecutive BE;
     FileHandling fileHandling = new FileHandling();
     CRUD crud = new CRUD();
     
@@ -40,28 +39,27 @@ public class JobModificationPage extends javax.swing.JFrame {
     
     /**
      * Creates new form EmployeeJobAssignation
-     * @param user
+     * @param BE
      * @param positionCode employee position code
      * @param jobID
      * @param complaint
      * @param employeeID
      * @throws java.io.IOException
      */
-    public JobModificationPage(Users user, String positionCode, String jobID, Complaints complaint, String employeeID) throws IOException {
-        initComponents();
-        jobTable = (DefaultTableModel) jobsTableUI.getModel();
-        runDefaultSetUp(user, positionCode, jobID, complaint, employeeID);
-    }
-    
-    private void runDefaultSetUp(Users user, String positionCode, String jobID, Complaints complaint, String employeeID) throws IOException {
-        this.user = user;
-        this.setCurrentBEid(this.user.getUserID());
-        
+    public JobModificationPage(BuildingExecutive BE, String positionCode, String jobID, Complaints complaint, String employeeID) throws IOException {
+        this.BE = BE;
+        this.setCurrentBEid(this.BE.getUserID());
         this.setJobId(jobID);
         this.setComplaintId(complaint.getComplaintID());
         this.setEmployeeId(employeeID);
         this.setPositionCode(positionCode);
         
+        initComponents();
+        jobTable = (DefaultTableModel) jobsTableUI.getModel();
+        runDefaultSetUp();
+    }
+    
+    private void runDefaultSetUp() throws IOException {
         setWindowIcon();
         comboBoxSetUp(this.positionCode);
         tableJobSetUp(this.positionCode);
@@ -543,7 +541,7 @@ public class JobModificationPage extends javax.swing.JFrame {
             EmployeeJobAssignation.employeeJobAssignation.dispose();
         }
         
-        BE.toEmployeeJobAssignation(this.user, this.employeeId, this.jobId, this.complaint, false);
+        BE.toEmployeeJobAssignation(this.BE, this.employeeId, this.jobId, this.complaint, false);
         this.dispose();
     }//GEN-LAST:event_backBTNActionPerformed
     

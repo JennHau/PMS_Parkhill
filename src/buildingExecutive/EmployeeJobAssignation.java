@@ -18,7 +18,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.Complaints;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 
 /**
  *
@@ -26,10 +25,9 @@ import pms_parkhill_residence.Users;
  */
 public class EmployeeJobAssignation extends javax.swing.JFrame {
     public static EmployeeJobAssignation employeeJobAssignation;
-    BuildingExecutive BE = new BuildingExecutive();
+    private final BuildingExecutive BE;
     FileHandling fileHandling = new FileHandling();
     
-    private Users user;
     private Complaints complaint;
     
     // Remove unnecessary data
@@ -48,31 +46,33 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
     private DefaultTableModel employeeJobTable;
     /**
      * Creates new form EmployeeJobAssignation
-     * @param user
+     * @param BE
      * @param employeeID
      * @param jobId
      * @param complaint
      * @param complaintsPage
      * @throws java.io.IOException
      */
-    public EmployeeJobAssignation(Users user, String employeeID, String jobId, Complaints complaint, boolean complaintsPage) throws IOException {
+    public EmployeeJobAssignation(BuildingExecutive BE, String employeeID, String jobId, Complaints complaint, boolean complaintsPage) throws IOException {
         employeeJobAssignation = this;
+        this.BE = BE;
+        this.complaint = complaint;
+        setSelectedEmployee(employeeID, jobId);
+        setFromComplaintsPage(complaintsPage);
+        
         initComponents();
-        runDefaultSetUp(user, employeeID, jobId, complaint, complaintsPage);
+        runDefaultSetUp();
     }
 
-    private void runDefaultSetUp(Users user, String employeeID, String jobId, Complaints complaint, boolean complaintsPage) throws IOException {
-        this.user = user;
-        this.complaint = complaint;
+    private void runDefaultSetUp() throws IOException {
         employeeJobTable = (DefaultTableModel) assignedJobTable.getModel();
         
         setWindowIcon();
-        setSelectedEmployee(employeeID, jobId);
         setCurrentBE();
         if (complaint!=null) {
             setComplaintsId(complaint.getComplaintID());
         }
-        setFromComplaintsPage(complaintsPage);
+        
         jobComboBoxSetUp();
         setJobFormTable();
     }
@@ -94,7 +94,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
     }
 
     private void setCurrentBE() {
-        this.currentBEid = user.getUserID();
+        this.currentBEid = BE.getUserID();
     }
 
     // employeeDetails[userID, email, fullName, phoneNo, position]
@@ -977,7 +977,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
     private void editJobBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editJobBTNActionPerformed
         try {
             // TODO add your handling code here:
-            BE.toJobModificationPage(this.user, selectedEmployeePosCode, this.jobID, this.complaint, this.selectedEmployeeId);
+            BE.toJobModificationPage(this.BE, selectedEmployeePosCode, this.jobID, this.complaint, this.selectedEmployeeId);
         } catch (IOException ex) {
             Logger.getLogger(EmployeeJobAssignation.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1047,7 +1047,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         if (BuildingExecutiveJobManagement.BEjobManagement != null) {
             BuildingExecutiveJobManagement.BEjobManagement.dispose();
         }
-        BE.toJobManagement(this, user, this.complaint, fromComplaintsPage);
+        BE.toJobManagement(this, BE, this.complaint, fromComplaintsPage);
     }//GEN-LAST:event_backBTNActionPerformed
 
     private void assignedJobTableMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_assignedJobTableMouseEntered

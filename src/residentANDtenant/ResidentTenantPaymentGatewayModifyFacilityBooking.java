@@ -14,7 +14,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.Facility;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 
 /**
  *
@@ -22,20 +21,19 @@ import pms_parkhill_residence.Users;
  */
 public class ResidentTenantPaymentGatewayModifyFacilityBooking extends javax.swing.JFrame {
     public static ResidentTenantPaymentGatewayModifyFacilityBooking rtPayFacMod;
-    ResidentTenant RT = new ResidentTenant();
-    private final Users user;
+    private final ResidentTenant RT;
     private final Facility fb;
     
     /**
      * Creates new form homePage
-     * @param user
+     * @param RT
      * @param bookingList
      * @param fb
      */
-    public ResidentTenantPaymentGatewayModifyFacilityBooking(Users user, List<String> bookingList, Facility fb) {
+    public ResidentTenantPaymentGatewayModifyFacilityBooking(ResidentTenant RT, List<String> bookingList, Facility fb) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.RT = RT;
         this.bookingList = bookingList;
         this.fb = fb;
         setDefault();
@@ -372,13 +370,12 @@ public class ResidentTenantPaymentGatewayModifyFacilityBooking extends javax.swi
     private String totalPending;
     
     private void setDefault() {
-        
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
         for(int i = 0; i<bookingList.size(); i++) {
             String[] bookingDetails = bookingList.get(i).split(";");
             this.bookingID = bookingDetails[0];
-            this.facilityID = bookingDetails[1];
-            this.facilityName = bookingDetails[2];
+            this.facilityID = this.fb.getFacilityID();
+            this.facilityName = this.fb.getFacilityName();
             String startTime = bookingDetails[3];
             String endTime = bookingDetails[4];
             this.date = bookingDetails[5];
@@ -440,7 +437,7 @@ public class ResidentTenantPaymentGatewayModifyFacilityBooking extends javax.swi
                             +";"+ totalPrice +";"+ String.valueOf(LocalDate.now()) +";");
                 }
                 
-                RT.toPaymentCredential(user, totalPending, newData, true, true);
+                RT.toPaymentCredential(RT, totalPending, newData, true, true);
             }
         }
     }//GEN-LAST:event_bookBtActionPerformed
