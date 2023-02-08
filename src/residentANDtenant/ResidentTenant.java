@@ -34,6 +34,8 @@ public class ResidentTenant extends Users {
     
     public String[] visitorPassStatus = {"Registered", "Checked-In", "Checked-Out"};
     
+    public ResidentTenant() {}
+    
     public ResidentTenant(String userID, String email, String password, String firstName,
                  String lastName, String identificationNo, String gender,
                  String phoneNo, String unitNo) {

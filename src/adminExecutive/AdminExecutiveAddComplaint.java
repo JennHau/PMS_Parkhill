@@ -19,11 +19,12 @@ public class AdminExecutiveAddComplaint extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param AE
      */
-    public AdminExecutiveAddComplaint(Users user) {
+    public AdminExecutiveAddComplaint(AdminExecutive AE) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.AE = AE;
         setUnitComboBox();
         AutoCompleteDecorator.decorate(unitNoCB);
     }
@@ -226,11 +227,10 @@ public class AdminExecutiveAddComplaint extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     FileHandling fh = new FileHandling();
-    AdminExecutive ae = new AdminExecutive();
-    private final Users user;
+    private final AdminExecutive AE;
     
     private void setUnitComboBox() {
-        List<String> availableUnit = ae.extractAllProperties();
+        List<String> availableUnit = AE.extractAllProperties();
         
         for (int i = 0; i<availableUnit.size(); i++) {
             String[] unitDetails = availableUnit.get(i).split(";");
@@ -250,14 +250,14 @@ public class AdminExecutiveAddComplaint extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
             
                 if(result == JOptionPane.YES_OPTION){
-                    ae.fileComplaint(complainerID.toLowerCase(), desc);
+                    AE.fileComplaint(complainerID.toLowerCase(), desc);
                     JOptionPane.showMessageDialog (null, "Complaint has been filed!", 
                                     "FILE COMPLAINT", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
                     if (AdminExecutiveComplaintManagement.adeComplaint != null) {
                         AdminExecutiveComplaintManagement.adeComplaint.dispose();
                     }   
-                    new AdminExecutiveComplaintManagement(user).setVisible(true);
+                    new AdminExecutiveComplaintManagement(AE).setVisible(true);
                 }
         
     }//GEN-LAST:event_addBtActionPerformed
@@ -265,7 +265,7 @@ public class AdminExecutiveAddComplaint extends javax.swing.JFrame {
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveResidentTManagement(user).setVisible(true);
+        new AdminExecutiveResidentTManagement(AE).setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
     private void complainerCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_complainerCBActionPerformed
@@ -301,7 +301,7 @@ public class AdminExecutiveAddComplaint extends javax.swing.JFrame {
     private void setComplainerCB() {
         complainerCB.removeAllItems();
         complainerCB.addItem("-PLEASE SELECT-");
-        List<String> availableComplainer = ae.extractAvailableComplainer(
+        List<String> availableComplainer = AE.extractAvailableComplainer(
                 (String)unitNoCB.getSelectedItem());
         
         for (String complainers : availableComplainer) {

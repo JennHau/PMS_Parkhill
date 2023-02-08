@@ -23,10 +23,10 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
      * @param status
      */
     public AdminExecutiveModifyComplaint(String complaintID, String complainerID,
-            String status, Users user) {
+            String status, AdminExecutive AE) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.AE = AE;
         this.status = status; this.complaintID = complaintID;
         this.complainerID = complainerID;
         setButton();
@@ -262,12 +262,11 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private final Users user;
+    private final AdminExecutive AE;
     
     String status; String complaintID; String complainerID;
     String complaintDesc;
     FileHandling fh = new FileHandling();
-    AdminExecutive ae = new AdminExecutive();
     
     private void setButton() {
         if (status.equals("Pending")) {
@@ -279,7 +278,7 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
     private void setDefault() {
         complaintIDLabel.setText(complaintID.toUpperCase());
         
-        List<String> complaintDetails = ae.extractComplaintDetails();
+        List<String> complaintDetails = AE.extractComplaintDetails();
         
         for (String complaintDetail : complaintDetails) {
             String[] cDetails = complaintDetail.split(";");
@@ -291,7 +290,7 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
             }
         }
         
-        List<String> complainerDetails = ae.getComplainerUnitIDName
+        List<String> complainerDetails = AE.getComplainerUnitIDName
                                 (complainerID.toLowerCase());
         for (String cDetail : complainerDetails) {
             String[] cDetails = cDetail.split(";");
@@ -312,7 +311,7 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
         JOptionPane.QUESTION_MESSAGE);
 
         if(result == JOptionPane.YES_OPTION){
-            ae.modifyComplaint(complaintID, complainerID.toLowerCase(),
+            AE.modifyComplaint(complaintID, complainerID.toLowerCase(),
                     complaintDetailsTA.getText());
             JOptionPane.showMessageDialog (null, "Complaint has been updated!", 
                             "MODIFY COMPLAINT", JOptionPane.INFORMATION_MESSAGE);
@@ -320,7 +319,7 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
             if (AdminExecutiveComplaintManagement.adeComplaint != null) {
                 AdminExecutiveComplaintManagement.adeComplaint.dispose();
             }  
-            new AdminExecutiveComplaintManagement(user).setVisible(true);
+            new AdminExecutiveComplaintManagement(AE).setVisible(true);
         }
     }//GEN-LAST:event_modifyBtActionPerformed
 
@@ -349,14 +348,14 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
         JOptionPane.QUESTION_MESSAGE);
 
         if(result == JOptionPane.YES_OPTION){
-            ae.deleteComplaint(complaintID);
+            AE.deleteComplaint(complaintID);
             JOptionPane.showMessageDialog (null, "Complaint has been deleted!", 
                             "DELETE COMPLAINT", JOptionPane.INFORMATION_MESSAGE);
             dispose();
             if (AdminExecutiveComplaintManagement.adeComplaint != null) {
                 AdminExecutiveComplaintManagement.adeComplaint.dispose();
             }  
-            new AdminExecutiveComplaintManagement(user).setVisible(true);
+            new AdminExecutiveComplaintManagement(AE).setVisible(true);
         }
     }//GEN-LAST:event_deleteBt1ActionPerformed
     

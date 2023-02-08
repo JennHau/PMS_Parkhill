@@ -4,12 +4,17 @@
  */
 package accountExecutive;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.List;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.HomePage;
 import pms_parkhill_residence.Users;
 
@@ -21,13 +26,15 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param AE
      */
-    public AccountExecutiveIssueInvoice(Users user) {
+    public AccountExecutiveIssueInvoice(AccountExecutive AE) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.AE = AE;
         setCurrentProfile();
         setTable();
+        setTableDesign();
     }
 
     /**
@@ -45,7 +52,43 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if(columnIndex == 5){
+
+                    if(value.equals("Issue Invoice"))
+                    {
+
+                        componenet.setBackground(new Color(0,70,126));
+                        componenet.setForeground(new Color(255, 255, 255));
+
+                    }
+
+                }
+
+                else {
+                    if (rowIndex%2 == 0) {
+                        componenet.setBackground(new Color(249, 249, 249));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    } else {
+                        componenet.setBackground(new Color(225, 225, 225));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    }
+
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         jLabel13 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
@@ -120,6 +163,7 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
         jLabel14.setForeground(new java.awt.Color(102, 102, 102));
         jLabel14.setText("ISSUE INVOICE");
 
+        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -136,6 +180,8 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setIntercellSpacing(new java.awt.Dimension(5, 5));
+        jTable1.setRowHeight(30);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -657,10 +703,56 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private final Users user;
+    private final AccountExecutive AE;
+    
+    private void setTableDesign() {
+        // design for the table header
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setBackground(new Color(13, 24, 42));
+        headerRenderer.setHorizontalAlignment(jLabel13.CENTER);
+        headerRenderer.setForeground(new Color(255, 255, 255));
+        for (int i = 0; i < jTable1.getModel().getColumnCount(); i++) {
+            jTable1.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
+        
+        // design for the table row
+        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
+        rowRenderer.setHorizontalAlignment(jLabel13.CENTER);
+        for (int i = 0; i < jTable1.getModel().getColumnCount(); i++) {
+            if (i != 1) {
+                jTable1.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
+            }
+        }
+        
+        TableColumnModel columnModel = jTable1.getColumnModel();
+        // set first column width of the table to suitable value
+        columnModel.getColumn(0).setMaxWidth(60);
+        columnModel.getColumn(0).setMinWidth(60);
+        columnModel.getColumn(0).setPreferredWidth(60);
+
+        columnModel.getColumn(1).setMaxWidth(300);
+        columnModel.getColumn(1).setMinWidth(300);
+        columnModel.getColumn(1).setPreferredWidth(300);
+
+        columnModel.getColumn(2).setMaxWidth(150);
+        columnModel.getColumn(2).setMinWidth(150);
+        columnModel.getColumn(2).setPreferredWidth(150);
+
+        columnModel.getColumn(3).setMaxWidth(150);
+        columnModel.getColumn(3).setMinWidth(150);
+        columnModel.getColumn(3).setPreferredWidth(150);
+
+        columnModel.getColumn(4).setMaxWidth(150);
+        columnModel.getColumn(4).setMinWidth(150);
+        columnModel.getColumn(4).setPreferredWidth(150);
+
+        columnModel.getColumn(5).setMaxWidth(150);
+        columnModel.getColumn(5).setMinWidth(150);
+        columnModel.getColumn(5).setPreferredWidth(150);
+    }
     
     private void setCurrentProfile() {
-        usernameLabel.setText(user.getFirstName() +" "+ user.getLastName());
+        usernameLabel.setText(AE.getFirstName() +" "+ AE.getLastName());
     }
     
     private void jLabel15MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseEntered
@@ -670,7 +762,7 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
 
     private void jLabel15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseClicked
         // TODO add your handling code here:
-        new AccountExecutiveAddFeeType(user).setVisible(true);
+        new AccountExecutiveAddFeeType(AE).setVisible(true);
         dispose();
     }//GEN-LAST:event_jLabel15MouseClicked
 
@@ -681,7 +773,7 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
 
     private void jPanel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseClicked
         // TODO add your handling code here:
-        new AccountExecutiveAddFeeType(user).setVisible(true);
+        new AccountExecutiveAddFeeType(AE).setVisible(true);
         dispose();
     }//GEN-LAST:event_jPanel5MouseClicked
 
@@ -692,7 +784,7 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
 
     private void jLabel17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseClicked
         // TODO add your handling code here:
-        new AccountExecutiveFeeTypeSetting(user).setVisible(true);
+        new AccountExecutiveFeeTypeSetting(AE).setVisible(true);
         dispose();
     }//GEN-LAST:event_jLabel17MouseClicked
 
@@ -711,7 +803,7 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
             fw.write(feeType +";"+ target +";");
             fw.flush(); bw.flush(); fw.close(); bw.close();
             dispose();
-            new AccountExecutiveIssueInvoiceDetail(user).setVisible(true);
+            new AccountExecutiveIssueInvoiceDetail(AE).setVisible(true);
             } 
         } catch (Exception e) {
             e.printStackTrace();
@@ -751,7 +843,7 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
     private void paymentLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutivePayment(user).setVisible(true);
+        new AccountExecutivePayment(AE).setVisible(true);
     }//GEN-LAST:event_paymentLabelMouseClicked
 
     private void paymentLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentLabelMouseEntered
@@ -762,7 +854,7 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
     private void paymentPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentPanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutivePayment(user).setVisible(true);
+        new AccountExecutivePayment(AE).setVisible(true);
     }//GEN-LAST:event_paymentPanelMouseClicked
 
     private void paymentPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentPanelMouseEntered
@@ -773,7 +865,7 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
     private void issueReceiptLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueReceipt(user).setVisible(true);
+        new AccountExecutiveIssueReceipt(AE).setVisible(true);
     }//GEN-LAST:event_issueReceiptLabelMouseClicked
 
     private void issueReceiptLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptLabelMouseEntered
@@ -788,7 +880,7 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
     private void issueReceiptPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptPanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueReceipt(user).setVisible(true);
+        new AccountExecutiveIssueReceipt(AE).setVisible(true);
     }//GEN-LAST:event_issueReceiptPanelMouseClicked
 
     private void issueReceiptPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptPanelMouseEntered
@@ -799,7 +891,7 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
     private void outstandingFeeLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeeLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueOutstandingFee(user).setVisible(true);
+        new AccountExecutiveIssueOutstandingFee(AE).setVisible(true);
     }//GEN-LAST:event_outstandingFeeLabelMouseClicked
 
     private void outstandingFeeLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeeLabelMouseEntered
@@ -810,7 +902,7 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
     private void outstandingFeePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueOutstandingFee(user).setVisible(true);
+        new AccountExecutiveIssueOutstandingFee(AE).setVisible(true);
     }//GEN-LAST:event_outstandingFeePanelMouseClicked
 
     private void outstandingFeePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeePanelMouseEntered
@@ -843,7 +935,7 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
     private void viewProfileLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveViewProfile(user).setVisible(true);
+        new AccountExecutiveViewProfile(AE).setVisible(true);
     }//GEN-LAST:event_viewProfileLabelMouseClicked
 
     private void viewProfileLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileLabelMouseEntered
@@ -859,7 +951,7 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
     private void issueStatementLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueStatement(user).setVisible(true);
+        new AccountExecutiveIssueStatement(AE).setVisible(true);
     }//GEN-LAST:event_issueStatementLabelMouseClicked
 
     private void issueStatementLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementLabelMouseEntered
@@ -870,7 +962,7 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
     private void issueStatementPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementPanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueStatement(user).setVisible(true);
+        new AccountExecutiveIssueStatement(AE).setVisible(true);
     }//GEN-LAST:event_issueStatementPanelMouseClicked
 
     private void issueStatementPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementPanelMouseEntered
@@ -915,27 +1007,26 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
     private void jLabel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveDashboard(user).setVisible(true);
+        new AccountExecutiveDashboard(AE).setVisible(true);
     }//GEN-LAST:event_jLabel20MouseClicked
 
     private void jPanel16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel16MouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveDashboard(user).setVisible(true);
+        new AccountExecutiveDashboard(AE).setVisible(true);
     }//GEN-LAST:event_jPanel16MouseClicked
 
     private void viewProfilePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfilePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveViewProfile(user).setVisible(true);
+        new AccountExecutiveViewProfile(AE).setVisible(true);
     }//GEN-LAST:event_viewProfilePanelMouseClicked
 
     public void setTable() {
         try{
             DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
             tableModel.setRowCount(0);
-            AccountExecutive ae = new AccountExecutive();
-            List<String> feeTypesList = ae.extractFeeTypes("feeTypes.txt");
+            List<String> feeTypesList = AE.extractFeeTypes("feeTypes.txt");
             String[] feeTypes = new String[feeTypesList.size()];
             feeTypesList.toArray(feeTypes);
             for (int i=0; i<feeTypesList.size(); i++) {

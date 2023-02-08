@@ -21,10 +21,10 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public AdminExecutiveAddResidentTenant(Users user) {
+    public AdminExecutiveAddResidentTenant(AdminExecutive AE) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.AE = AE;
         tenantRB.setSelected(true);
         setDefault();
     }
@@ -413,17 +413,16 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     FileHandling fh = new FileHandling();
-    AdminExecutive ae = new AdminExecutive();
-    private final Users user;
+    private final AdminExecutive AE;
     
     private void setDefault() {
         String latestUserID = "";
         if (typeCB.getSelectedItem().equals("Commercial")) {
-            latestUserID = ae.getLatestResidentTenantID("Commercial");
+            latestUserID = AE.getLatestResidentTenantID("Commercial");
         } else if (typeCB.getSelectedItem().equals("Residential") && tenantRB.isSelected()){
-            latestUserID = ae.getLatestResidentTenantID("Tenant");
+            latestUserID = AE.getLatestResidentTenantID("Tenant");
         } else if (typeCB.getSelectedItem().equals("Residential") && residentRB.isSelected()){
-            latestUserID = ae.getLatestResidentTenantID("Resident");
+            latestUserID = AE.getLatestResidentTenantID("Resident");
         }
         userIDTF.setText(latestUserID.toUpperCase());
         setUnitComboBox();
@@ -434,11 +433,11 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
         List<String> availableUnit = new ArrayList<>();
         
         if (typeCB.getSelectedItem().equals("Commercial")) {
-            availableUnit = ae.getAvailableUnit("Commercial");
+            availableUnit = AE.getAvailableUnit("Commercial");
         } else if (typeCB.getSelectedItem().equals("Residential") && tenantRB.isSelected()){
-            availableUnit = ae.getAvailableUnit("Tenant");
+            availableUnit = AE.getAvailableUnit("Tenant");
         } else if (typeCB.getSelectedItem().equals("Residential") && residentRB.isSelected()){
-            availableUnit = ae.getAvailableUnit("Resident");
+            availableUnit = AE.getAvailableUnit("Resident");
         }
         
         for (int i = 0; i<availableUnit.size(); i++) {
@@ -476,7 +475,7 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
                 
                 if(result == JOptionPane.YES_OPTION){
-                    ae.userRegistration(userID, email, password, firstName,
+                    AE.userRegistration(userID, email, password, firstName,
                             lastName, idNo, gender, phoneNo, unitNo);
                     JOptionPane.showMessageDialog (null, "New user has been added!", 
                                     "USER REGISTRATION", JOptionPane.INFORMATION_MESSAGE);
@@ -484,7 +483,7 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
                     if (AdminExecutiveResidentTManagement.adeRTManagement != null) {
                         AdminExecutiveResidentTManagement.adeRTManagement.dispose();
                     }   
-                    new AdminExecutiveResidentTManagement(user).setVisible(true);
+                    new AdminExecutiveResidentTManagement(AE).setVisible(true);
                 }
             } else {
                 warningMessage.setText("Invalid email or email existed!");

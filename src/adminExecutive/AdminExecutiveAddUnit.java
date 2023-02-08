@@ -10,7 +10,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 
 /**
  *
@@ -20,11 +19,12 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param AE
      */
-    public AdminExecutiveAddUnit(Users user) {
+    public AdminExecutiveAddUnit(AdminExecutive AE) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.AE = AE;
         setTable();
     }
 
@@ -265,7 +265,7 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     FileHandling fh = new FileHandling();
-    private final Users user;
+    private final AdminExecutive AE;
     
     private void unitNoTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unitNoTFActionPerformed
         // TODO add your handling code here:
@@ -283,8 +283,7 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
         
         if (!newUnitNo.equals("") && !squareFoot.equals("")) {
             warningMessage.setText("");
-            AdminExecutive ae = new AdminExecutive();
-            boolean check = ae.checkUnitAvailability(newUnitNo.toLowerCase());
+            boolean check = AE.checkUnitAvailability(newUnitNo.toLowerCase());
             
             if (check) {
                 int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
@@ -312,7 +311,7 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
                     if (AdminExecutiveUnitManagement.adeUnitManage != null) {
                         AdminExecutiveUnitManagement.adeUnitManage.dispose();
                     }   
-                    new AdminExecutiveUnitManagement(user).setVisible(true);
+                    new AdminExecutiveUnitManagement(AE).setVisible(true);
                 }
                 
             } else {
@@ -337,9 +336,8 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
         tableModel.setRowCount(0);
             
-        AdminExecutive ae = new AdminExecutive();
         List<String> availableList = 
-                ae.extractAllProperties(String.valueOf(typeCB.getSelectedItem())
+                AE.extractAllProperties(String.valueOf(typeCB.getSelectedItem())
                                     .toLowerCase());
         
         String[] propertiesArray = new String[availableList.size()];

@@ -17,14 +17,18 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param invoiceNo
+     * @param unitNo
+     * @param total
+     * @param AE
      */
-    public AccountExecutivePaymentGateway(String invoiceNo, String unitNo, String total, Users user) {
+    public AccountExecutivePaymentGateway(String invoiceNo, String unitNo, String total, AccountExecutive AE) {
         initComponents();
         setWindowIcon();
         this.invoiceNo = invoiceNo;
         this.unitNo = unitNo;
         this.total = total;
-        this.user = user;
+        this.AE = AE;
         setFixData();
         setPayerCB();
     }
@@ -406,7 +410,7 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
     private final String invoiceNo;
     private final String unitNo;
     private final String total;
-    private final Users user;
+    private final AccountExecutive AE;
     
     private void userIDTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userIDTFActionPerformed
         // TODO add your handling code here:
@@ -435,15 +439,14 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
             JOptionPane.QUESTION_MESSAGE);
 
             if(result == JOptionPane.YES_OPTION){
-                AccountExecutive ae = new AccountExecutive();
-                ae.storePayment(invoiceNo, userIDTF.getText());
+                AE.storePayment(invoiceNo, userIDTF.getText());
                 JOptionPane.showMessageDialog (null, "Payment has been made successfully!", 
                     "PAYMENT", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
                 if (AccountExecutiveMakePayment.aceMakePayment != null) {
                     AccountExecutiveMakePayment.aceMakePayment.dispose();
                 }
-                new AccountExecutivePayment(user).setVisible(true);
+                new AccountExecutivePayment(AE).setVisible(true);
             }   
         } else {
             warningLabel.setText("Please select an active payer!");
@@ -462,8 +465,7 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
     private void payerCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payerCBActionPerformed
         // TODO add your handling code here:
         if (!payerCB.getSelectedItem().equals("-Please Select-")) {
-            AccountExecutive ae = new AccountExecutive();
-            List<String> userFullDetails =ae.extractUnitUsersDetails
+            List<String> userFullDetails = AE.extractUnitUsersDetails
                 (String.valueOf(payerCB.getSelectedItem()));
             String[] userDetails = new String[userFullDetails.size()];
             userFullDetails.toArray(userDetails);
@@ -501,8 +503,7 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
    }
     
     private void setPayerCB() {
-        AccountExecutive ae = new AccountExecutive();
-        List<String> userName = ae.extractUnitUsers(unitNo);
+        List<String> userName = AE.extractUnitUsers(unitNo);
         payerCB.addItem("-Please Select-");
         for (String userName1 : userName) {
             payerCB.addItem(userName1);

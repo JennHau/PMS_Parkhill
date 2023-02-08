@@ -1,1 +1,1 @@
-Water;Residential;
+Rental Fee;Commercial;

@@ -23,10 +23,10 @@ public class AdminExecutiveModifyFacility extends javax.swing.JFrame {
      * Creates new form homePage
      * @param facilityID
      */
-    public AdminExecutiveModifyFacility(String facilityID, Users user) {
+    public AdminExecutiveModifyFacility(String facilityID, AdminExecutive AE) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.AE = AE;
         this.facilityID = facilityID;
         setDefault();
     }
@@ -443,10 +443,9 @@ public class AdminExecutiveModifyFacility extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    String facilityID; private final Users user;
+    String facilityID; private final AdminExecutive AE;
     
     FileHandling fh = new FileHandling();
-    AdminExecutive ae = new AdminExecutive();
     FacilityBookingPaymentByHour fb = new FacilityBookingPaymentByHour();
     
     private void setDefault() {
@@ -567,14 +566,14 @@ public class AdminExecutiveModifyFacility extends javax.swing.JFrame {
         JOptionPane.YES_NO_OPTION,
         JOptionPane.QUESTION_MESSAGE);
         if(result == JOptionPane.YES_OPTION){
-            ae.deleteFacility(fctID, fctName);
+            AE.deleteFacility(fctID, fctName);
             JOptionPane.showMessageDialog (null, "Facility has been deleted!", 
                             "DELETE FACILITY", JOptionPane.INFORMATION_MESSAGE);
             dispose();
             if (AdminExecutiveFacilityManagement.adeFacility != null) {
                             AdminExecutiveFacilityManagement.adeFacility.dispose();
                         }
-            new AdminExecutiveFacilityManagement(user).setVisible(true); 
+            new AdminExecutiveFacilityManagement(AE).setVisible(true); 
         }
         
     }//GEN-LAST:event_deleteBtActionPerformed
@@ -593,7 +592,7 @@ public class AdminExecutiveModifyFacility extends javax.swing.JFrame {
         String quantity = String.valueOf(quantitySp.getValue());
         
         List<String> newData = new ArrayList<>();
-        boolean check = ae.checkAddFacilityValidation(fctName, fctID);
+        boolean check = AE.checkAddFacilityValidation(fctName, fctID);
         
         if(!fctName.equals("") && !startHour.equals("-PLEASE SELECT-") &&
                 !endHour.equals("-PLEASE SELECT-") && !imageNameLabel.equals("")) {
@@ -620,7 +619,7 @@ public class AdminExecutiveModifyFacility extends javax.swing.JFrame {
                         if(!imageNameLabel.getText().startsWith("Current: ")) {
                             fh.checkUploadedImage(fctName);
                         }
-                        ae.deleteFacility(fctID, "");
+                        AE.deleteFacility(fctID, "");
                         fh.fileWrite("facility.txt", true, newData);
                         JOptionPane.showMessageDialog (null, "Facility has been modified!", 
                                         "MODIFY FACILITY", JOptionPane.INFORMATION_MESSAGE);
@@ -628,7 +627,7 @@ public class AdminExecutiveModifyFacility extends javax.swing.JFrame {
                         if (AdminExecutiveFacilityManagement.adeFacility != null) {
                             AdminExecutiveFacilityManagement.adeFacility.dispose();
                         }
-                        new AdminExecutiveFacilityManagement(user).setVisible(true); 
+                        new AdminExecutiveFacilityManagement(AE).setVisible(true); 
                     }
                 } else if(payment.equals("false")) {
                     warningMessage.setText("");
@@ -645,7 +644,7 @@ public class AdminExecutiveModifyFacility extends javax.swing.JFrame {
                         if(!imageNameLabel.getText().startsWith("Current: ")) {
                             fh.checkUploadedImage(fctName);
                         }
-                        ae.deleteFacility(fctID, "");
+                        AE.deleteFacility(fctID, "");
                         fh.fileWrite("facility.txt", true, newData);
                         JOptionPane.showMessageDialog (null, "Facility has been modified!", 
                                         "MODIFY FACILITY", JOptionPane.INFORMATION_MESSAGE);
@@ -653,7 +652,7 @@ public class AdminExecutiveModifyFacility extends javax.swing.JFrame {
                         if (AdminExecutiveFacilityManagement.adeFacility != null) {
                             AdminExecutiveFacilityManagement.adeFacility.dispose();
                         }
-                        new AdminExecutiveFacilityManagement(user).setVisible(true);
+                        new AdminExecutiveFacilityManagement(AE).setVisible(true);
                     }
                 }
             } else {

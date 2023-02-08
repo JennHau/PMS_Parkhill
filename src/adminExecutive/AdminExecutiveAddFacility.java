@@ -21,10 +21,10 @@ public class AdminExecutiveAddFacility extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public AdminExecutiveAddFacility(Users user) {
+    public AdminExecutiveAddFacility(AdminExecutive AE) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.AE = AE;
         setDefault();
     }
 
@@ -427,11 +427,10 @@ public class AdminExecutiveAddFacility extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     FileHandling fh = new FileHandling();
-    AdminExecutive ae = new AdminExecutive();
-    private final Users user;
+    private final AdminExecutive AE;
     
     private void setDefault() {
-        String latestFacilityID = ae.getLatestID("facility.txt", "fct");
+        String latestFacilityID = AE.getLatestID("facility.txt", "fct");
         facilityIDTF.setText(latestFacilityID.toUpperCase());
     }
     
@@ -454,7 +453,7 @@ public class AdminExecutiveAddFacility extends javax.swing.JFrame {
         String quantity = String.valueOf(quantitySp.getValue());
         
         List<String> newData = new ArrayList<>();
-        boolean check = ae.checkAddFacilityValidation(fctName, fctID);
+        boolean check = AE.checkAddFacilityValidation(fctName, fctID);
         
         if(!fctName.equals("") && !startHour.equals("-PLEASE SELECT-") &&
                 !endHour.equals("-PLEASE SELECT-") && !imageName.equals("")) {
@@ -485,7 +484,7 @@ public class AdminExecutiveAddFacility extends javax.swing.JFrame {
                         if (AdminExecutiveFacilityManagement.adeFacility != null) {
                             AdminExecutiveFacilityManagement.adeFacility.dispose();
                         }
-                        new AdminExecutiveFacilityManagement(user).setVisible(true); 
+                        new AdminExecutiveFacilityManagement(AE).setVisible(true); 
                     }
                 } else if(payment.equals("false")) {
                     warningMessage.setText("");
@@ -506,7 +505,7 @@ public class AdminExecutiveAddFacility extends javax.swing.JFrame {
                         if (AdminExecutiveFacilityManagement.adeFacility != null) {
                             AdminExecutiveFacilityManagement.adeFacility.dispose();
                         }
-                        new AdminExecutiveFacilityManagement(user).setVisible(true);
+                        new AdminExecutiveFacilityManagement(AE).setVisible(true);
                     }
                 }
             } else {

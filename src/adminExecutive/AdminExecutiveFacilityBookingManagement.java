@@ -20,11 +20,12 @@ public class AdminExecutiveFacilityBookingManagement extends javax.swing.JFrame 
 
     /**
      * Creates new form homePage
+     * @param AE
      */
-    public AdminExecutiveFacilityBookingManagement(Users user) {
+    public AdminExecutiveFacilityBookingManagement(AdminExecutive AE) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.AE = AE;
         setCurrentProfile();
         setTable();
     }
@@ -635,10 +636,10 @@ public class AdminExecutiveFacilityBookingManagement extends javax.swing.JFrame 
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private final Users user;
+    private final AdminExecutive AE;
     
     private void setCurrentProfile() {
-        usernameLabel.setText(user.getFirstName() +" "+ user.getLastName());
+        usernameLabel.setText(AE.getFirstName() +" "+ AE.getLastName());
     }
     
     private void clearbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearbtActionPerformed
@@ -660,7 +661,7 @@ public class AdminExecutiveFacilityBookingManagement extends javax.swing.JFrame 
             String facilityID = String.valueOf(tableModel.getValueAt(row, 0)).toUpperCase();
             String facilityName = String.valueOf(tableModel.getValueAt(row, 1));
             dispose();
-            new AdminExecutiveViewFacilityBooking(facilityID, facilityName, user).setVisible(true);
+            new AdminExecutiveViewFacilityBooking(facilityID, facilityName, AE).setVisible(true);
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -696,7 +697,7 @@ public class AdminExecutiveFacilityBookingManagement extends javax.swing.JFrame 
     private void dashboardLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveDashboard(user).setVisible(true);
+        new AdminExecutiveDashboard(AE).setVisible(true);
     }//GEN-LAST:event_dashboardLabelMouseClicked
 
     private void dashboardLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseEntered
@@ -707,7 +708,7 @@ public class AdminExecutiveFacilityBookingManagement extends javax.swing.JFrame 
     private void dashboardPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveDashboard(user).setVisible(true);
+        new AdminExecutiveDashboard(AE).setVisible(true);
     }//GEN-LAST:event_dashboardPanelMouseClicked
 
     private void dashboardPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanelMouseEntered
@@ -718,7 +719,7 @@ public class AdminExecutiveFacilityBookingManagement extends javax.swing.JFrame 
     private void unitManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unitManageLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveUnitManagement(user).setVisible(true);
+        new AdminExecutiveUnitManagement(AE).setVisible(true);
     }//GEN-LAST:event_unitManageLabelMouseClicked
 
     private void unitManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unitManageLabelMouseEntered
@@ -729,7 +730,7 @@ public class AdminExecutiveFacilityBookingManagement extends javax.swing.JFrame 
     private void unitManagePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unitManagePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveUnitManagement(user).setVisible(true);
+        new AdminExecutiveUnitManagement(AE).setVisible(true);
     }//GEN-LAST:event_unitManagePanelMouseClicked
 
     private void unitManagePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unitManagePanelMouseEntered
@@ -740,7 +741,7 @@ public class AdminExecutiveFacilityBookingManagement extends javax.swing.JFrame 
     private void rTManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rTManageLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveResidentTManagement(user).setVisible(true);
+        new AdminExecutiveResidentTManagement(AE).setVisible(true);
     }//GEN-LAST:event_rTManageLabelMouseClicked
 
     private void rTManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rTManageLabelMouseEntered
@@ -751,7 +752,7 @@ public class AdminExecutiveFacilityBookingManagement extends javax.swing.JFrame 
     private void rTMangePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rTMangePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveResidentTManagement(user).setVisible(true);
+        new AdminExecutiveResidentTManagement(AE).setVisible(true);
     }//GEN-LAST:event_rTMangePanelMouseClicked
 
     private void rTMangePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rTMangePanelMouseEntered
@@ -762,7 +763,7 @@ public class AdminExecutiveFacilityBookingManagement extends javax.swing.JFrame 
     private void complaintManagementMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintManagementMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveComplaintManagement(user).setVisible(true);
+        new AdminExecutiveComplaintManagement(AE).setVisible(true);
     }//GEN-LAST:event_complaintManagementMouseClicked
 
     private void complaintManagementMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintManagementMouseEntered
@@ -777,7 +778,7 @@ public class AdminExecutiveFacilityBookingManagement extends javax.swing.JFrame 
     private void complaintManagementPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintManagementPanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveComplaintManagement(user).setVisible(true);
+        new AdminExecutiveComplaintManagement(AE).setVisible(true);
     }//GEN-LAST:event_complaintManagementPanelMouseClicked
 
     private void complaintManagementPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintManagementPanelMouseEntered
@@ -788,7 +789,7 @@ public class AdminExecutiveFacilityBookingManagement extends javax.swing.JFrame 
     private void employeeManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeManageLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveEmployeeManagement(user).setVisible(true);
+        new AdminExecutiveEmployeeManagement(AE).setVisible(true);
     }//GEN-LAST:event_employeeManageLabelMouseClicked
 
     private void employeeManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeManageLabelMouseEntered
@@ -799,7 +800,7 @@ public class AdminExecutiveFacilityBookingManagement extends javax.swing.JFrame 
     private void employeeManagePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeManagePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveEmployeeManagement(user).setVisible(true);
+        new AdminExecutiveEmployeeManagement(AE).setVisible(true);
     }//GEN-LAST:event_employeeManagePanelMouseClicked
 
     private void employeeManagePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeManagePanelMouseEntered
@@ -832,7 +833,7 @@ public class AdminExecutiveFacilityBookingManagement extends javax.swing.JFrame 
     private void viewProfileLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveViewProfile(user).setVisible(true);
+        new AdminExecutiveViewProfile(AE).setVisible(true);
     }//GEN-LAST:event_viewProfileLabelMouseClicked
 
     private void viewProfileLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileLabelMouseEntered
@@ -848,7 +849,7 @@ public class AdminExecutiveFacilityBookingManagement extends javax.swing.JFrame 
     private void facilityManageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityManageLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveFacilityManagement(user).setVisible(true);
+        new AdminExecutiveFacilityManagement(AE).setVisible(true);
     }//GEN-LAST:event_facilityManageLabelMouseClicked
 
     private void facilityManageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityManageLabelMouseEntered
@@ -859,7 +860,7 @@ public class AdminExecutiveFacilityBookingManagement extends javax.swing.JFrame 
     private void facilityManagePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityManagePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveFacilityManagement(user).setVisible(true);
+        new AdminExecutiveFacilityManagement(AE).setVisible(true);
     }//GEN-LAST:event_facilityManagePanelMouseClicked
 
     private void facilityManagePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityManagePanelMouseEntered
@@ -888,7 +889,7 @@ public class AdminExecutiveFacilityBookingManagement extends javax.swing.JFrame 
     private void viewProfilePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfilePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveViewProfile(user).setVisible(true);
+        new AdminExecutiveViewProfile(AE).setVisible(true);
     }//GEN-LAST:event_viewProfilePanelMouseClicked
     
     private void setWindowIcon() {

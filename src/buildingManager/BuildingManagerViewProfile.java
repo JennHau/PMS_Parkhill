@@ -4,18 +4,13 @@
  */
 package buildingManager;
 
-import adminExecutive.*;
-import accountExecutive.*;
+import buildingExecutive.BuildingExecutive;
 import java.awt.Cursor;
 import java.awt.Toolkit;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.HomePage;
 import pms_parkhill_residence.Users;
 import pms_parkhill_residence.Validation;
-import residentANDtenant.ResidentTenantProfile;
 
 /**
  *
@@ -25,12 +20,13 @@ public class BuildingManagerViewProfile extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param BM
      * @param user
      */
-    public BuildingManagerViewProfile(Users user) {
+    public BuildingManagerViewProfile(BuildingManager BM) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.BM = BM;
         setCurrentProfile();
         profileFormSetUp();
     }
@@ -815,21 +811,21 @@ public class BuildingManagerViewProfile extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private Users user;
+    private BuildingManager BM;
     
     private void setCurrentProfile() {
-        usernameLabel.setText(user.getFirstName() +" "+ user.getLastName());
+        usernameLabel.setText(BM.getFirstName() +" "+ BM.getLastName());
     }
     
     private void profileFormSetUp() {
-            firstNameTF.setText(this.user.getFirstName());
-            lastNameTF.setText(this.user.getLastName());
-            contactTF.setText(this.user.getPhoneNo());
-            emailTF.setText(this.user.getEmail());
-            icTF.setText(this.user.getIdentificationNo());
-            genderCB.setSelectedItem(this.user.getGender());
-            passwordTF.setText(this.user.getPassword());
-            userIDLabel.setText(this.user.getUserID().toUpperCase());
+            firstNameTF.setText(this.BM.getFirstName());
+            lastNameTF.setText(this.BM.getLastName());
+            contactTF.setText(this.BM.getPhoneNo());
+            emailTF.setText(this.BM.getEmail());
+            icTF.setText(this.BM.getIdentificationNo());
+            genderCB.setSelectedItem(this.BM.getGender());
+            passwordTF.setText(this.BM.getPassword());
+            userIDLabel.setText(this.BM.getUserID().toUpperCase());
     }
     
     private void editContactBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editContactBTNActionPerformed
@@ -866,13 +862,13 @@ public class BuildingManagerViewProfile extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
 
                 if(result == JOptionPane.YES_OPTION){
-                    Users user_temp = new Users(userID, email, password, firstName, lastName, idNo, gender, phoneNo);
+                    BuildingManager user_temp = new BuildingManager(userID, email, password, firstName, lastName, idNo, gender, phoneNo);
                     user_temp.modifySelfAccount();
-                    user = new Users(userID.toLowerCase());
+                    BM = user_temp;
                     JOptionPane.showMessageDialog (null, "Personal profile has been updated!", 
                                     "UPDATE PERSONAL PROFILE", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
-                    new BuildingManagerViewProfile(user).setVisible(true);
+                    new BuildingManagerViewProfile(BM).setVisible(true);
                 }
             } else {
                 warningMessage.setText("Invalid password!");
@@ -936,7 +932,7 @@ public class BuildingManagerViewProfile extends javax.swing.JFrame {
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerDashboard(user).setVisible(true);
+        new BuildingManagerDashboard(BM).setVisible(true);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
@@ -947,7 +943,7 @@ public class BuildingManagerViewProfile extends javax.swing.JFrame {
     private void jPanel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerDashboard(user).setVisible(true);
+        new BuildingManagerDashboard(BM).setVisible(true);
     }//GEN-LAST:event_jPanel4MouseClicked
 
     private void jPanel4MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseEntered
@@ -958,7 +954,7 @@ public class BuildingManagerViewProfile extends javax.swing.JFrame {
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerUserManagement(user).setVisible(true);
+        new BuildingManagerUserManagement(BM).setVisible(true);
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void jLabel4MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseEntered
@@ -969,7 +965,7 @@ public class BuildingManagerViewProfile extends javax.swing.JFrame {
     private void jPanel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerUserManagement(user).setVisible(true);
+        new BuildingManagerUserManagement(BM).setVisible(true);
     }//GEN-LAST:event_jPanel7MouseClicked
 
     private void jPanel7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseEntered
@@ -980,7 +976,7 @@ public class BuildingManagerViewProfile extends javax.swing.JFrame {
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerReports(user).setVisible(true);
+        new BuildingManagerReports(BM).setVisible(true);
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jLabel5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseEntered
@@ -991,7 +987,7 @@ public class BuildingManagerViewProfile extends javax.swing.JFrame {
     private void jPanel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerReports(user).setVisible(true);
+        new BuildingManagerReports(BM).setVisible(true);
     }//GEN-LAST:event_jPanel8MouseClicked
 
     private void jPanel8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseEntered
@@ -1002,7 +998,7 @@ public class BuildingManagerViewProfile extends javax.swing.JFrame {
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerBudgetPlanning(user).setVisible(true);
+        new BuildingManagerBudgetPlanning(BM).setVisible(true);
     }//GEN-LAST:event_jLabel6MouseClicked
 
     private void jLabel6MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseEntered
@@ -1013,7 +1009,7 @@ public class BuildingManagerViewProfile extends javax.swing.JFrame {
     private void jPanel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerBudgetPlanning(user).setVisible(true);
+        new BuildingManagerBudgetPlanning(BM).setVisible(true);
     }//GEN-LAST:event_jPanel9MouseClicked
 
     private void jPanel9MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseEntered
@@ -1024,7 +1020,7 @@ public class BuildingManagerViewProfile extends javax.swing.JFrame {
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerTeamStructure(user).setVisible(true);
+        new BuildingManagerTeamStructure(BM).setVisible(true);
     }//GEN-LAST:event_jLabel8MouseClicked
 
     private void jLabel8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseEntered
@@ -1035,7 +1031,7 @@ public class BuildingManagerViewProfile extends javax.swing.JFrame {
     private void jPanel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseClicked
         // TODO add your handling code here:
         dispose();
-        new BuildingManagerTeamStructure(user).setVisible(true);
+        new BuildingManagerTeamStructure(BM).setVisible(true);
     }//GEN-LAST:event_jPanel10MouseClicked
 
     private void jPanel10MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseEntered

@@ -19,10 +19,11 @@ public class BuildingManagerBudgetReport extends javax.swing.JFrame {
     /**
      * Creates new form custReceipt
      * @param year
+     * @param BM
      */
-    public BuildingManagerBudgetReport(String year, Users user) {
+    public BuildingManagerBudgetReport(String year, BuildingManager BM) {
         initComponents();
-        this.user = user;
+        this.BM = BM;
         this.year = year;
         setDefault();
         setTable();
@@ -258,15 +259,14 @@ public class BuildingManagerBudgetReport extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     FileHandling fh = new FileHandling();
-    BuildingManager bm = new BuildingManager();
     String year; float totalPrice;
-    private final Users user;
+    private final BuildingManager BM;
     
     
     private void setDefault() {
         yearLabel.setText(year);
         totalBudgetLabel.setText("RM " + "");
-        reportDataNTime.setText("Report Generated @ " + bm.currentDateTime());
+        reportDataNTime.setText("Report Generated @ " + BM.currentDateTime());
     }
     
     private void setTable() {
@@ -288,7 +288,7 @@ public class BuildingManagerBudgetReport extends javax.swing.JFrame {
                 tableModel.addRow(tbData);
                 totalPrice += Float.parseFloat(budget);
             }
-        } totalBudgetLabel.setText("RM " + bm.currencyFormat(totalPrice));
+        } totalBudgetLabel.setText("RM " + BM.currencyFormat(totalPrice));
                 
     }
     

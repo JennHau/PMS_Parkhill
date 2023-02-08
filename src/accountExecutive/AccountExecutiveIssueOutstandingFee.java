@@ -19,11 +19,12 @@ public class AccountExecutiveIssueOutstandingFee extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param AE
      */
-    public AccountExecutiveIssueOutstandingFee(Users user) {
+    public AccountExecutiveIssueOutstandingFee(AccountExecutive AE) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.AE = AE;
         setCurrentProfile();
         setMonthYearCB();
         setTable();
@@ -612,11 +613,11 @@ public class AccountExecutiveIssueOutstandingFee extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private final Users user;
+    private final AccountExecutive AE;
     public static AccountExecutiveIssueOutstandingFee aceOutstanding;
     
     private void setCurrentProfile() {
-        usernameLabel.setText(user.getFirstName() +" "+ user.getLastName());
+        usernameLabel.setText(AE.getFirstName() +" "+ AE.getLastName());
     }
     
     private void clearbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearbtActionPerformed
@@ -639,14 +640,14 @@ public class AccountExecutiveIssueOutstandingFee extends javax.swing.JFrame {
         
         if (column == 5) {
             String invoiceNo = String.valueOf(tableModel.getValueAt(row, 2));
-            new AccountExecutiveLatePaymentFee(invoiceNo, user).setVisible(true);
+            new AccountExecutiveLatePaymentFee(invoiceNo, AE).setVisible(true);
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void dashboardLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveDashboard(user).setVisible(true);
+        new AccountExecutiveDashboard(AE).setVisible(true);
     }//GEN-LAST:event_dashboardLabelMouseClicked
 
     private void dashboardLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseEntered
@@ -657,7 +658,7 @@ public class AccountExecutiveIssueOutstandingFee extends javax.swing.JFrame {
     private void dashboardPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveDashboard(user).setVisible(true);
+        new AccountExecutiveDashboard(AE).setVisible(true);
     }//GEN-LAST:event_dashboardPanelMouseClicked
 
     private void dashboardPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanelMouseEntered
@@ -668,7 +669,7 @@ public class AccountExecutiveIssueOutstandingFee extends javax.swing.JFrame {
     private void issueInvoiceLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoiceLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueInvoice(user).setVisible(true);
+        new AccountExecutiveIssueInvoice(AE).setVisible(true);
     }//GEN-LAST:event_issueInvoiceLabelMouseClicked
 
     private void issueInvoiceLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoiceLabelMouseEntered
@@ -679,7 +680,7 @@ public class AccountExecutiveIssueOutstandingFee extends javax.swing.JFrame {
     private void issueInvoicePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoicePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueInvoice(user).setVisible(true);
+        new AccountExecutiveIssueInvoice(AE).setVisible(true);
     }//GEN-LAST:event_issueInvoicePanelMouseClicked
 
     private void issueInvoicePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoicePanelMouseEntered
@@ -690,7 +691,7 @@ public class AccountExecutiveIssueOutstandingFee extends javax.swing.JFrame {
     private void paymentLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutivePayment(user).setVisible(true);
+        new AccountExecutivePayment(AE).setVisible(true);
     }//GEN-LAST:event_paymentLabelMouseClicked
 
     private void paymentLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentLabelMouseEntered
@@ -701,7 +702,7 @@ public class AccountExecutiveIssueOutstandingFee extends javax.swing.JFrame {
     private void paymentPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentPanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutivePayment(user).setVisible(true);
+        new AccountExecutivePayment(AE).setVisible(true);
     }//GEN-LAST:event_paymentPanelMouseClicked
 
     private void paymentPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentPanelMouseEntered
@@ -712,7 +713,7 @@ public class AccountExecutiveIssueOutstandingFee extends javax.swing.JFrame {
     private void issueReceiptLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueReceipt(user).setVisible(true);
+        new AccountExecutiveIssueReceipt(AE).setVisible(true);
     }//GEN-LAST:event_issueReceiptLabelMouseClicked
 
     private void issueReceiptLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptLabelMouseEntered
@@ -727,7 +728,7 @@ public class AccountExecutiveIssueOutstandingFee extends javax.swing.JFrame {
     private void issueReceiptPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptPanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueReceipt(user).setVisible(true);
+        new AccountExecutiveIssueReceipt(AE).setVisible(true);
     }//GEN-LAST:event_issueReceiptPanelMouseClicked
 
     private void issueReceiptPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueReceiptPanelMouseEntered
@@ -778,7 +779,7 @@ public class AccountExecutiveIssueOutstandingFee extends javax.swing.JFrame {
     private void viewProfileLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveViewProfile(user).setVisible(true);
+        new AccountExecutiveViewProfile(AE).setVisible(true);
     }//GEN-LAST:event_viewProfileLabelMouseClicked
 
     private void viewProfileLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileLabelMouseEntered
@@ -794,7 +795,7 @@ public class AccountExecutiveIssueOutstandingFee extends javax.swing.JFrame {
     private void issueStatementLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementLabelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueStatement(user).setVisible(true);
+        new AccountExecutiveIssueStatement(AE).setVisible(true);
     }//GEN-LAST:event_issueStatementLabelMouseClicked
 
     private void issueStatementLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementLabelMouseEntered
@@ -805,7 +806,7 @@ public class AccountExecutiveIssueOutstandingFee extends javax.swing.JFrame {
     private void issueStatementPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementPanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveIssueStatement(user).setVisible(true);
+        new AccountExecutiveIssueStatement(AE).setVisible(true);
     }//GEN-LAST:event_issueStatementPanelMouseClicked
 
     private void issueStatementPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementPanelMouseEntered
@@ -841,7 +842,7 @@ public class AccountExecutiveIssueOutstandingFee extends javax.swing.JFrame {
     private void viewProfilePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfilePanelMouseClicked
         // TODO add your handling code here:
         dispose();
-        new AccountExecutiveViewProfile(user).setVisible(true);
+        new AccountExecutiveViewProfile(AE).setVisible(true);
     }//GEN-LAST:event_viewProfilePanelMouseClicked
 
     private void setWindowIcon() {
@@ -850,8 +851,7 @@ public class AccountExecutiveIssueOutstandingFee extends javax.swing.JFrame {
 
     private void setMonthYearCB() {
         try {
-            AccountExecutive ae = new AccountExecutive();
-            List<String> monthNYear = ae.getAllMonthYearInvoice();
+            List<String> monthNYear = AE.getAllMonthYearInvoice();
             for (int i=0; i<monthNYear.size(); i++) {
                 monthNYearCB.addItem(monthNYear.get(i));
             } monthNYearCB.setSelectedIndex(monthNYear.size() -1);
@@ -869,8 +869,7 @@ public class AccountExecutiveIssueOutstandingFee extends javax.swing.JFrame {
                 String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
                 String cMonthYear = monthYear.substring(0, monthYear.indexOf("/")) 
                         + monthYear.substring(monthYear.indexOf("/") + 1);
-                AccountExecutive ae = new AccountExecutive();
-                List<String> pendingPaymentDetails = ae.calculateTotalOutstanding(cMonthYear);
+                List<String> pendingPaymentDetails = AE.calculateTotalOutstanding(cMonthYear);
 
                 String[] pendingPaymentArray = new String[pendingPaymentDetails.size()];
                 pendingPaymentDetails.toArray(pendingPaymentArray);

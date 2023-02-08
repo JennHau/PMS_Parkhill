@@ -20,11 +20,12 @@ public class AdminExecutiveModifyEmployee extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      * @param id
+     * @param AE
      */
-    public AdminExecutiveModifyEmployee(String id, Users user) {
+    public AdminExecutiveModifyEmployee(String id, AdminExecutive AE) {
         initComponents();
         setWindowIcon();
-        this.user = user;
+        this.AE = AE;
         this.id = id;
         setDefault();
     }
@@ -354,8 +355,7 @@ public class AdminExecutiveModifyEmployee extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     FileHandling fh = new FileHandling();
-    AdminExecutive ae = new AdminExecutive();
-    private final Users user;
+    private final AdminExecutive AE;
     
     String id;
     
@@ -433,8 +433,8 @@ public class AdminExecutiveModifyEmployee extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
                 
                 if(result == JOptionPane.YES_OPTION){
-                    ae.deleteEmployee(id);
-                    ae.addEmployee(id, email, firstName, lastName, phoneNo, position,
+                    AE.deleteEmployee(id);
+                    AE.addEmployee(id, email, firstName, lastName, phoneNo, position,
                             identificationNo, gender);
                     JOptionPane.showMessageDialog (null, "Employee account has been modified!", 
                                         "MODIFY EMPLOYEE ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
@@ -442,7 +442,7 @@ public class AdminExecutiveModifyEmployee extends javax.swing.JFrame {
                     if (AdminExecutiveEmployeeManagement.adeEmployee != null) {
                         AdminExecutiveEmployeeManagement.adeEmployee.dispose();
                     }
-                    new AdminExecutiveEmployeeManagement(user).setVisible(true);
+                    new AdminExecutiveEmployeeManagement(AE).setVisible(true);
                 }
                 
             } else {
@@ -474,14 +474,14 @@ public class AdminExecutiveModifyEmployee extends javax.swing.JFrame {
         JOptionPane.QUESTION_MESSAGE);
 
         if(result == JOptionPane.YES_OPTION){
-            ae.deleteEmployee(employeeIDTF.getText());
+            AE.deleteEmployee(employeeIDTF.getText());
             JOptionPane.showMessageDialog (null, "Employee account has been deleted!", 
                                 "DELETE EMPLOYEE ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
             dispose();
             if (AdminExecutiveEmployeeManagement.adeEmployee != null) {
                 AdminExecutiveEmployeeManagement.adeEmployee.dispose();
             }
-            new AdminExecutiveEmployeeManagement(user).setVisible(true);
+            new AdminExecutiveEmployeeManagement(AE).setVisible(true);
         }
     }//GEN-LAST:event_deleteBtActionPerformed
 

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 
 
 /**
@@ -19,10 +18,11 @@ public class BuildingManagerPropertyUnitReport extends javax.swing.JFrame {
 
     /**
      * Creates new form custReceipt
+     * @param BM
      */
-    public BuildingManagerPropertyUnitReport(Users user) {
+    public BuildingManagerPropertyUnitReport(BuildingManager BM) {
         initComponents();
-        this.user = user;
+        this.BM = BM;
         setTable();
         setDefault();
     }
@@ -280,23 +280,22 @@ public class BuildingManagerPropertyUnitReport extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     FileHandling fh = new FileHandling();
-    BuildingManager bm = new BuildingManager();
     int totalResident; int totalTenant; int totalUnit;
-    private final Users user;
+    private final BuildingManager BM;
     
     
     private void setDefault() {
         totalTenantLabel.setText(String.valueOf(this.totalTenant));
         totalResidentLabel.setText(String.valueOf(this.totalResident));
         totalUnitLabel.setText(String.valueOf(this.totalUnit));
-        reportDataNTime.setText("Report Generated @ " + bm.currentDateTime());
+        reportDataNTime.setText("Report Generated @ " + BM.currentDateTime());
     }
     
     private void setTable() {
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
         tableModel.setRowCount(0);
         
-        List<String> unitDetails = bm.propertyUnitReport();
+        List<String> unitDetails = BM.propertyUnitReport();
         List<String> addedUnit = new ArrayList<>();
         
         for (int i=0; i<unitDetails.size(); i++) {
