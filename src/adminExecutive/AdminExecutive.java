@@ -1124,12 +1124,12 @@ public class AdminExecutive extends Users{
             if(facilityID.equals(eFacilityID)) {
                 if(payment == true && priceUnit.equals("Per Hour")) {
                     FacilityBookingPaymentByHour fb = new FacilityBookingPaymentByHour();
-                    fb.setFacilityDetails(facilityID);
+                    fb.Facility(facilityID);
                     fb.setHour(hour); fb.calculateBookingFee();
                     feeData.add(price +";"+ fb.getTotalPrice());
                 } else if(payment && priceUnit.equals("Per Booking")) {
                     FacilityBookingPaymentByBooking fb = new FacilityBookingPaymentByBooking();
-                    fb.setFacilityDetails(facilityID); fb.calculateBookingFee(); 
+                    fb.Facility(facilityID); fb.calculateBookingFee(); 
                     feeData.add("-" +";"+ fb.getTotalPrice());
                 } else {
                     feeData.add("-" +";"+ "0.00");

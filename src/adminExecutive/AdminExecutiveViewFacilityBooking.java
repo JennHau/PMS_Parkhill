@@ -780,7 +780,7 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
             String variation = String.valueOf(tableModel.getValueAt(row, 1));
             dispose();
             FacilityBookingPaymentByHour fb = new FacilityBookingPaymentByHour();
-            fb.setFacilityDetails(facilityID);
+            fb.Facility(facilityID);
             new AdminExecutiveManageBookedFacility(fb, bookingID, date, AE, variation).setVisible(true);
             
         } else if(column == 7 && status.equals("HISTORY") &&
