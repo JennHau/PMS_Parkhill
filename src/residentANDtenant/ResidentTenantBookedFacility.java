@@ -746,7 +746,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
                 String date = String.valueOf(bookedFacTab.getValueAt(row, 2));
                 String facilityID = RT.getFacilityId(bookingID);
 
-                fb.setFacilityDetails(facilityID);
+                fb.Facility(facilityID);
                 RT.toManageBookedFacility(RT, fb, bookingID.toLowerCase(), date);
                 
                 dispose();
