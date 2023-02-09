@@ -25,7 +25,7 @@ public abstract class Facility {
     
     public Facility() {}
     
-    public void setFacilityDetails(String facilityID) {
+    public void Facility(String facilityID) {
         
         List<String> availableList = fh.fileRead("facility.txt");
         

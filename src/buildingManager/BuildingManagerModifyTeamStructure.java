@@ -4,6 +4,8 @@
  */
 package buildingManager;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
@@ -16,8 +18,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 
 /**
  *
@@ -34,6 +36,7 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
         setWindowIcon();
         this.BM = BM;
         setTable();
+        setTableDesign();
     }
 
     /**
@@ -56,7 +59,38 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
         modifyBt = new javax.swing.JButton();
         cancelBt = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if(columnIndex == 2){
+
+                    componenet.setBackground(new Color(0,70,126));
+                    componenet.setForeground(new Color(255, 255, 255));
+
+                }
+
+                else {
+                    if (rowIndex%2 == 0) {
+                        componenet.setBackground(new Color(249, 249, 249));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    } else {
+                        componenet.setBackground(new Color(225, 225, 225));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    }
+
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         jSeparator1 = new javax.swing.JSeparator();
         jLabel14 = new javax.swing.JLabel();
         warningMessage = new javax.swing.JLabel();
@@ -158,6 +192,7 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
             }
         });
 
+        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -174,6 +209,8 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        jTable1.setRowHeight(30);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -516,6 +553,12 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
     
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
+    }
+    
+    private void setTableDesign() {
+        int[] colummnIgnore = {0, 1};
+        int[] columnLength = {180, 220, 110};
+        BM.setTableDesign(jTable1, jLabel14, columnLength, colummnIgnore);
     }
     
     /**

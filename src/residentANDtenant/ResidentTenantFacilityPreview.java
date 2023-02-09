@@ -4,15 +4,12 @@
  */
 package residentANDtenant;
 
-import adminExecutive.*;
 import pms_parkhill_residence.FacilityBookingPaymentByHour;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.awt.Color;
 import java.awt.Image;
 import javax.swing.ImageIcon;
-import pms_parkhill_residence.HomePage;
-import pms_parkhill_residence.Users;
 
 /**
  *
@@ -641,7 +638,7 @@ public class ResidentTenantFacilityPreview extends javax.swing.JFrame {
     }
     
     private void setDefault() {
-        fb.setFacilityDetails(facilityID);
+        fb.Facility(facilityID);
         facilityNameLabel.setText(fb.getFacilityName());
         facilityIDLabel.setText(fb.getFacilityID().toUpperCase());
         operatingHoursLabel.setText(fb.getStartTime() +" - "+ fb.getEndTime());

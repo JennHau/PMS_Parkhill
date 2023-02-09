@@ -4,12 +4,14 @@
  */
 package adminExecutive;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 
 /**
  *
@@ -26,6 +28,7 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
         setWindowIcon();
         this.AE = AE;
         setTable();
+        setTableDesign();
     }
 
     /**
@@ -48,7 +51,36 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
         addBt = new javax.swing.JButton();
         cancelBt = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if(columnIndex == 3){
+                    componenet.setBackground(new Color(0,70,126));
+                    componenet.setForeground(new Color(255, 255, 255));
+                }
+
+                else {
+                    if (rowIndex%2 == 0) {
+                        componenet.setBackground(new Color(249, 249, 249));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    } else {
+                        componenet.setBackground(new Color(225, 225, 225));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    }
+
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         jSeparator1 = new javax.swing.JSeparator();
         jLabel14 = new javax.swing.JLabel();
         warningMessage = new javax.swing.JLabel();
@@ -56,7 +88,7 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
         deleteBt = new javax.swing.JButton();
         clearAllBt = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
         setBackground(new java.awt.Color(13, 24, 42));
         setResizable(false);
@@ -65,11 +97,11 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(13, 24, 42));
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(153, 153, 153), null, null));
 
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("ADD EMPLOYEE TYPE");
         jLabel2.setBackground(new java.awt.Color(13, 24, 42));
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("ADD EMPLOYEE TYPE");
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/parkhillLogo.png"))); // NOI18N
@@ -108,13 +140,13 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("EMPLOYEE TYPE:");
         jLabel1.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel1.setText("EMPLOYEE TYPE:");
 
+        jLabel5.setText("INITIALISE:");
         jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel5.setText("INITIALISE:");
 
         initialiseTF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -130,8 +162,8 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
             }
         });
 
-        addBt.setBackground(new java.awt.Color(0, 204, 0));
         addBt.setText("ADD");
+        addBt.setBackground(new java.awt.Color(0, 204, 0));
         addBt.setEnabled(false);
         addBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -162,6 +194,9 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        jTable1.setRowHeight(30);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -169,26 +204,26 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jSeparator1.setForeground(new java.awt.Color(153, 153, 153));
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jSeparator1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jSeparator1.setForeground(new java.awt.Color(153, 153, 153));
 
-        jLabel14.setForeground(new java.awt.Color(153, 153, 153));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel14.setText("Existing Employee Type:");
+        jLabel14.setForeground(new java.awt.Color(153, 153, 153));
 
-        warningMessage.setForeground(new java.awt.Color(255, 0, 51));
         warningMessage.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        warningMessage.setForeground(new java.awt.Color(255, 0, 51));
         warningMessage.setPreferredSize(new java.awt.Dimension(138, 17));
 
-        jLabel15.setForeground(new java.awt.Color(153, 153, 153));
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel15.setText("Limited to 3 characters ONLY");
+        jLabel15.setForeground(new java.awt.Color(153, 153, 153));
 
-        deleteBt.setBackground(new java.awt.Color(255, 0, 0));
-        deleteBt.setForeground(new java.awt.Color(255, 255, 255));
         deleteBt.setText("DELETE");
+        deleteBt.setBackground(new java.awt.Color(255, 0, 0));
         deleteBt.setEnabled(false);
+        deleteBt.setForeground(new java.awt.Color(255, 255, 255));
         deleteBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteBtActionPerformed(evt);
@@ -333,6 +368,9 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
+        if (AdminExecutiveAddEmployee.adeAddEmploy != null) {
+            AdminExecutiveAddEmployee.adeAddEmploy.dispose();
+        } 
         new AdminExecutiveAddEmployee(AE).setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
@@ -419,6 +457,12 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
     
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
+    }
+    
+    private void setTableDesign() {
+        int[] colummnIgnore = {1};
+        int[] columnLength = {40, 270, 100, 100};
+        AE.setTableDesign(jTable1, jLabel3, columnLength, colummnIgnore);
     }
     
     /**

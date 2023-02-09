@@ -5,12 +5,14 @@
 package accountExecutive;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.HomePage;
 
 /**
@@ -30,6 +32,7 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
         setCurrentProfile();
         setMonthYearCB();
         setTable();
+        setTableDesign();
     }
 
     /**
@@ -47,7 +50,35 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if(columnIndex == 5){
+                    componenet.setBackground(new Color(0,70,126));
+                    componenet.setForeground(new Color(255, 255, 255));
+                }
+                else {
+                    if (rowIndex%2 == 0) {
+                        componenet.setBackground(new Color(249, 249, 249));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    } else {
+                        componenet.setBackground(new Color(225, 225, 225));
+                        componenet.setForeground(new Color (102, 102, 102));
+                    }
+
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         jLabel16 = new javax.swing.JLabel();
         searchTextField = new javax.swing.JTextField();
         clearbt = new javax.swing.JButton();
@@ -126,6 +157,7 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
         jLabel14.setText("ISSUE STATEMENT");
         jLabel14.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
+        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -142,6 +174,8 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        jTable1.setRowHeight(30);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -1044,6 +1078,12 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
         } else if (tableModel.getRowCount() != 0 && statusCB.getSelectedItem().equals("PENDING")) {
             issueAllPanel.setBackground(new Color(13,50,79));
         }
+    }
+    
+    private void setTableDesign() {
+        int[] colummnIgnore = {3, 4};
+        int[] columnLength = {40, 130, 140, 225, 225, 195};
+        AE.setTableDesign(jTable1, jLabel16, columnLength, colummnIgnore);
     }
 
     /**

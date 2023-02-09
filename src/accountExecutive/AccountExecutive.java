@@ -4,6 +4,7 @@
  */
 package accountExecutive;
 
+import java.awt.Color;
 import java.util.List;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -14,6 +15,10 @@ import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.PMS_DateTimeFormatter;
 import pms_parkhill_residence.TextFiles;
@@ -293,6 +298,28 @@ public class AccountExecutive extends Users {
         fh.fileWrite("invoices.txt", true, newData);
     }
 
+    public List<String> extractOneInvoiceDetails(String invoiceNo) {
+        List<String> invoiceList = fh.fileRead("invoices.txt");
+        List<String> availableFees = new ArrayList<>();
+        
+        for (int i=1; i<invoiceList.size(); i++) {
+            String[] paymentDetails = invoiceList.get(i).split(";");
+            String eInvoiceNo = paymentDetails[0];
+            String feeType = paymentDetails[2];
+            String issueDate = paymentDetails[9];
+            String consump = paymentDetails[4];
+            String unit = paymentDetails[5];
+            String unitPrice = paymentDetails[6];
+            String totalPrice = paymentDetails[7];
+            
+            if(eInvoiceNo.equals(invoiceNo)) {
+                availableFees.add(feeType +";"+ issueDate +";"+ consump +";"+
+                        unit +";"+ unitPrice +";"+ totalPrice +";");
+            }
+        } return availableFees;
+            
+    }
+    
     public void createUserTransactionLink(String period, String unitNo) {
         String transDate = todayDate().substring(4);
         String[] availableData = {period, transDate};
@@ -555,11 +582,11 @@ public class AccountExecutive extends Users {
             iUsersList.toArray(iUsersArray);
             for (int i = 1; i < iUsersList.size(); i++) {
                 String[] userDetails = iUsersArray[i].split(";");
-                String euserID = userDetails[1].toUpperCase();
+                String euserID = userDetails[1];
                 String euserName = userDetails[4] + " " + userDetails[5];
                 usernameList.add(euserName);
                 userIDList.add(euserID);
-            }
+            } 
 
             if (status.equals("PENDING")) {
                 List<String> paymentList = fh.fileRead("payment.txt");
@@ -1432,4 +1459,36 @@ public class AccountExecutive extends Users {
         return monthStatement;
     }
     
+    public void setTableDesign(JTable jTable, JLabel jLabel, int[] columnLength, int[] ignoreColumn) {
+        // design for the table header
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setBackground(new Color(13, 24, 42));
+        headerRenderer.setHorizontalAlignment(jLabel.CENTER);
+        headerRenderer.setForeground(new Color(255, 255, 255));
+        for (int i = 0; i < jTable.getModel().getColumnCount(); i++) {
+            jTable.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
+
+        ArrayList<Integer> ignoreColumnList = new ArrayList<>();
+        for (int i : ignoreColumn) {
+            ignoreColumnList.add(i);
+        }
+
+        // design for the table row
+        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
+        rowRenderer.setHorizontalAlignment(jLabel.CENTER);
+        for (int i = 0; i < jTable.getModel().getColumnCount(); i++) {
+            if (!ignoreColumnList.contains(i)) {
+                jTable.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
+            }
+        }
+
+        TableColumnModel columnModel = jTable.getColumnModel();
+        // set first column width of the table to suitable value
+        for (int count = 0; count < columnLength.length; count++) {
+            columnModel.getColumn(count).setMaxWidth(columnLength[count]);
+            columnModel.getColumn(count).setMinWidth(columnLength[count]);
+            columnModel.getColumn(count).setPreferredWidth(columnLength[count]);
+        }
+    }
 }

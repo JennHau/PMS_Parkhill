@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 
 /**
  *
@@ -22,6 +21,7 @@ public class AdminExecutiveModifyFacility extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      * @param facilityID
+     * @param AE
      */
     public AdminExecutiveModifyFacility(String facilityID, AdminExecutive AE) {
         initComponents();
@@ -449,7 +449,7 @@ public class AdminExecutiveModifyFacility extends javax.swing.JFrame {
     FacilityBookingPaymentByHour fb = new FacilityBookingPaymentByHour();
     
     private void setDefault() {
-        fb.setFacilityDetails(this.facilityID);
+        fb.Facility(this.facilityID);
         facilityIDTF.setText(facilityID.toUpperCase());
         facilityNameTF.setText(fb.getFacilityName());
         if (fb.isBooking()) {

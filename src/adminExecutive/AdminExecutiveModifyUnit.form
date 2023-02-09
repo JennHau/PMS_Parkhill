@@ -88,6 +88,8 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="0"/>
+            <Property name="text" type="java.lang.String" value="MODIFY PROPERTY UNIT"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="2a" green="18" red="d" type="rgb"/>
             </Property>
@@ -97,8 +99,6 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="MODIFY PROPERTY UNIT"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
@@ -220,24 +220,24 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
+            <Property name="text" type="java.lang.String" value="UNIT NO:"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Yu Gothic UI" size="14" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="66" green="66" red="66" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="UNIT NO:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Property Type:"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Yu Gothic UI" size="14" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="66" green="66" red="66" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Property Type:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="typeCB">
@@ -257,13 +257,13 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
+            <Property name="text" type="java.lang.String" value="SQUARE FOOT:"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Yu Gothic UI" size="14" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="66" green="66" red="66" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="SQUARE FOOT:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="squareFootTF">
@@ -276,14 +276,14 @@
         </Component>
         <Component class="javax.swing.JButton" name="modifyBt">
           <Properties>
+            <Property name="text" type="java.lang.String" value="MODIFY"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="4f" green="32" red="d" type="rgb"/>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="MODIFY"/>
-            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="modifyBtActionPerformed"/>
@@ -315,36 +315,46 @@
                     <Column editable="false" title="DATE OF SOLD" type="java.lang.Object"/>
                   </Table>
                 </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="12" style="1"/>
+                </Property>
+                <Property name="intercellSpacing" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[2, 2]"/>
+                </Property>
+                <Property name="rowHeight" type="int" value="30"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable()&#xa;{&#xa;    @Override&#xa;&#xa;    public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){&#xa;        Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);&#xa;&#xa;        Object value = getModel().getValueAt(rowIndex,columnIndex);&#xa;&#xa;        if (rowIndex%2 == 0) {&#xa;            componenet.setBackground(new Color(249, 249, 249));&#xa;            componenet.setForeground(new Color (102, 102, 102));&#xa;        } else {&#xa;            componenet.setBackground(new Color(225, 225, 225));&#xa;            componenet.setForeground(new Color (102, 102, 102));&#xa;        }&#xa;&#xa;        return componenet;&#xa;    }&#xa;&#xa;}&#xa;"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
         <Component class="javax.swing.JSeparator" name="jSeparator1">
           <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="99" green="99" red="99" type="rgb"/>
-            </Property>
             <Property name="orientation" type="int" value="1"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="99" green="99" red="99" type="rgb"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel14">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
+            <Property name="text" type="java.lang.String" value="Existing Unit Details:"/>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="99" green="99" red="99" type="rgb"/>
             </Property>
-            <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="Existing Unit Details:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="warningMessage">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="33" green="0" red="ff" type="rgb"/>
             </Property>
-            <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[138, 17]"/>
             </Property>
@@ -352,22 +362,22 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel15">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
+            <Property name="text" type="java.lang.String" value="e.g. A-01-04 | S-04-09"/>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="99" green="99" red="99" type="rgb"/>
             </Property>
-            <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="e.g. A-01-04 | S-04-09"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="deleteBt">
           <Properties>
+            <Property name="text" type="java.lang.String" value="DELETE"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="cc" type="rgb"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="DELETE"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteBtActionPerformed"/>

@@ -4,9 +4,12 @@
  */
 package accountExecutive;
 
+import java.awt.Color;
+import java.awt.Component;
 import residentANDtenant.*;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.PMS_DateTimeFormatter;
 
@@ -37,6 +40,7 @@ public class AccountExecutiveViewReceipt extends javax.swing.JFrame {
         this.invoiceNo = invoiceNo;
         this.unitNo = unitNo;
         setDefault();
+        setTableDesign();
     }
 
     /**
@@ -59,7 +63,27 @@ public class AccountExecutiveViewReceipt extends javax.swing.JFrame {
         doneBt = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        invoiceReceiptTable = new javax.swing.JTable();
+        invoiceReceiptTable = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if (rowIndex%2 == 0) {
+                    componenet.setBackground(new Color(249, 249, 249));
+                    componenet.setForeground(new Color (102, 102, 102));
+                } else {
+                    componenet.setBackground(new Color(225, 225, 225));
+                    componenet.setForeground(new Color (102, 102, 102));
+                }
+                return componenet;
+            }
+
+        }
+        ;
         jLabel6 = new javax.swing.JLabel();
         invNoLabel = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -158,6 +182,9 @@ public class AccountExecutiveViewReceipt extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        invoiceReceiptTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        invoiceReceiptTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        invoiceReceiptTable.setRowHeight(30);
         invoiceReceiptTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 invoiceReceiptTableMouseClicked(evt);
@@ -338,6 +365,12 @@ public class AccountExecutiveViewReceipt extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_invoiceReceiptTableMouseClicked
 
+    private void setTableDesign() {
+        int[] colummnIgnore = {0};
+        int[] columnLength = {175, 130, 120, 140};
+        AE.setTableDesign(invoiceReceiptTable, jLabel3, columnLength, colummnIgnore);
+    }
+    
     /**
      * @param args the command line arguments
      */

@@ -4,10 +4,12 @@
  */
 package buildingManager;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 
 
 /**
@@ -29,6 +31,7 @@ public class BuildingManagerUtitlityReport extends javax.swing.JFrame {
         this.BM = BM;
         setDefault();
         setTable();
+        setTableDesign();
     }
 
     /**
@@ -49,7 +52,28 @@ public class BuildingManagerUtitlityReport extends javax.swing.JFrame {
         doneBt = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable()
+        {
+            @Override
+
+            public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
+                Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+
+                Object value = getModel().getValueAt(rowIndex,columnIndex);
+
+                if (rowIndex%2 == 0) {
+                    componenet.setBackground(new Color(249, 249, 249));
+                    componenet.setForeground(new Color (102, 102, 102));
+                } else {
+                    componenet.setBackground(new Color(225, 225, 225));
+                    componenet.setForeground(new Color (102, 102, 102));
+                }
+
+                return componenet;
+            }
+
+        }
+        ;
         jLabel6 = new javax.swing.JLabel();
         utilityTypeLabel = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -123,6 +147,7 @@ public class BuildingManagerUtitlityReport extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("UTITILY REPORT");
 
+        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -139,6 +164,8 @@ public class BuildingManagerUtitlityReport extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        jTable1.setRowHeight(30);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -389,6 +416,12 @@ public class BuildingManagerUtitlityReport extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseClicked
 
+    private void setTableDesign() {
+        int[] colummnIgnore = {1};
+        int[] columnLength = {147, 147, 147, 148};
+        BM.setTableDesign(jTable1, jLabel4, columnLength, colummnIgnore);
+    }
+    
     /**
      * @param args the command line arguments
      */

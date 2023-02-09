@@ -10,9 +10,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import accountExecutive.AccountExecutive;
+import java.awt.Color;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.Calendar;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.FacilityBookingPaymentByBooking;
 import pms_parkhill_residence.FacilityBookingPaymentByHour;
 import pms_parkhill_residence.FileHandling;
@@ -1119,12 +1124,12 @@ public class AdminExecutive extends Users{
             if(facilityID.equals(eFacilityID)) {
                 if(payment == true && priceUnit.equals("Per Hour")) {
                     FacilityBookingPaymentByHour fb = new FacilityBookingPaymentByHour();
-                    fb.setFacilityDetails(facilityID);
+                    fb.Facility(facilityID);
                     fb.setHour(hour); fb.calculateBookingFee();
                     feeData.add(price +";"+ fb.getTotalPrice());
                 } else if(payment && priceUnit.equals("Per Booking")) {
                     FacilityBookingPaymentByBooking fb = new FacilityBookingPaymentByBooking();
-                    fb.setFacilityDetails(facilityID); fb.calculateBookingFee(); 
+                    fb.Facility(facilityID); fb.calculateBookingFee(); 
                     feeData.add("-" +";"+ fb.getTotalPrice());
                 } else {
                     feeData.add("-" +";"+ "0.00");
@@ -1173,5 +1178,38 @@ public class AdminExecutive extends Users{
                 newData.add(availableList.get(i));
             }
         } fh.fileWrite("facilityBooking.txt", false, newData);
+    }
+    
+    public void setTableDesign(JTable jTable, JLabel jLabel, int[] columnLength, int[] ignoreColumn) {
+        // design for the table header
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setBackground(new Color(13, 24, 42));
+        headerRenderer.setHorizontalAlignment(jLabel.CENTER);
+        headerRenderer.setForeground(new Color(255, 255, 255));
+        for (int i = 0; i < jTable.getModel().getColumnCount(); i++) {
+            jTable.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
+
+        ArrayList<Integer> ignoreColumnList = new ArrayList<>();
+        for (int i : ignoreColumn) {
+            ignoreColumnList.add(i);
+        }
+
+        // design for the table row
+        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
+        rowRenderer.setHorizontalAlignment(jLabel.CENTER);
+        for (int i = 0; i < jTable.getModel().getColumnCount(); i++) {
+            if (!ignoreColumnList.contains(i)) {
+                jTable.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
+            }
+        }
+
+        TableColumnModel columnModel = jTable.getColumnModel();
+        // set first column width of the table to suitable value
+        for (int count = 0; count < columnLength.length; count++) {
+            columnModel.getColumn(count).setMaxWidth(columnLength[count]);
+            columnModel.getColumn(count).setMinWidth(columnLength[count]);
+            columnModel.getColumn(count).setPreferredWidth(columnLength[count]);
+        }
     }
 }
