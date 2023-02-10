@@ -4,6 +4,8 @@
  */
 package buildingManager;
 
+import accountExecutive.AccountExecutive;
+import buildingExecutive.BuildingExecutive;
 import java.awt.Color;
 import java.io.File;
 import java.text.DecimalFormat;
@@ -102,13 +104,24 @@ public class BuildingManager extends Users{
         return currentUsableID;
     }
     
-    public void userRegistration(String userID, String email, String password, 
-            String firstName, String lastName, String identificationNo, String gender,
-            String phoneNo) {
+    public void addAccountExecutive(AccountExecutive ACE) {
         
         List<String> newData = new ArrayList<>();
-        newData.add(userID +";"+ email +";"+password +";"+ firstName +";"+ lastName
-                +";"+ identificationNo +";"+ gender +";"+ phoneNo +";"+ "-" +";");
+        newData.add(ACE.getUserID() +";"+ ACE.getEmail() +";"+ACE.getPassword()
+                +";"+ ACE.getFirstName() +";"+ ACE.getLastName()
+                +";"+ ACE.getIdentificationNo()+";"+ ACE.getGender()
+                +";"+ ACE.getPhoneNo() +";"+ "-" +";");
+        
+        fh.fileWrite("userProfile.txt", true, newData);
+    }
+    
+    public void addBuildingExecutive(BuildingExecutive BE) {
+        
+        List<String> newData = new ArrayList<>();
+        newData.add(BE.getUserID() +";"+ BE.getEmail() +";"+BE.getPassword()
+                +";"+ BE.getFirstName() +";"+ BE.getLastName()
+                +";"+ BE.getIdentificationNo()+";"+ BE.getGender()
+                +";"+ BE.getPhoneNo() +";"+ "-" +";");
         
         fh.fileWrite("userProfile.txt", true, newData);
     }
