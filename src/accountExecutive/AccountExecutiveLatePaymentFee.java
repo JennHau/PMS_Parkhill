@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
+import pms_parkhill_residence.Payment;
 
 /**
  *
@@ -244,6 +245,7 @@ public class AccountExecutiveLatePaymentFee extends javax.swing.JFrame {
 
     private final AccountExecutive AE;
     private final String invoiceNo;
+    Payment PM = new Payment();
     
     private void lateChargeTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lateChargeTFActionPerformed
         // TODO add your handling code here:
@@ -269,7 +271,7 @@ public class AccountExecutiveLatePaymentFee extends javax.swing.JFrame {
                 float latePaymentFee = Float.valueOf(lateChargeTF.getText());
                 String lateCharges = df.format(latePaymentFee);
                 
-                AE.chargeLatePaymentFee(invoiceNo, lateCharges);
+                PM.chargeLatePaymentFee(invoiceNo, lateCharges);
                 JOptionPane.showMessageDialog (null, "Late payment fee has been charged!", 
                                 "LATE PAYMENT CHARGES", JOptionPane.INFORMATION_MESSAGE);
                 dispose();

@@ -309,7 +309,7 @@
                     <Column editable="false" title="TRANSACTION" type="java.lang.Object"/>
                     <Column editable="false" title="DETAILS" type="java.lang.Object"/>
                     <Column editable="false" title="AMOUNT (RM)" type="java.lang.Object"/>
-                    <Column editable="false" title="PAYMENT" type="java.lang.Object"/>
+                    <Column editable="false" title="PAYMENT (RM)" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">

@@ -13,6 +13,7 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Payment;
 
 
 /**
@@ -22,23 +23,20 @@ import pms_parkhill_residence.FileHandling;
 public class AccountExecutiveViewStatement extends javax.swing.JFrame {
     FileHandling fh = new FileHandling();
     ResidentTenant RT = new ResidentTenant();
-    private final String monthNyear;
-    private final String unitNo;
     private final AccountExecutive AE;
+    private final Payment PM;
     
     DefaultTableModel stateTab;
     
     /**
      * Creates new form custReceipt
-     * @param unitNo
-     * @param monthNyear
+     * @param PM
      * @param AE
      */
-    public AccountExecutiveViewStatement(String unitNo, String monthNyear, AccountExecutive AE) {
+    public AccountExecutiveViewStatement(Payment PM, AccountExecutive AE) {
         initComponents();
         this.AE = AE;
-        this.unitNo = unitNo;
-        this.monthNyear = monthNyear;
+        this.PM = PM;
         stateTab = (DefaultTableModel) statementTable.getModel();
         setDefault();
         setTableDesign();
@@ -165,7 +163,7 @@ public class AccountExecutiveViewStatement extends javax.swing.JFrame {
 
             },
             new String [] {
-                "DATE", "TRANSACTION", "DETAILS", "AMOUNT (RM)", "PAYMENT"
+                "DATE", "TRANSACTION", "DETAILS", "AMOUNT (RM)", "PAYMENT (RM)"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -361,9 +359,10 @@ public class AccountExecutiveViewStatement extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
+    
     private void setDefault() {
         try {
-            ArrayList<String> statementList = AE.getCurrentUnitMonthStatement(unitNo, monthNyear);
+            ArrayList<String> statementList = PM.displayOneStatement(PM.getUnitNo(), PM.getPeriod());
             RT.setTableRow(stateTab, statementList);
             
             calculateTotal();
@@ -403,9 +402,9 @@ public class AccountExecutiveViewStatement extends javax.swing.JFrame {
         for (String eachState : statementFile) {
             String[] stateDet = eachState.split(";");
             String statePeriod = stateDet[0];
-            String stateUnit = stateDet[0];
+            String stateUnit = stateDet[1];
             
-            if (statePeriod.equals(this.monthNyear) && stateUnit.equals(unitNo)) {
+            if (statePeriod.equals(PM.getPeriod()) && stateUnit.equals(PM.getUnitNo())) {
                 // Set issued date
                 issuedDateLabel.setText(stateDet[2]);
             }
@@ -413,8 +412,8 @@ public class AccountExecutiveViewStatement extends javax.swing.JFrame {
     }
     
     private void setReportDetails() {
-        periodLabel.setText(monthNyear);
-        unitNoLabel.setText(unitNo);
+        periodLabel.setText(PM.getPeriod());
+        unitNoLabel.setText(PM.getUnitNo());
         setIssuedDate();
     }
     
@@ -429,7 +428,7 @@ public class AccountExecutiveViewStatement extends javax.swing.JFrame {
 
     private void setTableDesign() {
         int[] colummnIgnore = {1, 2};
-        int[] columnLength = {130, 130, 330, 140, 140};
+        int[] columnLength = {130, 140, 350, 140, 140};
         AE.setTableDesign(statementTable, jLabel3, columnLength, colummnIgnore);
     }
     
@@ -526,7 +525,7 @@ public class AccountExecutiveViewStatement extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutiveViewStatement(null, null, null).setVisible(true);
+                new AccountExecutiveViewStatement(null, null).setVisible(true);
             }
         });
     }

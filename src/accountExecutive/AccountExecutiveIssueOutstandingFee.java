@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.HomePage;
+import pms_parkhill_residence.Payment;
 
 /**
  *
@@ -649,6 +650,7 @@ public class AccountExecutiveIssueOutstandingFee extends javax.swing.JFrame {
 
     private final AccountExecutive AE;
     public static AccountExecutiveIssueOutstandingFee aceOutstanding;
+    Payment PM = new Payment();
     
     private void setCurrentProfile() {
         usernameLabel.setText(AE.getFirstName() +" "+ AE.getLastName());
@@ -903,7 +905,7 @@ public class AccountExecutiveIssueOutstandingFee extends javax.swing.JFrame {
                 String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
                 String cMonthYear = monthYear.substring(0, monthYear.indexOf("/")) 
                         + monthYear.substring(monthYear.indexOf("/") + 1);
-                List<String> pendingPaymentDetails = AE.calculateTotalOutstanding(cMonthYear);
+                List<String> pendingPaymentDetails = PM.calculateTotalOutstanding(cMonthYear);
 
                 String[] pendingPaymentArray = new String[pendingPaymentDetails.size()];
                 pendingPaymentDetails.toArray(pendingPaymentArray);

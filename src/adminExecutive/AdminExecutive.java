@@ -21,6 +21,7 @@ import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.FacilityBookingPaymentByBooking;
 import pms_parkhill_residence.FacilityBookingPaymentByHour;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Payment;
 import pms_parkhill_residence.Users;
 
 /**
@@ -30,6 +31,7 @@ import pms_parkhill_residence.Users;
 public class AdminExecutive extends Users{
     
     FileHandling fh = new FileHandling();
+    Payment PM = new Payment();
     
     public AdminExecutive(){}
     
@@ -129,7 +131,7 @@ public class AdminExecutive extends Users{
     
     public boolean checkOutstandingFee(String unitNo) {
         AccountExecutive ae = new AccountExecutive();
-        List<String> oustandingFee = ae.extractAllPayment("PENDING");
+        List<String> oustandingFee = PM.displayAllPayment("PENDING");
         String[] oustandingFeeArray = new String[oustandingFee.size()];
         oustandingFee.toArray(oustandingFeeArray);
         

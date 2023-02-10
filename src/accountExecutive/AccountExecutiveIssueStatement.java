@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.HomePage;
+import pms_parkhill_residence.Payment;
 
 /**
  *
@@ -710,6 +711,7 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private final AccountExecutive AE;
+    Payment PM = new Payment();
     
     private void setCurrentProfile() {
         usernameLabel.setText(AE.getFirstName() +" "+ AE.getLastName());
@@ -774,7 +776,7 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
                         String cDetails = monthYear +";"+ unitNo +";";
                         statementDetails.add(cDetails);
                     }
-                        AE.issueStatement(statementDetails);
+                        PM.issueStatement(statementDetails);
                         setTable();
                         JOptionPane.showMessageDialog (null, "Statements have been issued!", 
                                         "ISSUE STATEMENT", JOptionPane.INFORMATION_MESSAGE);
@@ -810,7 +812,7 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
                     String cDetails = monthYear +";"+ unitNo +";";
                     statementDetails.add(cDetails);
 
-                    AE.issueStatement(statementDetails);
+                    PM.issueStatement(statementDetails);
                     setTable();
                     JOptionPane.showMessageDialog (null, "Statement has been issued!", 
                                     "ISSUE STATEMENT", JOptionPane.INFORMATION_MESSAGE);
@@ -818,7 +820,8 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
                 }
             } else if (statusCB.getSelectedItem() == "ISSUED"){
                 String monthNYear = String.valueOf(monthNYearCB.getSelectedItem());
-                new AccountExecutiveViewStatement(unitNo, monthNYear, AE).setVisible(true);
+                PM.setUnitNo(unitNo); PM.setPeriod(monthNYear);
+                new AccountExecutiveViewStatement(PM, AE).setVisible(true);
             }
         }
     }//GEN-LAST:event_jTable1MouseClicked

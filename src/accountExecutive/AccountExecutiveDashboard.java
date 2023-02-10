@@ -13,6 +13,7 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import pms_parkhill_residence.Dashboard;
 import pms_parkhill_residence.HomePage;
+import pms_parkhill_residence.Payment;
 
 /**
  *
@@ -784,6 +785,7 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
 
     private final AccountExecutive AE;
     Dashboard DB = new Dashboard();
+    Payment PM = new Payment();
     
     private void setCurrentProfile() {
         usernameLabel.setText(AE.getFirstName() +" "+ AE.getLastName());
@@ -800,7 +802,7 @@ public class AccountExecutiveDashboard extends javax.swing.JFrame {
         totalTntLabel.setText(totalTnt);
         totalRsdLabel.setText(totalRsd);
         
-        List<String> availablePayment = AE.extractAllPayment("PAID");
+        List<String> availablePayment = PM.displayAllPayment("PAID");
         List<String> availableYears = new ArrayList<>();
         List<String> totalAmount = new ArrayList<>();
         
