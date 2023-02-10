@@ -36,9 +36,12 @@ public class Payment extends Invoice{
         this.paymentDate = paymentDate;
     }
 
+    
+    // extract all payments details for display
     public List<String> displayAllPayment(String status) {
         List<String> pendingPaymentList = new ArrayList<String>();
         try {
+            // get all unpaid payments
             if (status.equals("PENDING")) {
                 List<String> invoicesList = fh.fileRead("invoices.txt");
                 String[] invoicesArray = new String[invoicesList.size()];
@@ -72,6 +75,7 @@ public class Payment extends Invoice{
                     }
                 }
 
+            // get all paid payment
             } else if (status.equals("PAID")) {
                 List<String> paymentList = fh.fileRead("payment.txt");
                 String[] paymentArray = new String[paymentList.size()];
@@ -97,6 +101,7 @@ public class Payment extends Invoice{
         return pendingPaymentList;
     }
     
+    // extract specific payment details
     public List<String> displayOnePayment(String invoiceNo) {
         List<String> paymentFees = new ArrayList<String>();
         try {
@@ -106,6 +111,7 @@ public class Payment extends Invoice{
             
             List<String> paidList = fh.fileRead("payment.txt");
             
+            // compare invoice data with payment data to prevent double payment
             for (int i = 1; i < invoicesList.size(); i++) {
                 String[] feesDetails = invoicesArray[i].split(";");
                 String einvoiceNo = feesDetails[0];
@@ -140,6 +146,7 @@ public class Payment extends Invoice{
         return paymentFees;
     }
     
+    // method to store newly made payment
     public void storePayment(String invoiceNo, String userID) {
         try {
             List<String> invoicesList = fh.fileRead("invoices.txt");
@@ -177,6 +184,7 @@ public class Payment extends Invoice{
         }
     }
     
+    // store newly issued receipt
     public void issueReceipt(List<String> receiptDetails) {
         String[] receiptDetailsArray = new String[receiptDetails.size()];
         receiptDetails.toArray(receiptDetailsArray);
@@ -209,6 +217,7 @@ public class Payment extends Invoice{
         }
     }
     
+    // extract receipt details for display
     public List<String> displayReceipt(String status) {
         List<String> receiptList = new ArrayList<String>();
         try {
@@ -216,6 +225,8 @@ public class Payment extends Invoice{
             String[] receiptArray = new String[eReceiptList.size()];
             eReceiptList.toArray(receiptArray);
 
+            // in case user is deleted, system will search for active and inactive
+            // user details
             List<String> usernameList = new ArrayList<>();
             List<String> userIDList = new ArrayList<>();
 
@@ -237,6 +248,7 @@ public class Payment extends Invoice{
                 userIDList.add(euserID);
             } 
 
+            // get receipt data that havent issue
             if (status.equals("PENDING")) {
                 List<String> paymentList = fh.fileRead("payment.txt");
                 String[] paymentArray = new String[paymentList.size()];
@@ -270,6 +282,7 @@ public class Payment extends Invoice{
                     }
                 }
 
+            // get issued receipt data
             } else if (status.equals("ISSUED")) {
                 for (int i = 1; i < eReceiptList.size(); i++) {
                     String[] receiptDetails = receiptArray[i].split(";");
@@ -294,6 +307,7 @@ public class Payment extends Invoice{
         return receiptList;
     }
     
+    // extract all receipt based on unitNo
     public ArrayList extractSingleReceiptData(String unitNo) {
         ArrayList<String> paymentHistory = new ArrayList<>();
         List<String> paymentFile = fh.fileRead("receipt.txt");
@@ -311,6 +325,7 @@ public class Payment extends Invoice{
         return paymentHistory;
     }
     
+    // calculate total outstanding fee of each unit based on monthYear
     public List<String> calculateTotalOutstanding(String monthYear) {
         List<String> availablePending = displayAllPayment("PENDING");
         String[] availablePendingArray = new String[availablePending.size()];
@@ -340,6 +355,7 @@ public class Payment extends Invoice{
                 String eInvoiceNo = pendingPayment[0];
                 float eTotalPrice = Float.valueOf(pendingPayment[4]);
 
+                // sum up all pending payment total figure
                 if (invoiceNo.equals(eInvoiceNo)) {
                     totalPrice += eTotalPrice;
                     tUnitNo = pendingPayment[2];
@@ -357,6 +373,7 @@ public class Payment extends Invoice{
         return availablePendingPayment;
     }
     
+    // store charges late payment fee into account
     public void chargeLatePaymentFee(String invoiceNo, String latePaymentFee) {
         try {
             List<String> invoicesList = fh.fileRead("invoices.txt");
@@ -366,6 +383,7 @@ public class Payment extends Invoice{
             String period = "-";
             boolean check = false;
 
+            // check whethe late payment charges are charged before
             for (int i = 1; i < invoicesList.size(); i++) {
                 String[] invoiceDetails = invoicesArray[i].split(";");
                 String eInvoiceNo = invoiceDetails[0];
@@ -383,7 +401,7 @@ public class Payment extends Invoice{
             }
 
             List<String> newData = new ArrayList<>();
-
+            // modify to latest late payment charge is record existed
             if (check == true) {
                 for (int i = 1; i < invoicesList.size(); i++) {
                     String[] invoiceDetails = invoicesArray[i].split(";");
@@ -404,6 +422,7 @@ public class Payment extends Invoice{
                 }
                 fh.fileWrite("invoices.txt", false, newData);
 
+            // add new late payment charges if record not found
             } else if (check == false) {
                 String generatedDate = this.todayDate();
                 newData.add(invoiceNo + ";" + unitNo + ";" + "Late Payment Charges" + ";" + "-"
@@ -418,6 +437,7 @@ public class Payment extends Invoice{
         }
     }
     
+    // store newly issued statement 
     public void issueStatement(List<String> availableStatement) {
         try {
             List<String> newData = new ArrayList<>();
@@ -431,6 +451,7 @@ public class Payment extends Invoice{
         }
     }
     
+    // extract specific unit statement details based on monthYear
     public ArrayList displayOneStatement(String unitNo, String monthNyear) throws ParseException{
         ResidentTenant RT = new ResidentTenant();
         PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();

@@ -29,12 +29,14 @@ public class AccountExecutive extends Users {
 
     public AccountExecutive() {}
     
+    // constructor for Account Executive
     public AccountExecutive(String userID, String email, String password, String firstName,
                  String lastName, String identificationNo, String gender, String phoneNo) {
         super(userID, email, password,  firstName, lastName,  identificationNo,
                 gender, phoneNo);
     }
     
+    // method to extra all available fee types
     public List<String> extractFeeTypes(String fileName) {
         List<String> feeTypes = new ArrayList<>();
 
@@ -48,6 +50,7 @@ public class AccountExecutive extends Users {
         return feeTypes;
     }
 
+    // method to store new fee types into text files
     public boolean storeNewFeeTypes(String feeTypesName, String target, String unit,
             String unitPrice, String category) {
         List<String> feeTypesList = fh.fileRead("feeTypes.txt");
@@ -71,6 +74,7 @@ public class AccountExecutive extends Users {
         return true;
     }
 
+    // method to make changes on available fee types details
     public void modifyFeeTypes(String feeTypesName, String target, String unit,
             String unitPrice, String category) {
         List<String> feeTypesList = fh.fileRead("feeTypes.txt");
@@ -94,6 +98,8 @@ public class AccountExecutive extends Users {
         fh.fileWrite("feeTypes.txt", false, newData);
     }
 
+    
+    // method to delete available fee types
     public void deleteFeeTypes(String feeTypesName, String target) {
         List<String> feeTypesList = fh.fileRead("feeTypes.txt");
         String[] feeTypesArray = new String[feeTypesList.size()];
@@ -114,6 +120,7 @@ public class AccountExecutive extends Users {
         fh.fileWrite("feeTypes.txt", false, newData);
     }
 
+    // method to convert today's data into dd/MM/yyyy format
     public String todayDate() {
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -121,6 +128,7 @@ public class AccountExecutive extends Users {
         return str;
     }
 
+    // method to get the start month till valid month for each fees
     public List<String> rangeOfMonthNYear(String feeTypeName, String target) {
         List<String> monthNYear = new ArrayList<String>();
         String todayDate = todayDate();
@@ -145,6 +153,7 @@ public class AccountExecutive extends Users {
             }
         }
 
+        // find the rest of the monthYear range based on start month
         LocalDate ld2 = LocalDate.parse(referenceDate, f);
         int rm = ld2.getMonthValue();
         int ry = ld2.getYear();
@@ -170,6 +179,8 @@ public class AccountExecutive extends Users {
         return monthNYear;
     }
 
+    // a text file to link userID and invoiceNo just in case ownership 
+    // transfer in the future
     public void createUserTransactionLink(String period, String unitNo) {
         String transDate = todayDate().substring(4);
         String[] availableData = {period, transDate};
@@ -216,6 +227,7 @@ public class AccountExecutive extends Users {
         
     }
 
+    // method to get both resident and tenant name based on unitNo
     public List<String> extractUnitUsers(String unitNo) {
         List<String> userName = new ArrayList<String>();
         try {
@@ -239,6 +251,7 @@ public class AccountExecutive extends Users {
         return userName;
     }
 
+    // method to extract all personal details of a user
     public List<String> extractUnitUsersDetails(String userName) {
         List<String> userFullDetails = new ArrayList<String>();
         try {
@@ -264,6 +277,7 @@ public class AccountExecutive extends Users {
         return userFullDetails;
     }
 
+    // get all stored monthYear from available invoice in the text file
     public List<String> getAllMonthYearInvoice() {
         List<String> availableMonthYear = new ArrayList<>();
         try {
@@ -284,6 +298,7 @@ public class AccountExecutive extends Users {
         return availableMonthYear;
     }
 
+    // method to calculate the month that statement can be issued
     public List<String> getAllMonthYearStatement() {
         List<String> monthNYear = new ArrayList<String>();
         String todayDate = todayDate();
@@ -317,6 +332,7 @@ public class AccountExecutive extends Users {
         return monthNYear;
     }
 
+    // method to get the charged late payment of an invoice
     public String getInvoiceLatePayment(String invoiceNo) {
         String latePaymentFee = "";
         try {
@@ -340,51 +356,14 @@ public class AccountExecutive extends Users {
         }
         return latePaymentFee;
     }
-
-    public List<String> extractAllStatementUnit(String status, String monthYear) {
-//        List<String> transList = fh.fileRead("userTransactionLink.txt");
-//        List<String> statementList = fh.fileRead("statements.txt");
-//        
-//        List<String> availableStatement = new ArrayList<>();
-//        if(status.equals("PENDING")) {
-//            for (int i = 1; i < transList.size(); i++) {
-//                String[] unitDetails = transList.get(i).split(";");
-//                String uPeriod = unitDetails[0];
-//                String uUnitNo = unitDetails[1];
-//                
-//                if(uPeriod.equals(monthYear)) {
-//                    boolean check = true;
-//                    for (int j = 1; j < statementList.size(); j++) {
-//                        String[] statementDetails = statementList.get(j).split(";");
-//                        String period = statementDetails[0];
-//                        String sUnitNo = statementDetails[1];
-//                        if(uPeriod.equals(period) && uUnitNo.equals(sUnitNo)) {
-//                            check = false;
-//                        }
-//                    }
-//                    if(check) {
-//                        availableStatement.add(monthYear +";"+ uUnitNo +";");
-//                    }
-//                }
-//                
-//            }
-//        } else if(status.equals("ISSUED")) {
-//            for (int i = 1; i < statementList.size(); i++) {
-//                    String[] statementDetails = transList.get(i).split(";");
-//                    String period = statementDetails[0];
-//                    String sUnitNo = statementDetails[1];
-//                    availableStatement.add(period +";"+ sUnitNo +";");
-//                    
-//                }
-//        }
-//        List<String> fullStatement = extractStatementUnitDetails
-//                                        (availableStatement);
-//        return fullStatement;
-        
+    
+    // method to search all available unit to issue statement based on monthYear
+    public List<String> extractAllStatementUnit(String status, String monthYear) {       
         List<String> transList = fh.fileRead("invoices.txt");
         List<String> statementList = fh.fileRead("statements.txt");
         
         List<String> availableStatement = new ArrayList<>();
+        // search for unit that statement hasn't issue
         if(status.equals("PENDING")) {
             for (int i = 1; i < transList.size(); i++) {
                 String[] unitDetails = transList.get(i).split(";");
@@ -412,6 +391,7 @@ public class AccountExecutive extends Users {
                 }
                 
             }
+        // search for unit that statement has been issued
         } else if(status.equals("ISSUED")) {
             for (int i = 1; i < statementList.size(); i++) {
                     String[] statementDetails = statementList.get(i).split(";");
@@ -428,9 +408,12 @@ public class AccountExecutive extends Users {
     }
     
 
+    // method to extract full details for the statement based on unitNo
     public List<String> extractStatementUnitDetails(List<String> statementUnit) {
         List<String> availableStatements = new ArrayList<>();
         
+        // in case the owner is being removed, system will check both active and
+        // inactive user text file for relavant data
         List<String> usernameList = new ArrayList<>();
         List<String> userIDList = new ArrayList<>();
 
@@ -456,7 +439,7 @@ public class AccountExecutive extends Users {
             userIDList.add(euserID);
         }
         
-        
+        // get user data
         for (int j = 0; j<statementUnit.size(); j++) {
             String[] statementDetails = statementUnit.get(j).split(";");
             String sPeriod = statementDetails[0];
@@ -499,9 +482,11 @@ public class AccountExecutive extends Users {
         return availableStatements;
     }
     
+    // when a user is remove, all their transactions will be added a deleteID
     public void deleteTrans(String unitNo, String deleteID) {
         List<String> newData = new ArrayList<>();
         
+        // add deleteID for invoices
         List<String> transList1 = fh.fileRead("invoices.txt");
         for(int i = 0; i<transList1.size(); i++) {
             String[] transDetails = transList1.get(i).split(";");
@@ -527,6 +512,7 @@ public class AccountExecutive extends Users {
             }
         } fh.fileWrite("invoices.txt", false, newData);
         
+        // add deleteID for all paid payments
         List<String> transList2 = fh.fileRead("payment.txt");
         newData.clear();
         for(int i = 0; i<transList2.size(); i++) {
@@ -556,6 +542,8 @@ public class AccountExecutive extends Users {
             }
         } fh.fileWrite("payment.txt", false, newData);
         
+        
+        // add deleteID for all receipts
         List<String> transList3 = fh.fileRead("receipt.txt");
         newData.clear();
         for(int i = 0; i<transList3.size(); i++) {
@@ -585,6 +573,7 @@ public class AccountExecutive extends Users {
             }
         } fh.fileWrite("receipt.txt", false, newData);
         
+        // add deleteID for all statements
         List<String> transList4 = fh.fileRead("statements.txt");
         newData.clear();
         for(int i = 0; i<transList4.size(); i++) {
@@ -604,9 +593,11 @@ public class AccountExecutive extends Users {
         } fh.fileWrite("statements.txt", false, newData);
     }
     
+    // method to restore all available transactions when specific user is restored
     public void restoreTrans(String deleteID) {
         List<String> newData = new ArrayList<>();
         
+        // remove deleteID for invoices
         List<String> transList1 = fh.fileRead("invoices.txt");
         for(int i = 0; i<transList1.size(); i++) {
             String[] transDetails = transList1.get(i).split(";");
@@ -632,6 +623,7 @@ public class AccountExecutive extends Users {
             }
         } fh.fileWrite("invoices.txt", false, newData);
         
+        // remove deleteID for payments
         List<String> transList2 = fh.fileRead("payment.txt");
         newData.clear();
         for(int i = 0; i<transList2.size(); i++) {
@@ -661,6 +653,7 @@ public class AccountExecutive extends Users {
             }
         } fh.fileWrite("payment.txt", false, newData);
         
+        // remove deleteID for receipts
         List<String> transList3 = fh.fileRead("receipt.txt");
         newData.clear();
         for(int i = 0; i<transList3.size(); i++) {
@@ -690,6 +683,7 @@ public class AccountExecutive extends Users {
             }
         } fh.fileWrite("receipt.txt", false, newData);
         
+        // remove deleteID for statements
         List<String> transList4 = fh.fileRead("statements.txt");
         newData.clear();
         for(int i = 0; i<transList4.size(); i++) {
@@ -709,12 +703,14 @@ public class AccountExecutive extends Users {
         } fh.fileWrite("statements.txt", false, newData);
     }
     
+    // method to convert float in two decimal places
     public String currencyFormat(float amount) {
         DecimalFormat df = new DecimalFormat("0.00");
         String unitPrice = df.format(amount);
         return unitPrice;
     }
     
+    // method to decorate all tables
     public void setTableDesign(JTable jTable, JLabel jLabel, int[] columnLength, int[] ignoreColumn) {
         // design for the table header
         DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();

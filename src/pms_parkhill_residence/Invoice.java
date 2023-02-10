@@ -65,6 +65,7 @@ public class Invoice {
         this.deleteID = deleteID;
     }
     
+    // store new invoice into text file
     public void issueInvoice() {
         List<String> newData = new ArrayList<>();
         newData.add(invoiceNo +";"+ unitNo +";"+ feeType +";"+ unitCategory +";"+
@@ -73,6 +74,7 @@ public class Invoice {
         fh.fileWrite("invoices.txt", true, newData);
     }
     
+    // extract all specific fee type invoice details
     public List<String> displayInvoiceDetails(String feeTypeName, String target,
             String status, String monthYear) {
 
@@ -96,6 +98,7 @@ public class Invoice {
             }
         }
 
+        // get data for invoice that havent issue
         List<String> availableInvoices = new ArrayList<String>();
         if (status.equals("PENDING")) {
             List<String> propertyDetailsList = fh.fileRead("propertyDetails.txt");
@@ -144,6 +147,7 @@ public class Invoice {
                     }
                 }
             }
+        // get data for invoice that issued    
         } else if (status.equals("ISSUED")) {
             List<String> propertyDetailsList = fh.fileRead("propertyDetails.txt");
             String[] propertyDetailsArray = new String[propertyDetailsList.size()];
@@ -183,11 +187,12 @@ public class Invoice {
         return availableInvoices;
     }
     
-    public List<String> extractOneInvoiceDetails() {
+    // method to extract specific invoice details
+    public List<String> extractOneInvoiceDetails(Invoice INV) {
         List<String> RavailableFees = new ArrayList<>();
         
-        for (int i=0; i<this.availableFees.size(); i++) {
-            String[] paymentDetails = this.availableFees.get(i).split(";");
+        for (int i=0; i<INV.availableFees.size(); i++) {
+            String[] paymentDetails = INV.availableFees.get(i).split(";");
             String eInvoiceNo = paymentDetails[0];
             String feeType = paymentDetails[2];
             String issueDate = paymentDetails[9];
@@ -198,11 +203,11 @@ public class Invoice {
             
             RavailableFees.add(feeType +";"+ issueDate +";"+ consump +";"+
                     unit +";"+ unitPrice +";"+ totalPrice +";");
-            
-        } System.out.println(RavailableFees); 
+        } 
         return RavailableFees;
     }
     
+    // convert today date to dd/MM/yyyy format
     public String todayDate() {
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");

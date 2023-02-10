@@ -933,7 +933,7 @@ public class AccountExecutiveViewInvoice extends javax.swing.JFrame {
     }
     
     private void setTable() {
-        List<String> paymentFeesDetails = INV.extractOneInvoiceDetails();
+        List<String> paymentFeesDetails = INV.extractOneInvoiceDetails(INV);
         float subTotal = 0.00f;
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
         

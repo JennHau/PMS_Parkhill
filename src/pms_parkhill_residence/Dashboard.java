@@ -4,16 +4,9 @@
  */
 package pms_parkhill_residence;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PiePlot;
@@ -88,8 +81,6 @@ public class Dashboard {
     }
     
     public JFreeChart createBarChart(List<String> x, List<String> y, String title, String xName, String yName){
-        int a = 0; int b = 0; int c = 0; int d = 0; int e = 0; int f = 0; int NA = 0;
-        
         //create dataset for the graph
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int i=0; i<x.size(); i++) {
