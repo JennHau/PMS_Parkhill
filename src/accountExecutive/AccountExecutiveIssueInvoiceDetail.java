@@ -10,12 +10,13 @@ import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.HomePage;
+import pms_parkhill_residence.Invoice;
+import pms_parkhill_residence.Payment;
 
 /**
  *
@@ -733,6 +734,7 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private final AccountExecutive AE;
+    Invoice INV = new Invoice();
     
     private void setCurrentProfile() {
         usernameLabel.setText(AE.getFirstName() +" "+ AE.getLastName());
@@ -790,7 +792,7 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
             
                 if(result == JOptionPane.YES_OPTION){
-                    List<String> invoiceDetails = new ArrayList<String>();
+//                    List<String> invoiceDetails = new ArrayList<String>();
                     
                     for (int i=0; i<tableModel.getRowCount(); i++) {
                         String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
@@ -807,14 +809,18 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                         String totalPrice = String.valueOf(tableModel.getValueAt(i, 5));
                         String period = monthYear;
                         String generatedDate = AE.todayDate();
-                        String cDetails = invoiceNo +";"+ unitNo +";"+ feeType +";"+ target +";"+
-                                consumption +";"+ unit +";"+ unitPrice +";"+ totalPrice +";"+
-                                period +";"+ generatedDate+";"+ "-" +";";
-                        invoiceDetails.add(cDetails);
+//                        String cDetails = invoiceNo +";"+ unitNo +";"+ feeType +";"+ target +";"+
+//                                consumption +";"+ unit +";"+ unitPrice +";"+ totalPrice +";"+
+//                                period +";"+ generatedDate+";"+ "-" +";";
+//                        invoiceDetails.add(cDetails);
+                        Invoice INV = new Invoice(invoiceNo, unitNo, feeType,
+                                target, consumption, unit, unitPrice, totalPrice,
+                                period, generatedDate, "-");
+                        INV.issueInvoice();
                         AE.createUserTransactionLink(period, unitNo);
                     }
                         
-                        AE.issueInvoice(invoiceDetails);
+//                        AE.issueInvoice(invoiceDetails);
                         setTable();
                         JOptionPane.showMessageDialog (null, "Invoices have been issued!", 
                                         "ISSUE INVOICE", JOptionPane.INFORMATION_MESSAGE);
@@ -842,7 +848,7 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
 
                 if(result == JOptionPane.YES_OPTION){
-                    List<String> invoiceDetails = new ArrayList<String>();
+//                    List<String> invoiceDetails = new ArrayList<String>();
                     String feeTypeNTarget = feeTypeNameLabel.getText();
                     String feeType = feeTypeNTarget.substring(0, feeTypeNTarget.indexOf(", "));
                     String target = feeTypeNTarget.substring(feeTypeNTarget.indexOf(",") + 2);
@@ -852,21 +858,19 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                     String totalPrice = String.valueOf(tableModel.getValueAt(row, 5));
                     String period = monthYear;
                     String generatedDate = AE.todayDate();
-                    String cDetails = invoiceNo +";"+ unitNo +";"+ feeType +";"+ target +";"+
-                            consumption +";"+ unit +";"+ unitPrice +";"+ totalPrice +";"+
-                            period +";"+ generatedDate +";"+ "-" +";";
-                    invoiceDetails.add(cDetails);
+                    Invoice INV = new Invoice(invoiceNo, unitNo, feeType,
+                            target, consumption, unit, unitPrice, totalPrice,
+                            period, generatedDate, "-");
+                    INV.issueInvoice();
                     AE.createUserTransactionLink(period, unitNo);
-
-                    AE.issueInvoice(invoiceDetails);
                     setTable();
                     JOptionPane.showMessageDialog (null, "Invoice has been issued!", 
                                     "ISSUE INVOICE", JOptionPane.INFORMATION_MESSAGE);
                 }
             } else if (statusCB.getSelectedItem() == "ISSUED"){
                 dispose();
-                System.out.println(invoiceNo);
-                new AccountExecutiveViewInvoice(invoiceNo, unitNo, AE).setVisible(true);
+                Invoice INV = new Invoice(invoiceNo);
+                new AccountExecutiveViewInvoice(INV, AE).setVisible(true);
             }
         }
     }//GEN-LAST:event_jTable1MouseClicked
@@ -1128,7 +1132,7 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
             String status = String.valueOf(statusCB.getSelectedItem());
             String monthYear = String.valueOf(monthNYearCB.getSelectedItem());
             
-            List<String> invoiceDetails = AE.extractInvoiceDetails(feeTypeName,
+            List<String> invoiceDetails = INV.displayInvoiceDetails(feeTypeName,
                     target, status, monthYear);
 
             DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();

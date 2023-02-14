@@ -4,6 +4,8 @@
  */
 package buildingManager;
 
+import accountExecutive.AccountExecutive;
+import buildingExecutive.BuildingExecutive;
 import java.awt.Color;
 import java.io.File;
 import java.text.DecimalFormat;
@@ -27,12 +29,14 @@ public class BuildingManager extends Users{
     
     FileHandling fh = new FileHandling();
     
+    // constructor for Building Manager
     public BuildingManager (String userID, String email, String password, String firstName,
                  String lastName, String identificationNo, String gender, String phoneNo){
         super(userID, email, password,  firstName, lastName,  identificationNo,
                 gender, phoneNo);
     }
     
+    // extract all user based on user type
     public List<String> extractAllUser(String type) {
         List<String> userList = fh.fileRead("userProfile.txt");
         String[] userArray = new String[userList.size()];
@@ -56,6 +60,7 @@ public class BuildingManager extends Users{
         } return availableList;
     }
     
+    // get lastest usable primary ID
     public String getLatestID(String filename, String initial) {
         List<String> userList =  fh.fileRead(filename);
         String[] userArray = new String[userList.size()];
@@ -102,17 +107,29 @@ public class BuildingManager extends Users{
         return currentUsableID;
     }
     
-    public void userRegistration(String userID, String email, String password, 
-            String firstName, String lastName, String identificationNo, String gender,
-            String phoneNo) {
-        
+    // method to store new Account Executive account
+    public void addAccountExecutive(AccountExecutive ACE) {
         List<String> newData = new ArrayList<>();
-        newData.add(userID +";"+ email +";"+password +";"+ firstName +";"+ lastName
-                +";"+ identificationNo +";"+ gender +";"+ phoneNo +";"+ "-" +";");
+        newData.add(ACE.getUserID() +";"+ ACE.getEmail() +";"+ACE.getPassword()
+                +";"+ ACE.getFirstName() +";"+ ACE.getLastName()
+                +";"+ ACE.getIdentificationNo()+";"+ ACE.getGender()
+                +";"+ ACE.getPhoneNo() +";"+ "-" +";");
         
         fh.fileWrite("userProfile.txt", true, newData);
     }
     
+    // method to store new Building Executive account
+    public void addBuildingExecutive(BuildingExecutive BE) {
+        List<String> newData = new ArrayList<>();
+        newData.add(BE.getUserID() +";"+ BE.getEmail() +";"+BE.getPassword()
+                +";"+ BE.getFirstName() +";"+ BE.getLastName()
+                +";"+ BE.getIdentificationNo()+";"+ BE.getGender()
+                +";"+ BE.getPhoneNo() +";"+ "-" +";");
+        
+        fh.fileWrite("userProfile.txt", true, newData);
+    }
+    
+    // method to delete user
     public void deleteUser(String userID) {
         List<String> employeeTypeList =  fh.fileRead("userProfile.txt");
         
@@ -128,6 +145,7 @@ public class BuildingManager extends Users{
         } fh.fileWrite("userProfile.txt", false, newData);
     }
     
+    // method to get specific user details
     public String[] extractEmployeeDetails(String userID) {
         List<String> userProfile = fh.fileRead("userProfile.txt");
         String[] userProfileArray = new String[userProfile.size()];
@@ -143,9 +161,8 @@ public class BuildingManager extends Users{
         } return null;
     }
     
-    public void modifyOthersAccount(String userID, String email, String password,
-            String firstName, String lastName, String identificationNo,
-            String gender, String phoneNo, String unitNo) {
+    // method to modify Account Executive account
+    public void modifyACEAccount(AccountExecutive ACE) {
         List<String> userProfile = fh.fileRead("userProfile.txt");
         String[] userProfileArray = new String[userProfile.size()];
         userProfile.toArray(userProfileArray);
@@ -157,16 +174,42 @@ public class BuildingManager extends Users{
             String userID_temp = userInfo[0];
             String password_temp = userInfo[2];
             
-            if (userID_temp.equals(userID)) {
-                newData.add(userID +";"+ email +";"+ password_temp +";"+ firstName
-                        +";"+ lastName +";"+ identificationNo +";"+ gender
-                        +";"+ phoneNo +";"+ unitNo +";");
+            if (userID_temp.equals(ACE.getUserID())) {
+                newData.add(ACE.getUserID() +";"+ ACE.getEmail() +";"+
+                        password_temp +";"+ ACE.getFirstName() +";"+ 
+                        ACE.getLastName() +";"+ ACE.getIdentificationNo() +";"+
+                        ACE.getGender() +";"+ ACE.getPhoneNo() +";"+ "-" +";");
             } else {
                 newData.add(userProfileArray[i]);
             }
         } fh.fileWrite("userProfile.txt", false, newData);
     }
     
+    // modify Building Executive account
+    public void modifyBEAccount(BuildingExecutive BE) {
+        List<String> userProfile = fh.fileRead("userProfile.txt");
+        String[] userProfileArray = new String[userProfile.size()];
+        userProfile.toArray(userProfileArray);
+        
+        List<String> newData = new ArrayList<>();
+        
+        for (int i = 0; i<userProfile.size(); i++) {
+            String[] userInfo = userProfileArray[i].split(";");
+            String userID_temp = userInfo[0];
+            String password_temp = userInfo[2];
+            
+            if (userID_temp.equals(BE.getUserID())) {
+                newData.add(BE.getUserID() +";"+ BE.getEmail() +";"+
+                        password_temp +";"+ BE.getFirstName() +";"+ 
+                        BE.getLastName() +";"+ BE.getIdentificationNo() +";"+
+                        BE.getGender() +";"+ BE.getPhoneNo() +";"+ "-" +";");
+            } else {
+                newData.add(userProfileArray[i]);
+            }
+        } fh.fileWrite("userProfile.txt", false, newData);
+    }
+    
+    // check whether specific image file exits
     public boolean checkImageFile(String imageRPath) {
         String imageFile = "src//images//"+imageRPath+".jpg";
         File f = new File(imageFile);
@@ -174,6 +217,7 @@ public class BuildingManager extends Users{
         return(imagePath.exists());
     }
     
+    // modify team structure role person
     public void modifyTeamStructureSlot(String role, String name) {
         List<String> roleList = fh.fileRead("teamStructure.txt");
         List<String> newData = new ArrayList<>();
@@ -191,6 +235,7 @@ public class BuildingManager extends Users{
         } fh.fileWrite("teamStructure.txt", false, newData);
     }
     
+    // delete person from team structure
     public void deleteTeamStructureSlot(String role) {
         List<String> roleList = fh.fileRead("teamStructure.txt");
         List<String> newData = new ArrayList<>();
@@ -211,6 +256,7 @@ public class BuildingManager extends Users{
         image.delete();
     }
     
+    // delete committee 
     public void deleteTeamStructureOther(String role, String name) {
         List<String> roleList = fh.fileRead("teamStructure.txt");
         List<String> newData = new ArrayList<>();
@@ -228,12 +274,14 @@ public class BuildingManager extends Users{
         } fh.fileWrite("teamStructure.txt", false, newData);
     }
     
+    // add committee
     public void addTeamStructureOther(String role, String name) {
         List<String> newData = new ArrayList<>();
         newData.add("other" +";"+ role +";"+ name +";");
         fh.fileWrite("teamStructure.txt", true, newData);
     }
     
+    // validate whether user with the role is existed
     public boolean addTeamStructureOtherValidate(String role, String name) {
         List<String> roleList = fh.fileRead("teamStructure.txt");
         
@@ -249,12 +297,14 @@ public class BuildingManager extends Users{
         } return true;
     }
     
+    // convert float into two decimal places
     public String currencyFormat(float amount) {
         DecimalFormat df = new DecimalFormat("0.00");
         String unitPrice = df.format(amount);
         return unitPrice;
     }
     
+    // calculate total allocated capital
     public String calculateTotalCapital() {
         List<String> financialCapital = fh.fileRead("financialCapital.txt");
         Float totalCapital = 0.00f;
@@ -267,6 +317,7 @@ public class BuildingManager extends Users{
         return tCapital;
     }
     
+    // calculate whole income from utilities/ rental fee
     public String calculateTotalMothlyIncome() {
         List<String> facilityPayment = fh.fileRead("payment.txt");
         Float total = 0.00f;
@@ -281,6 +332,7 @@ public class BuildingManager extends Users{
         return tCapital;
     }
     
+    // calculate all income from facility booking
     public String calculateTotalFacilityIncome() {
         List<String> payment = fh.fileRead("facilityBooking.txt");
         Float total = 0.00f;
@@ -302,6 +354,7 @@ public class BuildingManager extends Users{
         return tCapital;
     }
     
+    // calculate all allocated budget
     public String calculateAllocatedBudget() {
         List<String> allocationList = fh.fileRead("budgetAllocation.txt");
         Float total = 0.00f;
@@ -315,6 +368,7 @@ public class BuildingManager extends Users{
         return tCapital;
     }
     
+    // method to delete allocated capital
     public void deleteFinancialCapital(String amount, String date) {
         List<String> allocationList = fh.fileRead("financialCapital.txt");
         List<String> newData = new ArrayList<>();
@@ -333,12 +387,14 @@ public class BuildingManager extends Users{
         } fh.fileWrite("financialCapital.txt", false, newData);
     }
     
+    // method to store newly added financial capital
     public void addFinancialCapital(String amount) {
         List<String> newData = new ArrayList<>();
         newData.add(amount +";"+ String.valueOf(LocalDate.now()) +";");
         fh.fileWrite("financialCapital.txt", true, newData);
     }
     
+    // method to delete allocated budget
     public void deleteBudgetAllocation(String allocationID) {
         List<String> allocationList = fh.fileRead("budgetAllocation.txt");
         List<String> newData = new ArrayList<>();
@@ -353,6 +409,7 @@ public class BuildingManager extends Users{
         } fh.fileWrite("budgetAllocation.txt", false, newData);
     }
     
+    // get current date and time
     public String currentDateTime() {
         LocalDateTime dt = LocalDateTime.now();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
@@ -360,6 +417,7 @@ public class BuildingManager extends Users{
         return currentDateTime;
     }
     
+    // extract all property unit data for report generation
     public List<String> propertyUnitReport() {
         List<String> unitList = fh.fileRead("propertyDetails.txt");
         List<String> userList = fh.fileRead("userProfile.txt");
@@ -394,6 +452,7 @@ public class BuildingManager extends Users{
         } return availableList;
     }
     
+    // method to design all tables
     public void setTableDesign(JTable jTable, JLabel jLabel, int[] columnLength, int[] ignoreColumn) {
         // design for the table header
         DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();

@@ -14,6 +14,7 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.HomePage;
+import pms_parkhill_residence.Invoice;
 
 /**
  *
@@ -23,16 +24,14 @@ public class AccountExecutiveViewInvoice extends javax.swing.JFrame {
     
     /**
      * Creates new form homePage
-     * @param invoiceNo
-     * @param unitNo
+     * @param INV
      * @param AE
      */
-    public AccountExecutiveViewInvoice(String invoiceNo, String unitNo, AccountExecutive AE) {
+    public AccountExecutiveViewInvoice(Invoice INV, AccountExecutive AE) {
         initComponents();
         setWindowIcon();
         this.AE = AE;
-        this.invoiceNo = invoiceNo;
-        this.unitNo = unitNo;
+        this.INV = INV;
         setFixData();
         setTable();
         setTableDesign();
@@ -722,10 +721,8 @@ public class AccountExecutiveViewInvoice extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
-    private final String invoiceNo;
-    private final String unitNo;
-    private String total;
     private final AccountExecutive AE;
+    private final Invoice INV;
     
     private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
         // TODO add your handling code here:
@@ -930,13 +927,13 @@ public class AccountExecutiveViewInvoice extends javax.swing.JFrame {
     }//GEN-LAST:event_viewProfilePanelMouseClicked
 
     private void setFixData() {
-        invoiceNoLabel.setText(invoiceNo);
-        unitNoLabel.setText(unitNo);
+        invoiceNoLabel.setText(INV.getInvoiceNo());
+        unitNoLabel.setText(INV.getUnitNo());
         generatedDate.setText(String.valueOf(LocalDate.now()));
     }
     
     private void setTable() {
-        List<String> paymentFeesDetails = AE.extractOneInvoiceDetails(invoiceNo);
+        List<String> paymentFeesDetails = INV.extractOneInvoiceDetails(INV);
         float subTotal = 0.00f;
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
         
@@ -954,8 +951,7 @@ public class AccountExecutiveViewInvoice extends javax.swing.JFrame {
                 totalPrice};
             tableModel.addRow(tbData);
         } 
-        totalLabel.setText("Total: RM" + subTotal);
-        total = String.valueOf(subTotal);
+        totalLabel.setText("Total: RM" + AE.currencyFormat(subTotal));
     }
     
     private void setWindowIcon() {
@@ -996,7 +992,7 @@ public class AccountExecutiveViewInvoice extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutiveViewInvoice(null, null, null).setVisible(true);
+                new AccountExecutiveViewInvoice(null, null).setVisible(true);
             }
         });
     }

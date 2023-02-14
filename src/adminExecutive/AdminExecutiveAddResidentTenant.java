@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 import pms_parkhill_residence.Validation;
+import residentANDtenant.ResidentTenant;
 
 /**
  *
@@ -20,6 +20,7 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param AE
      */
     public AdminExecutiveAddResidentTenant(AdminExecutive AE) {
         initComponents();
@@ -475,8 +476,9 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
                 
                 if(result == JOptionPane.YES_OPTION){
-                    AE.userRegistration(userID, email, password, firstName,
+                    ResidentTenant RT = new ResidentTenant(userID, email, password, firstName,
                             lastName, idNo, gender, phoneNo, unitNo);
+                    AE.RTRegistration(RT);
                     JOptionPane.showMessageDialog (null, "New user has been added!", 
                                     "USER REGISTRATION", JOptionPane.INFORMATION_MESSAGE);
                     dispose();

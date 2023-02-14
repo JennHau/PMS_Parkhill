@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.Users;
 import pms_parkhill_residence.Validation;
+import residentANDtenant.ResidentTenant;
 
 /**
  *
@@ -512,8 +513,9 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
                 
                 if(result == JOptionPane.YES_OPTION){
-                    AE.modifyOthersAccount(userID, email, password, firstName,
-                            lastName, idNo, gender, phoneNo, unitNo);
+                    ResidentTenant RT = new ResidentTenant(userID, email,
+                        password, firstName, lastName, idNo, gender, phoneNo, unitNo);
+                    AE.modifyRTAccount(RT);
                     JOptionPane.showMessageDialog (null, "User account has been modified!", 
                                     "MODIFY USER ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
                     dispose();

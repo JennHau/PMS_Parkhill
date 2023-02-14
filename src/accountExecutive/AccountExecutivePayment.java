@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.HomePage;
+import pms_parkhill_residence.Payment;
 
 /**
  *
@@ -660,6 +661,7 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private final AccountExecutive AE;
+    Payment PM = new Payment();
     
     private void setCurrentProfile() {
         usernameLabel.setText(AE.getFirstName() +" "+ AE.getLastName());
@@ -682,7 +684,8 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
         if (column == 6 && action.equals("MAKE PAYMENT")) {
             String invoiceNo = String.valueOf(tableModel.getValueAt(row, 0));
             String unitNo = String.valueOf(tableModel.getValueAt(row, 2));
-            AccountExecutiveMakePayment ae = new AccountExecutiveMakePayment(invoiceNo, unitNo, AE);
+            PM.setInvoiceNo(invoiceNo); PM.setUnitNo(unitNo);
+            AccountExecutiveMakePayment ae = new AccountExecutiveMakePayment(PM, AE);
             ae.setVisible(true);
             dispose();
         } else if (column == 6 && action.equals("ISSUE RECEIPT")) {
@@ -902,7 +905,7 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
         tableModel.setRowCount(0);
         String status = String.valueOf(statusCB.getSelectedItem());
         if (status.equals("PENDING")) {
-            List<String> pendingPaymentList = AE.extractAllPayment(status);
+            List<String> pendingPaymentList = PM.displayAllPayment(status);
             String[] pendingPaymentArray = new String[pendingPaymentList.size()];
             pendingPaymentList.toArray(pendingPaymentArray);
 
@@ -919,7 +922,7 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
                 tableModel.addRow(tbData);
             }
         } else if (status.equals("PAID")) {
-            List<String> paidPaymentList = AE.extractAllPayment(status);
+            List<String> paidPaymentList = PM.displayAllPayment(status);
             String[] paidPaymentArray = new String[paidPaymentList.size()];
             paidPaymentList.toArray(paidPaymentArray);
 

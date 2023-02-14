@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.HomePage;
+import pms_parkhill_residence.Payment;
 
 /**
  *
@@ -693,6 +694,7 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private final AccountExecutive AE;
+    Payment PM = new Payment();
     
     private void setCurrentProfile() {
         usernameLabel.setText(AE.getFirstName() +" "+ AE.getLastName());
@@ -724,13 +726,14 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
                     List<String> receiptDetails = new ArrayList<>();
                     String feeType = String.valueOf(tableModel.getValueAt(row, 2));
                     receiptDetails.add(invoiceNo +";"+ feeType +";");
-                    AE.issueReceipt(receiptDetails);
+                    PM.issueReceipt(receiptDetails);
                     setTable();
                     JOptionPane.showMessageDialog (null, "Receipt has been issued!", 
                                     "ISSUE RECEIPT", JOptionPane.INFORMATION_MESSAGE);
                 }
             } else if (statusCB.getSelectedItem() == "ISSUED"){
-                new AccountExecutiveViewReceipt(unitNo, invoiceNo, AE).setVisible(true);
+                PM.setUnitNo(unitNo); PM.setInvoiceNo(invoiceNo);
+                new AccountExecutiveViewReceipt(PM, AE).setVisible(true);
             }
         }
     }//GEN-LAST:event_jTable1MouseClicked
@@ -974,7 +977,7 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
         tableModel.setRowCount(0);
         String status = String.valueOf(statusCB.getSelectedItem());
         if (status.equals("PENDING")) {
-            List<String> pendingReceiptList = AE.extractReceipt(status);
+            List<String> pendingReceiptList = PM.displayReceipt(status);
             String[] pendingReceiptArray = new String[pendingReceiptList.size()];
             pendingReceiptList.toArray(pendingReceiptArray);
 
@@ -992,7 +995,7 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
                 tableModel.addRow(tbData);
             }
         } else if (status.equals("ISSUED")) {
-            List<String> issuedReceiptList = AE.extractReceipt(status);
+            List<String> issuedReceiptList = PM.displayReceipt(status);
             String[] issuedReceiptArray = new String[issuedReceiptList.size()];
             issuedReceiptList.toArray(issuedReceiptArray);
 
@@ -1035,7 +1038,7 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
                     String cDetails = invoiceNo +";"+ feeType +";";
                     receiptDetails.add(cDetails);
                 } 
-                    AE.issueReceipt(receiptDetails);
+                    PM.issueReceipt(receiptDetails);
                     setTable();
                     JOptionPane.showMessageDialog (null, "Receipts have been issued!", 
                                     "ISSUE RECEIPT", JOptionPane.INFORMATION_MESSAGE);
@@ -1049,7 +1052,7 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
     
     private void setTableDesign() {
         int[] colummnIgnore = {};
-        int[] columnLength = {137, 137, 138, 137, 137, 137, 137};
+        int[] columnLength = {137, 117, 138, 137, 137, 137, 157};
         AE.setTableDesign(jTable1, jLabel16, columnLength, colummnIgnore);
     }
     

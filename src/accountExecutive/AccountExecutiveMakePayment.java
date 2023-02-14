@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.HomePage;
+import pms_parkhill_residence.Payment;
 /**
  *
  * @author wongj
@@ -20,17 +21,15 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
-     * @param invoiceNo
-     * @param unitNo
+     * @param PM
      * @param AE
      */
-    public AccountExecutiveMakePayment(String invoiceNo, String unitNo, AccountExecutive AE) {
+    public AccountExecutiveMakePayment(Payment PM, AccountExecutive AE) {
         initComponents();
         setWindowIcon();
         this.AE = AE;
+        this.PM = PM;
         setCurrentProfile();
-        this.invoiceNo = invoiceNo;
-        this.unitNo = unitNo;
         setFixData();
         setTable();
         setTableDesign();
@@ -700,11 +699,9 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private final String invoiceNo;
-    private final String unitNo;
     private String total;
-    
     private final AccountExecutive AE;
+    private final Payment PM;
     public static AccountExecutiveMakePayment aceMakePayment;
     
     private void setCurrentProfile() {
@@ -713,7 +710,7 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
     
     private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
         // TODO add your handling code here:
-        new AccountExecutivePaymentGateway(invoiceNo, unitNo, total, AE).setVisible(true);
+        new AccountExecutivePaymentGateway(PM, AE).setVisible(true);
     }//GEN-LAST:event_jLabel18MouseClicked
 
     private void jLabel18MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseEntered
@@ -723,7 +720,7 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
 
     private void jPanel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseClicked
         // TODO add your handling code here:
-        new AccountExecutivePaymentGateway(invoiceNo, unitNo, total, AE).setVisible(true);
+        new AccountExecutivePaymentGateway(PM, AE).setVisible(true);
     }//GEN-LAST:event_jPanel5MouseClicked
 
     private void jPanel5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseEntered
@@ -912,12 +909,12 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
     }//GEN-LAST:event_viewProfilePanelMouseClicked
 
     private void setFixData() {
-        invoiceNoLabel.setText(invoiceNo);
-        unitNoLabel.setText(unitNo);
+        invoiceNoLabel.setText(PM.getInvoiceNo());
+        unitNoLabel.setText(PM.getUnitNo());
     }
     
     private void setTable() {
-        List<String> paymentFeesDetails = AE.extractPaymentFees(invoiceNo);
+        List<String> paymentFeesDetails = PM.displayOnePayment(PM.getInvoiceNo());
         String[] feesDetailsArray = new String[paymentFeesDetails.size()];
         paymentFeesDetails.toArray(feesDetailsArray);
         float subTotal = 0.00f;
@@ -937,8 +934,9 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
                 totalPrice};
             tableModel.addRow(tbData);
         } 
-        totalLabel.setText("Total: RM" + subTotal);
-        total = String.valueOf(subTotal);
+        total = AE.currencyFormat(subTotal);
+        totalLabel.setText("Total: RM" + total);
+        PM.setTotalPrice(subTotal);
     }
     
     private void setWindowIcon() {
@@ -1492,7 +1490,7 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutiveMakePayment(null, null, null).setVisible(true);
+                new AccountExecutiveMakePayment(null, null).setVisible(true);
             }
         });
     }

@@ -26,7 +26,6 @@ public abstract class Facility {
     public Facility() {}
     
     public void Facility(String facilityID) {
-        
         List<String> availableList = fh.fileRead("facility.txt");
         
         for (int i = 1; i < availableList.size(); i++) {
@@ -56,7 +55,8 @@ public abstract class Facility {
             }
         }
     }
-
+    
+    // different calculation for different facility type
     public abstract void calculateBookingFee();
     
     /**

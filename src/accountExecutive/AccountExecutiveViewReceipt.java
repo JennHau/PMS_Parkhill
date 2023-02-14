@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.PMS_DateTimeFormatter;
+import pms_parkhill_residence.Payment;
 
 
 /**
@@ -24,21 +25,18 @@ public class AccountExecutiveViewReceipt extends javax.swing.JFrame {
     FileHandling fh = new FileHandling();
     DefaultTableModel invRecTab;
     
-    private final String invoiceNo;
-    private final String unitNo;
+    private final Payment PM;
     private final AccountExecutive AE;
     /**
      * Creates new form custReceipt
-     * @param unitNo
-     * @param invoiceNo
+     * @param PM
      * @param AE
      */
-    public AccountExecutiveViewReceipt(String unitNo, String invoiceNo, AccountExecutive AE) {
+    public AccountExecutiveViewReceipt(Payment PM, AccountExecutive AE) {
         initComponents();
         invRecTab = (DefaultTableModel) invoiceReceiptTable.getModel();
         this.AE = AE;
-        this.invoiceNo = invoiceNo;
-        this.unitNo = unitNo;
+        this.PM = PM;
         setDefault();
         setTableDesign();
     }
@@ -320,7 +318,7 @@ public class AccountExecutiveViewReceipt extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void setDefault() {
-        ArrayList<String> invoiceList = AE.getCurrentUnitPaymentHistory(unitNo);
+        ArrayList<String> invoiceList = PM.extractSingleReceiptData(PM.getUnitNo());
         ArrayList<String> toReceipt = new ArrayList<>();
         
         String paymentDate = null;
@@ -328,7 +326,7 @@ public class AccountExecutiveViewReceipt extends javax.swing.JFrame {
         for (String eachInv : invoiceList) {
             String[] invDet = eachInv.split(";");
             String invID = invDet[0];
-            if (invID.equals(this.invoiceNo)) {
+            if (invID.equals(PM.getInvoiceNo())) {
                 String feeType = invDet[2];
                 String consumption = invDet[4] + " " + invDet[5];
                 String unitPrice = invDet[6];
@@ -350,8 +348,8 @@ public class AccountExecutiveViewReceipt extends javax.swing.JFrame {
         
         RT.setTableRow(invRecTab, toReceipt);
         
-        invNoLabel.setText(invoiceNo);
-        unitNoLabel.setText(unitNo);
+        invNoLabel.setText(PM.getInvoiceNo());
+        unitNoLabel.setText(PM.getUnitNo());
         amountPaid.setText("RM" + String.format("%.02f", totalAmount));
         paymentDateLabel.setText(paymentDate);
     }
@@ -432,7 +430,7 @@ public class AccountExecutiveViewReceipt extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutiveViewReceipt(null, null, null).setVisible(true);
+                new AccountExecutiveViewReceipt(null, null).setVisible(true);
             }
         });
     }

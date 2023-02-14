@@ -21,7 +21,9 @@ import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.FacilityBookingPaymentByBooking;
 import pms_parkhill_residence.FacilityBookingPaymentByHour;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Payment;
 import pms_parkhill_residence.Users;
+import residentANDtenant.ResidentTenant;
 
 /**
  *
@@ -30,15 +32,18 @@ import pms_parkhill_residence.Users;
 public class AdminExecutive extends Users{
     
     FileHandling fh = new FileHandling();
+    Payment PM = new Payment();
     
     public AdminExecutive(){}
     
+    // constructor for admin executive
     public AdminExecutive(String userID, String email, String password, String firstName,
                  String lastName, String identificationNo, String gender, String phoneNo){
         super(userID, email, password,  firstName, lastName,  identificationNo,
                 gender, phoneNo);
     }
     
+    // method to convert today date to dd/MM/yyyy format
     public String todayDate() {
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -46,6 +51,7 @@ public class AdminExecutive extends Users{
         return str;
     }
     
+    // method to extract specific property unit details
     public List<String> extractAllProperties(String type) {
         List<String> propertiesList = fh.fileRead("propertyDetails.txt");
         String[] propertiesArray = new String[propertiesList.size()];
@@ -68,6 +74,7 @@ public class AdminExecutive extends Users{
         } return availableList;
     }
     
+    // method to extract all available property unit details 
     public List<String> extractAllProperties() {
         List<String> propertiesList = fh.fileRead("propertyDetails.txt");
         String[] propertiesArray = new String[propertiesList.size()];
@@ -88,6 +95,7 @@ public class AdminExecutive extends Users{
         } return availableList;
     }
     
+    // check whether newly added unitNo is existed
     public boolean checkUnitAvailability(String unitNo) {
         List<String> propertiesList =  fh.fileRead("propertyDetails.txt");
         String[] propertiesArray = new String[propertiesList.size()];
@@ -104,6 +112,7 @@ public class AdminExecutive extends Users{
         return true;
     }
     
+    // method to modify specific unit details
     public void modifyUnitDetails(String unitNo, String type, String squareFoot) {
         List<String> propertiesList =  fh.fileRead("propertyDetails.txt");
         String[] propertiesArray = new String[propertiesList.size()];
@@ -127,9 +136,9 @@ public class AdminExecutive extends Users{
         } fh.fileWrite("propertyDetails.txt", false, newData);
     }
     
+    // extract all unit that having outstanding fee
     public boolean checkOutstandingFee(String unitNo) {
-        AccountExecutive ae = new AccountExecutive();
-        List<String> oustandingFee = ae.extractAllPayment("PENDING");
+        List<String> oustandingFee = PM.displayAllPayment("PENDING");
         String[] oustandingFeeArray = new String[oustandingFee.size()];
         oustandingFee.toArray(oustandingFeeArray);
         
@@ -143,11 +152,13 @@ public class AdminExecutive extends Users{
         } return true;
     }
     
+    // delete a property unit
     public void deleteUnit(String unitNo) {
         List<String> propertiesList =  fh.fileRead("propertyDetails.txt");
         String[] propertiesArray = new String[propertiesList.size()];
         propertiesList.toArray(propertiesArray);
         
+        // move deleted unit to inactive text file
         List<String> newData1 = new ArrayList<>();
         List<String> newData2 = new ArrayList<>();
         
@@ -169,6 +180,7 @@ public class AdminExecutive extends Users{
         deleteTenantResident(unitNo);
     }
     
+    // get any lastest ID
     public String getLatestID(String filename, String initial) {
         List<String> userList =  fh.fileRead(filename);
         String[] userArray = new String[userList.size()];
@@ -188,7 +200,7 @@ public class AdminExecutive extends Users{
         
         String zero = "";
         
-        
+        // ensure that all primary ID are having 6 numbers
         switch (times) {
             case 0 ->                 {
                      zero = "";
@@ -217,6 +229,7 @@ public class AdminExecutive extends Users{
         return currentUsableID;
     }
     
+    // method to delete Tenant (together with Resident)
     public void deleteTenantResident(String unitNo) {
         String currentDeleteID = getLatestID("inactiveUserProfile.txt", "dlt");
         
@@ -232,6 +245,7 @@ public class AdminExecutive extends Users{
             availableList.add(uniNo);
         }
         
+        // move deleted user to inactive text file
         List<String> userList =  fh.fileRead("userProfile.txt");
         String[] userArray = new String[userList.size()];
         userList.toArray(userArray);
@@ -266,6 +280,7 @@ public class AdminExecutive extends Users{
         acce.deleteTrans(unitNo, currentDeleteID);
     }
     
+    // method to delete Resident only
     public void deleteResident(String unitNo) {
         String currentDeleteID = getLatestID("inactiveUserProfile.txt", "dlt");
         
@@ -293,6 +308,7 @@ public class AdminExecutive extends Users{
         fh.fileWrite("inactiveUserProfile.txt", true, newData2);
     }
     
+    //get specific user details
     public String[] extractRTDetails(String userID) {
         List<String> userProfile = fh.fileRead("userProfile.txt");
         String[] userProfileArray = new String[userProfile.size()];
@@ -308,9 +324,8 @@ public class AdminExecutive extends Users{
         } return null;
     }
     
-    public void modifyOthersAccount(String userID, String email, String password,
-            String firstName, String lastName, String identificationNo,
-            String gender, String phoneNo, String unitNo) {
+    // admin modify resident tenant account
+    public void modifyRTAccount(ResidentTenant RT) {
         List<String> userProfile = fh.fileRead("userProfile.txt");
         String[] userProfileArray = new String[userProfile.size()];
         userProfile.toArray(userProfileArray);
@@ -322,16 +337,18 @@ public class AdminExecutive extends Users{
             String userID_temp = userInfo[0];
             String password_temp = userInfo[2];
             
-            if (userID_temp.equals(userID)) {
-                newData.add(userID +";"+ email +";"+ password_temp +";"+ firstName
-                        +";"+ lastName +";"+ identificationNo +";"+ gender
-                        +";"+ phoneNo +";"+ unitNo +";");
+            if (userID_temp.equals(RT.getUserID())) {
+                newData.add(RT.getUserID() +";"+ RT.getEmail() +";"+ password_temp
+                        +";"+ RT.getFirstName() +";"+ RT.getLastName() +";"+
+                        RT.getIdentificationNo() +";"+ RT.getGender()+";"+
+                        RT.getPhoneNo()+";"+ RT.getUnitNo() +";");
             } else {
                 newData.add(userProfileArray[i]);
             }
         } fh.fileWrite("userProfile.txt", false, newData);
     }
     
+    // extract all deleted property unit details
     public List<String> extractAllPropertiesHistory(String type) {
         List<String> propertiesList = fh.fileRead("inactivePropertyDetails.txt");
         String[] propertiesArray = new String[propertiesList.size()];
@@ -356,6 +373,7 @@ public class AdminExecutive extends Users{
         } return availableList;
     }
     
+    // validate whether a same unitNo is existed before restore deleted property unit
     public boolean restoreUnitValidation(String unitNo) {
         List<String> propertiesList = fh.fileRead("propertyDetails.txt");
         String[] propertiesArray = new String[propertiesList.size()];
@@ -370,6 +388,7 @@ public class AdminExecutive extends Users{
         } return true;
     }
     
+    // method to restore deleted property unit
     public void restoreUnit(String deletionID) { 
         List<String> propertiesList = fh.fileRead("inactivePropertyDetails.txt");
         String[] propertiesArray = new String[propertiesList.size()];
@@ -398,6 +417,7 @@ public class AdminExecutive extends Users{
         restoreResidentTenant(deletionID);
     }
     
+    // method to restore deleted Resident Tenant
     public void restoreResidentTenant(String deletionID) {
         List<String> userList = fh.fileRead("inactiveUserProfile.txt");
         String[] userArray = new String[userList.size()];
@@ -439,6 +459,7 @@ public class AdminExecutive extends Users{
         acce.restoreTrans(deletionID);
     }
     
+    // remove default account (when property unit is unsold)
     public void removeDefaultUserAccount(String unitNo) {
         List<String> userList = fh.fileRead("userProfile.txt");
         String[] userArray = new String[userList.size()];
@@ -457,6 +478,7 @@ public class AdminExecutive extends Users{
         } fh.fileWrite("userProfile.txt", false, newData);
     }
     
+    // extract all deleted user data
     public List<String> extractAllUserHistory(String type) {
         List<String> userList = fh.fileRead("inactiveUserProfile.txt");
         String[] userArray = new String[userList.size()];
@@ -483,6 +505,7 @@ public class AdminExecutive extends Users{
         } return availableList;
     }
     
+    // validate whether the deleted user previous unit is occupied
     public int restoreUserValidation(String unitNo) {
         List<String> propertiesList = fh.fileRead("propertyDetails.txt");
         String[] propertiesArray = new String[propertiesList.size()];
@@ -512,17 +535,18 @@ public class AdminExecutive extends Users{
         } return check;
     }
     
-    public void userRegistration(String userID, String email, String password, 
-            String firstName, String lastName, String identificationNo, String gender,
-            String phoneNo, String unitNo) {
-        
+    // register new resident tenant
+    public void RTRegistration(ResidentTenant RT) {
         List<String> newData = new ArrayList<>();
-        newData.add(userID +";"+ email +";"+password +";"+ firstName +";"+ lastName
-                +";"+ identificationNo +";"+ gender +";"+ phoneNo +";"+ unitNo +";");
+        newData.add(RT.getUserID() +";"+ RT.getEmail() +";"+ RT.getPassword()
+                        +";"+ RT.getFirstName() +";"+ RT.getLastName() +";"+
+                        RT.getIdentificationNo() +";"+ RT.getGender()+";"+
+                        RT.getPhoneNo()+";"+ RT.getUnitNo() +";");
         
         fh.fileWrite("userProfile.txt", true, newData);
     }
     
+    // get all tenant resident details based on type 
     public List<String> extractAllTenantResident(String type) {
         List<String> userList = fh.fileRead("userProfile.txt");
         String[] userArray = new String[userList.size()];
@@ -542,12 +566,12 @@ public class AdminExecutive extends Users{
                 if (userID.startsWith("VDR")) {
                     availableList.add(userArray[i]);
                 }
-                
             }
             
         } return availableList;
     }
     
+    // method to count the latest usable resident/tenant ID
     public String getLatestResidentTenantID(String type) {
         List<String> userList = fh.fileRead("userProfile.txt");
         String[] userArray = new String[userList.size()];
@@ -627,6 +651,7 @@ public class AdminExecutive extends Users{
         return currentUsableID;
     }
     
+    // get all unsold unit
     public List<String> getAvailableUnit(String type) {
         List<String> availableList = new ArrayList<>();
         
@@ -679,6 +704,7 @@ public class AdminExecutive extends Users{
         } return availableList;
     }   
     
+    // method to change property unit status
     public void updatePropertySoldStatus(String unitNo, String status) {
         List<String> propertyList = fh.fileRead("propertyDetails.txt");
         String[] propertyArray = new String[propertyList.size()];
@@ -705,6 +731,7 @@ public class AdminExecutive extends Users{
         } fh.fileWrite("propertyDetails.txt", false, newData);
     }
     
+    // extract all complaint details
     public List<String> extractComplaintDetails() {
         List<String> availableList = new ArrayList<>();
         
@@ -732,6 +759,7 @@ public class AdminExecutive extends Users{
         } return availableList;
     }
     
+    // extract resident and tenant details based on unitNo
     public List<String> extractAvailableComplainer(String unitNo) {
         List<String> userList = fh.fileRead("userProfile.txt");
         
@@ -749,51 +777,53 @@ public class AdminExecutive extends Users{
         } return availableComplainer;
     }
     
-    public String getLatestComplaintID() {
-        List<String> complaintList =  fh.fileRead("complaints.txt");
-        
-        int largestComplaintID = 0;
-        for (int i = 1; i < complaintList.size(); i++) {
-            String[] complaintDetails = complaintList.get(i).split(";");
-            int complaintID = Integer.valueOf(complaintDetails[0].substring(3));
-            
-            if(complaintID > largestComplaintID) {
-                largestComplaintID = complaintID;
-            }
-        } largestComplaintID++;
-        int times = 6 - String.valueOf(largestComplaintID).length();
-        
-        String zero = "";
-        
-        
-        switch (times) {
-            case 0 ->                 {
-                     zero = "";
-                }
-            case 1 ->                 {
-                     zero = "0";
-                }
-            case 2 ->                 {
-                     zero = "00";
-                }
-            case 3 ->                 {
-                     zero = "000";
-                }
-            case 4 ->                 {
-                     zero = "0000";
-                }
-            case 5 ->                 {
-                     zero = "00000";
-                }
-            default -> {
-            }
-        }
-        
-        
-        String currentUsableID = "cmp" + zero +String.valueOf(largestComplaintID);
-        return currentUsableID;
-    }
     
+//    public String getLatestComplaintID() {
+//        List<String> complaintList =  fh.fileRead("complaints.txt");
+//        
+//        int largestComplaintID = 0;
+//        for (int i = 1; i < complaintList.size(); i++) {
+//            String[] complaintDetails = complaintList.get(i).split(";");
+//            int complaintID = Integer.valueOf(complaintDetails[0].substring(3));
+//            
+//            if(complaintID > largestComplaintID) {
+//                largestComplaintID = complaintID;
+//            }
+//        } largestComplaintID++;
+//        int times = 6 - String.valueOf(largestComplaintID).length();
+//        
+//        String zero = "";
+//        
+//        
+//        switch (times) {
+//            case 0 ->                 {
+//                     zero = "";
+//                }
+//            case 1 ->                 {
+//                     zero = "0";
+//                }
+//            case 2 ->                 {
+//                     zero = "00";
+//                }
+//            case 3 ->                 {
+//                     zero = "000";
+//                }
+//            case 4 ->                 {
+//                     zero = "0000";
+//                }
+//            case 5 ->                 {
+//                     zero = "00000";
+//                }
+//            default -> {
+//            }
+//        }
+//        
+//        
+//        String currentUsableID = "cmp" + zero +String.valueOf(largestComplaintID);
+//        return currentUsableID;
+//    }
+    
+    // store new complaint into text file
     public void fileComplaint(String complainerID, String desc) {
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -812,16 +842,15 @@ public class AdminExecutive extends Users{
             recordedPersonID = userID;
         }
             
-            
-        
         List<String> newData = new ArrayList<>();
-        newData.add(getLatestComplaintID() +";"+ complainerID +";"+ desc +";"+ 
+        newData.add(getLatestID("complaints.txt", "cmp") +";"+ complainerID +";"+ desc +";"+ 
                     todayDate +";"+ currentTime +";"+ "Pending" +";"+ recordedPersonID
                     +";"+ recordedDT +";");
         
         fh.fileWrite("complaints.txt", true, newData);
     }
     
+    // get complainer details
     public List<String> getComplainerUnitIDName(String complainerID) {
         List<String> userList = fh.fileRead("userProfile.txt");
         
@@ -840,6 +869,7 @@ public class AdminExecutive extends Users{
         } return availableComplainer;
     }
     
+    // modify complaint description
     public void modifyComplaint(String complaintID, String complainerID, String desc) {
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -857,8 +887,6 @@ public class AdminExecutive extends Users{
             String userID = userDetails[0];
             recordedPersonID = userID;
         }
-            
-            
         
         List<String> newData = new ArrayList<>();
         newData.add(complaintID +";"+ complainerID +";"+ desc +";"+ 
@@ -869,6 +897,7 @@ public class AdminExecutive extends Users{
         fh.fileWrite("complaints.txt", true, newData);
     }
     
+    // delete available complaint
     public void deleteComplaint(String complaintID) {
         List<String> complaintList =  fh.fileRead("complaints.txt");
         
@@ -884,6 +913,7 @@ public class AdminExecutive extends Users{
         } fh.fileWrite("complaints.txt", false, newData);
     }
     
+    // extract all employees details
     public List<String> extractEmployeeDetails() {
         List<String> employeeList =  fh.fileRead("employeeList.txt");
         
@@ -901,6 +931,7 @@ public class AdminExecutive extends Users{
         } return availableList;
     }
     
+    // extract available employee types
     public List<String> extractEmployeeType() {
         List<String> employeeTypeList =  fh.fileRead("employeeType.txt");
         
@@ -911,6 +942,7 @@ public class AdminExecutive extends Users{
         } return availableList;
     }
     
+    // validate whether new added employee type is existed
     public boolean addEmployeeTypeValidation(String employeeType, String initialise) {
         List<String> employeeTypeList =  fh.fileRead("employeeType.txt");
         
@@ -928,6 +960,7 @@ public class AdminExecutive extends Users{
         } return true;
     }
     
+    // method to store new employee type
     public void addEmployeeType(String employeeType, String initialise) {
         List<String> newData = new ArrayList<>();
         newData.add(employeeType +";"+ initialise +";");
@@ -935,6 +968,7 @@ public class AdminExecutive extends Users{
         fh.fileWrite("employeeType.txt", true, newData);
     }
     
+    // method to delete available employee type
     public void deleteEmployeeType(String employeeType) {
         List<String> employeeTypeList =  fh.fileRead("employeeType.txt");
         
@@ -950,6 +984,7 @@ public class AdminExecutive extends Users{
         } fh.fileWrite("employeeType.txt", false, newData);
     }
     
+    // method to add new employee
     public void addEmployee(String employeeID, String email, String firstName,
             String lastName, String phoneNo, String position, String idNo, String gender) {
         List<String> newData = new ArrayList<>();
@@ -958,6 +993,7 @@ public class AdminExecutive extends Users{
         
         fh.fileWrite("employeeList.txt", true, newData);
         
+        // if employee is security guard need to add account @ userProfile.txt
         if (employeeID.startsWith("scg")) {
             List<String> newData2 = new ArrayList<>();
             newData2.add(employeeID +";"+ email +";"+ "Parkhill@1234" +";"+
@@ -967,6 +1003,7 @@ public class AdminExecutive extends Users{
         }
     }
     
+    // method to delete available employee
     public void deleteEmployee(String employeeID) {
         List<String> employeeTypeList =  fh.fileRead("employeeList.txt");
         
@@ -981,6 +1018,7 @@ public class AdminExecutive extends Users{
             }
         } fh.fileWrite("employeeList.txt", false, newData);
         
+        // if employee is security guard need to delete account @ userProfile.txt
         if(employeeID.startsWith("scg")) {
             List<String> userProfileList =  fh.fileRead("userProfile.txt");
         
@@ -997,6 +1035,7 @@ public class AdminExecutive extends Users{
         }
     }
     
+    // validate whether newly added facility is existed
     public boolean checkAddFacilityValidation(String facilityName, String fctID) {
         List<String> availableList = fh.fileRead("facility.txt");
         
@@ -1012,6 +1051,7 @@ public class AdminExecutive extends Users{
         } return true;
     }
     
+    // method to delete available facility
     public void deleteFacility(String facilityID, String facilityName) {
         List<String> facilityList =  fh.fileRead("facility.txt");
         
@@ -1030,6 +1070,7 @@ public class AdminExecutive extends Users{
         newImageName.delete();
     }
     
+    // extract specific facility bookings
     public List<String> extractFacilityBooking(String facilityID, String status) {
         List<String> bookingList =  fh.fileRead("facilityBooking.txt");
         LocalDate today = LocalDate.now();
@@ -1059,6 +1100,7 @@ public class AdminExecutive extends Users{
         } return availableList;
     }
     
+    // extract specific facility available timeslot
     public List<String> extractFacilityTimeSlot(String facilityID, String variation,
         String date, String bookingID) 
     {
@@ -1074,6 +1116,7 @@ public class AdminExecutive extends Users{
             String startTime = employeeDetails[6];
             String endTime = employeeDetails[7];
             
+            // based on facility start and end time create time slot (1 hr interval)
             int firstSlot = Integer.valueOf(startTime.substring(0, 2));
             int lastSlot = Integer.valueOf(endTime.substring(0, 2));
             if (eFacilityID.equals(facilityID)) {
@@ -1110,6 +1153,7 @@ public class AdminExecutive extends Users{
         } return timeSlot;
     }
     
+    // calculate facility booking fee
     public List<String> extractFacilityBookingFee(String facilityID, int hour) {
         List<String> availableList = fh.fileRead("facility.txt");
         List<String> feeData = new ArrayList<>();
@@ -1122,11 +1166,13 @@ public class AdminExecutive extends Users{
             String priceUnit = bookingDetails[5];
             
             if(facilityID.equals(eFacilityID)) {
+                // calculation for booking by per hour
                 if(payment == true && priceUnit.equals("Per Hour")) {
                     FacilityBookingPaymentByHour fb = new FacilityBookingPaymentByHour();
                     fb.Facility(facilityID);
                     fb.setHour(hour); fb.calculateBookingFee();
                     feeData.add(price +";"+ fb.getTotalPrice());
+                // calculation for booking by per booking    
                 } else if(payment && priceUnit.equals("Per Booking")) {
                     FacilityBookingPaymentByBooking fb = new FacilityBookingPaymentByBooking();
                     fb.Facility(facilityID); fb.calculateBookingFee(); 
@@ -1138,6 +1184,7 @@ public class AdminExecutive extends Users{
         } return feeData;
     }
     
+    // in case user modify previous booking, recalculate booking fee
     public String calculateFacilityAdvancedPayment(String bookingID) {
         List<String> availableList = fh.fileRead("facilityBooking.txt");
         
@@ -1152,6 +1199,7 @@ public class AdminExecutive extends Users{
         } return "0.00";
     }
     
+    // get facility booking unit
     public String extractFacilityBookingUnit(String bookingID) {
         List<String> availableList = fh.fileRead("facilityBooking.txt");
         
@@ -1166,6 +1214,7 @@ public class AdminExecutive extends Users{
         } return null;
     }
     
+    // method to delete booking
     public void deleteFacilityBooking(String bookingID) {
         List<String> availableList = fh.fileRead("facilityBooking.txt");
         List<String> newData = new ArrayList<>();
@@ -1180,6 +1229,7 @@ public class AdminExecutive extends Users{
         } fh.fileWrite("facilityBooking.txt", false, newData);
     }
     
+    // method for design all tables
     public void setTableDesign(JTable jTable, JLabel jLabel, int[] columnLength, int[] ignoreColumn) {
         // design for the table header
         DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();

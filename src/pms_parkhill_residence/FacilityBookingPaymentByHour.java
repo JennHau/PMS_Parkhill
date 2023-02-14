@@ -15,6 +15,7 @@ public class FacilityBookingPaymentByHour extends Facility{
 
     int hour; String totalPrice;
     
+    // calculation for booking fee charge by per hour
     @Override
     public void calculateBookingFee() {
         float bTotalPrice = hour * Float.valueOf(this.getPrice());

@@ -14,6 +14,7 @@ public class FacilityBookingPaymentByBooking extends Facility{
 
     String totalPrice;
     
+    // calculation for booking fee charge by per booking
     @Override
     public void calculateBookingFee() {
         totalPrice = this.getPrice();
