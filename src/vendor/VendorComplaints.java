@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.Complaints;
+import pms_parkhill_residence.Complaint;
 
 /**
  *
@@ -724,7 +724,7 @@ public class VendorComplaints extends javax.swing.JFrame {
         complaintID = VD.CP.getNewCompId();
         complaintIdTF.setText(complaintID.toUpperCase());
         compDetTA.setText("");
-        compStatusTF.setText(Complaints.cptStatus.Pending.toString());
+        compStatusTF.setText(Complaint.cptStatus.Pending.toString());
         
         compDetTA.setEnabled(true);
         saveBTN.setEnabled(true);
@@ -880,12 +880,12 @@ public class VendorComplaints extends javax.swing.JFrame {
             compDetTA.setText(complaintDet);
             compStatusTF.setText(compStatus);
             
-            if (compStatus.equals(Complaints.cptStatus.Pending.toString())) {
+            if (compStatus.equals(Complaint.cptStatus.Pending.toString())) {
                 saveBTN.setEnabled(true);
                 deleteBTN.setEnabled(true);
                 compDetTA.setEnabled(true);
             }
-            else if (compStatus.equals(Complaints.cptStatus.Progressing.toString())) {
+            else if (compStatus.equals(Complaint.cptStatus.Progressing.toString())) {
                 saveBTN.setEnabled(false);
                 deleteBTN.setEnabled(true);
                 compDetTA.setEnabled(false);

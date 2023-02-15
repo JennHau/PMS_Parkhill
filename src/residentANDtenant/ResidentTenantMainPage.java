@@ -47,7 +47,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
     }
     
     private void setData() {
-        // Set Complaints
+        // Set Complaint
         ArrayList<ArrayList> complaints = RT.CP.getComplaints(RT.getUserID());
         ArrayList<String> pendingComplaints = complaints.get(0);
         ArrayList<String> completedComplaints = complaints.get(1);

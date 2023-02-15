@@ -391,7 +391,7 @@ public class ScheduleActionPage extends javax.swing.JFrame {
             ArrayList<String> newItem = new ArrayList<>();
             
             newSlot = newSlot + " " + BE.TF.sp + " " + BE.TF.sp + " " + BE.TF.sp + " " + BE.TF.sp + " " + BE.TF.sp + 
-                      currentBEid + BE.TF.sp + BE.combineStringDateTime(LocalDate.now().toString(), LocalTime.now().toString());
+                      currentBEid + BE.TF.sp + BE.DTF.combineStringDateTime(LocalDate.now().toString(), LocalTime.now().toString());
             
             newItem.add(newSlot);
             

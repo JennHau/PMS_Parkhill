@@ -177,9 +177,9 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
                 String level = recDet[3];
                 String checkpoints = recDet[4];
                 String checkBef = recDet[5];
-                int timeDiff = BE.formatTime(checkBef).compareTo(BE.formatTime(slot));
+                int timeDiff = BE.DTF.formatTime(checkBef).compareTo(BE.DTF.formatTime(slot));
                 
-                slotTimePicker.setTime(BE.formatTime(slot));
+                slotTimePicker.setTime(BE.DTF.formatTime(slot));
                 endTimeTF.setText(checkBef);
                 timeSpinner.setSelectedItem(timeDiff);
                 blockTF.setSelectedItem(block);
@@ -728,7 +728,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
                     String patCode = jobDet[jobDet.length-1];
                     if (!patCode.equals(BE.TF.empty)) {
                         String[] patDate = patCode.split(" ");
-                        if (!BE.formatDate(patDate[0]).equals(inputDate)) {
+                        if (!BE.DTF.formatDate(patDate[0]).equals(inputDate)) {
                             removePat.add(eachJob);
                         }
                     }

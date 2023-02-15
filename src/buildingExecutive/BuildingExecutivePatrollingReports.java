@@ -102,8 +102,8 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
         
         for (int item1 = 0; item1 < availableScheduleRec.size() - 1; item1++) {
             for (int item2 = item1+1; item2 < availableScheduleRec.size(); item2++) {
-                LocalDate date1 = BE.formatDate(availableScheduleRec.get(item1));
-                LocalDate date2 = BE.formatDate(availableScheduleRec.get(item2));
+                LocalDate date1 = BE.DTF.formatDate(availableScheduleRec.get(item1));
+                LocalDate date2 = BE.DTF.formatDate(availableScheduleRec.get(item2));
                 
                 if (date2.isAfter(date1)) {
                     availableScheduleRec.set(item1, date2.toString());

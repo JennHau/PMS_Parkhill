@@ -44,6 +44,7 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
         tableDesignSetUp();
     }
     
+    // set up combo box selection
     private void comboBoxSetUp() {
         ArrayList<String> dateRange = getDateRange();
         
@@ -55,6 +56,7 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
         monthCB.setSelectedItem(0);
     }
     
+    // set up table
     private void compTabSetUp() {
         ArrayList<String> allComp = new ArrayList<>();
         
@@ -134,12 +136,14 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
         }
     }
     
+    // table design
     private void tableDesignSetUp() {
         int[] columnIgnore = {3};
         int[] columnLength = {120, 120, 495, 80, 120};
         BE.setTableDesign(complaintReportTable, jLabel2, columnLength, columnIgnore);
     }
     
+    // get date range of the complaint
     private ArrayList getDateRange() {
         List<String> allComp = BE.fh.fileRead(BE.TF.complaintFiles);
         

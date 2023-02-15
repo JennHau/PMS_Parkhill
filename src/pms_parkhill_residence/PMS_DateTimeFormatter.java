@@ -17,6 +17,7 @@ import java.util.Date;
  * @author Winson
  */
 public class PMS_DateTimeFormatter{
+    // format date to format yyyy-MM-dd
     public LocalDate formatDate(String date) {
         java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd");
         
@@ -25,6 +26,7 @@ public class PMS_DateTimeFormatter{
         return localDate;
     }
     
+    // format date to format dd/MM/yyyy
     public LocalDate formatDate2(String date) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -33,12 +35,14 @@ public class PMS_DateTimeFormatter{
         return localDate;
     }
     
+    // get current date and time
     public String currentDateTime() {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String dateTime = LocalDateTime.now().format(dateTimeFormatter);
         return dateTime;
     }
     
+    // change date format from dd/MM/yyyy to yyyy-MM-dd
     public String changeFormatDate(String dateString) throws ParseException {
         SimpleDateFormat originalFormat = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -47,6 +51,7 @@ public class PMS_DateTimeFormatter{
         return targetFormat.format(date);
     }
     
+    // change date format from yyyy-MM-dd to dd/MM/yyyy
     public String changeFormatDate2(String dateString) throws ParseException {
         SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat targetFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -55,6 +60,7 @@ public class PMS_DateTimeFormatter{
         return targetFormat.format(date);
     }
     
+    // fornmat time to HH:mm
     public LocalTime formatTime(String time) {
         java.time.format.DateTimeFormatter timeFormatter = java.time.format.DateTimeFormatter.ofPattern("HH:mm");
         
@@ -63,23 +69,18 @@ public class PMS_DateTimeFormatter{
         return localTime;
     }
     
+    // get the time category according to input time
     public LocalTime getTimeCategory(LocalTime time) {
         int timeMin = time.getMinute();
-        if (timeMin < 30) {
+        if (timeMin > 30) {
             time = time.withMinute(00);
+            time = time.plusHours(1);
         }
         else {
             time = time.withMinute(30);
         }
         
         return time;
-    }
-    
-    public String getDateTimeNow() {
-        LocalDate dateNow = formatDate(String.valueOf(LocalDate.now()));
-        LocalTime timeNow = formatTime(String.valueOf(LocalTime.now()));
-        
-        return String.valueOf(dateNow + " " + timeNow);
     }
     
     public LocalDateTime combineStringDateTime(String date, String time) {

@@ -44,10 +44,14 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
         regVisTable = (DefaultTableModel) registeredVisitorTable.getModel();
         
         setWindowIcon();
+        
+        // set up table
         registeredVisitorTableSetUp();
         
+        // clear all field
         clearField();
         
+        // set current user profile
         setCurrentUserProfile();
     }
     
@@ -896,7 +900,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
                               visitorNameTF.getText() + RT.TF.sp + visitorCarPlateTF.getText() + RT.TF.sp + 
                               visitorContactTF.getText() + RT.TF.sp + dateTimePicker.datePicker.getDate() + RT.TF.sp + 
                               dateTimePicker.timePicker.getTime() + RT.TF.sp + RT.visitorPassStatus[0] + RT.TF.sp + 
-                              "-" + RT.TF.sp + "-" + RT.TF.sp + this.RT.getUserID() + RT.TF.sp + DTF.getDateTimeNow() + RT.TF.sp;
+                              "-" + RT.TF.sp + "-" + RT.TF.sp + this.RT.getUserID() + RT.TF.sp + DTF.currentDateTime()+ RT.TF.sp;
 
                 List<String> visitorFile = RT.fh.fileRead(RT.TF.visitorPass);
 

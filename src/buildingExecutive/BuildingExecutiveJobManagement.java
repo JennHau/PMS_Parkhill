@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.Complaints;
+import pms_parkhill_residence.Complaint;
 
 /**
  * 
@@ -26,7 +26,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
     public static BuildingExecutiveJobManagement BEjobManagement;
     
     private final BuildingExecutive BE;
-    private Complaints complaint;
+    private final Complaint complaint;
     
     private DefaultTableModel assignedEmployeeTable;
     private DefaultTableModel unassignedEmployeeTable;
@@ -48,7 +48,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
      * @param fromComplaintsPage
      * @throws java.io.IOException
      */
-    public BuildingExecutiveJobManagement(BuildingExecutive BE, Complaints complaint, boolean fromComplaintsPage) throws IOException 
+    public BuildingExecutiveJobManagement(BuildingExecutive BE, Complaint complaint, boolean fromComplaintsPage) throws IOException 
     {
         BEjobManagement = this;
         this.BE = BE;
@@ -88,6 +88,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         tableDesignSetUp();
     }
     
+    // check is from complaint page or not
     private void fromComplaintPageAction(boolean fromComplaintsPage) {
         if (fromComplaintsPage) {
             // if from complaint page (Cannot access assigned job table)
@@ -103,6 +104,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         }
     }
     
+    // table design
     private void tableDesignSetUp() {
         int[] columnIgnore = {};
         int[] columnLength = {90, 135, 120, 80};
@@ -1092,6 +1094,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         jPanel13.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_jPanel13MouseEntered
 
+    // update table
     private void updateTable() throws IOException {
         // Red Error from here
         ArrayList<String> unassignedEmplyList = getAssignORunassignList(BE.unassignedEmployee);
@@ -1101,28 +1104,34 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         BE.setTableRow(assignedEmployeeTable, assignedEmplyList);
     }
     
+    // get assigned or unassigned employee list
     private ArrayList getAssignORunassignList(int assignStatus) throws IOException {
         return BE.getSpecificStatusEmployeeList(localDate, localTime, selectedRole, searchText, assignStatus);
     }
     
+    // set current date and time
     public void setCurrentDateTime() {
         this.localDate = LocalDate.now();
-        this.localTime = BE.getTimeCategory(LocalTime.now());
+        this.localTime = BE.DTF.getTimeCategory(LocalTime.now());
     }
     
+    // set date and time data
     public void setDateTime(LocalDate date, LocalTime time) {
         this.localDate = date;
         this.localTime = time;
     }
     
+    // set selected role according to selected employee
     private void setSelectedRole (String role) {
         this.selectedRole = role;
     }
     
+    // searching function text field
     private void setSearchText (String text) {
         this.searchText = text;
     }
     
+    // set selected employee
     private void setSelectedEmployee (String employeeID) {
         this.selectedEmployeeId = employeeID;
     }

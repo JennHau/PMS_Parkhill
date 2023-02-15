@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.CRUD;
-import pms_parkhill_residence.Complaints;
+import pms_parkhill_residence.Complaint;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.PMS_DateTimeFormatter;
 import pms_parkhill_residence.TextFiles;
@@ -31,7 +31,7 @@ public class Vendor extends Users{
     TextFiles TF = new TextFiles();
     CRUD crud = new CRUD();
     PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
-    Complaints CP = new Complaints();
+    Complaint CP = new Complaint();
     
     private String unitNo;
     

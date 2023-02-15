@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import pms_parkhill_residence.Complaints;
+import pms_parkhill_residence.Complaint;
 import pms_parkhill_residence.Dashboard;
 import pms_parkhill_residence.Users;
 
@@ -47,7 +47,7 @@ public class VendorDashboard extends javax.swing.JFrame {
     }
     
     private void setData() {
-        // Set Complaints
+        // Set Complaint
         ArrayList<ArrayList> complaints = VD.CP.getComplaints(VD.getUserID());
         ArrayList<String> pendingComp = complaints.get(0);
         ArrayList<String> completedComp = complaints.get(1);
@@ -57,7 +57,7 @@ public class VendorDashboard extends javax.swing.JFrame {
         
         for (String eachComp : pendingComp) {
             String compDet = eachComp.split(VD.TF.sp)[4];
-            if (compDet.equals(Complaints.cptStatus.Pending.toString())) {
+            if (compDet.equals(Complaint.cptStatus.Pending.toString())) {
                 pendComp ++;
             }
             else {

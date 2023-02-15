@@ -41,6 +41,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
         employeeComboBoxSetUp();
     }
     
+    // get available date range for job reports
     private ArrayList getDateRange() {
         List<String> allJob = BE.getAllAssignedJob();
         
@@ -96,6 +97,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
         return complaintsDateRange;
     }
     
+    // set up month and year combo box
     private void monthYearComboBoxSetUp() {
         ArrayList<String> dateRange = getDateRange();
         
@@ -107,6 +109,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
         monthCB.setSelectedItem(0);
     }
     
+    // set up employee combo box
     private void employeeComboBoxSetUp() {
         employeeIdCB.removeAllItems();
         
@@ -131,6 +134,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
         employeeIdCB.setSelectedItem(0);
     }
     
+    // table set up
     private void tableSetUp() {
         String selectedMonthYear = (monthCB.getSelectedItem() != null) ? monthCB.getSelectedItem().toString() : null;
         String selectedEmployee = (employeeIdCB.getSelectedItem() != null) ? employeeIdCB.getSelectedItem().toString() : null;
@@ -220,6 +224,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
         setJobReportsTableDesign();
     }
     
+    // table design
     private void setJobReportsTableDesign() {
         int[] columnIgnore = {4};
         int[] columnLength = {100, 100, 110, 110, 235, 90, 130, 100};

@@ -11,7 +11,15 @@ import java.util.List;
  *
  * @author Winson
  */
-public class Complaints {
+
+enum cptStatus{
+    Pending,
+    Progressing,
+    Complete
+}
+
+public class Complaint {
+    
     private String complaintID;
     private String complainerID;
     private String complaintDetails;
@@ -24,9 +32,9 @@ public class Complaints {
     FileHandling FH = new FileHandling();
     TextFiles TF = new TextFiles();
     
-    public Complaints() {}
+    public Complaint() {}
     
-    public Complaints(String complaintId) {
+    public Complaint(String complaintId) {
         List<String> complaint = FH.fileRead(TF.complaintFiles);
         for (String eachComp : complaint) {
             String[] compDet = eachComp.split(TF.sp);

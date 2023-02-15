@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import pms_parkhill_residence.Complaints;
+import pms_parkhill_residence.Complaint;
 import pms_parkhill_residence.FileHandling;
 
 /**
@@ -59,6 +59,8 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         actionedComplaintsTab = (DefaultTableModel) actionedComplaintsTable.getModel();
         
         setWindowIcon();
+        
+        // set up complaint table
         complaintTableSetUp();
         
         // Table design
@@ -79,7 +81,7 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
                 String complainerId = dataDetails[1];
                 String complaintStatus = dataDetails[5];
                 
-                if (complaintStatus.equals(cptStatus.Pending.name())){
+                if (complaintStatus.equals(Complaint.cptStatus.Pending.name())){
                     String issueDate = dataDetails[3];
                     newComplaints.add(complaintId.toUpperCase() + BE.TF.sp + complainerId.toUpperCase() + BE.TF.sp + issueDate + BE.TF.sp + complaintStatus.toUpperCase() + BE.TF.sp + "VIEW" + BE.TF.sp);
                 }
@@ -997,7 +999,7 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         this.complaintID = BE.validateTableSelectionAndGetValue(tableModel, selectedCol, selectedRow, expectedCol, 0);
         
         if (this.complaintID != null) {
-            Complaints complaint = new Complaints(this.complaintID.toLowerCase());
+            Complaint complaint = new Complaint(this.complaintID.toLowerCase());
         
             BE.toComplaintDetailsPage(this.BE, complaint);
         }

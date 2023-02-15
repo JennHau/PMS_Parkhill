@@ -21,7 +21,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import pms_parkhill_residence.Complaints;
+import pms_parkhill_residence.Complaint;
 import pms_parkhill_residence.FileHandling;
 
 /**
@@ -33,7 +33,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
     private final BuildingExecutive BE;
     FileHandling fileHandling = new FileHandling();
     
-    private Complaints complaint;
+    private Complaint complaint;
     
     // Remove unnecessary data
     private String jobID;
@@ -58,7 +58,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
      * @param complaintsPage
      * @throws java.io.IOException
      */
-    public EmployeeJobAssignation(BuildingExecutive BE, String employeeID, String jobId, Complaints complaint, boolean complaintsPage) throws IOException {
+    public EmployeeJobAssignation(BuildingExecutive BE, String employeeID, String jobId, Complaint complaint, boolean complaintsPage) throws IOException {
         employeeJobAssignation = this;
         this.BE = BE;
         this.complaint = complaint;
@@ -131,7 +131,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             String jobToAssign = jobDetails[3];
             int repitition = Integer.valueOf(jobDetails[4]);
             String timeNeeded = jobDetails[5];
-            LocalTime startTime = BE.formatTime(jobDetails[7]);
+            LocalTime startTime = BE.DTF.formatTime(jobDetails[7]);
             String dayToRepeat = jobDetails[9];
             String remarks = jobDetails[10];
 
@@ -164,7 +164,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                 }
                 else if (repitition == BE.repititionOFF) {
                     repititionCheckBox.setSelected(false);
-                    LocalDate startDate = BE.formatDate(jobDetails[6]);
+                    LocalDate startDate = BE.DTF.formatDate(jobDetails[6]);
                     dateTimePicker1.datePicker.setDate(startDate);
                     dateTimePicker1.datePicker.setEnabled(true);
                     dayCheckBoxAction(false, false);
@@ -193,7 +193,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             hrsMinsComboBox.setSelectedIndex(0);
             dateTimePicker1.datePicker.setDateToToday();
             dateTimePicker1.datePicker.setEnabled(true);
-            LocalTime timeNow = BE.getTimeCategory(LocalTime.now());
+            LocalTime timeNow = BE.DTF.getTimeCategory(LocalTime.now());
             dateTimePicker1.timePicker.setTime(timeNow);
             remarksTA.setText("");
             dayCheckBoxAction(false, false);
@@ -226,7 +226,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             
             LocalDateTime workingEndDateTime = null;
             if (!endDateTime[0].equals(BE.TF.empty)) {
-                workingEndDateTime = BE.combineStringDateTime(endDateTime[0], endDateTime[1]);
+                workingEndDateTime = BE.DTF.combineStringDateTime(endDateTime[0], endDateTime[1]);
             }
             
             String dayToRepeat = jobDetails[9];
@@ -583,7 +583,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "JOB ID", "JOB TITLE", "DATE & TIME", "ASSIGNEE ID", "ACTION"
+                "JOB ID", "JOB TITLE", "DATE & TIME", "ASSIGNEE", "ACTION"
             }
         ) {
             Class[] types = new Class [] {
@@ -935,7 +935,6 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             // TODO add your handling code here:
             this.jobID = null;
             setJobFormTable();
-            setJobFormTable();
             messagesTF.setText("");
             jobComboBox.setEnabled(true);
             jobComboBox.removeItem("Patrolling");
@@ -1075,7 +1074,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                             timeNeededSpinner.setValue(Integer.valueOf(timeNeeded));
                             
                             String startTime = jobDet[4];
-                            dateTimePicker1.timePicker.setTime(BE.formatTime(startTime));
+                            dateTimePicker1.timePicker.setTime(BE.DTF.formatTime(startTime));
                         }
                     }
                     
@@ -1150,10 +1149,10 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                     if (data == 5) {
                         String status = null;
                         if (action == this.addItem) {
-                            status = cptStatus.Progressing.toString();
+                            status = Complaint.cptStatus.Progressing.toString();
                         }
                         else if (action == this.deleteItem) {
-                            status = cptStatus.Pending.toString();
+                            status = Complaint.cptStatus.Pending.toString();
                         }
                         
                         updateLine = updateLine + status + BE.TF.sp;
@@ -1193,8 +1192,8 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         
         // repitition on or off
         String repitition;
-        boolean repitionCheck = repititionCheckBox.isSelected();
-        if (repitionCheck) {
+        boolean repititionCheck = repititionCheckBox.isSelected();
+        if (repititionCheck) {
             repitition = String.valueOf(BE.repititionON);
         }
         else {
@@ -1204,28 +1203,48 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         // expected time required
         String expectedTimeRequired;
         int timeNeeded = (int) timeNeededSpinner.getValue();
-        String hrORmin = hrsMinsComboBox.getSelectedItem().toString();
-        if (hrORmin.equals("hrs")) {
-            expectedTimeRequired =  timeNeeded + "h";
-            timeNeeded = timeNeeded *= 60;
+        
+        if (timeNeeded != 0) {
+            String hrORmin = hrsMinsComboBox.getSelectedItem().toString();
+            if (hrORmin.equals("hrs")) {
+                expectedTimeRequired =  timeNeeded + "h";
+                timeNeeded = timeNeeded *= 60;
+            }
+            else {
+                expectedTimeRequired =  timeNeeded + "m";
+            }
         }
         else {
-            expectedTimeRequired =  timeNeeded + "m";
+            JOptionPane.showMessageDialog (null, "Please select the expected time needed.", 
+                                                    "EMPLOYEE JOB ASSIGNATION", JOptionPane.INFORMATION_MESSAGE);
+            return null;
         }
         
         // start date of the job
         String startDate = (dateTimePicker1.datePicker.getDate() != null) 
-                            ? (String.valueOf(BE.formatDate(String.valueOf(dateTimePicker1.datePicker.getDate())))) 
+                            ? (String.valueOf(BE.DTF.formatDate(String.valueOf(dateTimePicker1.datePicker.getDate())))) 
                             : BE.TF.empty;
         
+        if (!startDate.equals(BE.TF.empty) && BE.DTF.formatDate(startDate).isBefore(LocalDate.now())) {
+            JOptionPane.showMessageDialog (null, "The selected date is a past. Please choose an upcoming or today's date", 
+                                                    "EMPLOYEE JOB ASSIGNATION", JOptionPane.INFORMATION_MESSAGE);
+            return null;
+        }
+        
         // start time of the job
-        LocalTime jobStartTime = BE.formatTime(String.valueOf(dateTimePicker1.timePicker.getTime()));
+        LocalTime jobStartTime = BE.DTF.formatTime(String.valueOf(dateTimePicker1.timePicker.getTime()));
         String startTime = String.valueOf(jobStartTime);
+        
+        if (BE.DTF.combineStringDateTime(startDate, startTime).isBefore(LocalDateTime.now())) {
+            JOptionPane.showMessageDialog (null, "The selected time has past. Please choose an upcoming time", 
+                                                    "EMPLOYEE JOB ASSIGNATION", JOptionPane.INFORMATION_MESSAGE);
+            return null;
+        }
         
         // expected end time of the job
         String expectedEndTime;
         if (!startDate.equals(BE.TF.empty)) {
-            LocalDateTime dateTimeEnd = LocalDateTime.of(BE.formatDate(startDate), BE.formatTime(startTime));
+            LocalDateTime dateTimeEnd = LocalDateTime.of(BE.DTF.formatDate(startDate), BE.DTF.formatTime(startTime));
             expectedEndTime = String.valueOf(dateTimeEnd.plusMinutes(timeNeeded)).replace("T", " ");
         }
         else {
@@ -1262,6 +1281,11 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         
         dayToRepeat = (dayToRepeat.equals("")) ? BE.TF.empty : dayToRepeat;
         
+        if (repititionCheck && dayToRepeat.equals(BE.TF.empty)) {
+            JOptionPane.showMessageDialog (null, "Please select the day to repeat this job", 
+                                                    "EMPLOYEE JOB ASSIGNATION", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
         // get remarks
         String remarks = (remarksTA.getText().equals("")) ? BE.TF.empty : remarksTA.getText();
         
@@ -1274,7 +1298,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         String updatedBy = this.currentBEid;
 
         // last updated time
-        String updatedTime = BE.getDateTimeNow();
+        String updatedTime = BE.DTF.currentDateTime();
         
         int newItemDetailsLength = jobItemDetails.length;
         
@@ -1308,17 +1332,19 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         String[] jobItems = getAllFields(action);
         ArrayList<String> clashList = new ArrayList<>();
         
-        if (action != this.deleteItem) {
-            clashList = checkJobClash(jobItems);
-        }
-        
-        if (!clashList.isEmpty()) {
-            JOptionPane.showConfirmDialog(this, "This job has clashed with " + clashList.toString(), "Clash Alert", JOptionPane.OK_OPTION);
-        }
-        else {
-            updateJobTextFile(jobItems, action);
-            this.jobID = null;
-            setJobFormTable();
+        if (jobItems != null) {
+            if (action != this.deleteItem) {
+                clashList = checkJobClash(jobItems);
+            }
+
+            if (!clashList.isEmpty()) {
+                JOptionPane.showConfirmDialog(this, "This job has clashed with " + clashList.toString(), "Clash Alert", JOptionPane.OK_OPTION);
+            }
+            else {
+                updateJobTextFile(jobItems, action);
+                this.jobID = null;
+                setJobFormTable();
+            }
         }
     }
     
@@ -1326,8 +1352,8 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         ArrayList<String> clashJobId = new ArrayList<>();
         
         // get the start and end date time from the new job
-        LocalDate dateInput = (jobItems[6].equals(BE.TF.empty)) ? null : BE.formatDate(jobItems[6]);
-        LocalTime timeInput = BE.formatTime(jobItems[7]);
+        LocalDate dateInput = (jobItems[6].equals(BE.TF.empty)) ? null : BE.DTF.formatDate(jobItems[6]);
+        LocalTime timeInput = BE.DTF.formatTime(jobItems[7]);
         
         // Get all the job assigned to the specific employee
         ArrayList<String> employeeJobList = BE.getAssignedJobForSpecificEmployee(this.selectedEmployeeId);
@@ -1339,22 +1365,22 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
                 // get the details of the job
                 int repitition = Integer.valueOf(jobDetails[4]);
                 LocalDate jobStartDate = null;
-                LocalTime jobStartTime = BE.formatTime(jobDetails[7]);
+                LocalTime jobStartTime = BE.DTF.formatTime(jobDetails[7]);
                 String jobId = jobDetails[0];
                 String jobDesc = jobDetails[3];
                 String timeNeeded = jobDetails[5];
-
-                String jobCode = null;
-                List<String> jobList = fileHandling.fileRead(BE.TF.jobListFile);
-                for (String job : jobList) {
-                    String[] jobInfo = job.split(BE.TF.sp);
-                    if (jobInfo[2].equals(jobDesc)) {
-                        jobCode = jobInfo[1];
-                    }
-                }
+                
+//                String jobCode = null;
+//                List<String> jobList = fileHandling.fileRead(BE.TF.jobListFile);
+//                for (String job : jobList) {
+//                    String[] jobInfo = job.split(BE.TF.sp);
+//                    if (jobInfo[2].equals(jobDesc)) {
+//                        jobCode = jobInfo[1];
+//                    }
+//                }
 
                 boolean ignore = false;
-                if (jobCode.equals("MS") || jobCode.equals("NS")){
+                if (jobDesc.equals("MS") || jobDesc.equals("NS")){
                     ignore = true;
                 }
 
@@ -1368,11 +1394,11 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
 
                     ArrayList<String> dateData = BE.compareJobDate(repitition, jobEndDateTime, jobDetails, timeNeeded, dayOfWeek, dateInput, jobStartTime, jobStartDate);
 
-                    jobStartDate = BE.formatDate(dateData.get(0));
-                    jobStartTime = BE.formatTime(dateData.get(1));
+                    jobStartDate = BE.DTF.formatDate(dateData.get(0));
+                    jobStartTime = BE.DTF.formatTime(dateData.get(1));
 
-                    workingStartTime2 = (!dateData.get(2).equals("null")) ? BE.formatTime(dateData.get(2)) : null;
-                    workingEndTime2 = (!dateData.get(3).equals("null")) ? BE.formatTime(dateData.get(3)) : null;
+                    workingStartTime2 = (!dateData.get(2).equals("null")) ? BE.DTF.formatTime(dateData.get(2)) : null;
+                    workingEndTime2 = (!dateData.get(3).equals("null")) ? BE.DTF.formatTime(dateData.get(3)) : null;
 
                     jobEndDateTime = dateData.get(4).split(" ");
 

@@ -78,6 +78,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         setUserProfile();
     }
     
+    // get today's day
     private void getTodayDay() {
         todayDate = LocalDate.now();
         inputDate = todayDate;
@@ -87,6 +88,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         this.dayOfToday =  todayDate.getDayOfWeek().toString();
     }
     
+    // set up patrolling schedule
     private void patrollingScheduleTableSetUp() {
         ArrayList<String> forTableSetup = new ArrayList<>();
         
@@ -141,6 +143,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         BE.setTableRow(scheduleTable, forTableSetup);
     }
     
+    // set file path according to selected date
     private void setSelectedDateFile() {
         patrollingScheduleFile = patrollingScheduleFileFormat+inputDate+".txt";
         List<String> addNewRec = new ArrayList<>();
@@ -155,11 +158,13 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         }
     }
     
+    // text field action
     private void fieldAction(boolean enable) {
         securityIdComboBox.setEnabled(enable);
         remarksTA.setEnabled(enable);
     }
     
+    // clean field
     private void cleanField() {
         slotTF.setText("");
         levelTF.setText("");
@@ -173,7 +178,8 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         remarksTA.setText("");
     }
     
-     private void setUserProfile() throws IOException {
+    // set up current building executive profile
+    private void setUserProfile() throws IOException {
         // get current BE details
         // Set text field
         if (currentBEid != null) {
@@ -182,6 +188,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         }
     }
     
+    // set up table design
     private void setPatrollingScheduleTableDesign() {
         int[] columnIgnore = {6};
         int[] columnLength = {80, 70, 120, 100, 110, 100, 172, 120, 100, 100};
@@ -1003,7 +1010,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                     rowData[data] = scheduleTable.getValueAt(selectedRow, data);
                 }
 
-                inputTime = BE.formatTime(rowData[0].toString());
+                inputTime = BE.DTF.formatTime(rowData[0].toString());
                 slotTF.setText((String) rowData[0]);
                 blockTF.setText((String) rowData[1]);
                 levelTF.setText((String) rowData[2]);
@@ -1013,7 +1020,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
 
                 if (!checkedAt.equals("-")) {
-                    timeCheckedPicker.setTime(BE.formatTime(checkedAt));
+                    timeCheckedPicker.setTime(BE.DTF.formatTime(checkedAt));
                 }
                 else {
                     timeCheckedPicker.setText("-");
@@ -1094,7 +1101,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
             fh.fileWrite(patrollingScheduleFile, false, toUpdateList);
 
-            String timeNeeded = String.valueOf(BE.formatTime(checkBef).compareTo(BE.formatTime(slot)));
+            String timeNeeded = String.valueOf(BE.DTF.formatTime(checkBef).compareTo(BE.DTF.formatTime(slot)));
 
             patrollingScheduleTableSetUp();
             fieldAction(false);
@@ -1148,7 +1155,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                     toRemove.add(scheDet[0] + BE.TF.sp + scheDet[1] + BE.TF.sp + scheDet[2] + BE.TF.sp + 
                                  scheDet[3] + BE.TF.sp + scheDet[4] + BE.TF.sp + scheDet[5] + BE.TF.sp + 
                                  " " + BE.TF.sp + " " + BE.TF.sp + " " + BE.TF.sp + " " + BE.TF.sp + " " + BE.TF.sp + 
-                                 BE.combineStringDateTime(LocalDate.now().toString(), LocalTime.now().toString()) + 
+                                 BE.DTF.combineStringDateTime(LocalDate.now().toString(), LocalTime.now().toString()) + 
                                  BE.TF.sp + " ");
                 }
                 else {
@@ -1380,7 +1387,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
                         String timeNeeded = jobDetails[5];
                         LocalDate workingDate = null;
-                        LocalTime workingTime = BE.formatTime(jobDetails[7]);
+                        LocalTime workingTime = BE.DTF.formatTime(jobDetails[7]);
                         String[] workingEndDateTime = jobDetails[8].split(" ");
 
                         LocalTime workingStartTime2;
@@ -1389,11 +1396,11 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                         ArrayList<String> dateData = BE.compareJobDate(repitition, workingEndDateTime, jobDetails, timeNeeded, dayOfToday, inputDate, workingTime, workingDate);
 
                         if (!dateData.isEmpty()) {
-                            workingDate = BE.formatDate(dateData.get(0));
-                            workingTime = BE.formatTime(dateData.get(1));
+                            workingDate = BE.DTF.formatDate(dateData.get(0));
+                            workingTime = BE.DTF.formatTime(dateData.get(1));
 
-                            workingStartTime2 = (!dateData.get(2).equals("null")) ? BE.formatTime(dateData.get(2)) : null;
-                            workingEndTime2 = (!dateData.get(3).equals("null")) ? BE.formatTime(dateData.get(3)) : null;
+                            workingStartTime2 = (!dateData.get(2).equals("null")) ? BE.DTF.formatTime(dateData.get(2)) : null;
+                            workingEndTime2 = (!dateData.get(3).equals("null")) ? BE.DTF.formatTime(dateData.get(3)) : null;
 
                             workingEndDateTime = dateData.get(4).split(" ");
 

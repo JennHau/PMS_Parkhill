@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.Complaints;
+import pms_parkhill_residence.Complaint;
 import pms_parkhill_residence.FileHandling;
 
 /**
@@ -24,7 +24,7 @@ import pms_parkhill_residence.FileHandling;
 public class ResidentTenantComplaints extends javax.swing.JFrame {
     private final ResidentTenant RT;
     FileHandling fh = new FileHandling();
-    Complaints CP = new Complaints();
+    Complaint CP = new Complaint();
     
     DefaultTableModel pendingProgressTable;
     DefaultTableModel completedTable;
@@ -858,7 +858,7 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
         complaintID = RT.CP.getNewCompId();
         complaintIdTF.setText(complaintID.toUpperCase());
         compDetTA.setText("");
-        compStatusTF.setText(Complaints.cptStatus.Pending.toString());
+        compStatusTF.setText(Complaint.cptStatus.Pending.toString());
         
         compDetTA.setEnabled(true);
         saveBTN.setEnabled(true);
@@ -1058,12 +1058,12 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
             compDetTA.setText(complaintDet);
             compStatusTF.setText(compStatus);
             
-            if (compStatus.equals(Complaints.cptStatus.Pending.toString())) {
+            if (compStatus.equals(Complaint.cptStatus.Pending.toString())) {
                 saveBTN.setEnabled(true);
                 deleteBTN.setEnabled(true);
                 compDetTA.setEnabled(true);
             }
-            else if (compStatus.equals(Complaints.cptStatus.Progressing.toString())) {
+            else if (compStatus.equals(Complaint.cptStatus.Progressing.toString())) {
                 saveBTN.setEnabled(false);
                 deleteBTN.setEnabled(true);
                 compDetTA.setEnabled(false);

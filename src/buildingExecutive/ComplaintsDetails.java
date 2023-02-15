@@ -8,7 +8,7 @@ import java.awt.Toolkit;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import pms_parkhill_residence.Complaints;
+import pms_parkhill_residence.Complaint;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.Users;
 
@@ -20,7 +20,7 @@ public class ComplaintsDetails extends javax.swing.JFrame {
     private final BuildingExecutive BE;
     
 //    private Users complainer;
-    private final Complaints complaint;
+    private final Complaint complaint;
     FileHandling fh = new FileHandling();
     
     private String complaintID;
@@ -32,7 +32,7 @@ public class ComplaintsDetails extends javax.swing.JFrame {
      * @param BE
      * @param complaint
      */
-    public ComplaintsDetails(BuildingExecutive BE, Complaints complaint) {
+    public ComplaintsDetails(BuildingExecutive BE, Complaint complaint) {
         this.BE = BE;
         this.complaint = complaint;
         
@@ -438,7 +438,7 @@ public class ComplaintsDetails extends javax.swing.JFrame {
         }
         
         complaint.setStatusUpdatedBy(this.BE.getUserID());
-        complaint.setLastUpdateDateTime(BE.DTF.getDateTimeNow());
+        complaint.setLastUpdateDateTime(BE.DTF.currentDateTime());
         
         BE.updateComplaintStatus(this.complaint);
     }//GEN-LAST:event_statusBTNActionPerformed

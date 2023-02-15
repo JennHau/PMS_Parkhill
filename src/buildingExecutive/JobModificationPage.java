@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import pms_parkhill_residence.Complaints;
+import pms_parkhill_residence.Complaint;
 import pms_parkhill_residence.FileHandling;
 
 /**
@@ -27,7 +27,7 @@ import pms_parkhill_residence.FileHandling;
  */
 public class JobModificationPage extends javax.swing.JFrame {
     private String currentBEid;
-    private Complaints complaint;
+    private Complaint complaint;
     
     DefaultTableModel jobTable;
     private final BuildingExecutive BE;
@@ -50,7 +50,7 @@ public class JobModificationPage extends javax.swing.JFrame {
      * @param employeeID
      * @throws java.io.IOException
      */
-    public JobModificationPage(BuildingExecutive BE, String positionCode, String jobID, Complaints complaint, String employeeID) throws IOException {
+    public JobModificationPage(BuildingExecutive BE, String positionCode, String jobID, Complaint complaint, String employeeID) throws IOException {
         this.BE = BE;
         this.setCurrentBEid(this.BE.getUserID());
         this.setJobId(jobID);
@@ -126,7 +126,7 @@ public class JobModificationPage extends javax.swing.JFrame {
                     dataField.add(timeNeededSpinner.getValue().toString()+timeValue);
 
                     if (startTimePicker.getTime()!=null) {
-                        dataField.add(BE.formatTime(startTimePicker.getTime().toString()).toString());
+                        dataField.add(BE.DTF.formatTime(startTimePicker.getTime().toString()).toString());
 
                         for (String eachData :  dataField) {
                             toLine = toLine + eachData + BE.TF.sp;
@@ -499,7 +499,7 @@ public class JobModificationPage extends javax.swing.JFrame {
                 
                 String startTime = jobDetails[4];
                 if (!startTime.equals(" ")) {
-                    LocalTime jobStartTime = BE.getTimeCategory(BE.formatTime(startTime));
+                    LocalTime jobStartTime = BE.DTF.getTimeCategory(BE.DTF.formatTime(startTime));
                     startTimePicker.setTime(jobStartTime);
                     startTimePicker.setEnabled(true);
                     timeNeededSpinner.setEnabled(true);
