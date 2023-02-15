@@ -42,8 +42,10 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
     }
 
     public void CheckpointTable() {
-//        sg.currentdate();
-        List<String> row = fh.fileRead("SG_Checkpoint.txt");
+        sg.currentdate();
+        String patrollingScheduleFileFormat = "patrollingScheduleFiles/patrollingFile_";
+//        sg.currentdate()
+        List<String> row = fh.fileRead(patrollingScheduleFileFormat+"2023-01-31.txt");
         String[] rowary = new String[row.size()];
         row.toArray(rowary);
         

@@ -31,23 +31,17 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author andre
  */
+
+
 public class SecurityGuard extends Users {
 
     public static void main(String[] args) throws IOException {
         displayTable("test-table.txt");
 
     }
-
-//    class TwoArrays {
-//
-//        public String[] header;
-//        public String[] row;
-//
-//        public TwoArrays(String[] a, String[] b) {
-//            this.header = a;
-//            this.row = b;
-//        }
-//    }
+    
+//    diaplay table
+FileHandling fh = new FileHandling();
     public static Object[] displayTable(String f) {
         String filepath = f;
         File file = new File(filepath);
@@ -69,6 +63,7 @@ public class SecurityGuard extends Users {
 
     }
 
+//    show current date
     public static LocalDate currentdate() {
         LocalDate Current = LocalDate.now();
 //        DateTimeFormatter format = DateTimeFormatter.ofPattern(" MMMM YYYY");
@@ -78,6 +73,7 @@ public class SecurityGuard extends Users {
 
     ;
     
+//    convert date to 12 january 2023
     public static String convertdate(String f) throws ParseException {
         String datestring =f;
         SimpleDateFormat inputFormat = new SimpleDateFormat("dd MMMM yyyy");
@@ -92,6 +88,7 @@ public class SecurityGuard extends Users {
 
     
     
+//    display current time
         public static String currenttime() {
         LocalTime Current = LocalTime.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -101,7 +98,7 @@ public class SecurityGuard extends Users {
     }
 
     ;
-        
+//        convert time to 12.30am
         public static String coverttime(String f) {
         LocalTime Current = LocalTime.parse(f);
         DateTimeFormatter format = DateTimeFormatter.ofPattern("h:mm a");
@@ -124,7 +121,9 @@ public class SecurityGuard extends Users {
         }
         bw.newLine();
     }
-
+    
+    
+//modified serch visitor data into text file
     public void modified_SearchVisitor_data(List<String> m) {
         List<String> modified_data = new ArrayList<>();
         List<String> lst = new ArrayList<String>();
@@ -175,6 +174,8 @@ public class SecurityGuard extends Users {
 
     }
 
+    //modified manage incident data into text file
+
     public void modified_manageIncident(List<String> m) {
         List<String> modified_data = new ArrayList<>();
         List<String> lst = new ArrayList<String>();
@@ -221,6 +222,9 @@ public class SecurityGuard extends Users {
         JOptionPane.showMessageDialog(null, "Incident Updated Successfully");
 
     }
+
+    
+    //change status to check in in 
 
     public void change_status_to_checkin(List<String> m) {
         List<String> modified_data = new ArrayList<>();

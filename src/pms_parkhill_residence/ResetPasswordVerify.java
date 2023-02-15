@@ -104,6 +104,16 @@ public class ResetPasswordVerify extends javax.swing.JFrame {
 
         phoneNoTF.setToolTipText("");
         phoneNoTF.setSelectionColor(new java.awt.Color(102, 102, 102));
+        phoneNoTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                phoneNoTFActionPerformed(evt);
+            }
+        });
+        phoneNoTF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                phoneNoTFKeyTyped(evt);
+            }
+        });
 
         verifyBt.setBackground(new java.awt.Color(13, 24, 42));
         verifyBt.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
@@ -117,7 +127,7 @@ public class ResetPasswordVerify extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel7.setText("(ex: 0123456789)");
+        jLabel7.setText("(ex: 012-345-6789)");
         jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jLabel7MouseEntered(evt);
@@ -259,9 +269,8 @@ public class ResetPasswordVerify extends javax.swing.JFrame {
             boolean valid = users.resetPasswordVerify(emailTF.getText(),
                 phoneNoTF.getText(), IDNoTF.getText());
             if (valid) {
-                
                 dispose();
-                new ResetPassword().setVisible(true);
+                new ResetPassword(emailTF.getText()).setVisible(true);
             } else {
                 warningMessage.setText("Sorry, record not found!");
                 emailTF.setText(""); phoneNoTF.setText(""); IDNoTF.setText("");
@@ -278,6 +287,17 @@ public class ResetPasswordVerify extends javax.swing.JFrame {
     private void jLabel7MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseExited
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabel7MouseExited
+
+    private void phoneNoTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phoneNoTFActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_phoneNoTFActionPerformed
+
+    private void phoneNoTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_phoneNoTFKeyTyped
+        // TODO add your handling code here:
+        int phoneNoL = phoneNoTF.getText().length();
+        if (Character.isLetter(evt.getKeyChar()) || phoneNoL > 13)
+            evt.consume();
+    }//GEN-LAST:event_phoneNoTFKeyTyped
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));

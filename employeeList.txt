@@ -1,0 +1,6 @@
+employeeID;email;name;phoneNo;position;identificationNo;gender;
+tcn184574;asdw;asdw asdw;0128765432;Technician;111111111112;Male;
+scg184576;hi;hi hi;0138765432;Security Guard;111111111113;Male; 
+scg184577;bye;hi hi;0148765432;Security Guard;111111111114;Male;-
+cln000001;ali@gmail.com;Ali Muhhamad;013-293-4367;Cleaner;937535-01-2743;Male;
+scg184573;adhmad@gmail.com;Ahmad Muhammad;0118765432;Security Guard;111111111111;Male;

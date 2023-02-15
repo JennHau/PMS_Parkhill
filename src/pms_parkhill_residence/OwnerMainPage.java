@@ -4,9 +4,23 @@
  */
 package pms_parkhill_residence;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Toolkit;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
  *
@@ -56,6 +70,7 @@ public class OwnerMainPage extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        annualTotalPaymentPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -325,7 +340,7 @@ public class OwnerMainPage extends javax.swing.JFrame {
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 308, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 266, Short.MAX_VALUE)
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -361,7 +376,7 @@ public class OwnerMainPage extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
         jPanel3Layout.setVerticalGroup(
@@ -383,13 +398,20 @@ public class OwnerMainPage extends javax.swing.JFrame {
             }
         });
 
+        annualTotalPaymentPanel.setLayout(new java.awt.BorderLayout());
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(246, 246, 246)
-                .addComponent(jButton1)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(246, 246, 246)
+                        .addComponent(jButton1))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(74, 74, 74)
+                        .addComponent(annualTotalPaymentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 607, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
@@ -397,6 +419,8 @@ public class OwnerMainPage extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(165, 165, 165)
                 .addComponent(jButton1)
+                .addGap(62, 62, 62)
+                .addComponent(annualTotalPaymentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -430,11 +454,36 @@ public class OwnerMainPage extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        FileHandling fh = new FileHandling();
-        List<String> data = new ArrayList<>();
-        data.add("Hello;Bye;12345;");
-        data.add("Bello;Hi;945677");
-        fh.fileWrite("currentSession.txt", true, data);
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        // declare arrayList to store intake code
+        
+//        for (int i=0; i<x.size(); i++) {
+//            dataset.setValue(Integer.parseInt(x.get(i)), "Amount(RM)", y.get(i));
+//        }
+//        System.out.println(dataset);
+        dataset.setValue(5000.00, "Frequency", "2023");
+        //create chart
+        //create chart
+        JFreeChart linechart = ChartFactory.createLineChart("Number of Students Per Intake","Intake","Frequency", 
+                dataset, PlotOrientation.VERTICAL, false,true,false);
+        
+        //create plot object
+         CategoryPlot lineCategoryPlot = linechart.getCategoryPlot();
+       // lineCategoryPlot.setRangeGridlinePaint(Color.BLUE);
+        lineCategoryPlot.setBackgroundPaint(Color.white);
+        
+        //create render object to change the moficy the line properties like color
+        LineAndShapeRenderer lineRenderer = (LineAndShapeRenderer) lineCategoryPlot.getRenderer();
+        Color lineChartColor = new Color(204,0,51);
+        lineRenderer.setSeriesPaint(0, lineChartColor);
+        
+         //create chartPanel to display chart(graph)
+        ChartPanel lineChartPanel = new ChartPanel(linechart);
+        annualTotalPaymentPanel.removeAll();
+        annualTotalPaymentPanel.add(lineChartPanel, BorderLayout.CENTER);
+        annualTotalPaymentPanel.validate();
+        
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void setWindowIcon() {
@@ -492,6 +541,7 @@ public class OwnerMainPage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel annualTotalPaymentPanel;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

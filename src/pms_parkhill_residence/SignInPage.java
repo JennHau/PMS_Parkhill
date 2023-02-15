@@ -4,19 +4,27 @@
  */
 package pms_parkhill_residence;
 
+import accountExecutive.AccountExecutive;
+import accountExecutive.AccountExecutiveDashboard;
+import adminExecutive.AdminExecutive;
+import adminExecutive.AdminExecutiveDashboard;
+import buildingExecutive.BuildingExecutive;
+import buildingExecutive.BuildingExecutiveMainPage;
+import buildingManager.BuildingManager;
+import buildingManager.BuildingManagerDashboard;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Toolkit;
-import java.io.File;
-import javax.swing.JOptionPane;
-
+import residentANDtenant.ResidentTenant;
+import residentANDtenant.ResidentTenantMainPage;
+import vendor.Vendor;
+import vendor.VendorDashboard;
 
 /**
  *
  * @author wongj
  */
 public class SignInPage extends javax.swing.JFrame {
-
     /**
      * Creates new form HomePage
      */
@@ -232,7 +240,7 @@ public class SignInPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         jLabel9.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_jLabel9MouseEntered
-
+    
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
         // TODO add your handling code here:
         dispose();
@@ -242,10 +250,9 @@ public class SignInPage extends javax.swing.JFrame {
     private void signInBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signInBtActionPerformed
         // TODO add your handling code here:
         try{
-            Users users = new Users();
-            boolean valid = users.login(email.getText(), String.valueOf(password.getPassword()));
-            if (valid) {
-                users.userRole(email.getText());
+            String[] userData = new Users().login(email.getText(), String.valueOf(password.getPassword()));
+            if (userData != null) {
+                userPage(userData);
                 dispose();
             } else {
                 warningMessage.setText("Invalid email address or password!");
@@ -254,6 +261,41 @@ public class SignInPage extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }//GEN-LAST:event_signInBtActionPerformed
+
+    public void userPage(String[] user) {
+        String userCode = user[0].substring(0, 3);
+        
+        switch (userCode) {
+            case "bde" -> {
+                BuildingExecutive BE = new BuildingExecutive(user[0], user[1], user[2], user[3], user[4], user[5], user[6], user[7]);
+                new BuildingExecutiveMainPage(BE).setVisible(true);
+            }
+            case "rsd" -> {
+                ResidentTenant RT = new ResidentTenant(user[0], user[1], user[2], user[3], user[4], user[5], user[6], user[7], user[8]);
+                new ResidentTenantMainPage(RT).setVisible(true);
+            }
+            case "vdr" -> {
+                Vendor VD = new Vendor(user[0], user[1], user[2], user[3], user[4], user[5], user[6], user[7], user[8]);
+                new VendorDashboard(VD).setVisible(true);
+            }
+            case "tnt" -> {
+                ResidentTenant RT = new ResidentTenant(user[0], user[1], user[2], user[3], user[4], user[5], user[6], user[7], user[8]);
+                new ResidentTenantMainPage(RT).setVisible(true);
+            }
+            case "ace" -> {
+                AccountExecutive ACE = new AccountExecutive(user[0], user[1], user[2], user[3], user[4], user[5], user[6], user[7]);
+                new AccountExecutiveDashboard(ACE).setVisible(true);
+            }
+            case "ade" -> {
+                AdminExecutive ADE = new AdminExecutive(user[0], user[1], user[2], user[3], user[4], user[5], user[6], user[7]);
+                new AdminExecutiveDashboard(ADE).setVisible(true);
+            }
+            case "bdm" -> {
+                BuildingManager BM = new BuildingManager(user[0], user[1], user[2], user[3], user[4], user[5], user[6], user[7]);
+                new BuildingManagerDashboard(BM).setVisible(true);
+            }
+        }
+    }
 
     private void jLabel7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseEntered
         // TODO add your handling code here:
@@ -301,13 +343,6 @@ public class SignInPage extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(SignInPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
