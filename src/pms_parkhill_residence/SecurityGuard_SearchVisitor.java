@@ -10,12 +10,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -32,21 +37,63 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
     public SecurityGuard_SearchVisitor() {
         initComponents();
         setWindowIcon();
+        todaydate.setText(sg.currentdate().toString());
         displayTable();
-//        combobox();
 
+    }
+    SecurityGuard sg = new SecurityGuard();
+    FileHandling fh = new FileHandling();
+
+    public String getSpecificUser(String userId) {
+        List<String> userProfile = fh.fileRead("userProfile.txt");
+        for (String eachUser : userProfile) {
+            String uId = eachUser.split(";")[0];
+            if (uId.equals(userId)) {
+                return eachUser;
+            }
+        }
+
+        return null;
     }
 
     public void displayTable() {
-        SecurityGuard sg = new SecurityGuard();
-        Object[] row = sg.displayTable("test-table.txt");
+        List<String> row = fh.fileRead("visitorpass.txt");
+
+        String[] rowlist = new String[row.size()];
+        row.toArray(rowlist);
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
-        for (int i = 0; i < row.length; i++) {
-            String line = row[i].toString().toUpperCase().trim();
+        for (int i = 1; i < rowlist.length; i++) {
+            String line = rowlist[i].toString().trim();
             String[] line_split = line.split(";");
-            model.addRow(line_split);
+            String getdate = todaydate.getText().toString();
+
+            if (line_split[5].equals(getdate)) {
+                String userdetail = getSpecificUser(line_split[10]);
+                System.out.println(userdetail);
+                String[] user_split = userdetail.split(";");
+
+                String vid = line_split[0].toUpperCase();
+                String ic = line_split[1];
+                String name = line_split[2];
+                String unino = user_split[8].toUpperCase();
+                String cid = line_split[8];
+//                String cit = line_split[5];
+                String cod = line_split[9];
+//                String cot = line_split[9];
+                String status = line_split[7];
+                String table[] = {vid, name, ic, unino, cid, cod, status, "EDIT"};
+
+                model.addRow(table);
+            }
+
+           
         }
+         if (model.getRowCount() == 0) {
+                Object[] rowData = {"No data available"};
+                model.addRow(rowData);
+            }
+
 
 //        -----------------------------
 //                                      if want specific data only 
@@ -106,7 +153,7 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
+        todaydate = new javax.swing.JLabel();
         visitor_id = new javax.swing.JLabel();
         search_id_field = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -115,16 +162,26 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         visitor_id1 = new javax.swing.JLabel();
         jfield = new javax.swing.JLabel();
         Jfieild = new javax.swing.JLabel();
-        Unitno = new javax.swing.JTextField();
-        visitor_id2 = new javax.swing.JLabel();
+        ic = new javax.swing.JTextField();
         name = new javax.swing.JTextField();
+        visitor_id3 = new javax.swing.JLabel();
+        Unitno = new javax.swing.JTextField();
+        jSeparator1 = new javax.swing.JSeparator();
+        jSeparator2 = new javax.swing.JSeparator();
+        jSeparator3 = new javax.swing.JSeparator();
+        jSeparator4 = new javax.swing.JSeparator();
+        jSeparator5 = new javax.swing.JSeparator();
+        jSeparator6 = new javax.swing.JSeparator();
+        changedate = new com.github.lgooddatepicker.components.DatePicker();
+        visitor_id6 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        Checkout = new javax.swing.JButton();
+        Checkin = new javax.swing.JButton();
         Jfieild1 = new javax.swing.JLabel();
-        visitor_id5 = new javax.swing.JLabel();
-        status = new javax.swing.JComboBox<>();
-        check_in_datetime = new com.github.lgooddatepicker.components.DateTimePicker();
-        Jfieild2 = new javax.swing.JLabel();
-        check_out_datetime = new com.github.lgooddatepicker.components.DateTimePicker();
-        jButton1 = new javax.swing.JButton();
+        checkindate = new javax.swing.JTextField();
+        visitor_id2 = new javax.swing.JLabel();
+        checkoutdate = new javax.swing.JTextField();
+        changedatebutton = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -479,16 +536,15 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         jPanel6.setBackground(new java.awt.Color(226, 226, 226));
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel4.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(13, 24, 42));
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("MANAGE VISITOR PASS");
-        jPanel6.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 0, 555, 50));
+        todaydate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        todaydate.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
+        todaydate.setForeground(new java.awt.Color(13, 24, 42));
+        jPanel6.add(todaydate, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 190, 30));
 
         visitor_id.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         visitor_id.setForeground(new java.awt.Color(153, 153, 153));
-        visitor_id.setText("Unit No:");
-        jPanel6.add(visitor_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 460, 60, 20));
+        visitor_id.setText("Check Out Date");
+        jPanel6.add(visitor_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 520, 140, 20));
 
         search_id_field.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -505,18 +561,18 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
                 search_id_fieldKeyReleased(evt);
             }
         });
-        jPanel6.add(search_id_field, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 50, 130, -1));
+        jPanel6.add(search_id_field, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 30, 130, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "id", "email", "password", "firstname", "lastname", "identification", "gender", "phone", "unitno", "Status"
+                "V_ID", "Name", "Identification No", "Unitno", "Check In ", "Check out  ", "Status", "Action"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -532,7 +588,19 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jPanel6.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 100, 960, 310));
-        jPanel6.add(id, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 460, 160, -1));
+
+        id.setEnabled(false);
+        id.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                idActionPerformed(evt);
+            }
+        });
+        id.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                idKeyReleased(evt);
+            }
+        });
+        jPanel6.add(id, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 460, 130, -1));
 
         visitor_id1.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         visitor_id1.setForeground(new java.awt.Color(153, 153, 153));
@@ -542,51 +610,126 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         jfield.setForeground(new java.awt.Color(153, 153, 153));
         jfield.setText("Visitor ID :");
         jfield.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        jPanel6.add(jfield, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 460, 80, 20));
+        jPanel6.add(jfield, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 460, 80, 20));
 
         Jfieild.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         Jfieild.setForeground(new java.awt.Color(153, 153, 153));
-        Jfieild.setText("Name :");
-        jPanel6.add(Jfieild, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 460, 60, 20));
-        jPanel6.add(Unitno, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 460, 120, -1));
+        Jfieild.setText("Check In Date:");
+        jPanel6.add(Jfieild, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 520, 130, 20));
 
-        visitor_id2.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
-        visitor_id2.setForeground(new java.awt.Color(153, 153, 153));
-        visitor_id2.setText("Status :");
-        jPanel6.add(visitor_id2, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 460, 60, 20));
-        jPanel6.add(name, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 460, 160, -1));
+        ic.setEnabled(false);
+        ic.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                icKeyReleased(evt);
+            }
+        });
+        jPanel6.add(ic, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 460, 180, -1));
+
+        name.setEnabled(false);
+        name.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameActionPerformed(evt);
+            }
+        });
+        name.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                nameKeyReleased(evt);
+            }
+        });
+        jPanel6.add(name, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 460, 180, -1));
+
+        visitor_id3.setText("Unit No:");
+        visitor_id3.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
+        visitor_id3.setForeground(new java.awt.Color(153, 153, 153));
+        jPanel6.add(visitor_id3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 520, 60, 20));
+
+        Unitno.setEnabled(false);
+        Unitno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UnitnoActionPerformed(evt);
+            }
+        });
+        Unitno.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                UnitnoKeyReleased(evt);
+            }
+        });
+        jPanel6.add(Unitno, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 520, 130, -1));
+        jPanel6.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 430, 960, -1));
+        jPanel6.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 430, 960, -1));
+        jPanel6.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 630, -1, -1));
+        jPanel6.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 623, 960, 0));
+        jPanel6.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 430, 960, -1));
+        jPanel6.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 630, 960, 10));
+        jPanel6.add(changedate, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 60, 180, -1));
+
+        visitor_id6.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
+        visitor_id6.setForeground(new java.awt.Color(153, 153, 153));
+        visitor_id6.setText("SEARCH :");
+        jPanel6.add(visitor_id6, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, -1, -1));
+
+        jLabel13.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(13, 24, 42));
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel13.setText("MANAGE VISITOR PASS");
+        jPanel6.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 0, 555, 50));
+
+        Checkout.setText("Check Out");
+        Checkout.setEnabled(false);
+        Checkout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CheckoutActionPerformed(evt);
+            }
+        });
+        jPanel6.add(Checkout, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 580, -1, -1));
+
+        Checkin.setText("Check In");
+        Checkin.setEnabled(false);
+        Checkin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CheckinActionPerformed(evt);
+            }
+        });
+        jPanel6.add(Checkin, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 580, -1, -1));
 
         Jfieild1.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         Jfieild1.setForeground(new java.awt.Color(153, 153, 153));
-        Jfieild1.setText("Check In :");
-        jPanel6.add(Jfieild1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 510, 90, 20));
+        Jfieild1.setText("Visitor  Name :");
+        jPanel6.add(Jfieild1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 460, 130, 20));
 
-        visitor_id5.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
-        visitor_id5.setForeground(new java.awt.Color(153, 153, 153));
-        visitor_id5.setText("SEARCH KEYWORD:");
-        jPanel6.add(visitor_id5, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, -1, -1));
-
-        status.addActionListener(new java.awt.event.ActionListener() {
+        checkindate.setEnabled(false);
+        checkindate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                statusActionPerformed(evt);
+                checkindateActionPerformed(evt);
             }
         });
-        jPanel6.add(status, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 460, 100, -1));
-        jPanel6.add(check_in_datetime, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 510, -1, -1));
-
-        Jfieild2.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
-        Jfieild2.setForeground(new java.awt.Color(153, 153, 153));
-        Jfieild2.setText("Check Out :");
-        jPanel6.add(Jfieild2, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 510, 90, 20));
-        jPanel6.add(check_out_datetime, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 510, -1, -1));
-
-        jButton1.setText("UPDATE");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        checkindate.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                checkindateKeyReleased(evt);
             }
         });
-        jPanel6.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 580, -1, -1));
+        jPanel6.add(checkindate, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 520, 180, -1));
+
+        visitor_id2.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
+        visitor_id2.setForeground(new java.awt.Color(153, 153, 153));
+        visitor_id2.setText("Indentification No:");
+        jPanel6.add(visitor_id2, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 460, 140, 20));
+
+        checkoutdate.setEnabled(false);
+        checkoutdate.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                checkoutdateKeyReleased(evt);
+            }
+        });
+        jPanel6.add(checkoutdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 520, 180, -1));
+
+        changedatebutton.setText("SELECT");
+        changedatebutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changedatebuttonActionPerformed(evt);
+            }
+        });
+        jPanel6.add(changedatebutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 60, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -636,7 +779,6 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         tr.setRowFilter(RowFilter.regexFilter(search));
 
 
-
     }//GEN-LAST:event_search_id_fieldKeyReleased
 
     private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
@@ -651,36 +793,51 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
-
         int index = jTable1.getSelectedRow();
-        TableModel model = jTable1.getModel();
-        String visitorid = model.getValueAt(index, 0).toString();
-        String visitorname = model.getValueAt(index, 3).toString();
-        String unit = model.getValueAt(index, 8).toString();
+        if (jTable1.getSelectedColumn() == 7 && index != -1) {
+            int selectedModelIndex = jTable1.convertRowIndexToModel(index);
+            DefaultTableModel model1 = (DefaultTableModel) jTable1.getModel();
+            String visitorid = model1.getValueAt(selectedModelIndex, 0).toString();
+            String visitorname = model1.getValueAt(selectedModelIndex, 1).toString();
+            String unit = model1.getValueAt(selectedModelIndex, 3).toString();
+            String icno = model1.getValueAt(selectedModelIndex, 2).toString();
+            String CID = model1.getValueAt(selectedModelIndex, 4).toString();
+//            String CIT = model1.getValueAt(selectedModelIndex, 5).toString();
+            String COD = model1.getValueAt(selectedModelIndex, 5).toString();
+//            String COT = model1.getValueAt(selectedModelIndex, 7).toString();
 
-        id.setText(visitorid);
-        name.setText(visitorname);
-        Unitno.setText(unit);
-        check_in_datetime.datePicker.setDateToToday();
-        check_in_datetime.timePicker.setTimeToNow();
-        if(status.getItemCount()==0){
-            combobox();
+            id.setText(visitorid);
+            name.setText(visitorname);
+            Unitno.setText(unit);
+            ic.setText(icno);
+            checkindate.setText(CID);
+            checkoutdate.setText(COD);
+//            check_in_datetime.datePicker.setText(CID);
+//            check_in_datetime.timePicker.setText(CIT);
+//            check_out_datetime.datePicker.setText(COD);
+//            check_out_datetime.timePicker.setText(COT);
+//            jButton1.setEnabled(true);
         }
-        
+        if (checkindate.getText().isBlank()) {
+            enablecheckinbutton();
+        } else {
+            enablecheckoutbutton();
+        }
+
+//        if (status.getItemCount() == 0) {
+//            combobox();
+//        }
+
     }//GEN-LAST:event_jTable1MouseClicked
 
-    private void combobox() {
-        String[] status_dropbox = {"Checked", "expired", "unchecked"};
-        for (int i = 0; i < status_dropbox.length; i++) {
-            status.addItem(status_dropbox[i]);
-            
-        }
-        
-    }
-
-   
-   
-
+//    private void combobox() {
+//        String[] status_dropbox = {"Checked", "expired", "unchecked"};
+//        for (int i = 0; i < status_dropbox.length; i++) {
+//            status.addItem(status_dropbox[i].toUpperCase());
+//
+//        }
+//
+//    }
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         // TODO add your handling code here:
@@ -688,29 +845,181 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jLabel5MouseClicked
 
-    private void statusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_statusActionPerformed
-
     private void search_id_fieldMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_search_id_fieldMouseEntered
         // TODO add your handling code here:
 
     }//GEN-LAST:event_search_id_fieldMouseEntered
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        System.out.println(check_in_datetime.datePicker.getDate().getClass().getSimpleName());
-        LocalDate cdate = check_in_datetime.datePicker.getDate();
-        check_out_datetime.datePicker.setDate(cdate);
-                System.out.println(check_out_datetime.datePicker.getDate().getClass().getSimpleName());
+//    private void enablebutton() {
+//        if (id.getText().isBlank() || name.getText().isBlank() || Unitno.getText().isBlank() || ic.getText().isBlank() || check_in_datetime.datePicker.getText().isBlank() || check_in_datetime.timePicker.getText().isBlank() || check_out_datetime.datePicker.getText().isBlank() || check_out_datetime.timePicker.getText().isBlank()) {
+//            jButton1.setEnabled(false);
+//        } else {
+//            jButton1.setEnabled(true);
+//        }
+//    }
+    private void enablecheckinbutton() {
+        if (checkindate.getText().isBlank()) {
+            Checkin.setEnabled(true);
+            Checkout.setEnabled(false);
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+        } else {
+            Checkin.setEnabled(false);
 
+        }
+    }
+
+    private void enablecheckoutbutton() {
+        if (checkoutdate.getText().isBlank()) {
+            Checkout.setEnabled(true);
+            Checkin.setEnabled(false);
+        } else {
+            Checkout.setEnabled(false);
+        }
+    }
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         // TODO add your handling code here:
         SecurityGuard_Check_in.main(new String[0]);
         this.dispose();
     }//GEN-LAST:event_jLabel6MouseClicked
+
+    private void idKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_idKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_idKeyReleased
+
+    private void nameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameKeyReleased
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_nameKeyReleased
+
+    private void UnitnoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UnitnoKeyReleased
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_UnitnoKeyReleased
+
+    private void icKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_icKeyReleased
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_icKeyReleased
+
+    private void idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_idActionPerformed
+
+    private void nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nameActionPerformed
+
+    private void UnitnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UnitnoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_UnitnoActionPerformed
+
+    private void checkindateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkindateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_checkindateActionPerformed
+
+    private void checkindateKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_checkindateKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_checkindateKeyReleased
+
+    private void checkoutdateKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_checkoutdateKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_checkoutdateKeyReleased
+
+    private void CheckinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckinActionPerformed
+        // TODO add your handling code here:
+
+        int i = jTable1.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        String ids = model.getValueAt(i, 0).toString();
+        String c_date = sg.currentdate().toString();
+        String c_time = sg.currenttime();
+        String checkindata = c_date + " " + c_time;
+        model.setValueAt(checkindata, i, 4);
+
+        String line, x;
+
+        List<String> row = fh.fileRead("visitorpass.txt");
+        List<String> nlst = new ArrayList<String>();
+        System.out.println(row);
+        String[] rowary = new String[row.size()];
+        row.toArray(rowary);
+        for (int j = 0; j < rowary.length; j++) {
+            String[] values = rowary[j].split(";");
+            if (values[0].equalsIgnoreCase(ids)) {
+                values[8] = checkindata;
+                line = String.join(";", values);
+                nlst.add(line);
+            } else {
+                x = String.join(";", values);
+                nlst.add(x);
+            }
+
+        }
+        System.out.println(nlst);
+        fh.fileWrite("visitorpass.txt", false, nlst);
+        JOptionPane.showMessageDialog(null, "Check in Successful");
+        Checkin.setEnabled(false);
+        Checkout.setEnabled(false);
+        checkindate.setText(checkindata);
+
+
+    }//GEN-LAST:event_CheckinActionPerformed
+
+    private void CheckoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckoutActionPerformed
+        // TODO add your handling code here:
+
+        int i = jTable1.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        String ids = model.getValueAt(i, 0).toString();
+        String c_date = sg.currentdate().toString();
+        String c_time = sg.currenttime();
+        String checkoutdata = c_date + " " + c_time;
+        model.setValueAt(checkoutdata, i, 5);
+
+        String line, x;
+
+        List<String> row = fh.fileRead("visitorpass.txt");
+        List<String> nlst = new ArrayList<String>();
+        System.out.println(row);
+        String[] rowary = new String[row.size()];
+        row.toArray(rowary);
+        for (int j = 0; j < rowary.length; j++) {
+            String[] values = rowary[j].split(";");
+            if (values[0].equalsIgnoreCase(ids)) {
+                values[9] = checkoutdata;
+                line = String.join(";", values);
+                nlst.add(line);
+            } else {
+                x = String.join(";", values);
+                nlst.add(x);
+            }
+
+        }
+        System.out.println(nlst);
+        fh.fileWrite("visitorpass.txt", false, nlst);
+        JOptionPane.showMessageDialog(null, "Check Out Successful");
+        Checkin.setEnabled(false);
+        Checkout.setEnabled(false);
+        checkoutdate.setText(checkoutdata);
+
+
+    }//GEN-LAST:event_CheckoutActionPerformed
+
+    private void changedatebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changedatebuttonActionPerformed
+        // TODO add your handling code here:
+        String change_d = changedate.getText();
+        try {
+            todaydate.setText(sg.convertdate(change_d));
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+            displayTable();
+
+        } catch (ParseException ex) {
+            Logger.getLogger(SecurityGuard_SearchVisitor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_changedatebuttonActionPerformed
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
@@ -879,23 +1188,26 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Checkin;
+    private javax.swing.JButton Checkout;
     private javax.swing.JLabel Jfieild;
     private javax.swing.JLabel Jfieild1;
-    private javax.swing.JLabel Jfieild2;
     private javax.swing.JLabel SearchVisitor;
     private javax.swing.JTextField Unitno;
-    private com.github.lgooddatepicker.components.DateTimePicker check_in_datetime;
-    private com.github.lgooddatepicker.components.DateTimePicker check_out_datetime;
+    private com.github.lgooddatepicker.components.DatePicker changedate;
+    private javax.swing.JButton changedatebutton;
+    private javax.swing.JTextField checkindate;
+    private javax.swing.JTextField checkoutdate;
     private javax.swing.JLabel dashboard;
+    private javax.swing.JTextField ic;
     private javax.swing.JTextField id;
-    private javax.swing.JButton jButton1;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -914,14 +1226,21 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel jfield;
     private javax.swing.JTextField name;
     private javax.swing.JTextField search_id_field;
-    private javax.swing.JComboBox<String> status;
+    private javax.swing.JLabel todaydate;
     private javax.swing.JLabel visitor_id;
     private javax.swing.JLabel visitor_id1;
     private javax.swing.JLabel visitor_id2;
-    private javax.swing.JLabel visitor_id5;
+    private javax.swing.JLabel visitor_id3;
+    private javax.swing.JLabel visitor_id6;
     // End of variables declaration//GEN-END:variables
 }

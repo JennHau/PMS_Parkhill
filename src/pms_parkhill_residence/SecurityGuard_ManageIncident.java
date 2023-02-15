@@ -12,11 +12,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -31,6 +33,9 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
+    FileHandling fh = new FileHandling();
+    SecurityGuard sg = new SecurityGuard();
+
     public SecurityGuard_ManageIncident() {
         initComponents();
         setWindowIcon();
@@ -39,15 +44,28 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
     }
 
     public void displayTable() {
-        SecurityGuard sg = new SecurityGuard();
-        Object[] row = sg.displayTable("SG_Incident.txt");
+        List<String> row = fh.fileRead("SG_Incident.txt");
+        String[] rowary = new String[row.size()];
+        row.toArray(rowary);
         DefaultTableModel model = (DefaultTableModel) jTable.getModel();
-        
+        String selected_status = status_combobox.getSelectedItem().toString();
 
-        for (int i = 0; i < row.length; i++) {
-            String line = row[i].toString().trim();
+        for (int i = 1; i < rowary.length; i++) {
+            String line = rowary[i].toString().trim();
             String[] line_split = line.toUpperCase().split(";");
-            model.addRow(line_split);
+            if (line_split[4].equalsIgnoreCase(selected_status)) {
+                String id = line_split[0].toUpperCase();
+                String rcd = line_split[1];
+                String incident = line_split[2];
+
+                String date = line_split[3];
+                String status = line_split[4].toUpperCase();
+
+                String[] tbrow = {id, rcd, incident, date, status, "SELECT"};
+
+                model.addRow(tbrow);
+            }
+
         }
 
 //        -----------------------------
@@ -115,16 +133,18 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
         incident_id = new javax.swing.JTextField();
         visitor_id1 = new javax.swing.JLabel();
         jfield = new javax.swing.JLabel();
-        Jfieild = new javax.swing.JLabel();
         recorded_by = new javax.swing.JTextField();
-        unit = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         incident = new javax.swing.JTextArea();
-        dateTimePicker1 = new com.github.lgooddatepicker.components.DateTimePicker();
         jfield1 = new javax.swing.JLabel();
         visitor_id2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        datetime = new javax.swing.JTextField();
+        jSeparator1 = new javax.swing.JSeparator();
+        jfield2 = new javax.swing.JLabel();
+        status = new javax.swing.JTextField();
+        status_combobox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -447,7 +467,7 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 555, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(345, 345, 345)
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(20, 20, 20))
         );
         jPanel3Layout.setVerticalGroup(
@@ -472,7 +492,7 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
         visitor_id.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         visitor_id.setForeground(new java.awt.Color(153, 153, 153));
         visitor_id.setText("Incident :");
-        jPanel6.add(visitor_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 440, 100, -1));
+        jPanel6.add(visitor_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 460, 100, -1));
 
         search_id_field.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -484,14 +504,14 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
                 search_id_fieldKeyReleased(evt);
             }
         });
-        jPanel6.add(search_id_field, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 60, 130, -1));
+        jPanel6.add(search_id_field, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 60, 130, -1));
 
         jTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Incident ID", "UnitNo", "Recorded by", "Incident", "Date", "Time"
+                "Incident ID", "Recorded by", "Incident", "Date ", "Status", "Action"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -511,41 +531,38 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable);
 
         jPanel6.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 110, 960, 310));
-        jPanel6.add(incident_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 470, 130, -1));
 
+        incident_id.setEnabled(false);
+        jPanel6.add(incident_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 480, 130, 30));
+
+        visitor_id1.setText("SEARCH :");
         visitor_id1.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         visitor_id1.setForeground(new java.awt.Color(153, 153, 153));
-        visitor_id1.setText("SEARCH KEYWORD:");
-        jPanel6.add(visitor_id1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, -1, -1));
+        jPanel6.add(visitor_id1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, 80, -1));
 
         jfield.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         jfield.setForeground(new java.awt.Color(153, 153, 153));
         jfield.setText("Date and Time :");
-        jPanel6.add(jfield, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 520, 120, 20));
+        jPanel6.add(jfield, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 460, 120, -1));
 
-        Jfieild.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
-        Jfieild.setForeground(new java.awt.Color(153, 153, 153));
-        Jfieild.setText("Unit No :");
-        jPanel6.add(Jfieild, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 450, 70, 20));
-        jPanel6.add(recorded_by, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 470, 130, -1));
-        jPanel6.add(unit, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 470, 130, -1));
+        recorded_by.setEnabled(false);
+        jPanel6.add(recorded_by, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 480, 130, 30));
 
         incident.setColumns(20);
         incident.setRows(5);
         jScrollPane2.setViewportView(incident);
 
-        jPanel6.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 460, 260, 130));
-        jPanel6.add(dateTimePicker1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 540, -1, -1));
+        jPanel6.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 480, 310, 130));
 
         jfield1.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         jfield1.setForeground(new java.awt.Color(153, 153, 153));
-        jfield1.setText("Incident ID :");
-        jPanel6.add(jfield1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 450, 90, 20));
+        jfield1.setText("Status :");
+        jPanel6.add(jfield1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 520, 90, -1));
 
         visitor_id2.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         visitor_id2.setForeground(new java.awt.Color(153, 153, 153));
         visitor_id2.setText("Recorded By:");
-        jPanel6.add(visitor_id2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 450, 100, -1));
+        jPanel6.add(visitor_id2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 460, 100, 20));
 
         jButton1.setText("UPDATE");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -553,7 +570,7 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel6.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 600, 110, -1));
+        jPanel6.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 570, 110, -1));
 
         jButton2.setText("Create");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -561,7 +578,41 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel6.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 80, -1, -1));
+        jPanel6.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 30, 110, -1));
+
+        datetime.setEnabled(false);
+        datetime.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                datetimeActionPerformed(evt);
+            }
+        });
+        jPanel6.add(datetime, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 480, 170, 30));
+        jPanel6.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 433, 960, 20));
+
+        jfield2.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
+        jfield2.setForeground(new java.awt.Color(153, 153, 153));
+        jfield2.setText("Incident ID :");
+        jPanel6.add(jfield2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 460, 90, -1));
+
+        status.setEnabled(false);
+        jPanel6.add(status, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 540, 130, 30));
+
+        status_combobox.setMaximumRowCount(3);
+        status_combobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pending", "Completed", "Progressing", " " }));
+        status_combobox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                status_comboboxMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                status_comboboxMousePressed(evt);
+            }
+        });
+        status_combobox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                status_comboboxActionPerformed(evt);
+            }
+        });
+        jPanel6.add(status_combobox, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 60, 110, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -579,7 +630,7 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 648, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -606,7 +657,7 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         DefaultTableModel model = (DefaultTableModel) jTable.getModel();
-        String search = search_id_field.getText().toLowerCase();
+        String search = search_id_field.getText().toUpperCase();
         TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(model);
         jTable.setRowSorter(tr);
         tr.setRowFilter(RowFilter.regexFilter(search));
@@ -627,31 +678,60 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
     private void jTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMouseClicked
         // TODO add your handling code here:
         int index = jTable.getSelectedRow();
-        TableModel model = jTable.getModel();
-        String incidentid = model.getValueAt(index, 0).toString();
-        String unitnumber = model.getValueAt(index, 1).toString();
-        String record = model.getValueAt(index, 2).toString();
-        String incidenttext = model.getValueAt(index, 3).toString();
-        String date = model.getValueAt(index, 4).toString();
-        String time = model.getValueAt(index, 5).toString();
+        if (jTable.getSelectedColumn() == 5 && index != -1) {
+            int selectedModelIndex = jTable.convertRowIndexToModel(index);
+            DefaultTableModel model1 = (DefaultTableModel) jTable.getModel();
+            String incidentid = model1.getValueAt(selectedModelIndex, 0).toString();
+            String record = model1.getValueAt(selectedModelIndex, 1).toString();
+            String incidenttext = model1.getValueAt(selectedModelIndex, 2).toString();
+            String date = model1.getValueAt(selectedModelIndex, 3).toString();
+            String istatus = model1.getValueAt(selectedModelIndex, 4).toString();
 
-        incident_id.setText(incidentid);
-        unit.setText(unitnumber);
-        recorded_by.setText(record);
-        incident.setText(incidenttext);
-        dateTimePicker1.datePicker.setText(date);
-        dateTimePicker1.timePicker.setText(time);
+            incident_id.setText(incidentid);
+            recorded_by.setText(record);
+            incident.setText(incidenttext);
+            datetime.setText(date);
+            status.setText(istatus);
 
-//        int rowIndex = jTable.getSelectedRow();
-//        int colIndex = jTable.getSelectedColumn();
-//        
-//        System.out.println(rowIndex);
-//        System.out.println(colIndex);
+        }
 
     }//GEN-LAST:event_jTableMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+
+        int i = jTable.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel) jTable.getModel();
+        String ids = incident_id.getText().toUpperCase();
+        String rcd = recorded_by.getText().toUpperCase();
+        String icd = incident.getText().toUpperCase();
+        String date = sg.currentdate().toString() + " " + sg.currenttime();
+        String i_status = status.getText();
+
+//        String i_date = dateTimePicker1.datePicker.getText().toUpperCase();
+//        String i_time = dateTimePicker1.timePicker.getText().toUpperCase();
+        if (icd.isBlank()) {
+            JOptionPane.showMessageDialog(null, "Please make sure incident are not blank !");
+        } else {
+            if (i >= 0) {
+                model.setValueAt(ids, i, 0);
+                model.setValueAt(rcd, i, 1);
+                model.setValueAt(icd, i, 2);
+                model.setValueAt(date, i, 3);
+                model.setValueAt(i_status, i, 4);
+
+                List<String> lst = new ArrayList<String>();
+                lst.add(ids + ";" + rcd + ";" + icd + ";" + date + ";" + i_status + ";");
+                sg.modified_manageIncident(lst);
+                System.out.println(lst);
+            }
+        }
+
+        incident_id.setText("");
+        recorded_by.setText("");
+        incident.setText("");
+        datetime.setText(" ");
+        status.setText(" ");
 
 
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -670,9 +750,41 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         // TODO add your handling code here:
-         SecurityGuard_Check_in.main(new String[0]);
+        SecurityGuard_Check_in.main(new String[0]);
         this.dispose();
     }//GEN-LAST:event_jLabel6MouseClicked
+
+    private void datetimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datetimeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_datetimeActionPerformed
+
+    private void status_comboboxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_status_comboboxMouseClicked
+        // TODO add your handling code here:
+
+
+    }//GEN-LAST:event_status_comboboxMouseClicked
+
+    private void status_comboboxMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_status_comboboxMousePressed
+        // TODO add your handling code here:
+
+
+    }//GEN-LAST:event_status_comboboxMousePressed
+
+    private void status_comboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_status_comboboxActionPerformed
+        // TODO add your handling code here:
+        System.out.println(status_combobox.getSelectedItem());
+        DefaultTableModel model = (DefaultTableModel) jTable.getModel();
+        model.setRowCount(0);
+        displayTable();
+        if (status_combobox.getSelectedItem().toString().equalsIgnoreCase("progressing") || status_combobox.getSelectedItem().toString().equalsIgnoreCase("completed")) {
+            jButton1.hide();
+            incident.setEnabled(false);
+        } else {
+            jButton1.show();
+            incident.setEnabled(true);
+
+        }
+    }//GEN-LAST:event_status_comboboxActionPerformed
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
@@ -969,10 +1081,9 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Jfieild;
     private javax.swing.JLabel SearchVisitor;
     private javax.swing.JLabel dashboard;
-    private com.github.lgooddatepicker.components.DateTimePicker dateTimePicker1;
+    private javax.swing.JTextField datetime;
     private javax.swing.JTextArea incident;
     private javax.swing.JTextField incident_id;
     private javax.swing.JButton jButton1;
@@ -1002,12 +1113,15 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable;
     private javax.swing.JLabel jfield;
     private javax.swing.JLabel jfield1;
+    private javax.swing.JLabel jfield2;
     private javax.swing.JTextField recorded_by;
     private javax.swing.JTextField search_id_field;
-    private javax.swing.JTextField unit;
+    private javax.swing.JTextField status;
+    private javax.swing.JComboBox<String> status_combobox;
     private javax.swing.JLabel visitor_id;
     private javax.swing.JLabel visitor_id1;
     private javax.swing.JLabel visitor_id2;

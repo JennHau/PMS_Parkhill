@@ -6,6 +6,9 @@ package pms_parkhill_residence;
 
 import java.awt.Cursor;
 import java.awt.Toolkit;
+import java.lang.reflect.Array;
+import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,6 +19,8 @@ public class VisitorPage extends javax.swing.JFrame {
     /**
      * Creates new form HomePage
      */
+    FileHandling fh = new FileHandling();
+
     public VisitorPage() {
         initComponents();
         setWindowIcon();
@@ -199,12 +204,50 @@ public class VisitorPage extends javax.swing.JFrame {
     private void Visitor_signin_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Visitor_signin_buttonActionPerformed
         // TODO add your handling code here:
         System.out.println("sign in");
+        boolean id_consist = false;
+        String vst_id = VisitorCode.getText().trim();
+
+        List<String> row = fh.fileRead("visitorpass.txt");
+        String[] rowary = new String[row.size()];
+        row.toArray(rowary);
+
+        for (int i = 0; i < rowary.length; i++) {
+            String line = rowary[i].toString().trim();
+            line.toUpperCase().split(";");
+            String[] line_split = line.toUpperCase().split(";");
+            if (line_split[0].equalsIgnoreCase(vst_id)) {
+                System.out.println("found");
+                id_consist = true;
+                break;
+            } else {
+                System.out.println("not-found");
+                id_consist = false;
+
+            }
+
+        }
+
+        if (id_consist) {
+            JOptionPane.showMessageDialog(null, "Sign in successful, Welcome " + vst_id);
+
+            visitor_display_detail visitor = new visitor_display_detail(vst_id);
+//        add.setSize(400, 300);
+            visitor.setLocationRelativeTo(null);
+            visitor.setDefaultCloseOperation(visitor.DISPOSE_ON_CLOSE);
+            visitor.setVisible(true);
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Visitor not found");
+
+        }
+
+
     }//GEN-LAST:event_Visitor_signin_buttonActionPerformed
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
-    
+
     /**
      * @param args the command line arguments
      */

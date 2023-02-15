@@ -8,6 +8,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -22,9 +24,15 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
     /**
      * Creates new form SecurityGuard_Add_new_incident
      */
+    FileHandling fh =new FileHandling();
+        SecurityGuard sg = new SecurityGuard();
+
     public SecurityGuard_Add_new_incident() {
         initComponents();
         displayIncidentId();
+        jTextField1.setText("PENDING");
+        jTextField2.setText("SCG000001");
+        DATE.setText(sg.currentdate()+" "+ sg.currenttime());
     }
 
     /**
@@ -38,7 +46,6 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
 
         jFrame1 = new javax.swing.JFrame();
         jFrame2 = new javax.swing.JFrame();
-        dateTimePicker1 = new com.github.lgooddatepicker.components.DateTimePicker();
         button1 = new java.awt.Button();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -48,7 +55,6 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
         jfield1 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jfield2 = new javax.swing.JLabel();
-        dateTimePicker2 = new com.github.lgooddatepicker.components.DateTimePicker();
         jfield3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
@@ -56,6 +62,7 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
         jfield4 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         cancel = new javax.swing.JButton();
+        DATE = new javax.swing.JTextField();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -110,6 +117,7 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
         );
 
         jTextField1.setBackground(new java.awt.Color(204, 204, 204));
+        jTextField1.setEnabled(false);
         jTextField1.setForeground(new java.awt.Color(0, 0, 0));
         jTextField1.setHighlighter(null);
         jTextField1.setOpaque(true);
@@ -124,7 +132,7 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
             }
         });
 
-        jfield.setText("Unit No :");
+        jfield.setText("Status :");
         jfield.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         jfield.setForeground(new java.awt.Color(153, 153, 153));
         jfield.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
@@ -135,6 +143,7 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
         jfield1.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
         jTextField2.setBackground(new java.awt.Color(204, 204, 204));
+        jTextField2.setEnabled(false);
         jTextField2.setHighlighter(null);
         jTextField2.setOpaque(true);
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
@@ -152,14 +161,6 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
         jfield2.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         jfield2.setForeground(new java.awt.Color(153, 153, 153));
         jfield2.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-
-        dateTimePicker2.setBackground(new java.awt.Color(204, 204, 204));
-        dateTimePicker2.setForeground(new java.awt.Color(204, 204, 204));
-        dateTimePicker2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                dateTimePicker2KeyReleased(evt);
-            }
-        });
 
         jfield3.setText("Incident :");
         jfield3.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
@@ -193,6 +194,7 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
         jfield4.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
         jTextField3.setBackground(new java.awt.Color(204, 204, 204));
+        jTextField3.setEnabled(false);
         jTextField3.setForeground(new java.awt.Color(0, 0, 0));
         jTextField3.setHighlighter(null);
         jTextField3.setOpaque(true);
@@ -207,13 +209,28 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
             }
         });
 
+        cancel.setText("Cancel");
         cancel.setBackground(new java.awt.Color(13, 24, 42));
         cancel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         cancel.setForeground(new java.awt.Color(255, 255, 255));
-        cancel.setText("Cancel");
         cancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelActionPerformed(evt);
+            }
+        });
+
+        DATE.setBackground(new java.awt.Color(204, 204, 204));
+        DATE.setEnabled(false);
+        DATE.setHighlighter(null);
+        DATE.setOpaque(true);
+        DATE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DATEActionPerformed(evt);
+            }
+        });
+        DATE.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                DATEKeyReleased(evt);
             }
         });
 
@@ -238,10 +255,10 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
                             .addComponent(jfield1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jfield, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextField2)
-                            .addComponent(dateTimePicker2, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
                             .addComponent(jTextField1)
-                            .addComponent(jTextField3))))
+                            .addComponent(jTextField3)
+                            .addComponent(DATE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -263,8 +280,8 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jfield2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(dateTimePicker2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addComponent(DATE, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
                 .addComponent(jfield3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -299,23 +316,18 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         BufferedWriter bw = null;
-        try {
+//        try {
             // TODO add your handling code here:
-            String incident = jTextArea1.getText();
-            String unitno = jTextField1.getText();
+            String incident = jTextArea1.getText().trim();
+            String status = jTextField1.getText();
             String record = jTextField2.getText();
             String no = jTextField3.getText();
-            String date = dateTimePicker2.datePicker.getText();
-            String time = dateTimePicker2.timePicker.getText();
+            String date = DATE.getText();
             SecurityGuard sg = new SecurityGuard();
 
-            String[] ary = {no, unitno, record, incident, date, time};
-            bw = new BufferedWriter(new FileWriter("SG_Incident.txt", true));
-            for (int i = 0; i < ary.length; i++) {
-                bw.write(ary[i] + ";");
-            }
-            bw.newLine();
-            bw.close();
+            String[] ary = {no+";"+record+";"+incident+";"+date+";"+status+";"};
+            List<String>arylist = Arrays.asList(ary);
+            fh.fileWrite("SG_Incident.txt", true,arylist);
 
             int result = JOptionPane.showConfirmDialog(null,
                     "Incident has been Created Successfully !", "Be ok!", JOptionPane.DEFAULT_OPTION);
@@ -324,22 +336,28 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
                 SecurityGuard_ManageIncident add = new SecurityGuard_ManageIncident();
                 add.setVisible(true);
             }
-        } catch (IOException ex) {
-            Logger.getLogger(SecurityGuard_Add_new_incident.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-        }
+//        }
+    
+//        } catch (IOException ex) {
+//            Logger.getLogger(SecurityGuard_Add_new_incident.class.getName()).log(Level.SEVERE, null, ex);
+//        } finally {
+//        }
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public void displayIncidentId() {
-        SecurityGuard sg = new SecurityGuard();
-        Object[] data = sg.displayTable("SG_Incident.txt");
+        
+        List <String> row  = fh.fileRead("SG_Incident.txt");
+        String[] rowary =new String[row.size()];
+        row.toArray(rowary);
+        String idformat="ICD";
         int maxnum = 0;
         int latest, temp;
-        for (int i = 0; i < data.length; i++) {
-            String s = data[i].toString().trim();
+        for (int i = 1; i < rowary.length; i++) {
+            String s = rowary[i].toString().trim();
             String[] line_split = s.split(";");
             String Iid = line_split[0];
+            Iid=Iid.replace("ICD", "");
             int int_id = Integer.parseInt(Iid);
             int[] maxx = {int_id};
             maxnum = maxx[0];
@@ -351,12 +369,12 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
         }
         System.out.println(maxnum);
         maxnum += 1;
-        String show = String.valueOf(maxnum);
+        String show =idformat+String.valueOf(maxnum);
         jTextField3.setText(show);
     }
 
     public void enablebutton() {
-        if (jTextArea1.getText().isBlank() || jTextField1.getText().isBlank() || jTextField3.getText().isBlank() || dateTimePicker2.datePicker.getText().isBlank() || dateTimePicker2.timePicker.getText().isBlank()) {
+        if (jTextArea1.getText().isBlank()) {
             jButton1.setEnabled(false);
         } else {
             jButton1.setEnabled(true);
@@ -400,6 +418,14 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
         
     }//GEN-LAST:event_cancelActionPerformed
 
+    private void DATEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DATEActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DATEActionPerformed
+
+    private void DATEKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DATEKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DATEKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -436,10 +462,9 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField DATE;
     private java.awt.Button button1;
     private javax.swing.JButton cancel;
-    private com.github.lgooddatepicker.components.DateTimePicker dateTimePicker1;
-    private com.github.lgooddatepicker.components.DateTimePicker dateTimePicker2;
     private javax.swing.JButton jButton1;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JFrame jFrame2;

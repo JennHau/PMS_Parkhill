@@ -8,12 +8,16 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -24,35 +28,44 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
+    FileHandling fh = new FileHandling();
+    SecurityGuard sg = new SecurityGuard();
+    
+
     public SecurityGuard_Check_in() {
         initComponents();
         setWindowIcon();
-        displaycrrdate();
         CheckpointTable();
-    }
+        display_check_table();
+        Current_date.setText(sg.currentdate().toString());
 
-    public void displaycrrdate() {
-        LocalDate Current = LocalDate.now();
-        Current_date.setText(Current.toString());
     }
 
     public void CheckpointTable() {
-        LocalDate Current = LocalDate.now();
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd MMMM YYYY");
-        String F_Current = Current.format(format);
-
-        SecurityGuard sg = new SecurityGuard();
-        Object[] row = sg.displayTable("SG_Checkpoint.txt");
+//        sg.currentdate();
+        List<String> row = fh.fileRead("SG_Checkpoint.txt");
+        String[] rowary = new String[row.size()];
+        row.toArray(rowary);
+        
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
 
-        for (int i = 0; i < row.length; i++) {
-            String line = row[i].toString().trim();
+        for (int i = 1; i < rowary.length; i++) {
+            String line = rowary[i].toString().trim();
             line.toUpperCase().split(";");
             String[] line_split = line.toUpperCase().split(";");
-            if (line_split[1].equalsIgnoreCase("scg000001") && line_split[2].equalsIgnoreCase(F_Current)) {
-                String cp = line_split[0];
-                String d = line_split[2];
-                String []AR={cp ,d ,"CHECK IN"};
+//            && line_split[2].equalsIgnoreCase(sg.currentdate()
+             System.out.println(line_split[9]);
+
+            if (line_split[6].trim().equalsIgnoreCase("scg184573") && !line_split[9].trim().equalsIgnoreCase("CHECKED")
+  ) {
+                String id = line_split[0];
+                String block = line_split[2];
+                String level = line_split[3];
+                String checkpoint = line_split[4];
+                System.out.println(line_split[6]);
+//                System.out.println(line_split);
+                String checkbf = sg.coverttime(line_split[5]);
+                String[] AR = {id, block, level, checkpoint, checkbf, "CHECK IN"};
                 model.addRow(AR);
             }
 
@@ -108,7 +121,16 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jTextField3 = new javax.swing.JTextField();
         Current_date = new javax.swing.JLabel();
+        Current_date1 = new javax.swing.JLabel();
+        Current_date2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -426,9 +448,9 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(590, 590, 590)
+                .addGap(591, 591, 591)
                 .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
-                .addGap(19, 19, 19))
+                .addGap(18, 18, 18))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addGap(25, 25, 25)
@@ -437,10 +459,10 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(31, Short.MAX_VALUE)
                 .addComponent(jLabel7)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addGap(26, 26, 26))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                     .addContainerGap(16, Short.MAX_VALUE)
@@ -455,11 +477,11 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Check Point", "Check In Time", "Status"
+                "ID", "Check Point", "Check In Time", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -473,33 +495,121 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Check Point", "Check In Before ", "Action"
+                "ID", "Block", "Level", "Check Point", "Check In Before ", "Action"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable2MouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTable2);
+
+        jPanel4.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel4.setForeground(new java.awt.Color(255, 255, 255));
+
+        jLabel2.setText("Check Point ");
+
+        jTextField1.setText(" ");
+        jTextField1.setEnabled(false);
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+
+        jLabel13.setText("Check In Before");
+
+        jTextField2.setText(" ");
+        jTextField2.setEnabled(false);
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
+
+        jLabel14.setText("Check In Time");
+
+        jButton1.setText("Check In");
+        jButton1.setEnabled(false);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jTextField3.setText(" ");
+        jTextField3.setEnabled(false);
+        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(88, 88, 88))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 205, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(34, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addGap(27, 27, 27))
         );
 
         Current_date.setFont(new java.awt.Font("Britannic Bold", 0, 18)); // NOI18N
         Current_date.setForeground(new java.awt.Color(13, 24, 42));
         Current_date.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+
+        Current_date1.setFont(new java.awt.Font("Britannic Bold", 0, 18)); // NOI18N
+        Current_date1.setForeground(new java.awt.Color(13, 24, 42));
+        Current_date1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Current_date1.setText("Record");
+
+        Current_date2.setFont(new java.awt.Font("Britannic Bold", 0, 18)); // NOI18N
+        Current_date2.setForeground(new java.awt.Color(13, 24, 42));
+        Current_date2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Current_date2.setText("Pending");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -507,30 +617,40 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 485, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE))
-                .addGap(35, 35, 35))
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(Current_date, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(Current_date, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Current_date2, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Current_date1, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)))
+                        .addGap(35, 35, 35))))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(Current_date, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(Current_date1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Current_date2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 563, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(41, Short.MAX_VALUE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 596, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(34, Short.MAX_VALUE))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(38, 38, 38))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -579,6 +699,108 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
         SecurityGuard_DashBoard.main(new String[0]);
         this.dispose();
     }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+        // TODO add your handling code here:
+        if (jTable2.getSelectedColumn() == 5) {
+            int index = jTable2.getSelectedRow();
+            TableModel model = jTable2.getModel();
+            String check_p = model.getValueAt(index, 3).toString();
+            String CIB = model.getValueAt(index, 4).toString();
+
+            jTextField2.setText(check_p);
+            jTextField1.setText(CIB);
+
+            jTextField3.setText(sg.currenttime());
+            jButton1.setEnabled(true);
+        }
+    }//GEN-LAST:event_jTable2MouseClicked
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String checkintime = jTextField3.getText();
+        TableModel model = jTable2.getModel();
+        int index = jTable2.getSelectedRow();
+        String line, x;
+        String id = model.getValueAt(index, 0).toString();
+
+        List<String> row = fh.fileRead("SG_Checkpoint.txt");
+        List<String> lst = new ArrayList<String>();
+        System.out.println(row);
+        String[] rowary = new String[row.size()];
+        row.toArray(rowary);
+        for (int i = 0; i < rowary.length; i++) {
+            String[] values = rowary[i].split(";");
+            if (values[0].equalsIgnoreCase(id)) {
+                values[9] = "CHECKED";
+                values[10] = checkintime;
+                line = String.join(";", values);
+                lst.add(line);
+            } else {
+                x = String.join(";", values);
+                lst.add(x);
+            }
+
+        }
+        System.out.println(lst);
+        fh.fileWrite("SG_Checkpoint.txt", false, lst);
+        JOptionPane.showMessageDialog(null, "Checked Successful");
+        DefaultTableModel table = (DefaultTableModel) jTable2.getModel();
+        DefaultTableModel table1 = (DefaultTableModel) jTable1.getModel();
+
+        table.removeRow(index);
+        table1.setRowCount(0);
+        display_check_table();
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    public void display_check_table() {
+        List<String> row = fh.fileRead("SG_Checkpoint.txt");
+        String[] rowary = new String[row.size()];
+        row.toArray(rowary);
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+
+//        if (model.getRowCount() == 0) {
+//            JLabel label = new JLabel("Have not check any checkpoint yet");
+//            label.setSize(200, 50);
+//            Font fn = new Font("callibri", Font.PLAIN, 14);
+//            label.setFont(fn);
+//            label.setForeground(Color.RED);
+//            label.setVisible(true);
+//            jTable1.add(label);
+//            jTable1.setFillsViewportHeight(true);
+//        } else {
+
+            for (int i = 0; i < rowary.length; i++) {
+                String line = rowary[i].toString().trim();
+                line.toUpperCase().split(";");
+                String[] line_split = line.toUpperCase().split(";");
+
+                if (line_split[9].trim().equalsIgnoreCase("CHECKED")) {
+                    String status = line_split[9];
+                    String id = line_split[0];
+                    String CIT = line_split[10];
+                    String Checkpoint = line_split[4];
+
+                    String[] r = {id, Checkpoint, CIT, status};
+                    model.addRow(r);
+                }
+
+//            }
+        }
+
+    }
+    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField3ActionPerformed
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
@@ -748,11 +970,17 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Current_date;
+    private javax.swing.JLabel Current_date1;
+    private javax.swing.JLabel Current_date2;
     private javax.swing.JLabel SearchVisitor;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -777,5 +1005,8 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 }
