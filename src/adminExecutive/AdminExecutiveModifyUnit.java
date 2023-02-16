@@ -59,7 +59,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
         modifyBt = new javax.swing.JButton();
         cancelBt = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable()
+        propertyUnitTable = new javax.swing.JTable()
         {
             @Override
 
@@ -184,7 +184,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        propertyUnitTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -200,10 +200,10 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
-        jTable1.setRowHeight(30);
-        jScrollPane1.setViewportView(jTable1);
+        propertyUnitTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        propertyUnitTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        propertyUnitTable.setRowHeight(30);
+        jScrollPane1.setViewportView(propertyUnitTable);
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jSeparator1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -361,8 +361,8 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        AdminExecutiveUnitManagement ae = new AdminExecutiveUnitManagement(AE);
-        ae.setVisible(true);
+//        AdminExecutiveUnitManagement ae = new AdminExecutiveUnitManagement(AE);
+//        ae.setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
     private void squareFootTFKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_squareFootTFKeyReleased
@@ -449,7 +449,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
     }
     
     private void setTable() {
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel)propertyUnitTable.getModel();
         tableModel.setRowCount(0);
         List<String> availableList = 
                 AE.extractAllProperties(type.toLowerCase());
@@ -477,7 +477,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
     private void setTableDesign() {
         int[] colummnIgnore = {};
         int[] columnLength = {40, 135, 135, 135, 140};
-        AE.setTableDesign(jTable1, jLabel14, columnLength, colummnIgnore);
+        AE.setTableDesign(propertyUnitTable, jLabel14, columnLength, colummnIgnore);
     }
     
     /**
@@ -1552,8 +1552,8 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JButton modifyBt;
+    private javax.swing.JTable propertyUnitTable;
     private javax.swing.JTextField squareFootTF;
     private javax.swing.JComboBox<String> typeCB;
     private javax.swing.JTextField unitNoTF;

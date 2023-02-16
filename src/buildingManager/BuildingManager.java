@@ -70,10 +70,12 @@ public class BuildingManager extends Users{
         for (int i = 1; i < userList.size(); i++) {
             String[] userDetails = userArray[i].split(";");
             String id = userDetails[0];
-            int existingID = Integer.valueOf(userDetails[0].substring(3));
+            if(id.startsWith(initial.toLowerCase())) {   
+                int existingID = Integer.valueOf(userDetails[0].substring(3));
             
-            if(existingID > largestID && id.startsWith(initial)) {
-                largestID = existingID;
+                if(existingID > largestID) {
+                    largestID = existingID;
+                }
             }
         } largestID++;
         int times = 6 - String.valueOf(largestID).length();

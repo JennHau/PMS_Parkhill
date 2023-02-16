@@ -614,7 +614,7 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
             if (typeCB.getSelectedItem().equals("Commercial") || 
                     (typeCB.getSelectedItem().equals("Residential") 
                     && tenantRB.isSelected())) {
-                AE.deleteTenantResident(unitNoTF.getText());
+                AE.deleteTenantResident(unitNoTF.getText(), null);
 
             } else if (typeCB.getSelectedItem().equals("Residential") 
                     && residentRB.isSelected()) {

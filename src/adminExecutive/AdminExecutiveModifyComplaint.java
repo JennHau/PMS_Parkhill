@@ -7,8 +7,8 @@ package adminExecutive;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
+import pms_parkhill_residence.Complaints;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 
 /**
  *
@@ -18,17 +18,14 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
-     * @param complaintID
-     * @param complainerID
-     * @param status
+     * @param CP
+     * @param AE
      */
-    public AdminExecutiveModifyComplaint(String complaintID, String complainerID,
-            String status, AdminExecutive AE) {
+    public AdminExecutiveModifyComplaint(Complaints CP, AdminExecutive AE) {
         initComponents();
         setWindowIcon();
         this.AE = AE;
-        this.status = status; this.complaintID = complaintID;
-        this.complainerID = complainerID;
+        this.CP = CP;
         setButton();
         setDefault();
     }
@@ -263,35 +260,25 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private final AdminExecutive AE;
+    private final Complaints CP;
     
-    String status; String complaintID; String complainerID;
-    String complaintDesc;
     FileHandling fh = new FileHandling();
     
     private void setButton() {
-        if (status.equals("Pending")) {
+        if (CP.getComplaintStatus().equals("Pending")) {
             deleteBt1.setEnabled(true);
             complaintDetailsTA.setEditable(true);
         }
     }
     
     private void setDefault() {
-        complaintIDLabel.setText(complaintID.toUpperCase());
+        complaintIDLabel.setText(CP.getComplaintID().toUpperCase());
         
-        List<String> complaintDetails = AE.extractComplaintDetails();
-        
-        for (String complaintDetail : complaintDetails) {
-            String[] cDetails = complaintDetail.split(";");
-            String complaintId = cDetails[0];
-            String complaintDesc = cDetails[3];
-            if (complaintId.equals(this.complaintID)) {
-                complaintDetailsTA.setText(complaintDesc);
-                this.complaintDesc = complaintDesc;
-            }
-        }
+//        List<String> complaintDetails = AE.extractComplaintDetails();
+        complaintDetailsTA.setText(CP.getComplaintDetails());
         
         List<String> complainerDetails = AE.getComplainerUnitIDName
-                                (complainerID.toLowerCase());
+                                (CP.getComplainerID().toLowerCase());
         for (String cDetail : complainerDetails) {
             String[] cDetails = cDetail.split(";");
             String unitID = cDetails[0];
@@ -311,7 +298,7 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
         JOptionPane.QUESTION_MESSAGE);
 
         if(result == JOptionPane.YES_OPTION){
-            AE.modifyComplaint(complaintID, complainerID.toLowerCase(),
+            AE.modifyComplaint(CP.getComplaintID(), CP.getComplainerID().toLowerCase(),
                     complaintDetailsTA.getText());
             JOptionPane.showMessageDialog (null, "Complaint has been updated!", 
                             "MODIFY COMPLAINT", JOptionPane.INFORMATION_MESSAGE);
@@ -331,7 +318,7 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
     private void complaintDetailsTAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_complaintDetailsTAKeyReleased
         // TODO add your handling code here:
         if (complaintDetailsTA.isEditable() ) {
-            if (!complaintDetailsTA.getText().equals(this.complaintDesc)) {
+            if (!complaintDetailsTA.getText().equals(CP.getComplaintDetails())) {
                 modifyBt.setEnabled(true);
             } else {
                 modifyBt.setEnabled(false);
@@ -348,7 +335,7 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
         JOptionPane.QUESTION_MESSAGE);
 
         if(result == JOptionPane.YES_OPTION){
-            AE.deleteComplaint(complaintID);
+            AE.deleteComplaint(CP.getComplaintID());
             JOptionPane.showMessageDialog (null, "Complaint has been deleted!", 
                             "DELETE COMPLAINT", JOptionPane.INFORMATION_MESSAGE);
             dispose();
@@ -4490,7 +4477,7 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminExecutiveModifyComplaint(null, null, null, null).setVisible(true);
+                new AdminExecutiveModifyComplaint(null, null).setVisible(true);
             }
         });
     }

@@ -54,8 +54,8 @@ public class SignInPage extends javax.swing.JFrame {
         email = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         signInBt = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        forgotPasswordLabel = new javax.swing.JLabel();
+        visitorLabel = new javax.swing.JLabel();
         warningMessage = new javax.swing.JLabel();
         password = new javax.swing.JPasswordField();
 
@@ -121,25 +121,25 @@ public class SignInPage extends javax.swing.JFrame {
             }
         });
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel7.setText("Forgot password? Please click here");
-        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+        forgotPasswordLabel.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        forgotPasswordLabel.setForeground(new java.awt.Color(153, 153, 153));
+        forgotPasswordLabel.setText("Forgot password? Please click here");
+        forgotPasswordLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel7MouseClicked(evt);
+                forgotPasswordLabelMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel7MouseEntered(evt);
+                forgotPasswordLabelMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                jLabel7MouseExited(evt);
+                forgotPasswordLabelMouseExited(evt);
             }
         });
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("Visitors? Please click here");
+        visitorLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        visitorLabel.setForeground(new java.awt.Color(153, 153, 153));
+        visitorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        visitorLabel.setText("Visitors? Please click here");
 
         warningMessage.setForeground(new java.awt.Color(255, 0, 0));
         warningMessage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -159,14 +159,14 @@ public class SignInPage extends javax.swing.JFrame {
                         .addComponent(signInBt, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(106, 106, 106)
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(visitorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(39, 39, 39)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel5)
                             .addComponent(jLabel6)
                             .addComponent(email, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-                            .addComponent(jLabel7)
+                            .addComponent(forgotPasswordLabel)
                             .addComponent(warningMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(password))))
                 .addContainerGap(37, Short.MAX_VALUE))
@@ -187,11 +187,11 @@ public class SignInPage extends javax.swing.JFrame {
                 .addGap(3, 3, 3)
                 .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel7)
+                .addComponent(forgotPasswordLabel)
                 .addGap(37, 37, 37)
                 .addComponent(signInBt, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(visitorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(16, 16, 16))
         );
 
@@ -297,22 +297,22 @@ public class SignInPage extends javax.swing.JFrame {
         }
     }
 
-    private void jLabel7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseEntered
+    private void forgotPasswordLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_forgotPasswordLabelMouseEntered
         // TODO add your handling code here:
-        jLabel7.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-        jLabel7.setForeground(Color.blue);
-    }//GEN-LAST:event_jLabel7MouseEntered
+        forgotPasswordLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+        forgotPasswordLabel.setForeground(Color.blue);
+    }//GEN-LAST:event_forgotPasswordLabelMouseEntered
 
-    private void jLabel7MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseExited
+    private void forgotPasswordLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_forgotPasswordLabelMouseExited
         // TODO add your handling code here:
-        jLabel7.setForeground(new Color(153,153,153));
-    }//GEN-LAST:event_jLabel7MouseExited
+        forgotPasswordLabel.setForeground(new Color(153,153,153));
+    }//GEN-LAST:event_forgotPasswordLabelMouseExited
 
-    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+    private void forgotPasswordLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_forgotPasswordLabelMouseClicked
         // TODO add your handling code here:
         dispose();
         new ResetPasswordVerify().setVisible(true);
-    }//GEN-LAST:event_jLabel7MouseClicked
+    }//GEN-LAST:event_forgotPasswordLabelMouseClicked
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
@@ -355,20 +355,20 @@ public class SignInPage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField email;
+    private javax.swing.JLabel forgotPasswordLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPasswordField password;
     private javax.swing.JButton signInBt;
+    private javax.swing.JLabel visitorLabel;
     private javax.swing.JLabel warningMessage;
     // End of variables declaration//GEN-END:variables
 }

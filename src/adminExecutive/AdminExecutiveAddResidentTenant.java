@@ -71,7 +71,7 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         typeCB = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
         setBackground(new java.awt.Color(13, 24, 42));
         setResizable(false);
@@ -139,7 +139,6 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
         });
 
         cancelBt.setText("CLOSE");
-        cancelBt.setActionCommand("CLOSE");
         cancelBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtActionPerformed(evt);

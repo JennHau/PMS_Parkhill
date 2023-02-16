@@ -34,7 +34,7 @@ public class AccountExecutiveViewReceipt extends javax.swing.JFrame {
      */
     public AccountExecutiveViewReceipt(Payment PM, AccountExecutive AE) {
         initComponents();
-        invRecTab = (DefaultTableModel) invoiceReceiptTable.getModel();
+        invRecTab = (DefaultTableModel) receiptTable.getModel();
         this.AE = AE;
         this.PM = PM;
         setDefault();
@@ -61,7 +61,7 @@ public class AccountExecutiveViewReceipt extends javax.swing.JFrame {
         doneBt = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        invoiceReceiptTable = new javax.swing.JTable()
+        receiptTable = new javax.swing.JTable()
         {
             @Override
 
@@ -122,10 +122,10 @@ public class AccountExecutiveViewReceipt extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Jalan Teknologi 5, Taman Teknologi Malaysia,");
 
-        jLabel4.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(102, 102, 102));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("57000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur");
+        jLabel4.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(102, 102, 102));
 
         jPanel5.setBackground(new java.awt.Color(102, 102, 102));
         jPanel5.setPreferredSize(new java.awt.Dimension(95, 3));
@@ -141,15 +141,15 @@ public class AccountExecutiveViewReceipt extends javax.swing.JFrame {
             .addGap(0, 3, Short.MAX_VALUE)
         );
 
+        jLabel49.setText("TOTAL PAID:");
         jLabel49.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel49.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel49.setText("TOTAL PAID:");
 
+        amountPaid.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        amountPaid.setText("RM 0.00");
         amountPaid.setBackground(new java.awt.Color(0, 0, 0));
         amountPaid.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         amountPaid.setForeground(new java.awt.Color(0, 0, 0));
-        amountPaid.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        amountPaid.setText("RM 0.00");
         amountPaid.setPreferredSize(new java.awt.Dimension(51, 17));
 
         doneBt.setText("DONE");
@@ -159,12 +159,13 @@ public class AccountExecutiveViewReceipt extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Arial Narrow", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(13, 24, 42));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("PAYMENT RECEIPT");
+        jLabel1.setFont(new java.awt.Font("Arial Narrow", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(13, 24, 42));
 
-        invoiceReceiptTable.setModel(new javax.swing.table.DefaultTableModel(
+        receiptTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        receiptTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -180,39 +181,38 @@ public class AccountExecutiveViewReceipt extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        invoiceReceiptTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        invoiceReceiptTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
-        invoiceReceiptTable.setRowHeight(30);
-        invoiceReceiptTable.addMouseListener(new java.awt.event.MouseAdapter() {
+        receiptTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        receiptTable.setRowHeight(30);
+        receiptTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                invoiceReceiptTableMouseClicked(evt);
+                receiptTableMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(invoiceReceiptTable);
+        jScrollPane2.setViewportView(receiptTable);
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("INVOICE NO:");
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
-        invNoLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         invNoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         invNoLabel.setText("FBK000000");
+        invNoLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setText("UNIT NO:");
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
-        unitNoLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         unitNoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         unitNoLabel.setText("A-01-01");
+        unitNoLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
-        paymentDateLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         paymentDateLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         paymentDateLabel.setText("0000-00-00");
+        paymentDateLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel11.setText("PAYMENT DATE:");
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -359,14 +359,14 @@ public class AccountExecutiveViewReceipt extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_doneBtActionPerformed
 
-    private void invoiceReceiptTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_invoiceReceiptTableMouseClicked
+    private void receiptTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_receiptTableMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_invoiceReceiptTableMouseClicked
+    }//GEN-LAST:event_receiptTableMouseClicked
 
     private void setTableDesign() {
         int[] colummnIgnore = {0};
         int[] columnLength = {175, 130, 120, 140};
-        AE.setTableDesign(invoiceReceiptTable, jLabel3, columnLength, colummnIgnore);
+        AE.setTableDesign(receiptTable, jLabel3, columnLength, colummnIgnore);
     }
     
     /**
@@ -439,7 +439,6 @@ public class AccountExecutiveViewReceipt extends javax.swing.JFrame {
     private javax.swing.JLabel amountPaid;
     private javax.swing.JButton doneBt;
     private javax.swing.JLabel invNoLabel;
-    private javax.swing.JTable invoiceReceiptTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel3;
@@ -453,6 +452,7 @@ public class AccountExecutiveViewReceipt extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel paymentDateLabel;
+    private javax.swing.JTable receiptTable;
     private javax.swing.JLabel unitNoLabel;
     // End of variables declaration//GEN-END:variables
 }

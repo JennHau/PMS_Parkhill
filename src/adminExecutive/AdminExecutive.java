@@ -161,23 +161,70 @@ public class AdminExecutive extends Users{
         // move deleted unit to inactive text file
         List<String> newData1 = new ArrayList<>();
         List<String> newData2 = new ArrayList<>();
+        String currentDeleteID = null;
         
         for (int i = 0; i < propertiesList.size(); i++) {
             String[] propertyDetails = propertiesArray[i].split(";");
             String eUnitNo = propertyDetails[0];
             
             if(eUnitNo.equals(unitNo)) {
-                String currentDeleteID = getLatestID("inactiveUserProfile.txt", "dlt");
+                currentDeleteID = getURTDeleteID();
                 newData2.add(currentDeleteID +";"+ propertiesArray[i]
                         + LocalDateTime.now() +";");
-                
             } else {
                 newData1.add(propertiesArray[i]);
             }
         } 
         fh.fileWrite("propertyDetails.txt", false, newData1);
         fh.fileWrite("inactivePropertyDetails.txt", true, newData2);
-        deleteTenantResident(unitNo);
+        deleteTenantResident(unitNo, currentDeleteID);
+    }
+    
+    public String getURTDeleteID() {
+        Integer tempID; 
+        
+        Integer currentDeleteID1 = Integer.parseInt(getLatestID
+                    ("inactiveUserProfile.txt", "dlt").substring(3));
+        Integer currentDeleteID2 = Integer.parseInt(getLatestID
+                    ("inactivePropertyDetails.txt", "dlt").substring(3));
+
+        if(currentDeleteID1>currentDeleteID2) {
+            tempID = currentDeleteID1;
+        } else {
+            tempID = currentDeleteID2;
+        }
+                
+        int times = 6 - String.valueOf(tempID).length();
+        
+        String zero = "";
+        
+        // ensure that all primary ID are having 6 numbers
+        switch (times) {
+            case 0 ->                 {
+                     zero = "";
+                }
+            case 1 ->                 {
+                     zero = "0";
+                }
+            case 2 ->                 {
+                     zero = "00";
+                }
+            case 3 ->                 {
+                     zero = "000";
+                }
+            case 4 ->                 {
+                     zero = "0000";
+                }
+            case 5 ->                 {
+                     zero = "00000";
+                }
+            default -> {
+            }
+        }
+        
+        
+        String currentUsableID = "dlt" + zero +String.valueOf(tempID);
+        return currentUsableID;
     }
     
     // get any lastest ID
@@ -190,11 +237,13 @@ public class AdminExecutive extends Users{
         for (int i = 1; i < userList.size(); i++) {
             String[] userDetails = userArray[i].split(";");
             String id = userDetails[0];
-            int existingID = Integer.valueOf(userDetails[0].substring(3));
-            
-            if(existingID > largestID && id.startsWith(initial)) {
-                largestID = existingID;
+            if(id.startsWith(initial)) {
+                int existingID = Integer.valueOf(userDetails[0].substring(3));
+                if(existingID > largestID) {
+                    largestID = existingID;
+                }
             }
+            
         } largestID++;
         int times = 6 - String.valueOf(largestID).length();
         
@@ -230,8 +279,13 @@ public class AdminExecutive extends Users{
     }
     
     // method to delete Tenant (together with Resident)
-    public void deleteTenantResident(String unitNo) {
-        String currentDeleteID = getLatestID("inactiveUserProfile.txt", "dlt");
+    public void deleteTenantResident(String unitNo, String deleteID) {
+        String currentDeleteID;
+        if(deleteID == null) {
+            currentDeleteID = getLatestID("inactiveUserProfile.txt", "dlt");
+        } else {
+            currentDeleteID = deleteID;
+        }
         
         List<String> propertiesList = fh.fileRead("propertyDetails.txt");
         String[] propertiesArray = new String[propertiesList.size()];
@@ -439,17 +493,18 @@ public class AdminExecutive extends Users{
             String phoneNo = userDetails[8];
             String eUnitNo = userDetails[9];
 
-            if (!userID.equals("Parkhill")) {
-                if (deletionID.equals(deleteID)) {
-                    removeDefaultUserAccount(userID);
-                    newData1.add(userID +";"+ email +";"+ password +";"+ firstName +";"+
-                            lastName +";"+ identificationNo +";"+ gender +";"
-                            + phoneNo +";"+ eUnitNo +";");
+            if (deletionID.equals(deleteID)) {
+                removeDefaultUserAccount(userID);
+                newData1.add(userID +";"+ email +";"+ password +";"+ firstName +";"+
+                        lastName +";"+ identificationNo +";"+ gender +";"
+                        + phoneNo +";"+ eUnitNo +";");
+                if (!userID.equals("Parkhill")) {
                     updatePropertySoldStatus(eUnitNo, "sold");
-                } else {
-                    newData2.add(userArray[i]);
                 }
+            } else {
+                newData2.add(userArray[i]);
             }
+            
         } 
             
         fh.fileWrite("userProfile.txt", true, newData1);
@@ -537,6 +592,8 @@ public class AdminExecutive extends Users{
     
     // register new resident tenant
     public void RTRegistration(ResidentTenant RT) {
+        removeDefaultUserAccount(RT.getUnitNo());
+        
         List<String> newData = new ArrayList<>();
         newData.add(RT.getUserID() +";"+ RT.getEmail() +";"+ RT.getPassword()
                         +";"+ RT.getFirstName() +";"+ RT.getLastName() +";"+
@@ -544,6 +601,8 @@ public class AdminExecutive extends Users{
                         RT.getPhoneNo()+";"+ RT.getUnitNo() +";");
         
         fh.fileWrite("userProfile.txt", true, newData);
+        
+        updatePropertySoldStatus(RT.getUnitNo(), "sold");
     }
     
     // get all tenant resident details based on type 
@@ -690,10 +749,13 @@ public class AdminExecutive extends Users{
                     
                     for (int j = 1; j < userList.size(); j++) {
                         String[] userDetails2 = userArray[j].split(";");
+                        String userID = userDetails2[0];
                         String uniNo2 = userDetails2[8];
-                        if (uniNo.equals(uniNo2) && !uniNo.startsWith("S")) {
+                        if (uniNo.equals(uniNo2) && !uniNo.startsWith("S") 
+                                && !userID.equals("Parkhill")) {
                             check++;
                         }
+                    // check == 1 (consists tenant) / check == 2 (consists RT)    
                     } if (check == 1) {
                         availableList.add(uniNo);
                     }

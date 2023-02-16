@@ -1,3 +1,4 @@
 deleteID;unitNo;Target;squareFeet;status;dateOfSold;deletedDateTime;
-dlt000002;S-09-09;Commercial;900;Unsold;-;2023-02-06T18:15:18.200205800;
-dlt000002;C-01-01;Residential;800;Unsold;-;2023-02-06T18:15:53.305466600;
+dlt000001;S-09-09;Commercial;12321;unsold;-;2023-02-16T16:05:32.700136300;
+dlt000002;S-09-02;Residential;1000;unsold;-;2023-02-16T16:06:33.288701;
+dlt000003;C-01-01;Residential;500;unsold;-;2023-02-16T16:07:12.527715800;

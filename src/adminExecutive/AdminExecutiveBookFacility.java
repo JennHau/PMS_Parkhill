@@ -58,7 +58,7 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable()
+        availableTimeSlotTable = new javax.swing.JTable()
         {
             @Override
 
@@ -95,7 +95,7 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
         }
         ;
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable()
+        slctedTimeSlotTable = new javax.swing.JTable()
         {
             @Override
 
@@ -209,7 +209,7 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(102, 102, 102));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        availableTimeSlotTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -225,17 +225,17 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
-        jTable1.setRowHeight(30);
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        availableTimeSlotTable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        availableTimeSlotTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        availableTimeSlotTable.setRowHeight(30);
+        availableTimeSlotTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                availableTimeSlotTableMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(availableTimeSlotTable);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        slctedTimeSlotTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -251,15 +251,15 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jTable2.setIntercellSpacing(new java.awt.Dimension(2, 2));
-        jTable2.setRowHeight(30);
-        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+        slctedTimeSlotTable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        slctedTimeSlotTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        slctedTimeSlotTable.setRowHeight(30);
+        slctedTimeSlotTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable2MouseClicked(evt);
+                slctedTimeSlotTableMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(slctedTimeSlotTable);
 
         facilityTypeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         facilityTypeLabel.setText("FACILITY ID - FACILITY NAME");
@@ -870,29 +870,29 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
     }
     
     
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    private void availableTimeSlotTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availableTimeSlotTableMouseClicked
         // TODO add your handling code here:
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        int column = jTable1.getSelectedColumn();
-        int row = jTable1.getSelectedRow();
+        DefaultTableModel tableModel = (DefaultTableModel)availableTimeSlotTable.getModel();
+        int column = availableTimeSlotTable.getSelectedColumn();
+        int row = availableTimeSlotTable.getSelectedRow();
         String status = String.valueOf(tableModel.getValueAt(row, 4));
         
         if (column == 4 && status.equals("SELECT")) {
             tableModel.setValueAt("SELECTED", row, 4);
             setTable2();
         }
-    }//GEN-LAST:event_jTable1MouseClicked
+    }//GEN-LAST:event_availableTimeSlotTableMouseClicked
 
-    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+    private void slctedTimeSlotTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_slctedTimeSlotTableMouseClicked
         // TODO add your handling code here:
-        DefaultTableModel tableModel2 = (DefaultTableModel)jTable2.getModel();
-        int column = jTable2.getSelectedColumn();
-        int row = jTable2.getSelectedRow();
+        DefaultTableModel tableModel2 = (DefaultTableModel)slctedTimeSlotTable.getModel();
+        int column = slctedTimeSlotTable.getSelectedColumn();
+        int row = slctedTimeSlotTable.getSelectedRow();
         
         if (column == 3) {
             String startTime = (String)tableModel2.getValueAt(row, 1);
             
-            DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+            DefaultTableModel tableModel = (DefaultTableModel)availableTimeSlotTable.getModel();
             for (int i=0; i<tableModel.getRowCount(); i++) {
                 String eStartTime = (String)tableModel.getValueAt(i, 1);
                 if (startTime.equals(eStartTime)) {
@@ -901,7 +901,7 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
                 }
             }
         }
-    }//GEN-LAST:event_jTable2MouseClicked
+    }//GEN-LAST:event_slctedTimeSlotTableMouseClicked
 
     private void variationCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_variationCBActionPerformed
         // TODO add your handling code here:
@@ -928,7 +928,7 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
         // TODO add your handling code here:
         List<String> availableList = new ArrayList<>();
         
-        DefaultTableModel tableModel2 = (DefaultTableModel)jTable2.getModel();
+        DefaultTableModel tableModel2 = (DefaultTableModel)slctedTimeSlotTable.getModel();
         for (int i=0; i<tableModel2.getRowCount(); i++) {
             String bkgID = bookingIDLabel.getText();
             String fctID = facilityTypeLabel.getText().substring(0, 9);
@@ -1156,7 +1156,7 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
     private void setTable() {
         if(!datePicker1.getDate().isBefore(LocalDate.now())) {
             warningMessage.setText("");
-            DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+            DefaultTableModel tableModel = (DefaultTableModel)availableTimeSlotTable.getModel();
             tableModel.setRowCount(0);
             String pickDate = String.valueOf(datePicker1.getDate());
             String variation = (String)variationCB.getSelectedItem();
@@ -1181,10 +1181,10 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
     }
     
     private void setTable2() {
-        DefaultTableModel tableModel2 = (DefaultTableModel)jTable2.getModel();
+        DefaultTableModel tableModel2 = (DefaultTableModel)slctedTimeSlotTable.getModel();
         tableModel2.setRowCount(0);
         
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel)availableTimeSlotTable.getModel();
         
         for (int i=0; i<tableModel.getRowCount(); i++) {
             String facilityName = (String)tableModel.getValueAt(i, 0);
@@ -1207,11 +1207,11 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
     private void setTableDesign() {
         int[] colummnIgnore = {0};
         int[] columnLength = {250, 175, 175, 175, 184};
-        AE.setTableDesign(jTable1, jLabel3, columnLength, colummnIgnore);
+        AE.setTableDesign(availableTimeSlotTable, jLabel3, columnLength, colummnIgnore);
         
         int[] colummnIgnore2 = {0};
         int[] columnLength2 = {296, 221, 221, 221};
-        AE.setTableDesign(jTable2, jLabel3, columnLength2, colummnIgnore2);
+        AE.setTableDesign(slctedTimeSlotTable, jLabel3, columnLength2, colummnIgnore2);
     }
 
     /**
@@ -9441,6 +9441,7 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable availableTimeSlotTable;
     private javax.swing.JButton bookBt;
     private javax.swing.JLabel bookingIDLabel;
     private javax.swing.JButton cancelBt2;
@@ -9470,12 +9471,11 @@ public class AdminExecutiveBookFacility extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JLabel logoutLabel;
     private javax.swing.JPanel logoutPanel;
     private javax.swing.JLabel rTManageLabel;
     private javax.swing.JPanel rTMangePanel;
+    private javax.swing.JTable slctedTimeSlotTable;
     private javax.swing.JLabel unitManageLabel;
     private javax.swing.JPanel unitManagePanel;
     private javax.swing.JLabel usernameLabel;

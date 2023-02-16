@@ -50,7 +50,7 @@ public class AdminExecutiveResidentTManagementHistory extends javax.swing.JFrame
         jPanel6 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable()
+        residentTenantTable = new javax.swing.JTable()
         {
             @Override
 
@@ -159,8 +159,7 @@ public class AdminExecutiveResidentTManagementHistory extends javax.swing.JFrame
         jLabel14.setText("RESIDENT/ TENANT [HISTORY]");
         jLabel14.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
-        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        residentTenantTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -176,14 +175,15 @@ public class AdminExecutiveResidentTManagementHistory extends javax.swing.JFrame
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
-        jTable1.setRowHeight(30);
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        residentTenantTable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        residentTenantTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        residentTenantTable.setRowHeight(30);
+        residentTenantTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                residentTenantTableMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(residentTenantTable);
 
         jLabel16.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(153, 153, 153));
@@ -232,8 +232,8 @@ public class AdminExecutiveResidentTManagementHistory extends javax.swing.JFrame
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(typeCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(warningMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(52, 52, 52)
+                        .addComponent(warningMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 559, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
                         .addComponent(jLabel16)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -708,7 +708,7 @@ public class AdminExecutiveResidentTManagementHistory extends javax.swing.JFrame
     
     private void clearbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearbtActionPerformed
        searchTextField.setText("");
-       DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+       DefaultTableModel tableModel = (DefaultTableModel)residentTenantTable.getModel();
        tableModel.setRowCount(0);
        setTable();
     }//GEN-LAST:event_clearbtActionPerformed
@@ -720,11 +720,11 @@ public class AdminExecutiveResidentTManagementHistory extends javax.swing.JFrame
 
     
     
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    private void residentTenantTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_residentTenantTableMouseClicked
         // TODO add your handling code here:
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        int column = jTable1.getSelectedColumn();
-        int row = jTable1.getSelectedRow();
+        DefaultTableModel tableModel = (DefaultTableModel)residentTenantTable.getModel();
+        int column = residentTenantTable.getSelectedColumn();
+        int row = residentTenantTable.getSelectedRow();
         
         if (column == 7) {
             String deletionID = String.valueOf(tableModel.getValueAt(row, 1))
@@ -774,11 +774,11 @@ public class AdminExecutiveResidentTManagementHistory extends javax.swing.JFrame
                         + "before the user can be restored.");
             }
         }
-    }//GEN-LAST:event_jTable1MouseClicked
+    }//GEN-LAST:event_residentTenantTableMouseClicked
 
     private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
         // TODO add your handling code here:
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel)residentTenantTable.getModel();
         // reset table
         tableModel.setRowCount(0);
         setTable();
@@ -786,7 +786,7 @@ public class AdminExecutiveResidentTManagementHistory extends javax.swing.JFrame
             String module_code = searchTextField.getText().toUpperCase();
             for (int i=0; i<tableModel.getRowCount(); i++) {
                 // get module code from table
-                String tmodule_code = String.valueOf(jTable1.getValueAt(i, 0)).toUpperCase();
+                String tmodule_code = String.valueOf(residentTenantTable.getValueAt(i, 0)).toUpperCase();
                 // if module code not contain in search bar
                 if (!tmodule_code.contains(module_code)) {
                     // remove module from table
@@ -1008,7 +1008,7 @@ public class AdminExecutiveResidentTManagementHistory extends javax.swing.JFrame
     }
     
     private void setTable() {
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel)residentTenantTable.getModel();
         tableModel.setRowCount(0);
             
         List<String> availableList = 
@@ -1044,7 +1044,7 @@ public class AdminExecutiveResidentTManagementHistory extends javax.swing.JFrame
     private void setTableDesign() {
         int[] colummnIgnore = {4};
         int[] columnLength = {40, 114, 100, 100, 200, 100, 170, 136};
-        AE.setTableDesign(jTable1, jLabel14, columnLength, colummnIgnore);
+        AE.setTableDesign(residentTenantTable, jLabel14, columnLength, colummnIgnore);
     }
 
     /**
@@ -2126,11 +2126,11 @@ public class AdminExecutiveResidentTManagementHistory extends javax.swing.JFrame
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel logoutLabel;
     private javax.swing.JPanel logoutPanel;
     private javax.swing.JLabel rTManageLabel;
     private javax.swing.JPanel rTMangePanel;
+    private javax.swing.JTable residentTenantTable;
     private javax.swing.JTextField searchTextField;
     private javax.swing.JComboBox<String> typeCB;
     private javax.swing.JLabel unitManageLabel;

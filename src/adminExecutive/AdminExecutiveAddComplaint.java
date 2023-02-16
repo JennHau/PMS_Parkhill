@@ -265,7 +265,6 @@ public class AdminExecutiveAddComplaint extends javax.swing.JFrame {
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        new AdminExecutiveResidentTManagement(AE).setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
     private void complainerCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_complainerCBActionPerformed

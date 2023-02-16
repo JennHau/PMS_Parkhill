@@ -11,10 +11,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.FileHandling;
 
 /**
@@ -62,7 +60,7 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         unitNoCB = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable()
+        bookingTable = new javax.swing.JTable()
         {
             @Override
 
@@ -194,8 +192,7 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        bookingTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -211,14 +208,15 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
-        jTable1.setRowHeight(30);
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        bookingTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        bookingTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        bookingTable.setRowHeight(30);
+        bookingTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                bookingTableMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(bookingTable);
 
         bookingIDLabel.setFont(new java.awt.Font("Yu Gothic", 1, 14)); // NOI18N
         bookingIDLabel.setForeground(new java.awt.Color(153, 153, 153));
@@ -342,7 +340,7 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
     
     private void setDefault() {
         
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel)bookingTable.getModel();
         for(int i = 0; i<bookingList.size(); i++) {
             String[] bookingDetails = bookingList.get(i).split(";");
             this.bookingID = bookingDetails[0];
@@ -413,9 +411,9 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_unitNoCBActionPerformed
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    private void bookingTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bookingTableMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTable1MouseClicked
+    }//GEN-LAST:event_bookingTableMouseClicked
 
     private void setUnitNoCB() {
         List<String> availableUnit = AE.extractAllProperties("residential");
@@ -436,8 +434,8 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
     
     private void setTableDesign() {
         int[] colummnIgnore = {0};
-        int[] columnLength = {230, 150, 150, 150};
-        AE.setTableDesign(jTable1, jLabel14, columnLength, colummnIgnore);
+        int[] columnLength = {245, 150, 150, 150};
+        AE.setTableDesign(bookingTable, jLabel14, columnLength, colummnIgnore);
     }
     
     /**
@@ -989,6 +987,7 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bookBt;
     private javax.swing.JLabel bookingIDLabel;
+    private javax.swing.JTable bookingTable;
     private javax.swing.JButton cancelBT;
     private javax.swing.JLabel dateLabel;
     private javax.swing.JLabel facilityIDLabel;
@@ -1004,7 +1003,6 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel totalLabel;
     private javax.swing.JComboBox<String> unitNoCB;
     private javax.swing.JLabel warningLabel;

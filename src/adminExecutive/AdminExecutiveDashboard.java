@@ -14,7 +14,6 @@ import org.jfree.chart.JFreeChart;
 import pms_parkhill_residence.Dashboard;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.HomePage;
-import pms_parkhill_residence.Users;
 
 /**
  *
@@ -24,6 +23,7 @@ public class AdminExecutiveDashboard extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param AE
      */
     public AdminExecutiveDashboard(AdminExecutive AE) {
         initComponents();

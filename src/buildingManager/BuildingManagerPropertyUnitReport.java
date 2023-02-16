@@ -49,7 +49,7 @@ public class BuildingManagerPropertyUnitReport extends javax.swing.JFrame {
         doneBt = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable()
+        propertyUnitTable = new javax.swing.JTable()
         {
             @Override
 
@@ -140,8 +140,8 @@ public class BuildingManagerPropertyUnitReport extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("PROPERTY UNIT REPORT");
 
-        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        propertyUnitTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        propertyUnitTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -157,14 +157,14 @@ public class BuildingManagerPropertyUnitReport extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
-        jTable1.setRowHeight(30);
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        propertyUnitTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        propertyUnitTable.setRowHeight(30);
+        propertyUnitTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                propertyUnitTableMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(propertyUnitTable);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(204, 204, 204));
@@ -320,7 +320,7 @@ public class BuildingManagerPropertyUnitReport extends javax.swing.JFrame {
     }
     
     private void setTable() {
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel)propertyUnitTable.getModel();
         tableModel.setRowCount(0);
         
         List<String> unitDetails = BM.propertyUnitReport();
@@ -357,14 +357,14 @@ public class BuildingManagerPropertyUnitReport extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_doneBtActionPerformed
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    private void propertyUnitTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_propertyUnitTableMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTable1MouseClicked
+    }//GEN-LAST:event_propertyUnitTableMouseClicked
 
     private void setTableDesign() {
         int[] colummnIgnore = {5};
         int[] columnLength = {116, 116, 116, 116, 116, 280};
-        BM.setTableDesign(jTable1, jLabel1, columnLength, colummnIgnore);
+        BM.setTableDesign(propertyUnitTable, jLabel1, columnLength, colummnIgnore);
     }
     
     /**
@@ -432,7 +432,7 @@ public class BuildingManagerPropertyUnitReport extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable propertyUnitTable;
     private javax.swing.JLabel reportDataNTime;
     private javax.swing.JLabel totalResidentLabel;
     private javax.swing.JLabel totalTenantLabel;
