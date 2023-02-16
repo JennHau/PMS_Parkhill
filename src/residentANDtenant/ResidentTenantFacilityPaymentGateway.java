@@ -411,7 +411,7 @@ public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
                         +";"+ totalPrice +";"+ String.valueOf(LocalDate.now()) +";");
             } 
             
-            RT.toPaymentCredential(RT, totalPrice, newData, true, false);
+            RT.toPaymentCredential(RT, totalPrice, newData, true, false, null);
         }
     }//GEN-LAST:event_bookBtActionPerformed
 

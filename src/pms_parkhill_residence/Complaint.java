@@ -12,14 +12,7 @@ import java.util.List;
  * @author Winson
  */
 
-enum cptStatus{
-    Pending,
-    Progressing,
-    Complete
-}
-
-public class Complaint {
-    
+public class Complaint {    
     private String complaintID;
     private String complainerID;
     private String complaintDetails;
@@ -31,6 +24,7 @@ public class Complaint {
     
     FileHandling FH = new FileHandling();
     TextFiles TF = new TextFiles();
+    CRUD crud = new CRUD();
     
     public Complaint() {}
     
@@ -52,35 +46,132 @@ public class Complaint {
         }
     }
     
-    public ArrayList getComplaints(String currentRTid) {
-        ArrayList<ArrayList> combinedComp = new ArrayList<>();
-        ArrayList<String> pendingComp = new ArrayList<>();
-        ArrayList<String> progressingComp = new ArrayList<>();
-        ArrayList<String> completedComp = new ArrayList<>();
+    public Complaint(String[] compDet) {
+        this.complaintID = compDet[0];
+        this.complainerID = compDet[1];
+        this.complaintDetails = compDet[2];
+        this.complaintDate = compDet[3];
+        this.complaintTime = compDet[4];
+        this.complaintStatus = compDet[5];
+        this.statusUpdatedBy = compDet[6];
+        this.lastUpdateDateTime = compDet[7];
+    }
+    
+//    public ArrayList getComplaints(String currentRTid) {
+//        ArrayList<ArrayList> combinedComp = new ArrayList<>();
+//        ArrayList<String> pendingComp = new ArrayList<>();
+//        ArrayList<String> progressingComp = new ArrayList<>();
+//        ArrayList<String> completedComp = new ArrayList<>();
+//        
+//        List<String> complaints = FH.fileRead(TF.complaintFiles);
+//        for (String eachComp : complaints) {
+//            String[] compDet = eachComp.split(TF.sp);
+//            String complainerId = compDet[1];
+//            if (complainerId.equals(currentRTid)) {
+//                String status = compDet[5];
+//                String tableLine = compDet[0].toUpperCase() + TF.sp + compDet[2] + TF.sp + compDet[3] + TF.sp + compDet[4] + TF.sp + status + TF.sp;
+//                switch (status) {
+//                    case "Pending" -> pendingComp.add(tableLine);
+//                    case "Progressing" -> progressingComp.add(tableLine);
+//                    case "Completed" -> completedComp.add(tableLine);
+//                }
+//            }
+//        }
+//        
+//        for (String progress : progressingComp) {
+//            pendingComp.add(progress);
+//        }
+//        
+//        combinedComp.add(pendingComp);
+//        combinedComp.add(completedComp);
+//        
+//        return combinedComp;
+//    }
+    
+    
+    public List<ArrayList<Complaint>> getComplaints(String currentRTid) {
+        List<ArrayList<Complaint>> complaintList = new ArrayList<>();
+        ArrayList<Complaint> pendingComp = new ArrayList<>();
+        ArrayList<Complaint> progressingComp = new ArrayList<>();
+        ArrayList<Complaint> completedComp = new ArrayList<>();
         
         List<String> complaints = FH.fileRead(TF.complaintFiles);
         for (String eachComp : complaints) {
             String[] compDet = eachComp.split(TF.sp);
-            String complainerId = compDet[1];
-            if (complainerId.equals(currentRTid)) {
-                String status = compDet[5];
-                String tableLine = compDet[0].toUpperCase() + TF.sp + compDet[2] + TF.sp + compDet[3] + TF.sp + compDet[4] + TF.sp + status + TF.sp;
+            
+            Complaint complaint = new Complaint(compDet);
+            
+            if (complaint.getComplainerID().toLowerCase().equals(currentRTid) || currentRTid == null) {
+                String status = complaint.getComplaintStatus();
                 switch (status) {
-                    case "Pending" -> pendingComp.add(tableLine);
-                    case "Progressing" -> progressingComp.add(tableLine);
-                    case "Completed" -> completedComp.add(tableLine);
+                    case "Pending" -> pendingComp.add(complaint);
+                    case "Progressing" -> progressingComp.add(complaint);
+                    case "Completed" -> completedComp.add(complaint);
                 }
             }
         }
         
-        for (String progress : progressingComp) {
-            pendingComp.add(progress);
+        complaintList.add(pendingComp);
+        complaintList.add(progressingComp);
+        complaintList.add(completedComp);
+        
+        return complaintList;
+    }
+    
+    public ArrayList tableFormForRTandVD(ArrayList<Complaint> complaintList) {
+        ArrayList<String> tableForm = new ArrayList<>();
+        
+        for (Complaint comp : complaintList) {
+            String action = "MODIFY";
+            
+            if (comp.getComplaintStatus().equals(Complaint.cptStatus.Completed.name())) {
+                action = "VIEW";
+            }
+            
+            String[] compData = {comp.getComplaintID().toUpperCase(), comp.getComplaintDetails(), comp.getComplaintDate(), comp.getComplaintTime(), comp.getComplaintStatus(), action};
+            
+            String compList = "";
+            for (String eachData : compData) {
+                compList = compList + eachData + TF.sp;
+            }
+            
+            tableForm.add(compList);
         }
         
-        combinedComp.add(pendingComp);
-        combinedComp.add(completedComp);
+        return tableForm;
+    }
+    
+    public ArrayList tableFormForBE(ArrayList<Complaint> complaintList) {
+        ArrayList<String> tableForm = new ArrayList<>();
         
-        return combinedComp;
+        for (Complaint comp : complaintList) {
+            String compLine = "";
+            
+            String action = "VIEW";
+            
+            if (comp.getComplaintStatus().equals(Complaint.cptStatus.Progressing.name())) {
+                action = "MODIFY";
+            }
+            
+            if (comp.getComplaintStatus().equals(Complaint.cptStatus.Pending.name())) {
+                String[] compData = {comp.getComplaintID().toUpperCase(), comp.getComplainerID().toUpperCase(), comp.complaintDate, comp.complaintStatus, action};
+                
+                for (String eachData : compData) {
+                    compLine = compLine + eachData + TF.sp;
+                }
+            } 
+            else {
+                String compData[] = {comp.getComplaintID().toUpperCase(), comp.getComplainerID().toUpperCase(), comp.getComplaintStatus(), comp.getStatusUpdatedBy().toUpperCase(), comp.getLastUpdateDateTime(), action};
+                
+                for (String eachData : compData) {
+                    compLine = compLine + eachData + TF.sp;
+                }
+            }
+            
+            tableForm.add(compLine);
+        }
+        
+        return tableForm;
     }
     
     public String getNewCompId() {
@@ -104,6 +195,46 @@ public class Complaint {
         }
         
         return compCode + (minimumId + 1);
+    }
+    
+    // update the complaint status method
+    public void updateComplaintStatus(Complaint complaints) {
+        String[] complaintDetails = complaints.toString().split(TF.sp);
+        
+        String complaint = "";
+        for (String eachData : complaintDetails) {
+            complaint += eachData + TF.sp;
+        }
+        
+        CRUD crud = new CRUD();
+        crud.update(TF.complaintFiles, complaintDetails[0], complaint, 0);
+    }
+    
+    // update the complaint details
+    public void updateComplaint() {
+        String compData = this.toString();
+        
+        crud.update(TF.complaintFiles, compData, this.complaintID, 0);
+    }
+    
+    // store a newly created complaint
+    public void storeNewComplaint() {
+        List<String> newData = new ArrayList<>();
+        
+        String newComp = this.toString();
+        
+        newData.add(newComp);
+        
+        crud.create(TF.complaintFiles, newData);
+    }
+    
+    // remove the complaint
+    public void removeComplaint() {
+        // Remove complaint from complaintFile
+        crud.delete(TF.complaintFiles, complaintID, 0);
+        
+        // Remove complaint job in employee jobFile
+        crud.delete(TF.employeeJobFile, complaintID, 2);
     }
     
     @Override

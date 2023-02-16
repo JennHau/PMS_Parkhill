@@ -188,7 +188,9 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         }
         else {
             jobComboBox.setSelectedIndex(0);
+            jobComboBox.setEnabled(true);
             repititionCheckBox.setSelected(false);
+            repititionCheckBox.setEnabled(true);
             timeNeededSpinner.setValue(0);
             hrsMinsComboBox.setSelectedIndex(0);
             dateTimePicker1.datePicker.setDateToToday();
@@ -1137,39 +1139,53 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
     }
     
     private void updateComplaintsFile(int action){
-        ArrayList<String> updateComFile = new ArrayList<>();
-        List<String> complaintFile = fileHandling.fileRead(BE.TF.complaintFiles);
-        for (String eachComp : complaintFile) {
-            String[] compDet = eachComp.split(BE.TF.sp);
-            String compId = compDet[0];
-            
-            if (compId.equals(this.complaintsId)) {
-                String updateLine =  "";
-                for (int data = 0; data < compDet.length; data++) {
-                    if (data == 5) {
-                        String status = null;
-                        if (action == this.addItem) {
-                            status = Complaint.cptStatus.Progressing.toString();
-                        }
-                        else if (action == this.deleteItem) {
-                            status = Complaint.cptStatus.Pending.toString();
-                        }
-                        
-                        updateLine = updateLine + status + BE.TF.sp;
-                    }
-                    else {
-                        updateLine = updateLine + compDet[data] + BE.TF.sp;
-                    }
-                }
-                
-                updateComFile.add(updateLine);
-            }
-            else {
-                updateComFile.add(eachComp);
-            }
+        String status = complaint.getComplaintStatus();
+        if (action == this.addItem) {
+            status = Complaint.cptStatus.Progressing.toString();
+        }
+        else if (action == this.deleteItem) {
+            status = Complaint.cptStatus.Pending.toString();
         }
         
-        fileHandling.fileWrite(BE.TF.complaintFiles, false, updateComFile);
+        complaint.setComplaintStatus(status);
+        complaint.setStatusUpdatedBy(this.BE.getUserID());
+        complaint.setLastUpdateDateTime(BE.DTF.currentDateTime());
+        
+        complaint.updateComplaintStatus(complaint);
+        
+//        ArrayList<String> updateComFile = new ArrayList<>();
+//        List<String> complaintFile = fileHandling.fileRead(BE.TF.complaintFiles);
+//        for (String eachComp : complaintFile) {
+//            String[] compDet = eachComp.split(BE.TF.sp);
+//            String compId = compDet[0];
+//            
+//            if (compId.equals(this.complaintsId)) {
+//                String updateLine =  "";
+//                for (int data = 0; data < compDet.length; data++) {
+//                    if (data == 5) {
+//                        String status = null;
+//                        if (action == this.addItem) {
+//                            status = Complaint.cptStatus.Progressing.toString();
+//                        }
+//                        else if (action == this.deleteItem) {
+//                            status = Complaint.cptStatus.Pending.toString();
+//                        }
+//                        
+//                        updateLine = updateLine + status + BE.TF.sp;
+//                    }
+//                    else {
+//                        updateLine = updateLine + compDet[data] + BE.TF.sp;
+//                    }
+//                }
+//                
+//                updateComFile.add(updateLine);
+//            }
+//            else {
+//                updateComFile.add(eachComp);
+//            }
+//        }
+//        
+//        fileHandling.fileWrite(BE.TF.complaintFiles, false, updateComFile);
     }
     
     private String[] getAllFields(int action) throws IOException {
@@ -1184,7 +1200,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         // employeeId
         String employeeId = this.selectedEmployeeId;
         // complaintId
-        this.complaintsId = (this.getComplaintsId() != null) ? this.getComplaintsId() : BE.TF.empty;
+        String compId = (this.getComplaintsId() != null) ? this.getComplaintsId() : BE.TF.empty;
         // job assigned
         String assignedJob = jobComboBox.getSelectedItem().toString();
         String jobDet = BE.findJobDetailsUsingDescriptionOrId(null, assignedJob);
@@ -1204,7 +1220,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         String expectedTimeRequired;
         int timeNeeded = (int) timeNeededSpinner.getValue();
         
-        if (timeNeeded != 0) {
+        if (timeNeeded > 0) {
             String hrORmin = hrsMinsComboBox.getSelectedItem().toString();
             if (hrORmin.equals("hrs")) {
                 expectedTimeRequired =  timeNeeded + "h";
@@ -1235,10 +1251,12 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         LocalTime jobStartTime = BE.DTF.formatTime(String.valueOf(dateTimePicker1.timePicker.getTime()));
         String startTime = String.valueOf(jobStartTime);
         
-        if (BE.DTF.combineStringDateTime(startDate, startTime).isBefore(LocalDateTime.now())) {
-            JOptionPane.showMessageDialog (null, "The selected time has past. Please choose an upcoming time", 
-                                                    "EMPLOYEE JOB ASSIGNATION", JOptionPane.INFORMATION_MESSAGE);
-            return null;
+        if (!startDate.equals(BE.TF.empty)) {
+            if (BE.DTF.combineStringDateTime(startDate, startTime).isBefore(LocalDateTime.now())) {
+                JOptionPane.showMessageDialog (null, "The selected time has past. Please choose an upcoming time", 
+                                                        "EMPLOYEE JOB ASSIGNATION", JOptionPane.INFORMATION_MESSAGE);
+                return null;
+            }
         }
         
         // expected end time of the job
@@ -1289,7 +1307,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         // get remarks
         String remarks = (remarksTA.getText().equals("")) ? BE.TF.empty : remarksTA.getText();
         
-        String[] jobItemDetails = {fieldJobId, employeeId, complaintsId, 
+        String[] jobItemDetails = {fieldJobId, employeeId, compId, 
             jobId, repitition, expectedTimeRequired, 
             startDate, startTime, expectedEndTime, 
             dayToRepeat, remarks};

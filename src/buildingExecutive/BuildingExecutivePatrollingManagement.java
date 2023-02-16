@@ -49,9 +49,11 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
      * @param BE
      * @throws java.io.IOException
      */
-    public BuildingExecutivePatrollingManagement(BuildingExecutive BE) throws IOException {
+    public BuildingExecutivePatrollingManagement(BuildingExecutive BE, LocalDate selectedDate) throws IOException {
         this.BE = BE;
         this.setCurrentBEid(BE.getUserID());
+        
+        this.inputDate = selectedDate;
         
         initComponents();
         runDefaultSetUp();
@@ -81,11 +83,15 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     // get today's day
     private void getTodayDay() {
         todayDate = LocalDate.now();
-        inputDate = todayDate;
         inputTime = LocalTime.now();
         dateLabel.setText(todayDate.toString());
-        datePicker.setDate(todayDate);
         this.dayOfToday =  todayDate.getDayOfWeek().toString();
+        
+        if (inputDate == null) {
+            inputDate = todayDate;
+        }
+        
+        datePicker.setDate(todayDate);
     }
     
     // set up patrolling schedule
@@ -107,9 +113,8 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                 String patCheckBef = slotDetails[5];
                 String securityID = slotDetails[6].toUpperCase();
                 String securityName = slotDetails[7];
-                String patStatus = slotDetails[8];
-                String assignee = slotDetails[9].toUpperCase();
-                
+                String patStatus = slotDetails[9];
+                String assignee = slotDetails[11].toUpperCase();
                 
                 LocalTime slotTime = BE.DTF.formatTime(patSlot);
                 
@@ -117,6 +122,10 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                 LocalDateTime dateTimeNow = LocalDateTime.now();
                 
                 String action = "ASSIGN";
+                
+                if (!securityID.equals(BE.TF.empty)){
+                    action = "MODIFY";
+                }
                 
                 if (inputDateTime.isBefore(dateTimeNow)) {
                     action = "PAST";
@@ -147,12 +156,12 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     private void setSelectedDateFile() {
         patrollingScheduleFile = patrollingScheduleFileFormat+inputDate+".txt";
         List<String> addNewRec = new ArrayList<>();
-        
+
         File file = new File(patrollingScheduleFile);
         if (!file.exists()) {
             List<String> defaultSchedule = fh.fileRead(BE.TF.fixFile);
             fh.fileWrite(patrollingScheduleFile, false, defaultSchedule);
-            
+
             addNewRec.add(inputDate + BE.TF.sp + "8" + BE.TF.sp + "5" + BE.TF.sp + "1" + BE.TF.sp + getCurrentBEid() + BE.TF.sp + BE.DTF.currentDateTime() + BE.TF.sp);
             fh.fileWrite(BE.TF.patScheduleModRec, true, addNewRec);
         }
@@ -173,6 +182,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         timeCheckedPicker.setText("");
         statusTF.setText("");
         securityIdComboBox.removeAllItems();
+        securityIdComboBox.setEnabled(false);
         securityNameTF.setText("");
         contactNoTF.setText("");
         remarksTA.setText("");
@@ -221,15 +231,18 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
                 if(columnIndex == 9){
 
-                    if(value.equals("ASSIGN")){
+                    if(value.equals("ASSIGN") || value.equals("MODIFY")){
                         componenet.setBackground(new Color(0,70,126));
                         componenet.setForeground(new Color(255, 255, 255));
                     }
-                    else {
-                        componenet.setBackground(new Color(255,0,0));
+                    else if (value.equals("VIEW")) {
+                        componenet.setBackground(new Color(0, 153, 51));
                         componenet.setForeground(new Color(255, 255, 255));
                     }
-
+                    else {
+                        componenet.setBackground(new Color(255, 0, 0));
+                        componenet.setForeground(new Color(255, 255, 255));
+                    }
                 }
 
                 else {
@@ -1001,7 +1014,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         if (correctSel) {
             String actionText = patrollingScheduleTable.getValueAt(selectedRow, selectedCol).toString();
             
-            if (actionText.equals("ASSIGN")) {
+            if (actionText.equals("ASSIGN") || actionText.equals("MODIFY") || actionText.equals("VIEW")) {
                 List<String> scheduleFile = fh.fileRead(patrollingScheduleFile);
                 patID = scheduleFile.get(selectedRow+1).split(BE.TF.sp)[0];
                 String checkedAt = scheduleFile.get(selectedRow+1).split(BE.TF.sp)[10];
@@ -1018,14 +1031,12 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
                 statusTF.setText(rowData[7].toString());
 
-
                 if (!checkedAt.equals("-")) {
                     timeCheckedPicker.setTime(BE.DTF.formatTime(checkedAt));
                 }
                 else {
                     timeCheckedPicker.setText("-");
                 }
-
 
                 try {
                     comboBoxSetUp();
@@ -1035,7 +1046,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
                 if (securityID != null) {
                     try {
-                        String[] empDet = BE.getEmployeeDetails(securityID);
+                        String[] empDet = BE.getEmployeeDetails(securityID.toLowerCase());
 
                         securityIdComboBox.addItem(securityID);
                         securityIdComboBox.setSelectedItem(rowData[5]);
@@ -1057,7 +1068,17 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                 fieldAction(true);
                 removeSlotBTN.setEnabled(true);
                 updateBTN.setEnabled(false);
+                
+                if (actionText.equals("VIEW")) {
+                    updateBTN.setEnabled(false);
+                    removeSlotBTN.setEnabled(false);
+                    securityIdComboBox.setEnabled(false);
+                    removeEmpBTN.setEnabled(false);
+                    remarksTA.setEnabled(false);
+                }
             } else {
+                cleanField();
+                removeSlotBTN.setEnabled(false);
                 JOptionPane.showMessageDialog (null, "The time slot has pass the time now... Please choose another slot.", 
                                         "PATROLLING ASSIGNATION ERROR", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -1087,11 +1108,11 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                 String[] schedules = eachSched.split(BE.TF.sp);
                 String id = schedules[0];
                 checkBef = schedules[5];
-
+                
                 if (id.equals(patID)) {
                     toUpdateList.add(id + BE.TF.sp + schedules[1] + BE.TF.sp + schedules[2] + BE.TF.sp + schedules[3] + BE.TF.sp +
-                            checkpoint + BE.TF.sp + checkBef + BE.TF.sp + securityId + BE.TF.sp + securityName + BE.TF.sp + 
-                            remarks + BE.TF.sp + schedules[8] + BE.TF.sp + " " + BE.TF.sp + this.getCurrentBEid() + BE.TF.sp + 
+                            checkpoint + BE.TF.sp + checkBef + BE.TF.sp + securityId.toLowerCase() + BE.TF.sp + securityName + BE.TF.sp + 
+                            remarks + BE.TF.sp + "Pending" + BE.TF.sp + BE.TF.empty + BE.TF.sp + this.getCurrentBEid() + BE.TF.sp + 
                             BE.DTF.currentDateTime() + BE.TF.sp);
                 }
                 else {
@@ -1127,11 +1148,10 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
             ArrayList<String> addJob = new ArrayList<>();
             if (newTaskId != null) {
-                addJob.add(newTaskId + BE.TF.sp + securityId + BE.TF.sp + "null" + BE.TF.sp + 
+                addJob.add(newTaskId + BE.TF.sp + securityId.toLowerCase() + BE.TF.sp + BE.TF.empty + BE.TF.sp + 
                         "PT" + BE.TF.sp + 0 + BE.TF.sp + timeNeeded+"h" + BE.TF.sp + this.inputDate + BE.TF.sp + slot + BE.TF.sp + this.inputDate + " " + checkBef + 
-                        BE.TF.sp + "null" + BE.TF.sp + remarks + BE.TF.sp + "null" + BE.TF.sp + 
-                        BE.DTF.currentDateTime() + 
-                        BE.TF.sp + inputDate + " " + patID + BE.TF.sp);
+                        BE.TF.sp + BE.TF.empty + BE.TF.sp + remarks + BE.TF.sp + BE.getUserID() + BE.TF.sp + 
+                        BE.DTF.currentDateTime() + BE.TF.sp + inputDate + " " + patID + BE.TF.sp);
             }
             fh.fileWrite(BE.TF.employeeJobFile, true, addJob);
         }
@@ -1154,9 +1174,8 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                 if (slotId.equals(patID)) {
                     toRemove.add(scheDet[0] + BE.TF.sp + scheDet[1] + BE.TF.sp + scheDet[2] + BE.TF.sp + 
                                  scheDet[3] + BE.TF.sp + scheDet[4] + BE.TF.sp + scheDet[5] + BE.TF.sp + 
-                                 " " + BE.TF.sp + " " + BE.TF.sp + " " + BE.TF.sp + " " + BE.TF.sp + " " + BE.TF.sp + 
-                                 BE.DTF.combineStringDateTime(LocalDate.now().toString(), LocalTime.now().toString()) + 
-                                 BE.TF.sp + " ");
+                                 BE.TF.empty + BE.TF.sp + BE.TF.empty + BE.TF.sp + BE.TF.empty + BE.TF.sp + "Unassign" + BE.TF.sp + BE.TF.empty + BE.TF.sp + 
+                                 BE.getUserID() + BE.TF.sp + BE.DTF.currentDateTime() + BE.TF.sp);
                 }
                 else {
                     toRemove.add(eachSche);
@@ -1164,34 +1183,38 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             }
 
             fh.fileWrite(patrollingScheduleFile, false, toRemove);
-
+            
             patrollingScheduleTableSetUp();
-
+            
             deletePatScheduleFromJobFile();
-
+            
             cleanField();
+            
+            removeSlotBTN.setEnabled(false);
         }
     }//GEN-LAST:event_removeEmpBTNActionPerformed
     
     private void securityIdComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_securityIdComboBoxActionPerformed
         // TODO add your handling code here:
         String securityId = (String) securityIdComboBox.getSelectedItem();
-        try {
-            String[] securityDet = BE.getEmployeeDetails(securityId);
-            if (securityDet != null) {
-                String securityName = securityDet[2];
-                String contact = securityDet[3];
-                securityNameTF.setText(securityName);
-                contactNoTF.setText(contact);
-                updateBTN.setEnabled(true);
+        if (securityId != null) {
+            try {
+                String[] securityDet = BE.getEmployeeDetails(securityId.toLowerCase());
+                if (securityDet != null) {
+                    String securityName = securityDet[2];
+                    String contact = securityDet[3];
+                    securityNameTF.setText(securityName);
+                    contactNoTF.setText(contact);
+                    updateBTN.setEnabled(true);
+                }
+                else {
+                    securityNameTF.setText("");
+                    contactNoTF.setText("");
+                    updateBTN.setEnabled(false);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
             }
-            else {
-                securityNameTF.setText("");
-                contactNoTF.setText("");
-                updateBTN.setEnabled(false);
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_securityIdComboBoxActionPerformed
     
@@ -1200,6 +1223,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         inputDate = datePicker.getDate();
         
         disableManageButton();
+        
         patrollingScheduleTableSetUp();
     }//GEN-LAST:event_selectDateBTNActionPerformed
 
@@ -1320,7 +1344,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, BE);
+            BE.toPatrollingManagement(this, BE, null);
         } catch (IOException ex) {
             Logger.getLogger(BuildingExecutiveMainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1330,7 +1354,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, BE);
+            BE.toPatrollingManagement(this, BE, null);
         } catch (IOException ex) {
             Logger.getLogger(BuildingExecutiveMainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1364,25 +1388,34 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     }
     
     private void comboBoxSetUp() throws IOException {
-        ArrayList<String> assignedEmployee = BE.getSpecificStatusEmployeeList(inputDate, inputTime, "Security Guard", null, BE.assignedEmployee);
-        ArrayList<String> unassignedEmployee = BE.getSpecificStatusEmployeeList(inputDate, inputTime, "Security Guard", null, BE.unassignedEmployee);
+        ArrayList<String> employeeIdList = new ArrayList<>();
         ArrayList<String> canPatrollId = new ArrayList<>();
+
+        List<String> getEmployeeList = BE.fh.fileRead(BE.TF.fullEmployeeList);
         
-        for (String unassign : unassignedEmployee) {
-            assignedEmployee.add(unassign);
+        boolean firstLine = true;
+        for (String eachEmp : getEmployeeList) {
+            if (!firstLine) {
+                String employeeId = eachEmp.split(BE.TF.sp)[0];
+                if (!employeeIdList.contains(employeeId)) {
+                    employeeIdList.add(employeeId);
+                }
+            }
+            
+            firstLine = false;
         }
         
-        for (String allEmp : assignedEmployee) {
-            String empId = allEmp.split(BE.TF.sp)[0];
-            
-            ArrayList<String> jobList = BE.getAssignedJobForSpecificEmployee(empId);
+        for (String eachEmp : employeeIdList) {
+            String employeeId = eachEmp.split(BE.TF.sp)[0];
+            ArrayList<String> jobList = BE.getAssignedJobForSpecificEmployee(employeeId);
             
             boolean cannotPatroll = false;
             if (!jobList.isEmpty()) {
                 for (String eachJob : jobList) {
                     String[] jobDetails = eachJob.split(BE.TF.sp);
                     String assignedJobCode = jobDetails[3];
-                    if (assignedJobCode.equals("NS") || assignedJobCode.equals("MS") || assignedJobCode.equals("PT")) {
+                    if (!assignedJobCode.equals("NS") && !assignedJobCode.equals("MS")) {
+//                    if (assignedJobCode.equals("NS") || assignedJobCode.equals("MS") || assignedJobCode.equals("PT")) {
                         int repitition = Integer.valueOf(jobDetails[4]);
 
                         String timeNeeded = jobDetails[5];
@@ -1416,8 +1449,9 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                 }
             }
             
-            if (!cannotPatroll && !canPatrollId.contains(empId)) {
-                canPatrollId.add(empId.toUpperCase());
+            
+            if (!cannotPatroll && !canPatrollId.contains(employeeId)) {
+                canPatrollId.add(employeeId.toUpperCase());
             }
         }
         
@@ -1427,6 +1461,71 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         for (String eachId : canPatrollId) {
             securityIdComboBox.addItem(eachId);
         }
+        
+//        ArrayList<String> assignedEmployee = BE.getSpecificStatusEmployeeList(inputDate, inputTime, "Security Guard", null, BE.assignedEmployee);
+//        ArrayList<String> unassignedEmployee = BE.getSpecificStatusEmployeeList(inputDate, inputTime, "Security Guard", null, BE.unassignedEmployee);
+//        ArrayList<String> canPatrollId = new ArrayList<>();
+//        
+//        for (String unassign : unassignedEmployee) {
+//            assignedEmployee.add(unassign);
+//        }
+//        
+//        for (String allEmp : assignedEmployee) {
+//            String empId = allEmp.split(BE.TF.sp)[0];
+//            
+//            ArrayList<String> jobList = BE.getAssignedJobForSpecificEmployee(empId);
+//            
+//            boolean cannotPatroll = false;
+//            if (!jobList.isEmpty()) {
+//                for (String eachJob : jobList) {
+//                    String[] jobDetails = eachJob.split(BE.TF.sp);
+//                    String assignedJobCode = jobDetails[3];
+//                    if (assignedJobCode.equals("NS") || assignedJobCode.equals("MS")) {
+////                    if (assignedJobCode.equals("NS") || assignedJobCode.equals("MS") || assignedJobCode.equals("PT")) {
+//                        int repitition = Integer.valueOf(jobDetails[4]);
+//
+//                        String timeNeeded = jobDetails[5];
+//                        LocalDate workingDate = null;
+//                        LocalTime workingTime = BE.DTF.formatTime(jobDetails[7]);
+//                        String[] workingEndDateTime = jobDetails[8].split(" ");
+//
+//                        LocalTime workingStartTime2;
+//                        LocalTime workingEndTime2;
+//
+//                        ArrayList<String> dateData = BE.compareJobDate(repitition, workingEndDateTime, jobDetails, timeNeeded, dayOfToday, inputDate, workingTime, workingDate);
+//
+//                        if (!dateData.isEmpty()) {
+//                            workingDate = BE.DTF.formatDate(dateData.get(0));
+//                            workingTime = BE.DTF.formatTime(dateData.get(1));
+//
+//                            workingStartTime2 = (!dateData.get(2).equals("null")) ? BE.DTF.formatTime(dateData.get(2)) : null;
+//                            workingEndTime2 = (!dateData.get(3).equals("null")) ? BE.DTF.formatTime(dateData.get(3)) : null;
+//
+//                            workingEndDateTime = dateData.get(4).split(" ");
+//
+//                            if (workingDate != null) {
+//                                cannotPatroll = BE.compareDateTime(inputDate, inputTime, workingDate, workingTime, workingEndDateTime, workingStartTime2, workingEndTime2);
+//                            }
+//                        }
+//
+//                        if (cannotPatroll) {
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//            
+//            if (!cannotPatroll && !canPatrollId.contains(empId)) {
+//                canPatrollId.add(empId.toUpperCase());
+//            }
+//        }
+//        
+//        securityIdComboBox.removeAllItems();
+//        securityIdComboBox.addItem("Not Selected");
+//        
+//        for (String eachId : canPatrollId) {
+//            securityIdComboBox.addItem(eachId);
+//        }
     }
     
     private void disableManageButton() {
@@ -1467,7 +1566,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new BuildingExecutivePatrollingManagement(null).setVisible(true);
+                    new BuildingExecutivePatrollingManagement(null, null).setVisible(true);
                 } catch (IOException ex) {
                     Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
                 }

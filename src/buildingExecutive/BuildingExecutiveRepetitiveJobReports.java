@@ -283,7 +283,7 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
         jLabel23.setForeground(new java.awt.Color(51, 51, 51));
         jLabel23.setText("Repetitive Job Report");
 
-        jobTable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jobTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jobTable.setForeground(new java.awt.Color(51, 51, 51));
         jobTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -831,7 +831,7 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, BE);
+            BE.toPatrollingManagement(this, BE, null);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -841,7 +841,7 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, BE);
+            BE.toPatrollingManagement(this, BE, null);
         } catch (IOException ex) {
             System.out.println(ex);
         }

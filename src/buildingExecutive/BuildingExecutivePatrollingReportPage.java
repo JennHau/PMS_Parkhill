@@ -12,12 +12,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.FileHandling;
 
-
 /**
  *
  * @author wongj
  */
-public class BuildingExecutiveAllReportsPage extends javax.swing.JFrame {
+public class BuildingExecutivePatrollingReportPage extends javax.swing.JFrame {
     FileHandling fh = new FileHandling();
     private final BuildingExecutive BE;
     
@@ -29,7 +28,7 @@ public class BuildingExecutiveAllReportsPage extends javax.swing.JFrame {
      * @param reportTitle
      * @param tableData
      */
-    public BuildingExecutiveAllReportsPage(BuildingExecutive BE, String reportTitle, ArrayList tableData) {
+    public BuildingExecutivePatrollingReportPage(BuildingExecutive BE, String reportTitle, ArrayList tableData) {
         initComponents();
         this.BE = BE;
         
@@ -38,7 +37,14 @@ public class BuildingExecutiveAllReportsPage extends javax.swing.JFrame {
         
             setDefault(tableData);
             setField(reportTitle);
+            tableDesign();
         }
+    }
+    
+    private void tableDesign() {
+        int[] ignoreColumn = {6};
+        int[] columnLength = {50, 80, 120, 105, 115, 110, 228, 110, 90};
+        BE.setTableDesign(statementTable, jLabel1, columnLength, ignoreColumn);
     }
 
     /**
@@ -133,17 +139,20 @@ public class BuildingExecutiveAllReportsPage extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Arial Narrow", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(13, 24, 42));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("REPORT");
+        jLabel1.setText("PATROLLING REPORT");
 
+        statementTable.setForeground(new java.awt.Color(51, 51, 51));
         statementTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-
+                "NO.", "SLOT", "BLOCK & LEVEL", "CHECKPOINT", "CHECK BEFORE", "SECURITY ID", "SECURITY NAME", "STATUS", "CHECKED AT"
             }
         ));
         statementTable.setEnabled(false);
+        statementTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        statementTable.setRowHeight(25);
         statementTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 statementTableMouseClicked(evt);
@@ -271,20 +280,7 @@ public class BuildingExecutiveAllReportsPage extends javax.swing.JFrame {
     }//GEN-LAST:event_doneBtActionPerformed
     
     private void setDefault(ArrayList tableData) {
-        boolean firstLine = true;
-        for (Object eachData : tableData) {
-            String[] data = eachData.toString().split(BE.TF.sp);
-
-            if (firstLine) {
-                for (String tableColumn : data) {
-                    stateTab.addColumn(tableColumn);
-                }
-                
-                firstLine = false;
-            } else {
-                stateTab.addRow(data);
-            }
-        }
+        BE.setTableRow(stateTab, tableData);
     }
     
     private void setField(String reportTitle) {
@@ -310,19 +306,19 @@ public class BuildingExecutiveAllReportsPage extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BuildingExecutiveAllReportsPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BuildingExecutivePatrollingReportPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BuildingExecutiveAllReportsPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BuildingExecutivePatrollingReportPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BuildingExecutiveAllReportsPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BuildingExecutivePatrollingReportPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BuildingExecutiveAllReportsPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BuildingExecutivePatrollingReportPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BuildingExecutiveAllReportsPage(null, null, null).setVisible(true);
+                new BuildingExecutivePatrollingReportPage(null, null, null).setVisible(true);
             }
         });
     }

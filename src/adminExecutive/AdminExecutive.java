@@ -1147,7 +1147,6 @@ public class AdminExecutive extends Users{
                     if(check){
                         timeSlot.add(variation +";"+ cStartTime +";"+ String.valueOf(j+1) + ":00" +";"+ "-" +";"+ "SELECT");
                     }
-                    
                 }
             }
         } return timeSlot;

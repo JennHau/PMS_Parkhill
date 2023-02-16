@@ -13,8 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import pms_parkhill_residence.Complaint;
 import pms_parkhill_residence.Dashboard;
-import pms_parkhill_residence.Users;
+import pms_parkhill_residence.Invoice;
 
 /**
  *
@@ -48,11 +49,14 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
     
     private void setData() {
         // Set Complaint
-        ArrayList<ArrayList> complaints = RT.CP.getComplaints(RT.getUserID());
-        ArrayList<String> pendingComplaints = complaints.get(0);
-        ArrayList<String> completedComplaints = complaints.get(1);
+        List<ArrayList<Complaint>> complaints = RT.CP.getComplaints(RT.getUserID());
+        ArrayList<Complaint> pendingComplaints = complaints.get(0);
+        ArrayList<Complaint> progressingComplaints = complaints.get(1);
+        ArrayList<Complaint> completedComplaints = complaints.get(2);
         
+        pendingComplaints.addAll(progressingComplaints);
         pendingComplaints.addAll(completedComplaints);
+        
         int compNo = pendingComplaints.size();
         complaintsLabel.setText(String.valueOf(compNo));
         
@@ -72,11 +76,10 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
         }
         visitorLabel.setText(String.valueOf(countVisitor));
         
-        ArrayList<ArrayList> pendingFee = RT.getCurrentUnitInvoice(RT.getUserID());
-        ArrayList<String> unpaidInv = pendingFee.get(0);
+        ArrayList<Invoice> unpaidInv = RT.PYM.getCurrentUnitInvoice(RT.getUserID());
         double totalAmount = 0;
-        for (String eachFee : unpaidInv) {
-            double feeTotal = Double.parseDouble(eachFee.split(RT.TF.sp)[7]);
+        for (Invoice eachFee : unpaidInv) {
+            double feeTotal = eachFee.getUnitPrice();
             totalAmount += feeTotal;
         }
         pendingFeeLabel.setText(String.format("%.02f", totalAmount));

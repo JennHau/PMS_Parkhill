@@ -6,11 +6,9 @@ package buildingExecutive;
 
 import java.awt.Toolkit;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import pms_parkhill_residence.Complaint;
 import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
 
 /**
  *
@@ -73,11 +71,15 @@ public class ComplaintsDetails extends javax.swing.JFrame {
         unitNoTF.setText(unitNo.toUpperCase());
         
         if (complaintStatus.equals("Pending")) {
+            assignBTN.setEnabled(true);
             statusComboBox.addItem("Pending");
+        }
+        else {
+            assignBTN.setEnabled(false);
         }
         
         statusComboBox.setSelectedItem(complaintStatus);
-        statusComboBox.setEnabled(true);
+        statusComboBox.setEnabled(false);
         complainerNameTF.setText(complainerName);
         dateTimePicker1.datePicker.setDate(issueDate);
         dateTimePicker1.timePicker.setTime(issueTime);
@@ -97,14 +99,13 @@ public class ComplaintsDetails extends javax.swing.JFrame {
                 statusComboBox.setEnabled(false);
             }
             case "Progressing" -> {
-                statusBTN.setText("Complete");
+                statusBTN.setText("Completed");
                 statusBTN.setEnabled(true);
                 statusComboBox.setEnabled(false);
             }
             case "Completed" -> {
                 statusBTN.setText("Completed");
                 statusBTN.setEnabled(false);
-                statusComboBox.setEnabled(true);
             }
         }
     }
@@ -423,39 +424,41 @@ public class ComplaintsDetails extends javax.swing.JFrame {
     private void statusBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusBTNActionPerformed
         // TODO add your handling code here:
         complaint.setComplaintStatus(statusBTN.getText());
-        switch (complaint.getComplaintStatus()) {
-            case "Progressing" -> {
-                statusComboBox.setSelectedItem("Progressing");
-                statusBTN.setText("Complete");
-            }
-            case "Complete" -> {
-                statusComboBox.setSelectedItem("Completed");
-                statusBTN.setText("Completed");
-                statusBTN.setEnabled(false);
-                statusComboBox.setEnabled(true);
-                statusComboBox.removeItem("Pending");
-            }
+        if (complaint.getComplaintStatus().equals(Complaint.cptStatus.Progressing.toString())) {
+            statusComboBox.setSelectedItem("Progressing");
+            statusBTN.setText("Completed");
+        }
+        else if (complaint.getComplaintStatus().equals(Complaint.cptStatus.Completed.toString())) {
+            statusComboBox.setSelectedItem("Completed");
+            statusBTN.setText("Completed");
+            statusBTN.setEnabled(false);
+//          statusComboBox.setEnabled(true);
+            statusComboBox.removeItem("Pending");
         }
         
         complaint.setStatusUpdatedBy(this.BE.getUserID());
         complaint.setLastUpdateDateTime(BE.DTF.currentDateTime());
         
-        BE.updateComplaintStatus(this.complaint);
+        BE.CP.updateComplaintStatus(this.complaint);
     }//GEN-LAST:event_statusBTNActionPerformed
 
     private void statusComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusComboBoxActionPerformed
-        // TODO add your handling code here:
-        if (statusComboBox.getSelectedItem() != null) {
-            String selectedStatus = statusComboBox.getSelectedItem().toString();
-            
-            switch(selectedStatus) {
-                case "Progressing" -> {
-                    statusBTN.setText("Complete");
-                    statusComboBox.setEnabled(false);
-                    assignBTN.setEnabled(false);
-                }
-            }
-        }
+//        // TODO add your handling code here:
+//        if (statusComboBox.getSelectedItem() != null) {
+//            String selectedStatus = statusComboBox.getSelectedItem().toString();
+//            
+//            switch(selectedStatus) {
+//                case "Progressing" -> {
+//                    statusBTN.setText("Complete");
+//                    statusComboBox.setEnabled(false);
+//                    assignBTN.setEnabled(false);
+//                    statusBTN.setEnabled(true);
+//                    
+//                    complaint.setComplaintStatus(selectedStatus);
+//                    BE.updateComplaintStatus(this.complaint);
+//                }
+//            }
+//        }
     }//GEN-LAST:event_statusComboBoxActionPerformed
 
     /**

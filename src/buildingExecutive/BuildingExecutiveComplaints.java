@@ -15,10 +15,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.Complaint;
 import pms_parkhill_residence.FileHandling;
 
@@ -68,68 +66,55 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
     }
     
     private void complaintTableSetUp() {
-        List<String> complaintsData = fh.fileRead(BE.TF.complaintFiles);
-        ArrayList<String> newComplaints = new ArrayList<>();
-        ArrayList<String> actionedComplaints = new ArrayList<>();
-        ArrayList<String> statusComplaints = new ArrayList<>();
-        
-        boolean firstLine = true;
-        for (String eachData : complaintsData) {
-            if (!firstLine) {
-                String[] dataDetails = eachData.split(BE.TF.sp);
-                String complaintId = dataDetails[0];
-                String complainerId = dataDetails[1];
-                String complaintStatus = dataDetails[5];
-                
-                if (complaintStatus.equals(Complaint.cptStatus.Pending.name())){
-                    String issueDate = dataDetails[3];
-                    newComplaints.add(complaintId.toUpperCase() + BE.TF.sp + complainerId.toUpperCase() + BE.TF.sp + issueDate + BE.TF.sp + complaintStatus.toUpperCase() + BE.TF.sp + "VIEW" + BE.TF.sp);
-                }
-                else {
-                    String updatedBy = dataDetails[6];
-                    String updateTime = dataDetails[7];
-                    actionedComplaints.add(complaintId.toUpperCase() + BE.TF.sp + complainerId.toUpperCase() + BE.TF.sp + complaintStatus.toUpperCase() + BE.TF.sp + updatedBy.toUpperCase() + BE.TF.sp + updateTime + BE.TF.sp + "VIEW" + BE.TF.sp);
-                }
-            }
-            
-            firstLine = false;
-        }
+        List<ArrayList<Complaint>> complaintList = BE.CP.getComplaints(null);
         
         String selectedSort = sortCB.getSelectedItem().toString().toUpperCase();
-        String selectedStatus = statusCB.getSelectedItem().toString().toUpperCase();
+        String selectedStatus = statusCB.getSelectedItem().toString();
         
-        for (int first = 0; first < newComplaints.size()-1; first++) {
-            for (int next = first + 1; next < newComplaints.size(); next++) {
-                String item1 = newComplaints.get(first);
-                String item2 = newComplaints.get(next);
+        ArrayList<Complaint> pendingComp = sortComplaintList(complaintList.get(0), selectedSort);
+        ArrayList<Complaint> progComp = sortComplaintList(complaintList.get(1), selectedSort);
+        ArrayList<Complaint> completeComp = sortComplaintList(complaintList.get(2), selectedSort);
+
+        ArrayList<String> newPendingComp = BE.CP.tableFormForBE(pendingComp);
+        
+        ArrayList<String> statusComp;
+        
+        if (selectedStatus.equals(Complaint.cptStatus.Progressing.name())) {
+            statusComp = BE.CP.tableFormForBE(progComp);
+        }
+        else {
+            statusComp = BE.CP.tableFormForBE(completeComp);            
+        }
+        
+        BE.setTableRow(newComplaintsTab, newPendingComp);
+        BE.setTableRow(actionedComplaintsTab, statusComp);
+    }
+    
+    private ArrayList<Complaint> sortComplaintList(ArrayList<Complaint> complaintList, String selectedSort) {
+        for (int first = 0; first < complaintList.size()-1; first++) {
+            for (int next = first + 1; next < complaintList.size(); next++) {
+                Complaint item1 = complaintList.get(first);
+                Complaint item2 = complaintList.get(next);
                 
-                LocalDate date1 = BE.DTF.formatDate(item1.split(BE.TF.sp)[2]);
-                LocalDate date2 = BE.DTF.formatDate(item2.split(BE.TF.sp)[2]);
+                LocalDate date1 = BE.DTF.formatDate(item1.getComplaintDate());
+                LocalDate date2 = BE.DTF.formatDate(item2.getComplaintDate());
                 
                 if (selectedSort.equals("LATEST")) {
                     if (date2.isAfter(date1)) {
-                        newComplaints.set(first, item2);
-                        newComplaints.set(next, item1);
+                        complaintList.set(first, item2);
+                        complaintList.set(next, item1);
                     }
                 }
                 else {
                     if (date2.isBefore(date1)) {
-                        newComplaints.set(first, item2);
-                        newComplaints.set(next, item1);
+                        complaintList.set(first, item2);
+                        complaintList.set(next, item1);
                     }
                 }
             }
         }
         
-        for (String eachComp : actionedComplaints) {
-            String compStatus = eachComp.split(BE.TF.sp)[2];
-            if (compStatus.equals(selectedStatus)) {
-                statusComplaints.add(eachComp);
-            }
-        }
-        
-        BE.setTableRow(newComplaintsTab, newComplaints);
-        BE.setTableRow(actionedComplaintsTab, statusComplaints);
+        return complaintList;
     }
     
     private void tableDesignSetUp() {
@@ -137,7 +122,7 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         int[] columnLength = {95, 105, 87, 95, 80};
         BE.setTableDesign(newComplaintsTable, jLabel2, columnLength, columnIgnore);
         
-        int[] columnLength2 = {93, 99, 100, 89, 120, 78};
+        int[] columnLength2 = {93, 103, 96, 89, 120, 78};
         BE.setTableDesign(actionedComplaintsTable, jLabel2, columnLength2, columnIgnore);
     }
     
@@ -328,7 +313,6 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
             }
         });
 
-        newComplaintsTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         newComplaintsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -372,7 +356,6 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
             newComplaintsTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        actionedComplaintsTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         actionedComplaintsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -958,7 +941,7 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, BE);
+            BE.toPatrollingManagement(this, BE, null);
         } catch (IOException ex) {
             Logger.getLogger(BuildingExecutiveMainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -968,7 +951,7 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, BE);
+            BE.toPatrollingManagement(this, BE, null);
         } catch (IOException ex) {
             Logger.getLogger(BuildingExecutiveMainPage.class.getName()).log(Level.SEVERE, null, ex);
         }

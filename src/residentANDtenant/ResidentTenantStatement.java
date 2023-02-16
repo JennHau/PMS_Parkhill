@@ -53,7 +53,7 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
     private void statementTableSetUp() throws ParseException {
         stateTab.setRowCount(0);
         
-        ArrayList<String> monthStatement = RT.getCurrentUnitMonthStatement(monthNyear);
+        ArrayList<String> monthStatement = RT.PYM.displayOneStatement(this.RT.getUnitNo(), monthNyear);
         
         // Set table row
         RT.setTableRow(stateTab, monthStatement);

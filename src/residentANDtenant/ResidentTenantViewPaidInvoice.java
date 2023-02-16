@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import pms_parkhill_residence.Invoice;
+import pms_parkhill_residence.Payment;
 
 /**
  *
@@ -26,14 +28,14 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
      * @param invoiceNo
      * @param RT
      */
-    public ResidentTenantViewPaidInvoice(String invoiceNo, ResidentTenant RT, String feeTypes) {
+    public ResidentTenantViewPaidInvoice(String invoiceNo, ResidentTenant RT, ArrayList<Payment> invoiceList) {
         initComponents();
         paidTab = (DefaultTableModel) paidTable.getModel();
         setWindowIcon();
         this.invoiceNo = invoiceNo;
         this.RT = RT;
         this.unitNo = this.RT.getUnitNo();
-        setTable(feeTypes);
+        setTable(invoiceList);
         setFixData();
     }
 
@@ -114,7 +116,7 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(13, 24, 42));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("ACCOUNT EXECUTIVE");
+        jLabel2.setText("PARKHILL RESIDENCE RESIDENT & TENANT");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(102, 102, 102));
@@ -695,7 +697,7 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
 
     private void jPanel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseClicked
         // TODO add your handling code here:
-        new ResidentTenantInvoicePaymentGateway(invoiceNo, RT, total).setVisible(true);
+        RT.toInvoice(RT);
         dispose();
     }//GEN-LAST:event_jPanel5MouseClicked
 
@@ -836,54 +838,39 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
         visitorPassOuterTab.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_visitorPassOuterTabMouseEntered
 
-    private void setTable(String feeTypes) {
+    private void setTable(ArrayList<Payment> invoiceList) {
         ArrayList<String> toTable = new ArrayList<>();
-        
-        feeTypes = feeTypes + ",";
-        String[] feeTypeList = feeTypes.split(",");
-        
-        ArrayList<String> feeList = new ArrayList<>(Arrays.asList(feeTypeList));
-        
-        ArrayList<ArrayList> invoiceList = RT.getCurrentUnitInvoice(this.RT.getUnitNo());
-        ArrayList<String> compList = invoiceList.get(1);
         
         LocalDate latestDate = null;
         double totalAmount = 0;
-        for (String eachComp : compList) {
-            String[] compDet = eachComp.split(RT.TF.sp);
-            String compInv = compDet[0];
-            
-            if (compInv.equals(this.invoiceNo)) {
-                String compType = compDet[2];
-                if (feeList.contains(compType)) {
-                    String issueDate = compDet[11];
-                    String consump = compDet[4];
-                    String unit = compDet[5];
-                    String unitPrice = compDet[6];
-                    String totalPrice = compDet[7];
-                    String payDate = compDet[9].toUpperCase() + " - " + compDet[10];
-                    
-                    LocalDate eachDate = RT.DTF.formatDate2(compDet[10]);
-                    if (latestDate != null) {
-                        if (eachDate.isAfter(latestDate)) {
-                            latestDate = eachDate;
-                        }
-                    }
-                    else {
-                        latestDate = eachDate;
-                    }
-                    
-                    totalAmount = Double.parseDouble(totalPrice) + totalAmount;
-                    
-                    String[] data = {compType, issueDate, consump, unit, unitPrice, payDate, totalPrice};
-                    String line = "";
-                    for (String eachData : data) {
-                        line = line + eachData + RT.TF.sp;
-                    }
-                    
-                    toTable.add(line);
+        for (Payment eachComp : invoiceList) {
+            String compType = eachComp.getFeeType();
+            String issueDate = eachComp.getIssuedDate();
+            String consump = eachComp.getConsumption();
+            String unit = eachComp.getUnit();
+            float unitPrice = eachComp.getUnitPrice();
+            float totalPrice = eachComp.getTotalPrice();
+            String payDate = eachComp.getPaymentBy().toUpperCase() + " - " + eachComp.getPaymentDate();
+
+            LocalDate eachDate = RT.DTF.formatDate2(eachComp.getPaymentDate());
+            if (latestDate != null) {
+                if (eachDate.isAfter(latestDate)) {
+                    latestDate = eachDate;
                 }
             }
+            else {
+                latestDate = eachDate;
+            }
+
+            totalAmount = totalPrice + totalAmount;
+
+            String[] data = {compType, issueDate, consump, unit, String.format("%.02f", unitPrice), payDate, String.format("%.02f", totalPrice)};
+            String line = "";
+            for (String eachData : data) {
+                line = line + eachData + RT.TF.sp;
+            }
+
+            toTable.add(line);
         }
         
         lastPayDate.setText(String.valueOf(latestDate));
@@ -895,7 +882,7 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
     
     private void tableDesignSetUp() {
         int[] columnIgnore = {0};
-        int[] columnLength = {290, 110, 80, 110, 110, 150, 110};
+        int[] columnLength = {250, 110, 100, 110, 110, 150, 130};
         RT.setTableDesign(paidTable, jLabel2, columnLength, columnIgnore);
     }
     

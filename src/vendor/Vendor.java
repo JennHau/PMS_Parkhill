@@ -19,6 +19,7 @@ import pms_parkhill_residence.CRUD;
 import pms_parkhill_residence.Complaint;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.PMS_DateTimeFormatter;
+import pms_parkhill_residence.Payment;
 import pms_parkhill_residence.TextFiles;
 import pms_parkhill_residence.Users;
 
@@ -32,6 +33,7 @@ public class Vendor extends Users{
     CRUD crud = new CRUD();
     PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
     Complaint CP = new Complaint();
+    Payment PYM = new Payment();
     
     private String unitNo;
     

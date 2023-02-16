@@ -55,7 +55,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
     
     private void paymentHistoryTableSetUp() throws ParseException {
         ArrayList<String> receiptList = RT.getCurrentUnitIssuedReceipt(this.RT.getUnitNo());
-        ArrayList<String> facilityPay = RT.getCurrentUnitFacilityPayment(this.RT.getUnitNo());
+        ArrayList<String> facilityPay = RT.PYM.getCurrentUnitFacilityPayment(this.RT.getUnitNo());
         ArrayList<String> sortedList;
         
         ArrayList<String> arrangedList = new ArrayList<>();
@@ -91,7 +91,9 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
                 String toAdd = "";
             
                 String feeType = "Invoice - " + feeTypes.substring(0, feeTypes.length()-1);
+                
                 double totalPrice = RT.getTotalPricePerInvoice(invoiceNo, receiptList);
+                
                 String paidDate = String.valueOf(latestDate);
                 String[] data = {invoiceNo.toUpperCase(), feeType, String.format("%.02f", totalPrice), paidDate, "RECEIPT"};
 

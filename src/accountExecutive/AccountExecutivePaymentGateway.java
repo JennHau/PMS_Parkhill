@@ -433,7 +433,7 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
             JOptionPane.QUESTION_MESSAGE);
 
             if(result == JOptionPane.YES_OPTION){
-                PM.storePayment(PM.getInvoiceNo(), userIDTF.getText());
+//                PM.storePayment(PM.getInvoiceNo(), userIDTF.getText());
                 JOptionPane.showMessageDialog (null, "Payment has been made successfully!", 
                     "PAYMENT", JOptionPane.INFORMATION_MESSAGE);
                 dispose();

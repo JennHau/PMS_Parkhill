@@ -37,7 +37,6 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
         initComponents();
         
         amountSetUp(totalAmount);
-
         
         setWindowIcon();
     }
@@ -320,40 +319,43 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
                     
                     if (payable) {
                         if (!itemList.isEmpty()) {
-                            ArrayList<String> paidInv = new ArrayList<>();
-                            ArrayList<String> incompInv = (ArrayList<String>) (VD.getCurrentUnitInvoice(VD.getUnitNo())).get(0);
+//                            ArrayList<String> paidInv = new ArrayList<>();
+//                            ArrayList<String> incompInv = (ArrayList<String>) (VD.getCurrentUnitInvoice(VD.getUnitNo())).get(0);
+//
+//                            for (String eachInv : incompInv) {
+//                                String[] invDet = eachInv.split(VD.TF.sp);
+//                                String invNo = invDet[0];
+//
+//                                for (String eachId : itemList) {
+//                                    if (eachId.equals(invNo)) {
+//                                        String deletedID = invDet[invDet.length-1];
+//                                        String issuedDate = invDet[invDet.length-2];
+//
+//                                        invDet[invDet.length-2] = VD.getUserID();
+//
+//                                        try {
+//                                            invDet[invDet.length-1] = DTF.changeFormatDate2(LocalDate.now().toString());
+//                                        } catch (ParseException ex) {
+//                                            Logger.getLogger(VendorPaymentCredential.class.getName()).log(Level.SEVERE, null, ex);
+//                                        }
+//
+//                                        String toPay = "";
+//                                        for (String eachData : invDet) {
+//                                            toPay = toPay + eachData + VD.TF.sp;
+//                                        }
+//
+//                                        toPay = toPay + issuedDate + VD.TF.sp + deletedID + VD.TF.sp;
+//
+//                                        paidInv.add(toPay);
+//                                    }
+//                                }
+//                            }
+//                            VD.crud.create(VD.TF.paymentFile, paidInv);
 
-                            for (String eachInv : incompInv) {
-                                String[] invDet = eachInv.split(VD.TF.sp);
-                                String invNo = invDet[0];
-
-                                for (String eachId : itemList) {
-                                    if (eachId.equals(invNo)) {
-                                        String deletedID = invDet[invDet.length-1];
-                                        String issuedDate = invDet[invDet.length-2];
-
-                                        invDet[invDet.length-2] = VD.getUserID();
-
-                                        try {
-                                            invDet[invDet.length-1] = DTF.changeFormatDate2(LocalDate.now().toString());
-                                        } catch (ParseException ex) {
-                                            Logger.getLogger(VendorPaymentCredential.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
-
-                                        String toPay = "";
-                                        for (String eachData : invDet) {
-                                            toPay = toPay + eachData + VD.TF.sp;
-                                        }
-
-                                        toPay = toPay + issuedDate + VD.TF.sp + deletedID + VD.TF.sp;
-
-                                        paidInv.add(toPay);
-                                    }
-                                }
+                            for (String eachInvId : itemList) {
+//                                VD.PYM.storePayment(eachInvId, VD.getUserID());
                             }
-
-                            VD.crud.create(VD.TF.paymentFile, paidInv);
-
+                            
                             JOptionPane.showMessageDialog (null, "Payment has been made successfully!", 
                             "PAYMENT", JOptionPane.INFORMATION_MESSAGE);
 

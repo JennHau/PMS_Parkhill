@@ -12,7 +12,6 @@ import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -589,18 +588,6 @@ public class BuildingExecutive extends Users{
         pw.flush();
     }
     
-    // update the complaint status method
-    public void updateComplaintStatus(Complaint complaints) {
-        String[] complaintDetails = complaints.toString().split(TF.sp);
-        
-        String complaint = "";
-        for (String eachData : complaintDetails) {
-            complaint += eachData + TF.sp;
-        }
-        
-        CRUD crud = new CRUD();
-        crud.update(TF.complaintFiles, complaintDetails[0], complaint, 0);
-    }
     
     // get all available block from list
     public ArrayList getAvailableBlock() {
@@ -744,15 +731,15 @@ public class BuildingExecutive extends Users{
         int tableRowLength = table.getRowCount();
         
         ArrayList<String> tableData = new ArrayList<>();
-        
-        String header = "";
-        for (int colCount = 0; colCount < tableColumnLength; colCount++) {
-            String headerData = table.getColumnName(colCount);
-            header = header + headerData + TF.sp;
-        }
-        
-        tableData.add(header);
-        
+//        
+//        String header = "";
+//        for (int colCount = 0; colCount < tableColumnLength; colCount++) {
+//            String headerData = table.getColumnName(colCount);
+//            header = header + headerData + TF.sp;
+//        }
+//        
+//        tableData.add(header);
+//        
         for (int rowCount = 0; rowCount < tableRowLength; rowCount++) {
             
             String rowData = "";
@@ -841,9 +828,9 @@ public class BuildingExecutive extends Users{
             ex.printStackTrace();
         }
     }
-    public void toPatrollingManagement(JFrame frame, BuildingExecutive BE) throws IOException {
+    public void toPatrollingManagement(JFrame frame, BuildingExecutive BE, LocalDate inputDate) throws IOException {
         BuildingExecutivePatrollingManagement page;
-        page = new BuildingExecutivePatrollingManagement(BE);
+        page = new BuildingExecutivePatrollingManagement(BE, inputDate);
         page.setVisible(true);
         frame.dispose();
     }
@@ -887,7 +874,7 @@ public class BuildingExecutive extends Users{
         page.setVisible(true);
     }
     public void toAllReportsPage(BuildingExecutive BE, String reportTitle, ArrayList tableData) {
-        BuildingExecutiveAllReportsPage page = new BuildingExecutiveAllReportsPage(BE, reportTitle, tableData);
+        BuildingExecutivePatrollingReportPage page = new BuildingExecutivePatrollingReportPage(BE, reportTitle, tableData);
         page.setVisible(true);
     }
     public void toProfile(BuildingExecutive BE) {

@@ -471,7 +471,7 @@ public class ResidentTenantPaymentGatewayModifyFacilityBooking extends javax.swi
                             +";"+ totalPrice +";"+ String.valueOf(LocalDate.now()) +";");
                 }
                 
-                RT.toPaymentCredential(RT, totalPending, newData, true, true);
+                RT.toPaymentCredential(RT, totalPending, newData, true, true, null);
             }
         }
     }//GEN-LAST:event_bookBtActionPerformed

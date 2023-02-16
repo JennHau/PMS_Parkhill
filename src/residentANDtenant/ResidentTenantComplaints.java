@@ -24,7 +24,7 @@ import pms_parkhill_residence.FileHandling;
 public class ResidentTenantComplaints extends javax.swing.JFrame {
     private final ResidentTenant RT;
     FileHandling fh = new FileHandling();
-    Complaint CP = new Complaint();
+    Complaint CP;
     
     DefaultTableModel pendingProgressTable;
     DefaultTableModel completedTable;
@@ -63,16 +63,20 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
         compStatusTF.setText("");
         
         this.complaintID = null;
+        this.CP = null;
     }
     
     private void complaintsTableSetUp() {
-        ArrayList<ArrayList> currentRTcomplaints = CP.getComplaints(RT.getUserID());
+        List<ArrayList<Complaint>> currentRTcomplaints = RT.CP.getComplaints(RT.getUserID());
         
-        ArrayList<String> pendingComp = currentRTcomplaints.get(0);
-        ArrayList<String> completedComp = currentRTcomplaints.get(1);
+        ArrayList<Complaint> pendingComp = currentRTcomplaints.get(0);
+        ArrayList<Complaint> progressingComp = currentRTcomplaints.get(1);
+        ArrayList<Complaint> completedComp = currentRTcomplaints.get(2);
         
-        RT.setTableRow(pendingProgressTable, pendingComp);
-        RT.setTableRow(completedTable, completedComp);
+        pendingComp.addAll(progressingComp);
+        
+        RT.setTableRow(pendingProgressTable, RT.CP.tableFormForRTandVD(pendingComp));
+        RT.setTableRow(completedTable, RT.CP.tableFormForRTandVD(completedComp));
         
         tableDesignSetUp();
     }
@@ -832,21 +836,7 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
     }//GEN-LAST:event_penProgCompTableMouseClicked
 
     private void deleteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBTNActionPerformed
-        // Remove complaint from complaintFile
-        RT.crud.delete(RT.TF.complaintFiles, complaintID, 0);
-        
-        // Remove complaint job in employee jobFile
-        ArrayList<String> removedJob = new ArrayList<>();
-        List<String> jobFile = fh.fileRead(RT.TF.employeeJobFile);
-        for (String eachJob : jobFile) {
-            String compId = eachJob.split(RT.TF.sp)[2];
-            
-            if (!compId.equals(this.complaintID)) {
-                removedJob.add(eachJob);
-            }
-        }
-        
-        fh.fileWrite(RT.TF.employeeJobFile, false, removedJob);
+        CP.removeComplaint();
         
         complaintsTableSetUp();
         
@@ -855,6 +845,8 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
 
     private void registerBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBTNActionPerformed
         // TODO add your handling code here:
+        this.CP = null;
+        
         complaintID = RT.CP.getNewCompId();
         complaintIdTF.setText(complaintID.toUpperCase());
         compDetTA.setText("");
@@ -875,37 +867,22 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
 
     private void saveBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBTNActionPerformed
         // TODO add your handling code here:
-        ArrayList<String> newCompData = new ArrayList<>();
         
         String compDes = compDetTA.getText();
         String compStatus = compStatusTF.getText();
-        List<String> compFile = fh.fileRead(RT.TF.complaintFiles);
         
-        boolean notFound = true;
-        for (String eachComp : compFile) {
-            String compId = eachComp.split(RT.TF.sp)[0];
+        String[] compData = {this.complaintID, RT.getUserID(), compDes, RT.DTF.formatDate(LocalDate.now().toString()).toString(), RT.DTF.formatTime(LocalTime.now().toString()).toString(), compStatus, RT.TF.empty, RT.TF.empty};
+        
+        if (CP != null) {
+            CP.setComplaintDetails(compDes);
             
-            if (compId.equals(this.complaintID)) {
-                String updateInfo = this.complaintID + RT.TF.sp + RT.getUserID() + RT.TF.sp + 
-                                    compDes + RT.TF.sp + LocalDate.now() + RT.TF.sp + RT.DTF.formatTime(LocalTime.now().toString()) + RT.TF.sp +
-                                    compStatus + RT.TF.sp + eachComp.split(RT.TF.sp)[6] + RT.TF.sp + 
-                                    eachComp.split(RT.TF.sp)[7] + RT.TF.sp; 
-                newCompData.add(updateInfo);
-                notFound = false;
-            }
-            else {
-                newCompData.add(eachComp);
-            }
+            CP.updateComplaint();
         }
-        
-        if (notFound) {
-            String newInfo = this.complaintID + RT.TF.sp + RT.getUserID() + RT.TF.sp +
-                             compDes + RT.TF.sp + LocalDate.now() + RT.TF.sp + RT.DTF.formatTime(LocalTime.now().toString()) + RT.TF.sp +
-                             compStatus + RT.TF.sp + RT.TF.empty + RT.TF.sp + RT.TF.empty + RT.TF.sp;
-            newCompData.add(newInfo);
+        else {
+            CP = new Complaint(compData);
+            
+            CP.storeNewComplaint();
         }
-        
-        fh.fileWrite(RT.TF.complaintFiles, false, newCompData);
         
         complaintsTableSetUp();
         
@@ -1051,10 +1028,13 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
     private void tableSelected(int colSel, int rowSel, DefaultTableModel table) {
         if (colSel == 5) {
             this.complaintID = table.getValueAt(rowSel, 0).toString();
-            String complaintDet = table.getValueAt(rowSel, 1).toString();
-            String compStatus = table.getValueAt(rowSel, 4).toString();
             
-            complaintIdTF.setText(complaintID);
+            CP = new Complaint(this.complaintID.toLowerCase());
+            
+            String complaintDet = CP.getComplaintDetails();
+            String compStatus = CP.getComplaintStatus();
+            
+            complaintIdTF.setText(this.complaintID);
             compDetTA.setText(complaintDet);
             compStatusTF.setText(compStatus);
             

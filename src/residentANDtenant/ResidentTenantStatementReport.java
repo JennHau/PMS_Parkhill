@@ -353,7 +353,7 @@ public class ResidentTenantStatementReport extends javax.swing.JFrame {
     
     private void setDefault() {
         try {
-            ArrayList<String> statementList = RT.getCurrentUnitMonthStatement(monthNyear);
+            ArrayList<String> statementList = RT.PYM.displayOneStatement(this.RT.getUnitNo(), monthNyear);
             
             RT.setTableRow(stateTab, statementList);
             

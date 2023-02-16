@@ -11,6 +11,7 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import pms_parkhill_residence.Invoice;
 
 /**
  *
@@ -44,18 +45,16 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
     }
     
     private void pendingFeeTableSetUp() {
-        ArrayList<ArrayList> invoiceList = RT.getCurrentUnitInvoice(this.RT.getUnitNo());
-        ArrayList<String> incompleteInv = invoiceList.get(0);
+        ArrayList<Invoice> incompleteInv = RT.PYM.getCurrentUnitInvoice(this.RT.getUnitNo());
         ArrayList<String> toTable = new ArrayList<>();
         
         float totalAmount = 0;
         int itemNo = 1;
-        for (String eachIncomp : incompleteInv) {
-            String[] incompDet = eachIncomp.split(RT.TF.sp);
-            String itemID = incompDet[0];
-            String itemDet = incompDet[2];
+        for (Invoice eachIncomp : incompleteInv) {
+            String itemID = eachIncomp.getInvoiceNo();
+            String itemDet = eachIncomp.getFeeType();
             
-            double amount = RT.getTotalPricePerInvoice(itemID, incompleteInv);
+            double amount = RT.PYM.getTotalPricePerInvoice(itemID, incompleteInv);
 
             String[] list = {String.valueOf(itemNo), itemID.toUpperCase(), itemDet, String.format("%.02f", amount)};
 
@@ -759,16 +758,17 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
 
     private void payAllBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payAllBTNActionPerformed
         // TODO add your handling code here:
-        ArrayList<String> itemId = new ArrayList<>();
+        ArrayList<Invoice> invoiceList = new ArrayList<>();
         int tableSize = pendingFeeTable.getRowCount();
         for (int count = 0; count < tableSize; count++) {
             String invNo = pendingFeeTable.getValueAt(count, 1).toString();
-            itemId.add(invNo);
+            ArrayList<Invoice> invoices = RT.PYM.getSameUnpaidInvoiceNo(this.RT.getUnitNo(), invNo.toLowerCase());
+            invoiceList.addAll(invoices);
         }
         
         String totalAmount = totalPendingFeeTF.getText();
         
-        RT.toPaymentCredential(RT, totalAmount, itemId, false, false);
+        RT.toPaymentCredential(RT, totalAmount, null, false, false, invoiceList);
     }//GEN-LAST:event_payAllBTNActionPerformed
 
     private void payOneBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payOneBTNActionPerformed

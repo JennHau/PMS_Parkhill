@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
@@ -122,7 +123,7 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
     
     private void setPatrollingReportTableDesign() {
         int[] columnIgnore = {6};
-        int[] columnLength = {60, 110, 131, 100, 90, 100, 172, 120, 90};
+        int[] columnLength = {60, 110, 131, 100, 115, 100, 177, 120, 90};
         BE.setTableDesign(patrollingReportTable, jLabel2, columnLength, columnIgnore);
     }
     
@@ -302,7 +303,6 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
             }
         });
 
-        patrollingReportTable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         patrollingReportTable.setForeground(new java.awt.Color(51, 51, 51));
         patrollingReportTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -750,6 +750,10 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
         if (!tableData.isEmpty()) {
             BE.toAllReportsPage(BE, reportTitle, tableData);
         }
+        else {
+            JOptionPane.showMessageDialog (null, "The report has no data...", 
+                                                    "GENERATE REPORT", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void employeeJobLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeJobLabelMouseClicked
@@ -832,7 +836,7 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, BE);
+            BE.toPatrollingManagement(this, BE, null);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -842,7 +846,7 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, BE);
+            BE.toPatrollingManagement(this, BE, null);
         } catch (IOException ex) {
             System.out.println(ex);
         }

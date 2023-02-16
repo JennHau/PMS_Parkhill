@@ -31,10 +31,10 @@ public class ResidentTenantBookFacility extends javax.swing.JFrame {
     AdminExecutive ae = new AdminExecutive();
     
     private final Facility fb;
-    private String facilityID; 
-    private String facilityName; 
+    private final String facilityID; 
+    private final String facilityName; 
     private String bookingID; 
-    private Integer quantity;
+    private final Integer quantity;
     
     /**
      * Creates new form homePage
@@ -994,7 +994,7 @@ public class ResidentTenantBookFacility extends javax.swing.JFrame {
         RT.toComplaints(RT);
         this.dispose();
     }//GEN-LAST:event_complaintsInnerTabMouseClicked
-
+    
     private void complaintsInnerTabMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_complaintsInnerTabMouseEntered
         // TODO add your handling code here:
         complaintsInnerTab.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -1033,8 +1033,7 @@ public class ResidentTenantBookFacility extends javax.swing.JFrame {
             String pickDate = String.valueOf(datePicker1.getDate());
             String variation = (String)variationCB.getSelectedItem();
             List<String> availableList = ae.extractFacilityTimeSlot(facilityID, variation, pickDate, bookingID);
-
-
+            
             for (int i = 0; i < availableList.size(); i++) {
                 String[] employeeDetails = availableList.get(i).split(";");
                 String facilityName = employeeDetails[0];
