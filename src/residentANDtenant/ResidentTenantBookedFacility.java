@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
@@ -37,6 +38,8 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
         
         setWindowIcon();
         bookedFacilityTableSetUp();
+        
+        setUserProfile();
     }
 
     /**
@@ -50,7 +53,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
 
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        usernameLabel = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -125,11 +128,11 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("PARKHILL RESIDENCE RESIDENT & TENANT");
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
-        jLabel7.setText("USERNAME");
+        usernameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        usernameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
+        usernameLabel.setText("USERNAME");
+        usernameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        usernameLabel.setForeground(new java.awt.Color(102, 102, 102));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -139,7 +142,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
+                .addComponent(usernameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
         jPanel3Layout.setVerticalGroup(
@@ -148,7 +151,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
+                    .addComponent(usernameLabel))
                 .addContainerGap(9, Short.MAX_VALUE))
         );
 
@@ -160,6 +163,8 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
         jLabel14.setText("BOOKED FACILITY");
         jLabel14.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
+        bookedFacilityTable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        bookedFacilityTable.setForeground(new java.awt.Color(51, 51, 51));
         bookedFacilityTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -176,6 +181,8 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        bookedFacilityTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        bookedFacilityTable.setRowHeight(25);
         bookedFacilityTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bookedFacilityTableMouseClicked(evt);
@@ -725,6 +732,23 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
         }
         
         RT.setTableRow(bookedFacTab, toTable);
+        
+        setTableDesign();
+    }
+    
+    private void setTableDesign() {
+        int[] columnIgnore = {};
+        int[] columnLength = {240, 240, 240, 240};
+        RT.setTableDesign(bookedFacilityTable, jLabel2, columnLength, columnIgnore);
+    }
+    
+    private void setUserProfile() {
+        // get current BE details
+        // Set text field
+        if (RT.getUserID() != null) {
+            String beName = RT.getFirstName() + " " + RT.getLastName();
+            usernameLabel.setText(beName);
+        }
     }
     
     private void clearbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearbtActionPerformed
@@ -1004,7 +1028,6 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
@@ -1017,6 +1040,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
     private javax.swing.JPanel paymentManagementOuterTab;
     private javax.swing.JTextField searchTextField;
     private javax.swing.JComboBox<String> statusCB;
+    private javax.swing.JLabel usernameLabel;
     private javax.swing.JLabel visitorPassInnerTab;
     private javax.swing.JPanel visitorPassOuterTab;
     // End of variables declaration//GEN-END:variables

@@ -105,7 +105,7 @@
               <Color blue="2a" green="18" red="d" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="PARKHILL RESIDENCE RESIDENT &amp; TENANT"/>
+            <Property name="text" type="java.lang.String" value="PARKHILL RESIDENCE VENDOR"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="userNameLabel">

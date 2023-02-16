@@ -16,12 +16,12 @@ import residentANDtenant.ResidentTenant;
  *
  * @author wongj
  */
-public class Payment extends Invoice{
-    
+public class Payment extends Invoice {
     private String paymentBy;
     private String paymentDate;
     private List<String> availablePayment;
     FileHandling fh = new FileHandling();
+    PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
     
     public Payment() {}
     
@@ -35,7 +35,14 @@ public class Payment extends Invoice{
         this.paymentBy = paymentBy;
         this.paymentDate = paymentDate;
     }
-
+    
+    public Payment(String[] paymentDet) {
+        super(paymentDet[0], paymentDet[1], paymentDet[2], paymentDet[3], paymentDet[4],
+            paymentDet[5], paymentDet[6], paymentDet[7], paymentDet[8], paymentDet[11], paymentDet[12]);
+        
+        this.paymentBy = paymentDet[9];
+        this.paymentDate = paymentDet[10];
+    }
     
     // extract all payments details for display
     public List<String> displayAllPayment(String status) {
@@ -147,41 +154,22 @@ public class Payment extends Invoice{
     }
     
     // method to store newly made payment
-    public void storePayment(String invoiceNo, String userID) {
-        try {
-            List<String> invoicesList = fh.fileRead("invoices.txt");
-            String[] invoicesArray = new String[invoicesList.size()];
-            invoicesList.toArray(invoicesArray);
+    public void storePayment(Invoice invoice, String userID) {
+        ArrayList<String> newData = new ArrayList<>();
 
-            List<String> newData = new ArrayList<>();
+        String todayDate = todayDate();
 
-            for (int i = 1; i < invoicesList.size(); i++) {
-                String[] invoiceDetails = invoicesArray[i].split(";");
-                String einvoiceNo = invoiceDetails[0];
-                String unitNo = invoiceDetails[1];
-                String feeType = invoiceDetails[2];
-                String target = invoiceDetails[3];
-                String consump = invoiceDetails[4];
-                String unit = invoiceDetails[5];
-                String unitPrice = invoiceDetails[6];
-                String totalPrice = invoiceDetails[7];
-                String period = invoiceDetails[8];
-                String generatedDate = invoiceDetails[9];
+        String[] invoiceData = {invoice.getInvoiceNo(), invoice.getUnitNo(), invoice.getFeeType(), invoice.getUnitCategory(), invoice.getConsumption(), invoice.getUnit(),
+                                invoice.getUnitPrice().toString(), invoice.getTotalPrice().toString(), invoice.getPeriod(), userID.toLowerCase(), todayDate, invoice.getIssuedDate(), TF.empty};
 
-                if (einvoiceNo.equals(invoiceNo)) {
-                    String todayDate = todayDate();
-                    newData.add(einvoiceNo + ";" + unitNo + ";" + feeType + ";"
-                            + target + ";" + consump + ";" + unit + ";"
-                            + unitPrice + ";" + totalPrice + ";" + period + ";"
-                            + userID.toLowerCase() + ";" + todayDate + ";" +
-                            generatedDate + ";" + "-" + ";");
-                }
-            }
-            fh.fileWrite("payment.txt", true, newData);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        String dataLine = "";
+        for (String eachInv : invoiceData) {
+            dataLine = dataLine + eachInv + TF.sp;
         }
+
+        newData.add(dataLine);
+
+        fh.fileWrite(TF.paymentFile, true, newData);
     }
     
     // store newly issued receipt
@@ -453,31 +441,23 @@ public class Payment extends Invoice{
     
     // extract specific unit statement details based on monthYear
     public ArrayList displayOneStatement(String unitNo, String monthNyear) throws ParseException{
-        ResidentTenant RT = new ResidentTenant();
-        PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
-        TextFiles TF = new TextFiles();
-        
         ArrayList<String> statementList = new ArrayList<>();
         ArrayList<String> monthStatement = new ArrayList<>();
         
         // Get all issued invoice
-        ArrayList<String> invoiceList = RT.getCurrentUnitIssuedInvoice(unitNo);
+        ArrayList<Invoice> invoiceList = super.getCurrentUnitInvoice(unitNo);
         
         // get all paid invoice
-        ArrayList<String> completedInvoice = extractSingleReceiptData(unitNo);
+        ArrayList<Payment> paymentList = getCurrentUnitPayment(unitNo);
         
         // get all facility payment
-        ArrayList<String> facilityBooking = RT.getCurrentUnitFacilityPayment(unitNo);
+        ArrayList<String> facilityBooking = getCurrentUnitFacilityPayment(unitNo);
         
         // Data Structure = Date, Transaction, Details, Amount, Payments
         // to change the issued invoice list to same data structure
-        for (String eachInv : invoiceList) {
-            String[] invDet = eachInv.split(";");
-            String issuedDate = DTF.changeFormatDate(invDet[9]);
-            String id = invDet[0];
-            String type = invDet[2];
-            String amount = invDet[7];
-            String[] data = {issuedDate, "Invoice", id + " " + type, amount, "-"};
+        for (Invoice eachInv : invoiceList) {
+            String issuedDate = DTF.changeFormatDate(eachInv.getIssuedDate());
+            String[] data = {issuedDate, "Invoice", eachInv.getInvoiceNo() + " " + eachInv.getFeeType(), eachInv.getUnitPrice().toString(), "-"};
             
             String line = "";
             for (String eachData : data) {
@@ -487,13 +467,9 @@ public class Payment extends Invoice{
             statementList.add(line);
         } 
         // change the paid invoice list to same data structure
-        for (String eachInv : completedInvoice) {
-            String[] invDet = eachInv.split(TF.sp);
-            String date = DTF.changeFormatDate(invDet[10]);
-            String id = invDet[0];
-            String type = invDet[2];
-            String amount = invDet[7];
-            String[] data = {date, "Invoice Payment", id + " " + type + " - " + amount + " in excess payments.", "-", amount};
+        for (Payment eachPm : paymentList) {
+            String date = DTF.changeFormatDate(eachPm.getPaymentDate());
+            String[] data = {date, "Invoice Payment", eachPm.getInvoiceNo() + " " + eachPm.getFeeType() + " - " + eachPm.getUnitPrice().toString() + " in excess payments.", "-", eachPm.getTotalPrice().toString()};
             
             String line = "";
             for (String eachData : data) {
@@ -501,6 +477,7 @@ public class Payment extends Invoice{
             }
             statementList.add(line);
         } 
+        
         // Change the facility booking to same data structure
         ArrayList<String> bookIdList = new ArrayList<>();
         for (String eachBook : facilityBooking) {
@@ -511,8 +488,8 @@ public class Payment extends Invoice{
                 String date = bookDet[3];
                 String type = bookDet[1];
                 String amount = bookDet[2];
-                String[] data = {date, "Facility Booking", id + "-" + type, amount, "-"};
-                String[] data2 = {date, "Booking Payment", id + " - " + amount + " in excess payments.", "-", amount};
+                String[] data = {date, "Facility Booking", id.toUpperCase() + " - " + type, amount, "-"};
+                String[] data2 = {date, "Booking Payment", id.toUpperCase() + " - " + amount + " in excess payments.", "-", amount};
                 
                 String line = "";
                 for (String eachData : data) {
@@ -587,6 +564,158 @@ public class Payment extends Invoice{
             }
         }
         return monthStatement;
+    }
+    
+    // extract current unit facility payment
+    public ArrayList getCurrentUnitFacilityPayment(String unitNo) {
+        ArrayList<String> facilityPay = new ArrayList<>();
+        List<String> facilityBooking = fh.fileRead(TF.facilityBookingFile);
+        List<String> facilityFile = fh.fileRead(TF.facilityFile);
+        ArrayList<String> reqPayFac = new ArrayList<>();
+        ArrayList<String> bookingList = new ArrayList<>();
+        
+        for (String eachFac : facilityFile) {
+            boolean paymentReq = Boolean.parseBoolean(eachFac.split(TF.sp)[3]);
+            if (paymentReq) {
+                reqPayFac.add(eachFac.split(TF.sp)[0]);
+            }
+        }
+        
+        for (String eachBooking : facilityBooking) {
+            String[] bookDet = eachBooking.split(TF.sp);
+            String uNo = bookDet[3];
+            
+            if (uNo.equals(unitNo)) {
+                String facilityId = bookDet[1];
+                if (reqPayFac.contains(facilityId)) {
+                    String bookId = bookDet[0];
+                    if (!bookingList.contains(bookId)) {
+                        String toAdd = "";
+                        String bookType = bookDet[2];
+                        String totalPrice = bookDet[8];
+                        String paidDate = bookDet[9];
+                        String[] data = {bookId.toUpperCase(), bookType, totalPrice, paidDate};
+                        for (String eachData : data) {
+                            toAdd = toAdd + eachData + TF.sp;
+                        }
+                        facilityPay.add(toAdd);
+                        bookingList.add(bookId);
+                    }
+                }
+            }
+        }
+        
+        return facilityPay;
+    }
+    
+    // extract current unit payment
+    public ArrayList<Payment> getCurrentUnitPayment(String unitNo) {
+        ArrayList<Payment> currentUnitPayment = new ArrayList<>();
+        
+        List<String> paymentFiles = fh.fileRead(TF.paymentFile);
+        
+        boolean firstLine = true;
+        for (String eachPay : paymentFiles) {
+            if (!firstLine) {
+                String[] payDet = eachPay.split(TF.sp);
+            
+                Payment payment = new Payment(payDet);
+
+                if (payment.getUnitNo().equals(unitNo)) {
+                    if (payment.getDeleteID().equals(TF.empty)) {
+                        currentUnitPayment.add(payment);
+                    }
+                }
+            }
+            
+            firstLine = false;
+        }
+        
+        return currentUnitPayment;
+    }
+    
+    public ArrayList<Invoice> getInvoiceOriginalMethod(String unitNo) {
+        return super.getCurrentUnitInvoice(unitNo);
+    }
+    
+    @Override
+    public ArrayList<Invoice> getCurrentUnitInvoice(String unitNo) {
+        ArrayList<Invoice> incompList = new ArrayList<>();
+        
+        ArrayList<Invoice> invoiceList = getInvoiceOriginalMethod(unitNo);
+        ArrayList<Payment> paymentList = getCurrentUnitPayment(unitNo);
+        
+        for (Invoice eachInv : invoiceList) {
+            String[] inv = {eachInv.getInvoiceNo(), eachInv.getFeeType()};
+            String invKey = concatenateKey(inv);
+            
+            boolean notFound = true;
+            for (Payment eachPm : paymentList) {
+                String[] pay = {eachPm.getInvoiceNo(), eachPm.getFeeType()};
+                String payKey = concatenateKey(pay);
+                
+                if (invKey.equals(payKey)) {
+                    notFound = false;
+                    break;
+                }
+            }
+            
+            if (notFound) {
+                incompList.add(eachInv);
+            }
+        }
+        
+        return incompList;
+    }
+    
+    public String concatenateKey(String[] keyList) {
+        String concatenatedKey = "";
+        for (String eachKey : keyList) {
+            concatenatedKey = concatenatedKey + eachKey + "-";
+        }
+        
+        return concatenatedKey;
+    }
+    
+    public double getTotalPricePerPayment (String invoiceId, ArrayList<Payment> dataList) {
+        double totalAmount = 0;
+        for (Payment eachPm : dataList) {
+            
+            if (eachPm.getInvoiceNo().equals(invoiceId)) {
+                double eachPrice = eachPm.getTotalPrice();
+                totalAmount += eachPrice;
+            }
+        }
+        
+        return totalAmount;
+    }
+    
+    public ArrayList<Invoice> getSameUnpaidInvoiceNo(String unitNo, String invoiceNo) {
+        ArrayList<Invoice> unpaidSameInv = new ArrayList<>();
+        
+        ArrayList<Invoice> unitInvList = getCurrentUnitInvoice(unitNo);
+        
+        for (Invoice eachInv : unitInvList) {
+            if (eachInv.getInvoiceNo().equals(invoiceNo)) {
+                unpaidSameInv.add(eachInv);
+            }
+        }
+        
+        return unpaidSameInv;
+    }
+    
+    public ArrayList<Payment> getSamePaidInvoiceNo(String unitNo, String invoiceNo) {
+        ArrayList<Payment> paidSameInv = new ArrayList<>();
+        
+        ArrayList<Payment> unitPayList = getCurrentUnitPayment(unitNo);
+        
+        for (Payment eachPay : unitPayList) {
+            if (eachPay.getInvoiceNo().equals(invoiceNo)) {
+                paidSameInv.add(eachPay);
+            }
+        }
+        
+        return paidSameInv;
     }
     
     /**

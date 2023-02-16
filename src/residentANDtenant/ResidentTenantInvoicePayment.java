@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import pms_parkhill_residence.Invoice;
 
 /**
  *
@@ -25,8 +26,9 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
      * Creates new form homePage
      * @param invoiceNo
      * @param RT
+     * @param invoiceList
      */
-    public ResidentTenantInvoicePayment(String invoiceNo, ResidentTenant RT, String feeTypes) {
+    public ResidentTenantInvoicePayment(String invoiceNo, ResidentTenant RT, ArrayList<Invoice> invoiceList) {
         initComponents();
         payTab = (DefaultTableModel) paymentTable.getModel();
         
@@ -34,7 +36,8 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
         this.invoiceNo = invoiceNo;
         this.RT = RT;
         this.unitNo = this.RT.getUnitNo();
-        setTable(feeTypes);
+        this.invoiceList = invoiceList;
+        setTable(invoiceList);
         setFixData();
     }
 
@@ -151,6 +154,8 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setText("INVOICE");
 
+        paymentTable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        paymentTable.setForeground(new java.awt.Color(51, 51, 51));
         paymentTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -167,6 +172,8 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        paymentTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        paymentTable.setRowHeight(30);
         jScrollPane1.setViewportView(paymentTable);
 
         jLabel16.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
@@ -258,33 +265,33 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(jPanel6Layout.createSequentialGroup()
-                                    .addComponent(jLabel16)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(invoiceNoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel17)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(unitNoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(106, 106, 106)
-                                    .addComponent(jLabel19)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(unitNoLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(25, Short.MAX_VALUE))))
-            .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(424, 424, 424)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel16)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(invoiceNoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(174, 174, 174)
+                                .addComponent(jLabel17)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(unitNoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(106, 106, 106)
+                                .addComponent(jLabel19)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(unitNoLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(25, Short.MAX_VALUE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -680,10 +687,11 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
     private final String invoiceNo;
     private final String unitNo;
     private String total;
+    private final ArrayList<Invoice> invoiceList;
     
     private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
         // TODO add your handling code here:
-        new ResidentTenantInvoicePaymentGateway(invoiceNo, RT, total).setVisible(true);
+        new ResidentTenantInvoicePaymentGateway(invoiceNo, RT, total, invoiceList).setVisible(true);
         dispose();
     }//GEN-LAST:event_jLabel18MouseClicked
 
@@ -694,7 +702,7 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
 
     private void jPanel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseClicked
         // TODO add your handling code here:
-        new ResidentTenantInvoicePaymentGateway(invoiceNo, RT, total).setVisible(true);
+        new ResidentTenantInvoicePaymentGateway(invoiceNo, RT, total, invoiceList).setVisible(true);
         dispose();
     }//GEN-LAST:event_jPanel5MouseClicked
 
@@ -835,52 +843,45 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
         visitorPassOuterTab.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_visitorPassOuterTabMouseEntered
 
-    private void setTable(String feeTypes) {
+    private void setTable(ArrayList<Invoice> invoiceList) {
         ArrayList<String> toTable = new ArrayList<>();
         
-        feeTypes = feeTypes + ",";
-        String[] feeTypeList = feeTypes.split(",");
-        
-        ArrayList<String> feeList = new ArrayList<>(Arrays.asList(feeTypeList));
-        
-        ArrayList<ArrayList> invoiceList = RT.getCurrentUnitInvoice(this.RT.getUnitNo());
-        ArrayList<String> incompList = invoiceList.get(0);
-        
         double totalAmount = 0;
-        for (String eachIncomp : incompList) {
-            String[] incompDet = eachIncomp.split(RT.TF.sp);
-            String incompInv = incompDet[0];
-            
-            if (incompInv.equals(this.invoiceNo)) {
-                String incompType = incompDet[2];
-                if (feeList.contains(incompType)) {
-                    String issueDate = incompDet[9];
-                    String consump = incompDet[4];
-                    String unit = incompDet[5];
-                    String unitPrice = incompDet[6];
-                    String totalPrice = incompDet[7];
-                    
-                    totalAmount = Double.parseDouble(totalPrice) + totalAmount;
-                    
-                    String[] data = {incompType, issueDate, consump, unit, unitPrice, totalPrice};
-                    String line = "";
-                    for (String eachData : data) {
-                        line = line + eachData + RT.TF.sp;
-                    }
-                    
-                    toTable.add(line);
-                }
+        for (Invoice invoice : invoiceList) {
+            String incompType = invoice.getFeeType();
+            String issueDate = invoice.getIssuedDate();
+            String consump = invoice.getConsumption();
+            String unit = invoice.getUnit();
+            String unitPrice = invoice.getUnitNo();
+            double totalPrice = invoice.getTotalPrice();
+
+            totalAmount = totalPrice + totalAmount;
+
+            String[] data = {incompType, issueDate, consump, unit, unitPrice, String.format("%.02f", totalPrice)};
+            String line = "";
+            for (String eachData : data) {
+                line = line + eachData + RT.TF.sp;
             }
+
+            toTable.add(line);
         }
         
         total = String.format("%.02f", totalAmount);
         RT.setTableRow(payTab, toTable);
+        
+        tableDesignSetUp();
     }
     
     private void setFixData() {
         invoiceNoLabel.setText(invoiceNo.toUpperCase());
         unitNoLabel.setText(unitNo.toUpperCase());
         totalLabel.setText("TOTAL: " + total);
+    }
+    
+    private void tableDesignSetUp() {
+        int[] columnIgnore = {0};
+        int[] columnLength = {180, 156, 156, 156, 156, 156};
+        RT.setTableDesign(paymentTable, jLabel2, columnLength, columnIgnore);
     }
     
     private void setWindowIcon() {

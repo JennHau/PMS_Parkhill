@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import pms_parkhill_residence.Complaints;
+import pms_parkhill_residence.Complaint;
 import pms_parkhill_residence.Dashboard;
 import pms_parkhill_residence.Users;
 
@@ -47,27 +47,15 @@ public class VendorDashboard extends javax.swing.JFrame {
     }
     
     private void setData() {
-        // Set Complaints
-        ArrayList<ArrayList> complaints = VD.CP.getComplaints(VD.getUserID());
-        ArrayList<String> pendingComp = complaints.get(0);
-        ArrayList<String> completedComp = complaints.get(1);
+        // Set Complaint
+        List<ArrayList<Complaint>> complaints = VD.CP.getComplaints(VD.getUserID());
+        ArrayList<Complaint> pendingComplaints = complaints.get(0);
+        ArrayList<Complaint> progressingComplaints = complaints.get(1);
+        ArrayList<Complaint> completedComplaints = complaints.get(2);
         
-        int pendComp = 0;
-        int progComp = 0;
-        
-        for (String eachComp : pendingComp) {
-            String compDet = eachComp.split(VD.TF.sp)[4];
-            if (compDet.equals(Complaints.cptStatus.Pending.toString())) {
-                pendComp ++;
-            }
-            else {
-                progComp ++;
-            }
-        }
-        
-        pendingCompLabel.setText(String.valueOf(pendComp));
-        progCompLabel.setText(String.valueOf(progComp));
-        completedCompLabel.setText(String.valueOf(completedComp.size()));
+        pendingCompLabel.setText(String.valueOf(pendingComplaints.size()));
+        progCompLabel.setText(String.valueOf(progressingComplaints.size()));
+        completedCompLabel.setText(String.valueOf(completedComplaints.size()));
         
         // Set pending fee amount
         ArrayList<ArrayList> pendingFee = VD.getCurrentUnitInvoice(VD.getUserID());
@@ -247,7 +235,7 @@ public class VendorDashboard extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(13, 24, 42));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("PARKHILL RESIDENCE RESIDENT & TENANT");
+        jLabel2.setText("PARKHILL RESIDENCE VENDOR");
 
         userNameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         userNameLabel.setForeground(new java.awt.Color(102, 102, 102));
@@ -1093,9 +1081,6 @@ public class VendorDashboard extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel chartPanel;
     private javax.swing.JLabel complaintsInnerTab;
-    private javax.swing.JLabel complaintsLabel3;
-    private javax.swing.JLabel complaintsLabel4;
-    private javax.swing.JLabel complaintsLabel5;
     private javax.swing.JPanel complaintsOuterTab;
     private javax.swing.JLabel completedCompLabel;
     private javax.swing.JLabel dashBoardInnerTab2;
@@ -1106,9 +1091,6 @@ public class VendorDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel22;
@@ -1116,11 +1098,8 @@ public class VendorDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
-    private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;

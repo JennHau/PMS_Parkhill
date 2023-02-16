@@ -108,7 +108,7 @@ public class VendorViewPaidInvoice extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(13, 24, 42));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("ACCOUNT EXECUTIVE");
+        jLabel2.setText("PARKHILL RESIDENCE VENDOR");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(102, 102, 102));
@@ -144,6 +144,8 @@ public class VendorViewPaidInvoice extends javax.swing.JFrame {
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setText("INVOICE");
 
+        paidTable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        paidTable.setForeground(new java.awt.Color(51, 51, 51));
         paidTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -160,6 +162,8 @@ public class VendorViewPaidInvoice extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        paidTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        paidTable.setRowHeight(30);
         jScrollPane1.setViewportView(paidTable);
         if (paidTable.getColumnModel().getColumnCount() > 0) {
             paidTable.getColumnModel().getColumn(0).setResizable(false);
@@ -723,6 +727,14 @@ public class VendorViewPaidInvoice extends javax.swing.JFrame {
         lastPayDate.setText(String.valueOf(latestDate));
         total = String.format("%.02f", totalAmount);
         VD.setTableRow(paidTab, toTable);
+        
+        tableDesignSetUp();
+    }
+    
+    private void tableDesignSetUp() {
+        int[] columnIgnore = {0};
+        int[] columnLength = {290, 110, 80, 110, 110, 150, 110};
+        VD.setTableDesign(paidTable, jLabel2, columnLength, columnIgnore);
     }
     
     private void setFixData() {

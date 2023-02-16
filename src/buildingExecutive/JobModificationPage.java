@@ -14,9 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.Complaints;
+import javax.swing.table.TableColumnModel;
+import pms_parkhill_residence.Complaint;
 import pms_parkhill_residence.FileHandling;
 
 /**
@@ -25,7 +27,7 @@ import pms_parkhill_residence.FileHandling;
  */
 public class JobModificationPage extends javax.swing.JFrame {
     private String currentBEid;
-    private Complaints complaint;
+    private Complaint complaint;
     
     DefaultTableModel jobTable;
     private final BuildingExecutive BE;
@@ -48,7 +50,7 @@ public class JobModificationPage extends javax.swing.JFrame {
      * @param employeeID
      * @throws java.io.IOException
      */
-    public JobModificationPage(BuildingExecutive BE, String positionCode, String jobID, Complaints complaint, String employeeID) throws IOException {
+    public JobModificationPage(BuildingExecutive BE, String positionCode, String jobID, Complaint complaint, String employeeID) throws IOException {
         this.BE = BE;
         this.setCurrentBEid(this.BE.getUserID());
         this.setJobId(jobID);
@@ -70,6 +72,8 @@ public class JobModificationPage extends javax.swing.JFrame {
         updateBTN.setEnabled(false);
         
         jobTF.setText("");
+        
+        setPatrollingReportTableDesign();
     }
     
     private void tableJobSetUp(String positionCode) throws IOException {
@@ -122,7 +126,7 @@ public class JobModificationPage extends javax.swing.JFrame {
                     dataField.add(timeNeededSpinner.getValue().toString()+timeValue);
 
                     if (startTimePicker.getTime()!=null) {
-                        dataField.add(BE.formatTime(startTimePicker.getTime().toString()).toString());
+                        dataField.add(BE.DTF.formatTime(startTimePicker.getTime().toString()).toString());
 
                         for (String eachData :  dataField) {
                             toLine = toLine + eachData + BE.TF.sp;
@@ -147,6 +151,12 @@ public class JobModificationPage extends javax.swing.JFrame {
         }
         
         return false;
+    }
+    
+    private void setPatrollingReportTableDesign() {
+        int[] columnIgnore = {1};
+        int[] columnLength = {60, 245, 90, 120, 80};
+        BE.setTableDesign(jobsTableUI, jLabel2, columnLength, columnIgnore);
     }
     
     /**
@@ -238,6 +248,10 @@ public class JobModificationPage extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jobsTableUI.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jobsTableUI.setForeground(new java.awt.Color(51, 51, 51));
+        jobsTableUI.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        jobsTableUI.setRowHeight(25);
         jobsTableUI.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jobsTableUIMouseClicked(evt);
@@ -485,7 +499,7 @@ public class JobModificationPage extends javax.swing.JFrame {
                 
                 String startTime = jobDetails[4];
                 if (!startTime.equals(" ")) {
-                    LocalTime jobStartTime = BE.getTimeCategory(BE.formatTime(startTime));
+                    LocalTime jobStartTime = BE.DTF.getTimeCategory(BE.DTF.formatTime(startTime));
                     startTimePicker.setTime(jobStartTime);
                     startTimePicker.setEnabled(true);
                     timeNeededSpinner.setEnabled(true);

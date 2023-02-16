@@ -29,6 +29,8 @@ public class ResidentTenantFacilityPreview extends javax.swing.JFrame {
         this.facilityID = facilityID;
         setDefault();
         setImage();
+        
+        setUserProfile();
     }
 
     /**
@@ -662,6 +664,15 @@ public class ResidentTenantFacilityPreview extends javax.swing.JFrame {
             statusPanel.setBackground(new Color(204,0,0)); 
             statusLabel.setForeground(new Color(255,255,255));
             bookBt.setEnabled(false);
+        }
+    }
+    
+    private void setUserProfile() {
+        // get current BE details
+        // Set text field
+        if (RT.getUserID() != null) {
+            String beName = RT.getFirstName() + " " + RT.getLastName();
+            jLabel7.setText(beName);
         }
     }
     

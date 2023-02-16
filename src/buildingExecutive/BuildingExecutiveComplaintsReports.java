@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -40,8 +41,11 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
         comboBoxSetUp();
         
         setWindowIcon();
+        
+        tableDesignSetUp();
     }
     
+    // set up combo box selection
     private void comboBoxSetUp() {
         ArrayList<String> dateRange = getDateRange();
         
@@ -53,6 +57,7 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
         monthCB.setSelectedItem(0);
     }
     
+    // set up table
     private void compTabSetUp() {
         ArrayList<String> allComp = new ArrayList<>();
         
@@ -132,6 +137,14 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
         }
     }
     
+    // table design
+    private void tableDesignSetUp() {
+        int[] columnIgnore = {3};
+        int[] columnLength = {100, 120, 120, 510, 120};
+        BE.setTableDesign(complaintReportTable, jLabel2, columnLength, columnIgnore);
+    }
+    
+    // get date range of the complaint
     private ArrayList getDateRange() {
         List<String> allComp = BE.fh.fileRead(BE.TF.complaintFiles);
         
@@ -176,48 +189,6 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
         }
         
         return complaintsDateRange;
-    }
-    
-    private void setComplaintReportTableDesign() {
-        // design for the table header
-        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
-        headerRenderer.setBackground(new Color(13, 24, 42));
-//        headerRenderer.setHorizontalAlignment(jLabel13.CENTER);
-        headerRenderer.setForeground(new Color(255, 255, 255));
-        for (int i = 0; i < complaintReportTable.getModel().getColumnCount(); i++) {
-            complaintReportTable.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
-        }
-        
-        // design for the table row
-        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
-//        rowRenderer.setHorizontalAlignment(jLabel13.CENTER);
-        for (int i = 0; i < complaintReportTable.getModel().getColumnCount(); i++) {
-            if (i != 0) {
-                complaintReportTable.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
-            }
-        }
-        
-        TableColumnModel columnModel = complaintReportTable.getColumnModel();
-        // set first column width of the table to suitable value
-        columnModel.getColumn(0).setMaxWidth(150);
-        columnModel.getColumn(0).setMinWidth(150);
-        columnModel.getColumn(0).setPreferredWidth(150);
-
-        columnModel.getColumn(1).setMaxWidth(90);
-        columnModel.getColumn(1).setMinWidth(90);
-        columnModel.getColumn(1).setPreferredWidth(90);
-
-        columnModel.getColumn(2).setMaxWidth(120);
-        columnModel.getColumn(2).setMinWidth(120);
-        columnModel.getColumn(2).setPreferredWidth(120);
-
-        columnModel.getColumn(3).setMaxWidth(80);
-        columnModel.getColumn(3).setMinWidth(80);
-        columnModel.getColumn(3).setPreferredWidth(80);
-
-        columnModel.getColumn(4).setMaxWidth(120);
-        columnModel.getColumn(4).setMinWidth(120);
-        columnModel.getColumn(4).setPreferredWidth(120);
     }
     
     /**
@@ -290,16 +261,16 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(153, 153, 153), null, null));
 
-        jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(13, 24, 42));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("PARKHILL RESIDENCE BUILDING EXECUTIVE");
+        jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(13, 24, 42));
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
         jLabel7.setText("USERNAME");
+        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -335,10 +306,10 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
             }
         });
 
-        complaintsLabel.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        complaintsLabel.setForeground(new java.awt.Color(13, 24, 42));
         complaintsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         complaintsLabel.setText("Complaints");
+        complaintsLabel.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        complaintsLabel.setForeground(new java.awt.Color(13, 24, 42));
         complaintsLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 complaintsLabelMouseClicked(evt);
@@ -348,9 +319,9 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
             }
         });
 
+        pendingFeeLine1.setText("jTextField1");
         pendingFeeLine1.setBackground(new java.awt.Color(13, 24, 42));
         pendingFeeLine1.setForeground(new java.awt.Color(13, 24, 42));
-        pendingFeeLine1.setText("jTextField1");
 
         employeeJobLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         employeeJobLabel.setText("Employee Job");
@@ -363,9 +334,9 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
             }
         });
 
+        jLabel24.setText("Month/Year: ");
         jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel24.setText("Month/Year: ");
 
         monthCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         monthCB.addActionListener(new java.awt.event.ActionListener() {
@@ -374,9 +345,9 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
             }
         });
 
+        jLabel23.setText("Complaints Report");
         jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel23.setText("Complaints Report");
 
         complaintReportTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -389,6 +360,9 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
                 "DATE", "COMPLAINT ID", "COMPLAINER ID", "DETAILS", "STATUS"
             }
         ));
+        complaintReportTable.setForeground(new java.awt.Color(51, 51, 51));
+        complaintReportTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        complaintReportTable.setRowHeight(30);
         jScrollPane1.setViewportView(complaintReportTable);
 
         jButton1.setText("View");
@@ -470,9 +444,9 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Dashboard");
         jLabel1.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Dashboard");
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel1MouseClicked(evt);
@@ -506,9 +480,9 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
             }
         });
 
+        jobAssignationInnerTab.setText("Job Assignation");
         jobAssignationInnerTab.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jobAssignationInnerTab.setForeground(new java.awt.Color(255, 255, 255));
-        jobAssignationInnerTab.setText("Job Assignation");
         jobAssignationInnerTab.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jobAssignationInnerTabMouseClicked(evt);
@@ -542,10 +516,10 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setText("Complaints");
         jLabel5.setBackground(new java.awt.Color(13, 24, 42));
         jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Complaints");
         jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel5MouseClicked(evt);
@@ -579,9 +553,9 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
             }
         });
 
+        jLabel8.setText("Reports");
         jLabel8.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("Reports");
         jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel8MouseClicked(evt);
@@ -607,10 +581,10 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
 
         jPanel12.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel10.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
         jLabel10.setText("LOGOUT");
+        jLabel10.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
@@ -639,10 +613,10 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
             }
         });
 
-        jLabel11.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
         jLabel11.setText("VIEW PROFILE");
+        jLabel11.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel11MouseClicked(evt);
@@ -676,9 +650,9 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setText("Patrolling Management");
         jLabel6.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Patrolling Management");
         jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel6MouseClicked(evt);
@@ -799,7 +773,11 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
         String reportTitle = "Complaint Report - " + monthCB.getSelectedItem().toString();
         
         if (!tableData.isEmpty()) {
-            BE.toAllReportsPage(BE, reportTitle, tableData);
+            new BuildingExecutiveComplaintReportPage(BE, reportTitle, tableData).setVisible(true);
+        }
+        else {
+            JOptionPane.showMessageDialog (null, "The report has no data...", 
+                                                    "GENERATE REPORT", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -877,7 +855,7 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, BE);
+            BE.toPatrollingManagement(this, BE, null);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -887,7 +865,7 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, BE);
+            BE.toPatrollingManagement(this, BE, null);
         } catch (IOException ex) {
             System.out.println(ex);
         }

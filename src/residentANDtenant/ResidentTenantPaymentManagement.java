@@ -11,6 +11,7 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import pms_parkhill_residence.Invoice;
 
 /**
  *
@@ -39,21 +40,21 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
         
         setWindowIcon();
         pendingFeeTableSetUp();
+        
+        setCurrentUserProfile();
     }
     
     private void pendingFeeTableSetUp() {
-        ArrayList<ArrayList> invoiceList = RT.getCurrentUnitInvoice(this.RT.getUnitNo());
-        ArrayList<String> incompleteInv = invoiceList.get(0);
+        ArrayList<Invoice> incompleteInv = RT.PYM.getCurrentUnitInvoice(this.RT.getUnitNo());
         ArrayList<String> toTable = new ArrayList<>();
         
         float totalAmount = 0;
         int itemNo = 1;
-        for (String eachIncomp : incompleteInv) {
-            String[] incompDet = eachIncomp.split(RT.TF.sp);
-            String itemID = incompDet[0];
-            String itemDet = incompDet[2];
+        for (Invoice eachIncomp : incompleteInv) {
+            String itemID = eachIncomp.getInvoiceNo();
+            String itemDet = eachIncomp.getFeeType();
             
-            double amount = RT.getTotalPricePerInvoice(itemID, incompleteInv);
+            double amount = RT.PYM.getTotalPricePerInvoice(itemID, incompleteInv);
 
             String[] list = {String.valueOf(itemNo), itemID.toUpperCase(), itemDet, String.format("%.02f", amount)};
 
@@ -69,10 +70,18 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
         
         RT.setTableRow(penFeeTab, toTable);
         totalPendingFeeTF.setText(String.format("%.02f", totalAmount));
+        
+        tableDesignSetUp();
     }
     
     private void setCurrentUserProfile() {
         userNameLabel.setText(RT.getFirstName() + " " + RT.getLastName());
+    }
+    
+    private void tableDesignSetUp() {
+        int[] columnIgnore = {2};
+        int[] columnLength = {121, 210, 386, 210};
+        RT.setTableDesign(pendingFeeTable, jLabel2, columnLength, columnIgnore);
     }
 
     /**
@@ -227,6 +236,8 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
             }
         });
 
+        pendingFeeTable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        pendingFeeTable.setForeground(new java.awt.Color(51, 51, 51));
         pendingFeeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -238,6 +249,8 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
                 "NO.", "ITEM ID", "ITEM NAME", "AMOUNT (RM)"
             }
         ));
+        pendingFeeTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        pendingFeeTable.setRowHeight(30);
         jScrollPane1.setViewportView(pendingFeeTable);
 
         jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
@@ -340,7 +353,7 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
                 .addComponent(jLabel23)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -745,16 +758,17 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
 
     private void payAllBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payAllBTNActionPerformed
         // TODO add your handling code here:
-        ArrayList<String> itemId = new ArrayList<>();
+        ArrayList<Invoice> invoiceList = new ArrayList<>();
         int tableSize = pendingFeeTable.getRowCount();
         for (int count = 0; count < tableSize; count++) {
             String invNo = pendingFeeTable.getValueAt(count, 1).toString();
-            itemId.add(invNo);
+            ArrayList<Invoice> invoices = RT.PYM.getSameUnpaidInvoiceNo(this.RT.getUnitNo(), invNo.toLowerCase());
+            invoiceList.addAll(invoices);
         }
         
         String totalAmount = totalPendingFeeTF.getText();
         
-        RT.toPaymentCredential(RT, totalAmount, itemId, false, false);
+        RT.toPaymentCredential(RT, totalAmount, null, false, false, invoiceList);
     }//GEN-LAST:event_payAllBTNActionPerformed
 
     private void payOneBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payOneBTNActionPerformed

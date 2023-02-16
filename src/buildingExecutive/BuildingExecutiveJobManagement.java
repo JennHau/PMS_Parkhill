@@ -9,18 +9,14 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.io.IOException;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
-import pms_parkhill_residence.Complaints;
+import pms_parkhill_residence.Complaint;
 
 /**
  * 
@@ -30,7 +26,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
     public static BuildingExecutiveJobManagement BEjobManagement;
     
     private final BuildingExecutive BE;
-    private Complaints complaint;
+    private final Complaint complaint;
     
     private DefaultTableModel assignedEmployeeTable;
     private DefaultTableModel unassignedEmployeeTable;
@@ -52,7 +48,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
      * @param fromComplaintsPage
      * @throws java.io.IOException
      */
-    public BuildingExecutiveJobManagement(BuildingExecutive BE, Complaints complaint, boolean fromComplaintsPage) throws IOException 
+    public BuildingExecutiveJobManagement(BuildingExecutive BE, Complaint complaint, boolean fromComplaintsPage) throws IOException 
     {
         BEjobManagement = this;
         this.BE = BE;
@@ -87,8 +83,12 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         
         // if is from complaint page (run this action)
         fromComplaintPageAction(fromComplaintsPage);
+        
+        // Set table design
+        tableDesignSetUp();
     }
     
+    // check is from complaint page or not
     private void fromComplaintPageAction(boolean fromComplaintsPage) {
         if (fromComplaintsPage) {
             // if from complaint page (Cannot access assigned job table)
@@ -103,89 +103,15 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
             complaintIdTF.setText("-");
         }
     }
-        
-    private void setUnassignedTableDesign() {
-        // design for the table header
-        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
-        headerRenderer.setBackground(new Color(13, 24, 42));
-//        headerRenderer.setHorizontalAlignment(jLabel13.CENTER);
-        headerRenderer.setForeground(new Color(255, 255, 255));
-        for (int i = 0; i < unassignedEmplyTable.getModel().getColumnCount(); i++) {
-            unassignedEmplyTable.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
-        }
-        
-        // design for the table row
-        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
-//        rowRenderer.setHorizontalAlignment(jLabel13.CENTER);
-        for (int i = 0; i < unassignedEmplyTable.getModel().getColumnCount(); i++) {
-            if (i != 0) {
-                unassignedEmplyTable.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
-            }
-        }
-        
-        TableColumnModel columnModel = unassignedEmplyTable.getColumnModel();
-        // set first column width of the table to suitable value
-        columnModel.getColumn(0).setMaxWidth(150);
-        columnModel.getColumn(0).setMinWidth(150);
-        columnModel.getColumn(0).setPreferredWidth(150);
-
-        columnModel.getColumn(1).setMaxWidth(90);
-        columnModel.getColumn(1).setMinWidth(90);
-        columnModel.getColumn(1).setPreferredWidth(90);
-
-        columnModel.getColumn(2).setMaxWidth(120);
-        columnModel.getColumn(2).setMinWidth(120);
-        columnModel.getColumn(2).setPreferredWidth(120);
-
-        columnModel.getColumn(3).setMaxWidth(80);
-        columnModel.getColumn(3).setMinWidth(80);
-        columnModel.getColumn(3).setPreferredWidth(80);
-    }
     
-    private void setAssignedTableDesign() {
-        // design for the table header
-        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
-        headerRenderer.setBackground(new Color(13, 24, 42));
-//        headerRenderer.setHorizontalAlignment(jLabel13.CENTER);
-        headerRenderer.setForeground(new Color(255, 255, 255));
-        for (int i = 0; i < assignedEmplyTable.getModel().getColumnCount(); i++) {
-            assignedEmplyTable.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
-        }
+    // table design
+    private void tableDesignSetUp() {
+        int[] columnIgnore = {};
+        int[] columnLength = {90, 135, 120, 80};
+        BE.setTableDesign(unassignedEmplyTable, jLabel2, columnLength, columnIgnore);
         
-        // design for the table row
-        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
-//        rowRenderer.setHorizontalAlignment(jLabel13.CENTER);
-        for (int i = 0; i < assignedEmplyTable.getModel().getColumnCount(); i++) {
-            if (i != 0) {
-                assignedEmplyTable.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
-            }
-        }
-        
-        TableColumnModel columnModel = assignedEmplyTable.getColumnModel();
-        // set first column width of the table to suitable value
-        columnModel.getColumn(0).setMaxWidth(150);
-        columnModel.getColumn(0).setMinWidth(150);
-        columnModel.getColumn(0).setPreferredWidth(150);
-
-        columnModel.getColumn(1).setMaxWidth(90);
-        columnModel.getColumn(1).setMinWidth(90);
-        columnModel.getColumn(1).setPreferredWidth(90);
-
-        columnModel.getColumn(2).setMaxWidth(120);
-        columnModel.getColumn(2).setMinWidth(120);
-        columnModel.getColumn(2).setPreferredWidth(120);
-
-        columnModel.getColumn(3).setMaxWidth(80);
-        columnModel.getColumn(3).setMinWidth(80);
-        columnModel.getColumn(3).setPreferredWidth(80);
-
-        columnModel.getColumn(4).setMaxWidth(120);
-        columnModel.getColumn(4).setMinWidth(120);
-        columnModel.getColumn(4).setPreferredWidth(120);
-        
-        columnModel.getColumn(5).setMaxWidth(40);
-        columnModel.getColumn(5).setMinWidth(40);
-        columnModel.getColumn(5).setPreferredWidth(40);
+        int[] columnLength2 = {90, 135, 120, 80, 160, 63};
+        BE.setTableDesign(assignedEmplyTable, jLabel2, columnLength2, columnIgnore);
     }
     
     // To set the window Icon
@@ -738,6 +664,10 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        unassignedEmplyTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        unassignedEmplyTable.setForeground(new java.awt.Color(51, 51, 51));
+        unassignedEmplyTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        unassignedEmplyTable.setRowHeight(25);
         unassignedEmplyTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 unassignedEmplyTableMouseClicked(evt);
@@ -787,6 +717,10 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        assignedEmplyTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        assignedEmplyTable.setForeground(new java.awt.Color(51, 51, 51));
+        assignedEmplyTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        assignedEmplyTable.setRowHeight(25);
         assignedEmplyTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 assignedEmplyTableMouseClicked(evt);
@@ -837,7 +771,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
             }
         });
 
-        complaintIdTF.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        complaintIdTF.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         complaintIdTF.setBackground(new java.awt.Color(51, 51, 51));
         complaintIdTF.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         complaintIdTF.setForeground(new java.awt.Color(51, 51, 51));
@@ -848,7 +782,6 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         jLabel20.setForeground(new java.awt.Color(51, 51, 51));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel1.setText("jLabel1");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -891,8 +824,8 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addComponent(jLabel15)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane2))))
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 608, Short.MAX_VALUE))))
                 .addGap(10, 10, 10))
         );
         jPanel6Layout.setVerticalGroup(
@@ -913,7 +846,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(complaintIdTF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -924,11 +857,11 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(15, 15, 15)
+                                .addGap(8, 8, 8)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel1))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(6, 6, 6)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 565, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(8, 8, 8))
                             .addComponent(jTextField2))
@@ -1036,7 +969,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         
         if (employeeData != null) {
             setSelectedEmployee(employeeData.toLowerCase());
-            BE.toEmployeeJobAssignation(this.BE, selectedEmployeeId, jobId, complaint, fromComplaintPage);
+            BE.toEmployeeJobAssignation(this.BE, selectedEmployeeId, null, complaint, fromComplaintPage);
         }
     }//GEN-LAST:event_unassignedEmplyTableMouseClicked
 
@@ -1069,10 +1002,10 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         String employeeData = BE.validateTableSelectionAndGetValue(assignedEmployeeTable, selectedCol, selectedRow, 5, 0);
         
         if (employeeData != null) {
-            setSelectedEmployee(employeeData);
+            setSelectedEmployee(employeeData.toLowerCase());
             this.jobId = (String) assignedEmployeeTable.getValueAt(selectedRow, 3);
             this.selectedEmployeeId = (String) assignedEmployeeTable.getValueAt(selectedRow, 0);
-            BE.toEmployeeJobAssignation(this.BE, selectedEmployeeId, jobId, complaint, fromComplaintPage);
+            BE.toEmployeeJobAssignation(this.BE, selectedEmployeeId.toLowerCase(), jobId.toLowerCase(), complaint, fromComplaintPage);
         }
     }//GEN-LAST:event_assignedEmplyTableMouseClicked
 
@@ -1089,7 +1022,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, BE);
+            BE.toPatrollingManagement(this, BE, null);
         } catch (IOException ex) {
             System.out.println(ex);
         }
@@ -1099,7 +1032,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, BE);
+            BE.toPatrollingManagement(this, BE, null);
         } catch (IOException ex) {
             System.out.println(ex);
         }
@@ -1161,6 +1094,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         jPanel13.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_jPanel13MouseEntered
 
+    // update table
     private void updateTable() throws IOException {
         // Red Error from here
         ArrayList<String> unassignedEmplyList = getAssignORunassignList(BE.unassignedEmployee);
@@ -1170,28 +1104,34 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
         BE.setTableRow(assignedEmployeeTable, assignedEmplyList);
     }
     
+    // get assigned or unassigned employee list
     private ArrayList getAssignORunassignList(int assignStatus) throws IOException {
         return BE.getSpecificStatusEmployeeList(localDate, localTime, selectedRole, searchText, assignStatus);
     }
     
+    // set current date and time
     public void setCurrentDateTime() {
         this.localDate = LocalDate.now();
-        this.localTime = BE.getTimeCategory(LocalTime.now());
+        this.localTime = BE.DTF.getTimeCategory(LocalTime.now());
     }
     
+    // set date and time data
     public void setDateTime(LocalDate date, LocalTime time) {
         this.localDate = date;
         this.localTime = time;
     }
     
+    // set selected role according to selected employee
     private void setSelectedRole (String role) {
         this.selectedRole = role;
     }
     
+    // searching function text field
     private void setSearchText (String text) {
         this.searchText = text;
     }
     
+    // set selected employee
     private void setSelectedEmployee (String employeeID) {
         this.selectedEmployeeId = employeeID;
     }

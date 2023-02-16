@@ -7,6 +7,7 @@ package pms_parkhill_residence;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -28,7 +29,9 @@ public class Invoice {
     private String issuedDate;
     private String deleteID;
     private List<String> availableFees;
+    
     private FileHandling fh = new FileHandling();
+    protected TextFiles TF = new TextFiles();
     
     public Invoice() {}
     
@@ -63,6 +66,20 @@ public class Invoice {
         this.period = period;
         this.issuedDate = issuedDate;
         this.deleteID = deleteID;
+    }
+    
+    public Invoice(String[] invoiceData) {
+        this.invoiceNo = invoiceData[0];
+        this.unitNo = invoiceData[1];
+        this.feeType = invoiceData[2];
+        this.unitCategory = invoiceData[3];
+        this.consumption = invoiceData[4];
+        this.unit = invoiceData[5];
+        this.unitPrice = Float.parseFloat(invoiceData[6]);
+        this.totalPrice = Float.parseFloat(invoiceData[7]);
+        this.period = invoiceData[8];
+        this.issuedDate = invoiceData[9];
+        this.deleteID = invoiceData[10];
     }
     
     // store new invoice into text file
@@ -207,12 +224,50 @@ public class Invoice {
         return RavailableFees;
     }
     
+    public ArrayList<Invoice> getCurrentUnitInvoice(String unitNo) {
+        ArrayList<Invoice> incompleteInvoice = new ArrayList<>();     
+        
+        List<String> invoiceFile = fh.fileRead(TF.invoiceFile);
+        
+        boolean firstLine = true;
+        for (String eachInv : invoiceFile) {
+            if (!firstLine) {
+                String[] invDet = eachInv.split(TF.sp);
+            
+                Invoice invoice = new Invoice(invDet);
+
+                if (invoice.getUnitNo().equals(unitNo)) {
+                    if (invoice.getDeleteID().equals(TF.empty)) {
+                        incompleteInvoice.add(invoice);
+                    }
+                }
+            }
+            
+            firstLine = false;
+        }
+        
+        return incompleteInvoice;
+    }
+    
     // convert today date to dd/MM/yyyy format
     public String todayDate() {
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String str = formatter.format(date);
         return str;
+    }
+    
+    public double getTotalPricePerInvoice(String invoiceId, ArrayList<Invoice> dataList) {
+        double totalAmount = 0;
+        for (Invoice eachInv : dataList) {
+            
+            if (eachInv.getInvoiceNo().equals(invoiceId)) {
+                double eachPrice = eachInv.getTotalPrice();
+                totalAmount += eachPrice;
+            }
+        }
+        
+        return totalAmount;
     }
 
     /**

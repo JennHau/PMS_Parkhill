@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -41,6 +42,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
         employeeComboBoxSetUp();
     }
     
+    // get available date range for job reports
     private ArrayList getDateRange() {
         List<String> allJob = BE.getAllAssignedJob();
         
@@ -96,6 +98,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
         return complaintsDateRange;
     }
     
+    // set up month and year combo box
     private void monthYearComboBoxSetUp() {
         ArrayList<String> dateRange = getDateRange();
         
@@ -107,6 +110,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
         monthCB.setSelectedItem(0);
     }
     
+    // set up employee combo box
     private void employeeComboBoxSetUp() {
         employeeIdCB.removeAllItems();
         
@@ -131,6 +135,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
         employeeIdCB.setSelectedItem(0);
     }
     
+    // table set up
     private void tableSetUp() {
         String selectedMonthYear = (monthCB.getSelectedItem() != null) ? monthCB.getSelectedItem().toString() : null;
         String selectedEmployee = (employeeIdCB.getSelectedItem() != null) ? employeeIdCB.getSelectedItem().toString() : null;
@@ -216,60 +221,15 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
         }
         
         BE.setTableRow(jobTab, dateJobs);
+        
+        setJobReportsTableDesign();
     }
     
+    // table design
     private void setJobReportsTableDesign() {
-        // design for the table header
-        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
-        headerRenderer.setBackground(new Color(13, 24, 42));
-//        headerRenderer.setHorizontalAlignment(jLabel13.CENTER);
-        headerRenderer.setForeground(new Color(255, 255, 255));
-        for (int i = 0; i < jobTable.getModel().getColumnCount(); i++) {
-            jobTable.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
-        }
-        
-        // design for the table row
-        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
-//        rowRenderer.setHorizontalAlignment(jLabel13.CENTER);
-        for (int i = 0; i < jobTable.getModel().getColumnCount(); i++) {
-            if (i != 0) {
-                jobTable.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
-            }
-        }
-        
-        TableColumnModel columnModel = jobTable.getColumnModel();
-        // set first column width of the table to suitable value
-        columnModel.getColumn(0).setMaxWidth(150);
-        columnModel.getColumn(0).setMinWidth(150);
-        columnModel.getColumn(0).setPreferredWidth(150);
-
-        columnModel.getColumn(1).setMaxWidth(90);
-        columnModel.getColumn(1).setMinWidth(90);
-        columnModel.getColumn(1).setPreferredWidth(90);
-
-        columnModel.getColumn(2).setMaxWidth(120);
-        columnModel.getColumn(2).setMinWidth(120);
-        columnModel.getColumn(2).setPreferredWidth(120);
-
-        columnModel.getColumn(3).setMaxWidth(80);
-        columnModel.getColumn(3).setMinWidth(80);
-        columnModel.getColumn(3).setPreferredWidth(80);
-
-        columnModel.getColumn(4).setMaxWidth(120);
-        columnModel.getColumn(4).setMinWidth(120);
-        columnModel.getColumn(4).setPreferredWidth(120);
-        
-        columnModel.getColumn(5).setMaxWidth(40);
-        columnModel.getColumn(5).setMinWidth(40);
-        columnModel.getColumn(5).setPreferredWidth(40);
-        
-        columnModel.getColumn(6).setMaxWidth(40);
-        columnModel.getColumn(6).setMinWidth(40);
-        columnModel.getColumn(6).setPreferredWidth(40);
-        
-        columnModel.getColumn(7).setMaxWidth(40);
-        columnModel.getColumn(7).setMinWidth(40);
-        columnModel.getColumn(7).setPreferredWidth(40);
+        int[] columnIgnore = {4};
+        int[] columnLength = {100, 100, 110, 110, 235, 90, 130, 100};
+        BE.setTableDesign(jobTable, jLabel2, columnLength, columnIgnore);
     }
 
     /**
@@ -364,7 +324,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
         jPanel3Layout.setVerticalGroup(
@@ -440,6 +400,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
             }
         });
 
+        jobTable.setForeground(new java.awt.Color(51, 51, 51));
         jobTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null},
@@ -459,6 +420,8 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jobTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        jobTable.setRowHeight(25);
         jScrollPane1.setViewportView(jobTable);
         if (jobTable.getColumnModel().getColumnCount() > 0) {
             jobTable.getColumnModel().getColumn(0).setResizable(false);
@@ -534,7 +497,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(employeeJobLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(pendingFeeLine2))
-                                .addGap(0, 766, Short.MAX_VALUE)))
+                                .addGap(0, 761, Short.MAX_VALUE)))
                         .addContainerGap())))
         );
         jPanel6Layout.setVerticalGroup(
@@ -562,11 +525,11 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel24)
                         .addComponent(monthCB)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(12, 12, 12)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
+                .addGap(14, 14, 14))
         );
 
         jPanel1.setBackground(new java.awt.Color(13, 24, 42));
@@ -910,7 +873,11 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
         String reportTitle = monthCB.getSelectedItem().toString() + " - " + employeeIdCB.getSelectedItem().toString();
         
         if (!tableData.isEmpty()) {
-            BE.toAllReportsPage(BE, reportTitle, tableData);
+            new BuildingExecutiveJobReportPage(BE, reportTitle, tableData).setVisible(true);
+        }
+        else {
+            JOptionPane.showMessageDialog (null, "The report has no data...", 
+                                                    "GENERATE REPORT", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -999,7 +966,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, BE);
+            BE.toPatrollingManagement(this, BE, null);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -1009,7 +976,7 @@ public class BuildingExecutiveJobReports extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, BE);
+            BE.toPatrollingManagement(this, BE, null);
         } catch (IOException ex) {
             System.out.println(ex);
         }

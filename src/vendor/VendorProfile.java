@@ -149,7 +149,7 @@ public class VendorProfile extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(13, 24, 42));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("PARKHILL RESIDENCE RESIDENT & TENANT");
+        jLabel2.setText("PARKHILL RESIDENCE VENDOR");
 
         userNameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         userNameLabel.setForeground(new java.awt.Color(102, 102, 102));

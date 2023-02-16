@@ -53,10 +53,18 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
     private void statementTableSetUp() throws ParseException {
         stateTab.setRowCount(0);
         
-        ArrayList<String> monthStatement = RT.getCurrentUnitMonthStatement(monthNyear);
+        ArrayList<String> monthStatement = RT.PYM.displayOneStatement(this.RT.getUnitNo(), monthNyear);
         
         // Set table row
         RT.setTableRow(stateTab, monthStatement);
+        
+        tableDesignSetUp();
+    }
+    
+    private void tableDesignSetUp() {
+        int[] columnIgnore = {2};
+        int[] columnLength = {60, 160, 317, 160, 160};
+        RT.setTableDesign(statementTableSetUp, jLabel2, columnLength, columnIgnore);
     }
     
     private void monthComboBoxSetUp() throws ParseException {
@@ -242,6 +250,8 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
         statementLine.setForeground(new java.awt.Color(13, 24, 42));
         statementLine.setText("jTextField1");
 
+        statementTableSetUp.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        statementTableSetUp.setForeground(new java.awt.Color(51, 51, 51));
         statementTableSetUp.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -253,6 +263,8 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
                 "DATE", "TRANSACTIONS", "DETAILS", "AMOUNT", "PAYMENT"
             }
         ));
+        statementTableSetUp.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        statementTableSetUp.setRowHeight(30);
         jScrollPane1.setViewportView(statementTableSetUp);
 
         jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
@@ -739,6 +751,7 @@ public class ResidentTenantStatement extends javax.swing.JFrame {
     }//GEN-LAST:event_statementLabelMouseEntered
 
     private void monthCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthCBActionPerformed
+        stateTab.setRowCount(0);
         if (monthCB.getSelectedItem() != null && monthCB.getSelectedItem() != "- NO DATA -") {
             try {
                 this.monthNyear = RT.DTF.formatStatementMonth(monthCB.getSelectedItem().toString());

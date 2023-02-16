@@ -44,9 +44,15 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
         regVisTable = (DefaultTableModel) registeredVisitorTable.getModel();
         
         setWindowIcon();
+        
+        // set up table
         registeredVisitorTableSetUp();
         
+        // clear all field
         clearField();
+        
+        // set current user profile
+        setCurrentUserProfile();
     }
     
     private void clearField(){
@@ -101,6 +107,14 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
         }
         
         RT.setTableRow(regVisTable, toTable);
+        
+        tableDesignSetUp();
+    }
+    
+    private void tableDesignSetUp() {
+        int[] columnIgnore = {1};
+        int[] columnLength = {90, 123, 80, 90, 90, 100, 80};
+        RT.setTableDesign(registeredVisitorTable, jLabel2, columnLength, columnIgnore);
     }
     
     private void setCurrentUserProfile() {
@@ -250,9 +264,13 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Pass ID", "Visitor Name", "Car Plate", "Date", "Time", "Status", "Action"
+                "PASS ID", "VISITOR NAME", "CAR PLATE", "DATE", "TIME", "STATUS", "ACTION"
             }
         ));
+        registeredVisitorTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        registeredVisitorTable.setForeground(new java.awt.Color(51, 51, 51));
+        registeredVisitorTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        registeredVisitorTable.setRowHeight(25);
         registeredVisitorTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 registeredVisitorTableMouseClicked(evt);
@@ -402,9 +420,9 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
             }
         });
 
+        jLabel31.setText("Status:");
         jLabel31.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel31.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel31.setText("Status:");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -413,13 +431,13 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 292, Short.MAX_VALUE)
                         .addComponent(registerBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(298, 298, 298))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 653, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1)
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -882,7 +900,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
                               visitorNameTF.getText() + RT.TF.sp + visitorCarPlateTF.getText() + RT.TF.sp + 
                               visitorContactTF.getText() + RT.TF.sp + dateTimePicker.datePicker.getDate() + RT.TF.sp + 
                               dateTimePicker.timePicker.getTime() + RT.TF.sp + RT.visitorPassStatus[0] + RT.TF.sp + 
-                              "-" + RT.TF.sp + "-" + RT.TF.sp + this.RT.getUserID() + RT.TF.sp + DTF.getDateTimeNow() + RT.TF.sp;
+                              "-" + RT.TF.sp + "-" + RT.TF.sp + this.RT.getUserID() + RT.TF.sp + DTF.currentDateTime()+ RT.TF.sp;
 
                 List<String> visitorFile = RT.fh.fileRead(RT.TF.visitorPass);
 

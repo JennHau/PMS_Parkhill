@@ -20,11 +20,13 @@ import pms_parkhill_residence.Users;
 public class ResidentTenantFacilityBookingReceipt extends javax.swing.JFrame {
     /**
      * Creates new form custReceipt
+     * @param RT
      * @param user
      * @param bookingID
      */
-    public ResidentTenantFacilityBookingReceipt(Users user, String bookingID) {
+    public ResidentTenantFacilityBookingReceipt(ResidentTenant RT, String bookingID) {
         initComponents();
+        this.RT = RT;
         this.bookingID = bookingID;
         setDefault();
     }
@@ -47,7 +49,7 @@ public class ResidentTenantFacilityBookingReceipt extends javax.swing.JFrame {
         jLabel49 = new javax.swing.JLabel();
         totalLabel = new javax.swing.JLabel();
         doneBt = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable()
         {
@@ -146,10 +148,12 @@ public class ResidentTenantFacilityBookingReceipt extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Arial Narrow", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(13, 24, 42));
-        jLabel1.setText("FACILITY BOOKING RECEIPT");
+        jLabel2.setFont(new java.awt.Font("Arial Narrow", 1, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(13, 24, 42));
+        jLabel2.setText("FACILITY BOOKING RECEIPT");
 
+        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jTable1.setForeground(new java.awt.Color(51, 51, 51));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -166,6 +170,8 @@ public class ResidentTenantFacilityBookingReceipt extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        jTable1.setRowHeight(25);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -212,10 +218,7 @@ public class ResidentTenantFacilityBookingReceipt extends javax.swing.JFrame {
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(95, 95, 95)
-                                .addComponent(jLabel1))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jLabel2)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -246,13 +249,17 @@ public class ResidentTenantFacilityBookingReceipt extends javax.swing.JFrame {
                     .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(50, 50, 50))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1)
+                .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addGap(0, 0, 0)
@@ -305,6 +312,7 @@ public class ResidentTenantFacilityBookingReceipt extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
+    private final ResidentTenant RT;
     FileHandling fh = new FileHandling();
     String bookingID;
     
@@ -333,6 +341,14 @@ public class ResidentTenantFacilityBookingReceipt extends javax.swing.JFrame {
                 tableModel.addRow(tbData);
             }
         }
+        
+        tableDesignSetUp();
+    }
+    
+    private void tableDesignSetUp() {
+        int[] columnIgnore = {};
+        int[] columnLength = {200, 81, 81, 90};
+        RT.setTableDesign(jTable1, jLabel2, columnLength, columnIgnore);
     }
     
     private void doneBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneBtActionPerformed
@@ -390,8 +406,8 @@ public class ResidentTenantFacilityBookingReceipt extends javax.swing.JFrame {
     private javax.swing.JLabel bookingIDLabel;
     private javax.swing.JLabel dateLabel;
     private javax.swing.JButton doneBt;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel49;

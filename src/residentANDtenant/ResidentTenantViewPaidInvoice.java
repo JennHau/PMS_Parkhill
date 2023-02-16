@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import pms_parkhill_residence.Invoice;
+import pms_parkhill_residence.Payment;
 
 /**
  *
@@ -26,14 +28,14 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
      * @param invoiceNo
      * @param RT
      */
-    public ResidentTenantViewPaidInvoice(String invoiceNo, ResidentTenant RT, String feeTypes) {
+    public ResidentTenantViewPaidInvoice(String invoiceNo, ResidentTenant RT, ArrayList<Payment> invoiceList) {
         initComponents();
         paidTab = (DefaultTableModel) paidTable.getModel();
         setWindowIcon();
         this.invoiceNo = invoiceNo;
         this.RT = RT;
         this.unitNo = this.RT.getUnitNo();
-        setTable(feeTypes);
+        setTable(invoiceList);
         setFixData();
     }
 
@@ -114,7 +116,7 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(13, 24, 42));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("ACCOUNT EXECUTIVE");
+        jLabel2.setText("PARKHILL RESIDENCE RESIDENT & TENANT");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(102, 102, 102));
@@ -258,34 +260,34 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(jPanel6Layout.createSequentialGroup()
-                                    .addComponent(jLabel16)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(invoiceNoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel17)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(unitNoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(106, 106, 106)
-                                    .addComponent(jLabel19)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(lastPayDate, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(25, Short.MAX_VALUE))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(443, 443, 443))
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel16)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(invoiceNoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(155, 155, 155)
+                                .addComponent(jLabel17)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(unitNoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(106, 106, 106)
+                                .addComponent(jLabel19)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lastPayDate, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(25, Short.MAX_VALUE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -695,7 +697,7 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
 
     private void jPanel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseClicked
         // TODO add your handling code here:
-        new ResidentTenantInvoicePaymentGateway(invoiceNo, RT, total).setVisible(true);
+        RT.toInvoice(RT);
         dispose();
     }//GEN-LAST:event_jPanel5MouseClicked
 
@@ -836,59 +838,52 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
         visitorPassOuterTab.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_visitorPassOuterTabMouseEntered
 
-    private void setTable(String feeTypes) {
+    private void setTable(ArrayList<Payment> invoiceList) {
         ArrayList<String> toTable = new ArrayList<>();
-        
-        feeTypes = feeTypes + ",";
-        String[] feeTypeList = feeTypes.split(",");
-        
-        ArrayList<String> feeList = new ArrayList<>(Arrays.asList(feeTypeList));
-        
-        ArrayList<ArrayList> invoiceList = RT.getCurrentUnitInvoice(this.RT.getUnitNo());
-        ArrayList<String> compList = invoiceList.get(1);
         
         LocalDate latestDate = null;
         double totalAmount = 0;
-        for (String eachComp : compList) {
-            String[] compDet = eachComp.split(RT.TF.sp);
-            String compInv = compDet[0];
-            
-            if (compInv.equals(this.invoiceNo)) {
-                String compType = compDet[2];
-                if (feeList.contains(compType)) {
-                    String issueDate = compDet[11];
-                    String consump = compDet[4];
-                    String unit = compDet[5];
-                    String unitPrice = compDet[6];
-                    String totalPrice = compDet[7];
-                    String payDate = compDet[9].toUpperCase() + " - " + compDet[10];
-                    
-                    LocalDate eachDate = RT.DTF.formatDate2(compDet[10]);
-                    if (latestDate != null) {
-                        if (eachDate.isAfter(latestDate)) {
-                            latestDate = eachDate;
-                        }
-                    }
-                    else {
-                        latestDate = eachDate;
-                    }
-                    
-                    totalAmount = Double.parseDouble(totalPrice) + totalAmount;
-                    
-                    String[] data = {compType, issueDate, consump, unit, unitPrice, payDate, totalPrice};
-                    String line = "";
-                    for (String eachData : data) {
-                        line = line + eachData + RT.TF.sp;
-                    }
-                    
-                    toTable.add(line);
+        for (Payment eachComp : invoiceList) {
+            String compType = eachComp.getFeeType();
+            String issueDate = eachComp.getIssuedDate();
+            String consump = eachComp.getConsumption();
+            String unit = eachComp.getUnit();
+            float unitPrice = eachComp.getUnitPrice();
+            float totalPrice = eachComp.getTotalPrice();
+            String payDate = eachComp.getPaymentBy().toUpperCase() + " - " + eachComp.getPaymentDate();
+
+            LocalDate eachDate = RT.DTF.formatDate2(eachComp.getPaymentDate());
+            if (latestDate != null) {
+                if (eachDate.isAfter(latestDate)) {
+                    latestDate = eachDate;
                 }
             }
+            else {
+                latestDate = eachDate;
+            }
+
+            totalAmount = totalPrice + totalAmount;
+
+            String[] data = {compType, issueDate, consump, unit, String.format("%.02f", unitPrice), payDate, String.format("%.02f", totalPrice)};
+            String line = "";
+            for (String eachData : data) {
+                line = line + eachData + RT.TF.sp;
+            }
+
+            toTable.add(line);
         }
         
         lastPayDate.setText(String.valueOf(latestDate));
         total = String.format("%.02f", totalAmount);
         RT.setTableRow(paidTab, toTable);
+        
+        tableDesignSetUp();
+    }
+    
+    private void tableDesignSetUp() {
+        int[] columnIgnore = {0};
+        int[] columnLength = {250, 110, 100, 110, 110, 150, 130};
+        RT.setTableDesign(paidTable, jLabel2, columnLength, columnIgnore);
     }
     
     private void setFixData() {
