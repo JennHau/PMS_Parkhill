@@ -7,7 +7,7 @@ package adminExecutive;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
-import pms_parkhill_residence.Complaints;
+import pms_parkhill_residence.Complaint;
 import pms_parkhill_residence.FileHandling;
 
 /**
@@ -21,7 +21,7 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
      * @param CP
      * @param AE
      */
-    public AdminExecutiveModifyComplaint(Complaints CP, AdminExecutive AE) {
+    public AdminExecutiveModifyComplaint(Complaint CP, AdminExecutive AE) {
         initComponents();
         setWindowIcon();
         this.AE = AE;
@@ -260,7 +260,7 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private final AdminExecutive AE;
-    private final Complaints CP;
+    private final Complaint CP;
     
     FileHandling fh = new FileHandling();
     

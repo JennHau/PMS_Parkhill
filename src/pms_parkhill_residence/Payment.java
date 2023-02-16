@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import java.util.ArrayList;
 import java.util.List;
-import residentANDtenant.ResidentTenant;
 
 /**
  *
@@ -51,54 +50,44 @@ public class Payment extends Invoice {
             // get all unpaid payments
             if (status.equals("PENDING")) {
                 List<String> invoicesList = fh.fileRead("invoices.txt");
-                String[] invoicesArray = new String[invoicesList.size()];
-                invoicesList.toArray(invoicesArray);
 
                 for (int i = 1; i < invoicesList.size(); i++) {
                     boolean check = true;
-                    String[] invoiceDetails = invoicesArray[i].split(";");
-                    String iInvoiceNo = invoiceDetails[0];
-                    String iUnitNo = invoiceDetails[1];
-                    String iFeeType = invoiceDetails[2];
-                    String iTotalPrice = invoiceDetails[7];
-                    String iGeneratedDate = invoiceDetails[9];
+                    String[] invoiceDetails = invoicesList.get(i).split(";");
+                    
+                    Invoice invoice = new Invoice(invoiceDetails);
 
                     List<String> paymentList = fh.fileRead("payment.txt");
-                    String[] paymentArray = new String[paymentList.size()];
-                    paymentList.toArray(paymentArray);
 
                     for (int j = 1; j < paymentList.size(); j++) {
-                        String[] paymentDetails = paymentArray[j].split(";");
-                        String pInvoiceNo = paymentDetails[0];
-                        String pFeeType = paymentDetails[2];
-                        if (iInvoiceNo.equals(pInvoiceNo) && iFeeType.equals(pFeeType)) {
+                        String[] paymentDetails = paymentList.get(j).split(";");
+                        Payment payment = new Payment(paymentDetails);
+                        
+                        if (invoice.getInvoiceNo().equals(payment.getInvoiceNo()) 
+                                && invoice.getFeeType().equals(payment.getFeeType())) {
                             check = false;
                         }
                     }
                     if (check == true) {
-                        String cPaymentDetails = iInvoiceNo + ";" + iGeneratedDate + ";"
-                                + iUnitNo + ";" + iFeeType + ";" + iTotalPrice + ";";
+                        String cPaymentDetails = invoice.getInvoiceNo() + ";"
+                                + invoice.getIssuedDate() + ";" 
+                                + invoice.getUnitNo() + ";" + invoice.getFeeType()
+                                + ";" + invoice.getTotalPrice() + ";";
                         pendingPaymentList.add(cPaymentDetails);
                     }
                 }
-
             // get all paid payment
             } else if (status.equals("PAID")) {
                 List<String> paymentList = fh.fileRead("payment.txt");
-                String[] paymentArray = new String[paymentList.size()];
-                paymentList.toArray(paymentArray);
 
                 for (int i = 1; i < paymentList.size(); i++) {
-                    String[] paymentDetails = paymentArray[i].split(";");
-                    String invoiceNo = paymentDetails[0];
-                    String unitNo = paymentDetails[1];
-                    String feeType = paymentDetails[2];
-                    String totalPrice = paymentDetails[7];
-                    String paymentDate = paymentDetails[10];
-                    String issuedDate = paymentDetails[11];
-                    String cPaymentDetails = invoiceNo + ";" + issuedDate + ";"
-                            + unitNo + ";" + feeType + ";" + totalPrice + ";"
-                            + paymentDate + ";";
+                    String[] paymentDetails = paymentList.get(i).split(";");
+                    
+                    Payment payment = new Payment(paymentDetails);
+                    
+                    String cPaymentDetails = payment.getInvoiceNo() + ";" + payment.getIssuedDate() + ";"
+                            + payment.getUnitNo() + ";" + payment.getFeeType() + ";" + payment.getTotalPrice() + ";"
+                            + payment.getPaymentDate() + ";";
                     pendingPaymentList.add(cPaymentDetails);
                 }
             }
@@ -113,32 +102,29 @@ public class Payment extends Invoice {
         List<String> paymentFees = new ArrayList<String>();
         try {
             List<String> invoicesList = fh.fileRead("invoices.txt");
-            String[] invoicesArray = new String[invoicesList.size()];
-            invoicesList.toArray(invoicesArray);
             
             List<String> paidList = fh.fileRead("payment.txt");
             
             // compare invoice data with payment data to prevent double payment
             for (int i = 1; i < invoicesList.size(); i++) {
-                String[] feesDetails = invoicesArray[i].split(";");
-                String einvoiceNo = feesDetails[0];
-                String feeType = feesDetails[2];
-                String issueDate = feesDetails[9];
-                String consump = feesDetails[4];
-                String unit = feesDetails[5];
-                String unitPrice = feesDetails[6];
-                String totalPrice = feesDetails[7];
-                String cDetails = feeType + ";" + issueDate + ";" + consump + ";"
-                        + unit + ";" + unitPrice + ";" + totalPrice + ";";
+                String[] feesDetails = invoicesList.get(i).split(";");
+                
+                Invoice invoice = new Invoice(feesDetails);
+                
+                String cDetails = invoice.getFeeType() + ";"
+                        + invoice.getIssuedDate() + ";" + invoice.getConsumption() + ";"
+                        + invoice.getUnit() + ";" + invoice.getUnitPrice()
+                        + ";" + invoice.getTotalPrice() + ";";
 
-                if (einvoiceNo.equals(invoiceNo)) {
+                if (invoice.getInvoiceNo().equals(invoiceNo)) {
                     boolean check = true;
                     for(int j = 1; j < paidList.size(); j++) {
                         String[] paymentDetails = paidList.get(j).split(";");
-                        String pInvoiceNo = paymentDetails[0];
-                        String pFeeType = paymentDetails[2];
                         
-                        if(einvoiceNo.equals(pInvoiceNo) && feeType.equals(pFeeType)) {
+                        Payment payment = new Payment(paymentDetails);
+                        
+                        if(invoice.getInvoiceNo().equals(payment.getInvoiceNo())
+                                && invoice.getFeeType().equals(payment.getFeeType())) {
                             check = false;
                         }
                     }
@@ -205,6 +191,36 @@ public class Payment extends Invoice {
         }
     }
     
+    public List<String> extractAllUserList(String type) {
+        List<String> availableList = new ArrayList<>();
+        
+        List<String> usersList = fh.fileRead("userProfile.txt");
+        for (int i = 1; i < usersList.size(); i++) {
+            String[] userDetails = usersList.get(i).split(";");
+            String euserID = userDetails[0];
+            String euserName = userDetails[3] + " " + userDetails[4];
+            if(type.equals("name")) {
+                availableList.add(euserName);
+            } else if(type.equals("id")) {
+                availableList.add(euserID);
+            }
+            
+        }
+        List<String> iUsersList = fh.fileRead("inactiveUserProfile.txt");
+        for (int i = 1; i < iUsersList.size(); i++) {
+            String[] userDetails = iUsersList.get(i).split(";");
+            String euserID = userDetails[1];
+            String euserName = userDetails[4] + " " + userDetails[5];
+            if(type.equals("name")) {
+                availableList.add(euserName);
+            } else if(type.equals("id")) {
+                availableList.add(euserID);
+            }
+        } 
+        return availableList;
+    }
+    
+    
     // extract receipt details for display
     public List<String> displayReceipt(String status) {
         List<String> receiptList = new ArrayList<String>();
@@ -215,57 +231,36 @@ public class Payment extends Invoice {
 
             // in case user is deleted, system will search for active and inactive
             // user details
-            List<String> usernameList = new ArrayList<>();
-            List<String> userIDList = new ArrayList<>();
-
-            List<String> usersList = fh.fileRead("userProfile.txt");
-            for (int i = 1; i < usersList.size(); i++) {
-                String[] userDetails = usersList.get(i).split(";");
-                String euserID = userDetails[0];
-                String euserName = userDetails[3] + " " + userDetails[4];
-                usernameList.add(euserName);
-                userIDList.add(euserID);
-            }
-            
-            List<String> iUsersList = fh.fileRead("inactiveUserProfile.txt");
-            for (int i = 1; i < iUsersList.size(); i++) {
-                String[] userDetails = iUsersList.get(i).split(";");
-                String euserID = userDetails[1];
-                String euserName = userDetails[4] + " " + userDetails[5];
-                usernameList.add(euserName);
-                userIDList.add(euserID);
-            } 
+            List<String> usernameList = extractAllUserList("name");
+            List<String> userIDList = extractAllUserList("id");
 
             // get receipt data that havent issue
             if (status.equals("PENDING")) {
                 List<String> paymentList = fh.fileRead("payment.txt");
-                String[] paymentArray = new String[paymentList.size()];
-                paymentList.toArray(paymentArray);
 
                 for (int i = 1; i < paymentList.size(); i++) {
                     boolean check = true;
-                    String[] invoiceDetails = paymentArray[i].split(";");
-                    String iInvoiceNo = invoiceDetails[0];
-                    String iUnitNo = invoiceDetails[1];
-                    String iFeeType = invoiceDetails[2];
-                    String iTotalPrice = invoiceDetails[7];
-                    String paidBy = invoiceDetails[9];
-                    String paymentDate = invoiceDetails[10];
+                    String[] invoiceDetails = paymentList.get(i).split(";");
+                    
+                    Payment payment = new Payment(invoiceDetails);
 
                     for (int j = 1; j < eReceiptList.size(); j++) {
                         String[] paymentDetails = receiptArray[j].split(";");
                         String pInvoiceNo = paymentDetails[0];
                         String pFeeType = paymentDetails[2];
-                        if (iInvoiceNo.equals(pInvoiceNo) && iFeeType.equals(pFeeType)) {
+                        if (payment.getInvoiceNo().equals(pInvoiceNo) &&
+                                payment.getFeeType().equals(pFeeType)) {
                             check = false;
                         }
                     }
                     if (check == true) {
-                        String paidByName = usernameList.get(userIDList.indexOf(paidBy));
+                        String paidByName = usernameList.get(userIDList.indexOf
+                                            (payment.getPaymentBy()));
 
-                        String cReceiptDetails = iInvoiceNo + ";" + iUnitNo + ";"
-                                + iFeeType + ";" + iTotalPrice + ";" + paymentDate + ";"
-                                + paidByName + ";";
+                        String cReceiptDetails = payment.getInvoiceNo() + ";"
+                                + payment.getUnitNo() + ";" + payment.getFeeType()
+                                + ";" + payment.getTotalPrice() + ";" 
+                                + payment.getPaymentDate() + ";" + paidByName + ";";
                         receiptList.add(cReceiptDetails);
                     }
                 }
@@ -274,18 +269,15 @@ public class Payment extends Invoice {
             } else if (status.equals("ISSUED")) {
                 for (int i = 1; i < eReceiptList.size(); i++) {
                     String[] receiptDetails = receiptArray[i].split(";");
-                    String invoiceNo = receiptDetails[0];
-                    String unitNo = receiptDetails[1];
-                    String feeType = receiptDetails[2];
-                    String totalPrice = receiptDetails[7];
-                    String paidBy = receiptDetails[9];
-                    String paymentDate = receiptDetails[10];
+                    
+                    Payment payment = new Payment(receiptDetails);
 
-                    String paidByName = usernameList.get(userIDList.indexOf(paidBy));
-
-                    String cReceiptDetails = invoiceNo + ";" + unitNo + ";"
-                            + feeType + ";" + totalPrice + ";" + paymentDate + ";"
-                            + paidByName + ";";
+                    String paidByName = usernameList.get(userIDList.indexOf
+                                                     (payment.getPaymentBy()));
+                    String cReceiptDetails = payment.getInvoiceNo() + ";" 
+                            + payment.getUnitNo() + ";" + payment.getFeeType()
+                            + ";" + payment.getTotalPrice() + ";" 
+                            + payment.getPaymentDate() + ";" + paidByName + ";";
                     receiptList.add(cReceiptDetails);
                 }
             }

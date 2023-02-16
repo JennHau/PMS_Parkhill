@@ -502,7 +502,8 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
         } else {
             cPeriod = period.substring(0, 1) +"/"+ period.substring(1);
         }
-        periodLabel.setText(cPeriod); totalLabel.setText("Total: RM" + PM.getTotalPrice());
+        periodLabel.setText(cPeriod); totalLabel.setText("Total: RM" + 
+                                AE.currencyFormat(PM.getTotalPrice()));
    }
     
     private void setPayerCB() {

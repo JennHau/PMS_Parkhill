@@ -931,7 +931,7 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
 
             subTotal += Float.valueOf(totalPrice);
             String tbData[] = {feeType, issueDate, consump, unit, unitPrice, 
-                totalPrice};
+                            AE.currencyFormat(Float.parseFloat(totalPrice))};
             tableModel.addRow(tbData);
         } 
         total = AE.currencyFormat(subTotal);

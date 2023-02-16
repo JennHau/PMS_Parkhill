@@ -11,7 +11,7 @@ import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.Complaints;
+import pms_parkhill_residence.Complaint;
 import pms_parkhill_residence.HomePage;
 
 /**
@@ -762,7 +762,7 @@ public class AdminExecutiveComplaintManagement extends javax.swing.JFrame {
             String complaintID = String.valueOf(tableModel.getValueAt(row, 0)).toLowerCase();
             String complainerID = String.valueOf(tableModel.getValueAt(row, 1));
             String status = String.valueOf(tableModel.getValueAt(row, 5));
-            Complaints CP = new Complaints(complaintID);
+            Complaint CP = new Complaint(complaintID);
 //            new AdminExecutiveModifyComplaint(complaintID, complainerID, status, AE)
 //                    .setVisible(true);
             new AdminExecutiveModifyComplaint(CP, AE).setVisible(true);

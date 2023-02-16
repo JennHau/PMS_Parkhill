@@ -1163,7 +1163,7 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                     tableModel.addRow(tbData);
                 }
             }
-            if (tableModel.getRowCount() == 0) {
+            if (tableModel.getRowCount() == 0 && statusCB.getSelectedItem().equals("PENDING")) {
                 issueAllPanel.setBackground(Color.GRAY);
             } else {
                 issueAllPanel.setBackground(new Color(13,50,79));
