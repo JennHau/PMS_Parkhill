@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import java.util.ArrayList;
 import java.util.List;
-import residentANDtenant.ResidentTenant;
 
 /**
  *
@@ -457,7 +456,7 @@ public class Payment extends Invoice {
         // to change the issued invoice list to same data structure
         for (Invoice eachInv : invoiceList) {
             String issuedDate = DTF.changeFormatDate(eachInv.getIssuedDate());
-            String[] data = {issuedDate, "Invoice", eachInv.getInvoiceNo() + " " + eachInv.getFeeType(), eachInv.getUnitPrice().toString(), "-"};
+            String[] data = {issuedDate, "Invoice", eachInv.getInvoiceNo() + " " + eachInv.getFeeType(), eachInv.getTotalPrice().toString(), "-"};
             
             String line = "";
             for (String eachData : data) {
@@ -469,7 +468,7 @@ public class Payment extends Invoice {
         // change the paid invoice list to same data structure
         for (Payment eachPm : paymentList) {
             String date = DTF.changeFormatDate(eachPm.getPaymentDate());
-            String[] data = {date, "Invoice Payment", eachPm.getInvoiceNo() + " " + eachPm.getFeeType() + " - " + eachPm.getUnitPrice().toString() + " in excess payments.", "-", eachPm.getTotalPrice().toString()};
+            String[] data = {date, "Invoice Payment", eachPm.getInvoiceNo() + " " + eachPm.getFeeType() + " - " + eachPm.getTotalPrice().toString() + " in excess payments.", "-", eachPm.getTotalPrice().toString()};
             
             String line = "";
             for (String eachData : data) {
@@ -634,8 +633,29 @@ public class Payment extends Invoice {
         return currentUnitPayment;
     }
     
+    // parent method of getting all invoices
     public ArrayList<Invoice> getInvoiceOriginalMethod(String unitNo) {
         return super.getCurrentUnitInvoice(unitNo);
+    }
+    
+    // get current unit issued statement
+    public ArrayList getIssuedStatement(String unitNo) {
+        ArrayList<String> statement = new ArrayList<>();
+        
+        List<String> issuedStatement = fh.fileRead(TF.statementFile);
+        
+        for (String eachIssued : issuedStatement) {
+            String uNo = eachIssued.split(TF.sp)[1];
+            
+            if (uNo.equals(unitNo)) {
+                String deleteID = eachIssued.split(TF.sp)[3];
+                if (deleteID.equals(TF.empty)) {
+                    statement.add(eachIssued.split(TF.sp)[0]);                    
+                }
+            }
+        }
+        
+        return statement;
     }
     
     @Override
@@ -677,7 +697,7 @@ public class Payment extends Invoice {
         return concatenatedKey;
     }
     
-    public double getTotalPricePerPayment (String invoiceId, ArrayList<Payment> dataList) {
+    public double getTotalPricePerPayment(String invoiceId, ArrayList<Payment> dataList) {
         double totalAmount = 0;
         for (Payment eachPm : dataList) {
             
@@ -688,6 +708,11 @@ public class Payment extends Invoice {
         }
         
         return totalAmount;
+    }
+    
+    public double getTotalPricePerPayment(String invoiceId, String unitNo) {
+        ArrayList<Payment> paymentList = getCurrentUnitPayment(unitNo);
+        return getTotalPricePerPayment(invoiceId, paymentList);
     }
     
     public ArrayList<Invoice> getSameUnpaidInvoiceNo(String unitNo, String invoiceNo) {

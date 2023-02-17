@@ -9,6 +9,8 @@ import java.awt.Component;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.FileHandling;
@@ -356,17 +358,17 @@ public class VendorStatementReport extends javax.swing.JFrame {
     
     private void setDefault() {
         try {
-            ArrayList<String> statementList = VD.getCurrentUnitMonthStatement(monthNyear);
+            ArrayList<String> statementList = VD.PYM.displayOneStatement(VD.getUnitNo(), monthNyear);
             
             VD.setTableRow(stateTab, statementList);
-            
+
             calculateTotal();
-            
+
             setReportDetails();
-            
+
             tableDesignSetUp();
         } catch (ParseException ex) {
-            System.out.println(ex);
+            Logger.getLogger(VendorStatementReport.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

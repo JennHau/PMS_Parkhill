@@ -8,7 +8,7 @@ package pms_parkhill_residence;
  *
  * @author Winson
  */
-public class TextFiles {
+public class TextFile {
     // Text file default splitter
     public String sp = ";";
     

@@ -15,7 +15,7 @@ import pms_parkhill_residence.FileHandling;
  * @author Winson
  */
 public class CRUD extends FileHandling {
-    TextFiles TF = new TextFiles();
+    TextFile TF = new TextFile();
     
     public boolean create(String fileName, List<String> newData) {
         this.fileWrite(fileName, true, newData);

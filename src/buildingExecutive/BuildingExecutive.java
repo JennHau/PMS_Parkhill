@@ -24,7 +24,7 @@ import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.Complaint;
 import pms_parkhill_residence.FileHandling;
 import pms_parkhill_residence.PMS_DateTimeFormatter;
-import pms_parkhill_residence.TextFiles;
+import pms_parkhill_residence.TextFile;
 import pms_parkhill_residence.Users;
 
 /**
@@ -33,7 +33,7 @@ import pms_parkhill_residence.Users;
  */
 public class BuildingExecutive extends Users{
     PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
-    TextFiles TF = new TextFiles();
+    TextFile TF = new TextFile();
     FileHandling fh = new FileHandling();
     Complaint CP = new Complaint();
     CRUD crud = new CRUD();

@@ -23,7 +23,7 @@ public class Complaint {
     private String lastUpdateDateTime;
     
     FileHandling FH = new FileHandling();
-    TextFiles TF = new TextFiles();
+    TextFile TF = new TextFile();
     CRUD crud = new CRUD();
     
     public Complaint() {}
@@ -56,37 +56,6 @@ public class Complaint {
         this.statusUpdatedBy = compDet[6];
         this.lastUpdateDateTime = compDet[7];
     }
-    
-//    public ArrayList getComplaints(String currentRTid) {
-//        ArrayList<ArrayList> combinedComp = new ArrayList<>();
-//        ArrayList<String> pendingComp = new ArrayList<>();
-//        ArrayList<String> progressingComp = new ArrayList<>();
-//        ArrayList<String> completedComp = new ArrayList<>();
-//        
-//        List<String> complaints = FH.fileRead(TF.complaintFiles);
-//        for (String eachComp : complaints) {
-//            String[] compDet = eachComp.split(TF.sp);
-//            String complainerId = compDet[1];
-//            if (complainerId.equals(currentRTid)) {
-//                String status = compDet[5];
-//                String tableLine = compDet[0].toUpperCase() + TF.sp + compDet[2] + TF.sp + compDet[3] + TF.sp + compDet[4] + TF.sp + status + TF.sp;
-//                switch (status) {
-//                    case "Pending" -> pendingComp.add(tableLine);
-//                    case "Progressing" -> progressingComp.add(tableLine);
-//                    case "Completed" -> completedComp.add(tableLine);
-//                }
-//            }
-//        }
-//        
-//        for (String progress : progressingComp) {
-//            pendingComp.add(progress);
-//        }
-//        
-//        combinedComp.add(pendingComp);
-//        combinedComp.add(completedComp);
-//        
-//        return combinedComp;
-//    }
     
     
     public List<ArrayList<Complaint>> getComplaints(String currentRTid) {
@@ -236,6 +205,7 @@ public class Complaint {
         // Remove complaint job in employee jobFile
         crud.delete(TF.employeeJobFile, complaintID, 2);
     }
+    
     
     @Override
     public String toString() {

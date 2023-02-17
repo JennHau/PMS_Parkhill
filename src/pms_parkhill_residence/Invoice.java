@@ -7,7 +7,6 @@ package pms_parkhill_residence;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -31,7 +30,7 @@ public class Invoice {
     private List<String> availableFees;
     
     private FileHandling fh = new FileHandling();
-    protected TextFiles TF = new TextFiles();
+    protected TextFile TF = new TextFile();
     
     public Invoice() {}
     
@@ -247,6 +246,20 @@ public class Invoice {
         }
         
         return incompleteInvoice;
+    }
+    
+    public ArrayList getInvoiceCode(String unitNo) {
+        ArrayList<String> invoiceCode = new ArrayList<>();
+
+        ArrayList<Invoice> invoices = getCurrentUnitInvoice(unitNo);
+        
+        for (Invoice eachInv : invoices) {
+            if (!invoiceCode.contains(eachInv.getInvoiceNo())) {
+                invoiceCode.add(eachInv.getInvoiceNo());
+            }
+        }
+        
+        return invoiceCode;
     }
     
     // convert today date to dd/MM/yyyy format

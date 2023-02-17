@@ -61,7 +61,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
         complaintsLabel.setText(String.valueOf(compNo));
         
         // Set today coming visitor number
-        List<String> visitor = RT.fh.fileRead(RT.TF.visitorPass);
+        List<String> visitor = RT.FH.fileRead(RT.TF.visitorPass);
         int countVisitor = 0;
         for (String eachPass : visitor) {
             String[] passDet = eachPass.split(RT.TF.sp);
@@ -92,7 +92,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
     private void yearCBsetUp(){
         ArrayList<String> invYear = new ArrayList<>();
         
-        List<String> invoices = RT.fh.fileRead(RT.TF.invoiceFile);
+        List<String> invoices = RT.FH.fileRead(RT.TF.invoiceFile);
         boolean firstLine = true;
         for (String eachInv : invoices) {
             if (!firstLine) {
@@ -132,7 +132,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
         ArrayList<String> selYearInv = new ArrayList<>();
         
         if (selYear != null) {
-            List<String> invoices = RT.fh.fileRead(RT.TF.invoiceFile);
+            List<String> invoices = RT.FH.fileRead(RT.TF.invoiceFile);
             
             boolean firstLine = true;
             for (String eachInv : invoices) {

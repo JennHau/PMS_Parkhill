@@ -9,9 +9,9 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import pms_parkhill_residence.Invoice;
 
 /**
  *
@@ -26,7 +26,7 @@ public class VendorInvoicePayment extends javax.swing.JFrame {
      * @param invoiceNo
      * @param VD
      */
-    public VendorInvoicePayment(String invoiceNo, Vendor VD, String feeTypes) {
+    public VendorInvoicePayment(String invoiceNo, Vendor VD, ArrayList<Invoice> invoiceList) {
         initComponents();
         payTab = (DefaultTableModel) paymentTable.getModel();
         
@@ -34,7 +34,7 @@ public class VendorInvoicePayment extends javax.swing.JFrame {
         this.invoiceNo = invoiceNo;
         this.VD = VD;
         this.unitNo = this.VD.getUnitNo();
-        setTable(feeTypes);
+        setTable(invoiceList);
         setFixData();
     }
 
@@ -664,42 +664,27 @@ public class VendorInvoicePayment extends javax.swing.JFrame {
         jPanel13.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_jPanel13MouseEntered
 
-    private void setTable(String feeTypes) {
+     private void setTable(ArrayList<Invoice> invoiceList) {
         ArrayList<String> toTable = new ArrayList<>();
         
-        feeTypes = feeTypes + ",";
-        String[] feeTypeList = feeTypes.split(",");
-        
-        ArrayList<String> feeList = new ArrayList<>(Arrays.asList(feeTypeList));
-        
-        ArrayList<ArrayList> invoiceList = VD.getCurrentUnitInvoice(this.VD.getUnitNo());
-        ArrayList<String> incompList = invoiceList.get(0);
-        
         double totalAmount = 0;
-        for (String eachIncomp : incompList) {
-            String[] incompDet = eachIncomp.split(VD.TF.sp);
-            String incompInv = incompDet[0];
-            
-            if (incompInv.equals(this.invoiceNo)) {
-                String incompType = incompDet[2];
-                if (feeList.contains(incompType)) {
-                    String issueDate = incompDet[9];
-                    String consump = incompDet[4];
-                    String unit = incompDet[5];
-                    String unitPrice = incompDet[6];
-                    String totalPrice = incompDet[7];
-                    
-                    totalAmount = Double.parseDouble(totalPrice) + totalAmount;
-                    
-                    String[] data = {incompType, issueDate, consump, unit, unitPrice, totalPrice};
-                    String line = "";
-                    for (String eachData : data) {
-                        line = line + eachData + VD.TF.sp;
-                    }
-                    
-                    toTable.add(line);
-                }
+        for (Invoice invoice : invoiceList) {
+            String incompType = invoice.getFeeType();
+            String issueDate = invoice.getIssuedDate();
+            String consump = invoice.getConsumption();
+            String unit = invoice.getUnit();
+            String unitPrice = invoice.getUnitNo();
+            double totalPrice = invoice.getTotalPrice();
+
+            totalAmount = totalPrice + totalAmount;
+
+            String[] data = {incompType, issueDate, consump, unit, unitPrice, String.format("%.02f", totalPrice)};
+            String line = "";
+            for (String eachData : data) {
+                line = line + eachData + VD.TF.sp;
             }
+
+            toTable.add(line);
         }
         
         total = String.format("%.02f", totalAmount);
