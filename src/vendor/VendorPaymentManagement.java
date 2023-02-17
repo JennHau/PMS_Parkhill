@@ -11,6 +11,7 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import pms_parkhill_residence.Invoice;
 
 /**
  *
@@ -42,18 +43,16 @@ public class VendorPaymentManagement extends javax.swing.JFrame {
     }
     
     private void pendingFeeTableSetUp() {
-        ArrayList<ArrayList> invoiceList = VD.getCurrentUnitInvoice(this.VD.getUnitNo());
-        ArrayList<String> incompleteInv = invoiceList.get(0);
+        ArrayList<Invoice> incompleteInv = VD.PYM.getCurrentUnitInvoice(VD.getUnitNo());
         ArrayList<String> toTable = new ArrayList<>();
         
         float totalAmount = 0;
         int itemNo = 1;
-        for (String eachIncomp : incompleteInv) {
-            String[] incompDet = eachIncomp.split(VD.TF.sp);
-            String itemID = incompDet[0];
-            String itemDet = incompDet[2];
+        for (Invoice eachIncomp : incompleteInv) {
+            String itemID = eachIncomp.getInvoiceNo();
+            String itemDet = eachIncomp.getFeeType();
             
-            double amount = VD.getTotalPricePerInvoice(itemID, incompleteInv);
+            double amount = VD.PYM.getTotalPricePerInvoice(itemID, incompleteInv);
 
             String[] list = {String.valueOf(itemNo), itemID.toUpperCase(), itemDet, String.format("%.02f", amount)};
 
@@ -66,6 +65,11 @@ public class VendorPaymentManagement extends javax.swing.JFrame {
             totalAmount += amount;
             itemNo++;
         }
+        
+        boolean buttonAction = !toTable.isEmpty();
+        
+        payOneBTN.setEnabled(buttonAction);
+        payAllBTN.setEnabled(buttonAction);
         
         VD.setTableRow(penFeeTab, toTable);
         totalPendingFeeTF.setText(String.format("%.02f", totalAmount));

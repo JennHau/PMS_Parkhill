@@ -313,7 +313,7 @@ public class VendorInvoiceReceipt extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void setDefault() {
-        ArrayList<String> invoiceList = VD.getCurrentUnitIssuedReceipt(VD.getUnitNo());
+        ArrayList<String> invoiceList = VD.PYM.extractSingleReceiptData(VD.getUnitNo());
         ArrayList<String> toReceipt = new ArrayList<>();
         
         String invoicePeriod = null;

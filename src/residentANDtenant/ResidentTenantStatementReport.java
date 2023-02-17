@@ -392,7 +392,7 @@ public class ResidentTenantStatementReport extends javax.swing.JFrame {
     }
     
     private void setIssuedDate() {
-        List<String> statementFile = RT.fh.fileRead(RT.TF.statementFile);
+        List<String> statementFile = RT.FH.fileRead(RT.TF.statementFile);
         for (String eachState : statementFile) {
             String[] stateDet = eachState.split(RT.TF.sp);
             String statePeriod = stateDet[0];

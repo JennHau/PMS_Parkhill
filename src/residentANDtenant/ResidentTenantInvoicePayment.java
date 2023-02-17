@@ -9,7 +9,6 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.Invoice;

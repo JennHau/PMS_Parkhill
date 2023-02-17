@@ -68,6 +68,11 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
             itemNo++;
         }
         
+        boolean buttonAction = !toTable.isEmpty();
+        
+        payOneBTN.setEnabled(buttonAction);
+        payAllBTN.setEnabled(buttonAction);
+        
         RT.setTableRow(penFeeTab, toTable);
         totalPendingFeeTF.setText(String.format("%.02f", totalAmount));
         

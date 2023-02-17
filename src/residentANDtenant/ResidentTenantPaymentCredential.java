@@ -335,12 +335,12 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
                                         String bookingId = itemList.get(0).split(RT.TF.sp)[0];
 
                                         RT.crud.delete(RT.TF.facilityBookingFile, bookingId, 0);
-                                        RT.fh.fileWrite("facilityBooking.txt", true, itemList);
+                                        RT.FH.fileWrite("facilityBooking.txt", true, itemList);
                                         JOptionPane.showMessageDialog (null, "Facility Booking has been modified!", 
                                                         "MODIFY FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
                                     }
                                     else {
-                                        RT.fh.fileWrite("facilityBooking.txt", true, itemList);
+                                        RT.FH.fileWrite("facilityBooking.txt", true, itemList);
                                         JOptionPane.showMessageDialog (null, "Facility Booking has been made!", 
                                                         "FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
                                     }

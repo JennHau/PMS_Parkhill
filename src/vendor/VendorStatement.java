@@ -53,7 +53,7 @@ public class VendorStatement extends javax.swing.JFrame {
     private void statementTableSetUp() throws ParseException {
         stateTab.setRowCount(0);
         
-        ArrayList<String> monthStatement = VD.getCurrentUnitMonthStatement(monthNyear);
+        ArrayList<String> monthStatement = VD.PYM.displayOneStatement(VD.getUnitNo(), monthNyear);
         
         // Set table row
         VD.setTableRow(stateTab, monthStatement);
@@ -68,7 +68,7 @@ public class VendorStatement extends javax.swing.JFrame {
     }
     
     private void monthComboBoxSetUp() throws ParseException {
-        ArrayList<String> issuedInvoice = VD.getIssuedStatement(this.VD.getUnitNo());
+        ArrayList<String> issuedInvoice = VD.PYM.getIssuedStatement(this.VD.getUnitNo());
         
         String[] sortDate = issuedInvoice.toArray(String[]::new);
         

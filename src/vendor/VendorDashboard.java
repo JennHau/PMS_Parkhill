@@ -14,7 +14,8 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import pms_parkhill_residence.Complaint;
 import pms_parkhill_residence.Dashboard;
-import pms_parkhill_residence.Users;
+import pms_parkhill_residence.Invoice;
+import pms_parkhill_residence.Payment;
 
 /**
  *
@@ -58,20 +59,19 @@ public class VendorDashboard extends javax.swing.JFrame {
         completedCompLabel.setText(String.valueOf(completedComplaints.size()));
         
         // Set pending fee amount
-        ArrayList<ArrayList> pendingFee = VD.getCurrentUnitInvoice(VD.getUserID());
-        ArrayList<String> unpaidInv = pendingFee.get(0);
-        ArrayList<String> paidInv = pendingFee.get(1);
+        ArrayList<Invoice> pendingFee = VD.PYM.getCurrentUnitInvoice(VD.getUserID());
+        ArrayList<Payment> paidInv = VD.PYM.getCurrentUnitPayment(this.VD.getUnitNo());
         
         double totalPending = 0;
-        for (String eachFee : unpaidInv) {
-            double feeTotal = Double.parseDouble(eachFee.split(VD.TF.sp)[7]);
+        for (Invoice eachFee : pendingFee) {
+            double feeTotal = eachFee.getTotalPrice();
             totalPending += feeTotal;
         }
         pendingFeeLabel.setText(String.format("%.02f", totalPending));
         
         double totalPaid = 0;
-        for (String eachFee : paidInv) {
-            double feeTotal = Double.parseDouble(eachFee.split(VD.TF.sp)[7]);
+        for (Payment eachFee : paidInv) {
+            double feeTotal = eachFee.getTotalPrice();
             totalPaid += feeTotal;
         }
         pendingFeeLabel.setText(String.format("%.02f", totalPaid));

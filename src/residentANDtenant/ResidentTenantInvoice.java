@@ -134,27 +134,13 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
     }
     
     private void invoiceComboBoxSetUp() {
-        ArrayList<String> invoiceCode = getInvoiceCode();
+        ArrayList<String> invoiceCode = RT.PYM.getInvoiceCode(RT.getUnitNo());
         
         invoiceNoCB.removeAllItems();
         invoiceNoCB.addItem("All");
         for (String eachInv : invoiceCode) {
             invoiceNoCB.addItem(eachInv);
         }
-    }
-    
-    private ArrayList getInvoiceCode() {
-        ArrayList<String> invoiceCode = new ArrayList<>();
-
-        ArrayList<Invoice> invoices = RT.PYM.getInvoiceOriginalMethod(this.RT.getUnitNo());
-        
-        for (Invoice eachInv : invoices) {
-            if (!invoiceCode.contains(eachInv.getInvoiceNo())) {
-                invoiceCode.add(eachInv.getInvoiceNo());
-            }
-        }
-        
-        return invoiceCode;
     }
     
     private void setCurrentUserProfile() {

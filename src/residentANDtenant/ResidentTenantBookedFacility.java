@@ -8,7 +8,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;

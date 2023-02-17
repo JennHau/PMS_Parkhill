@@ -54,7 +54,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
     }
     
     private void paymentHistoryTableSetUp() throws ParseException {
-        ArrayList<String> receiptList = RT.getCurrentUnitIssuedReceipt(this.RT.getUnitNo());
+        ArrayList<String> receiptList = RT.PYM.extractSingleReceiptData(this.RT.getUnitNo());
         ArrayList<String> facilityPay = RT.PYM.getCurrentUnitFacilityPayment(this.RT.getUnitNo());
         ArrayList<String> sortedList;
         
@@ -89,10 +89,10 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
                     }
                 }
                 String toAdd = "";
-            
+                
                 String feeType = "Invoice - " + feeTypes.substring(0, feeTypes.length()-1);
                 
-                double totalPrice = RT.getTotalPricePerInvoice(invoiceNo, receiptList);
+                double totalPrice = RT.PYM.getTotalPricePerPayment(invoiceNo, this.RT.getUnitNo());
                 
                 String paidDate = String.valueOf(latestDate);
                 String[] data = {invoiceNo.toUpperCase(), feeType, String.format("%.02f", totalPrice), paidDate, "RECEIPT"};
@@ -792,8 +792,8 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
         
         String itemID = RT.validateTableSelectionAndGetValue(payHisTab, selectedCol, selectedRow, 5, 1);
         
-        List<String> receiptFile = RT.fh.fileRead(RT.TF.receiptFile);
-        List<String> bookingFile = RT.fh.fileRead(RT.TF.facilityBookingFile);
+        List<String> receiptFile = RT.FH.fileRead(RT.TF.receiptFile);
+        List<String> bookingFile = RT.FH.fileRead(RT.TF.facilityBookingFile);
         
         if (itemID != null) {
             boolean notFound = true;

@@ -97,48 +97,6 @@ public class Payment extends Invoice {
         return pendingPaymentList;
     }
     
-//    // extract specific payment details
-//    public List<String> displayOnePayment(String invoiceNo) {
-//        List<String> paymentFees = new ArrayList<String>();
-//        try {
-//            List<String> invoicesList = fh.fileRead("invoices.txt");
-//            
-//            List<String> paidList = fh.fileRead("payment.txt");
-//            
-//            // compare invoice data with payment data to prevent double payment
-//            for (int i = 1; i < invoicesList.size(); i++) {
-//                String[] feesDetails = invoicesList.get(i).split(";");
-//                
-//                Invoice invoice = new Invoice(feesDetails);
-//                
-//                String cDetails = invoice.getFeeType() + ";"
-//                        + invoice.getIssuedDate() + ";" + invoice.getConsumption() + ";"
-//                        + invoice.getUnit() + ";" + invoice.getUnitPrice()
-//                        + ";" + invoice.getTotalPrice() + ";";
-//
-//                if (invoice.getInvoiceNo().equals(invoiceNo)) {
-//                    boolean check = true;
-//                    for(int j = 1; j < paidList.size(); j++) {
-//                        String[] paymentDetails = paidList.get(j).split(";");
-//                        
-//                        Payment payment = new Payment(paymentDetails);
-//                        
-//                        if(invoice.getInvoiceNo().equals(payment.getInvoiceNo())
-//                                && invoice.getFeeType().equals(payment.getFeeType())) {
-//                            check = false;
-//                        }
-//                    }
-//                    if(check) {
-//                        paymentFees.add(cDetails);
-//                    }
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return paymentFees;
-//    }
-    
     // method to store newly made payment
     public void storePayment(Invoice invoice, String userID) {
         ArrayList<String> newData = new ArrayList<>();
@@ -626,8 +584,29 @@ public class Payment extends Invoice {
         return currentUnitPayment;
     }
     
+    // parent method of getting all invoices
     public ArrayList<Invoice> getInvoiceOriginalMethod(String unitNo) {
         return super.getCurrentUnitInvoice(unitNo);
+    }
+    
+    // get current unit issued statement
+    public ArrayList getIssuedStatement(String unitNo) {
+        ArrayList<String> statement = new ArrayList<>();
+        
+        List<String> issuedStatement = fh.fileRead(TF.statementFile);
+        
+        for (String eachIssued : issuedStatement) {
+            String uNo = eachIssued.split(TF.sp)[1];
+            
+            if (uNo.equals(unitNo)) {
+                String deleteID = eachIssued.split(TF.sp)[3];
+                if (deleteID.equals(TF.empty)) {
+                    statement.add(eachIssued.split(TF.sp)[0]);                    
+                }
+            }
+        }
+        
+        return statement;
     }
     
     @Override
@@ -669,7 +648,7 @@ public class Payment extends Invoice {
         return concatenatedKey;
     }
     
-    public double getTotalPricePerPayment (String invoiceId, ArrayList<Payment> dataList) {
+    public double getTotalPricePerPayment(String invoiceId, ArrayList<Payment> dataList) {
         double totalAmount = 0;
         for (Payment eachPm : dataList) {
             
@@ -680,6 +659,11 @@ public class Payment extends Invoice {
         }
         
         return totalAmount;
+    }
+    
+    public double getTotalPricePerPayment(String invoiceId, String unitNo) {
+        ArrayList<Payment> paymentList = getCurrentUnitPayment(unitNo);
+        return getTotalPricePerPayment(invoiceId, paymentList);
     }
     
     public ArrayList<Invoice> getSameUnpaidInvoiceNo(String unitNo, String invoiceNo) {

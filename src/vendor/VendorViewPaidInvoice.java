@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import pms_parkhill_residence.Payment;
 
 /**
  *
@@ -26,14 +27,14 @@ public class VendorViewPaidInvoice extends javax.swing.JFrame {
      * @param invoiceNo
      * @param VD
      */
-    public VendorViewPaidInvoice(String invoiceNo, Vendor VD, String feeTypes) {
+    public VendorViewPaidInvoice(String invoiceNo, Vendor VD, ArrayList<Payment> invoiceList) {
         initComponents();
         paidTab = (DefaultTableModel) paidTable.getModel();
         setWindowIcon();
         this.invoiceNo = invoiceNo;
         this.VD = VD;
         this.unitNo = this.VD.getUnitNo();
-        setTable(feeTypes);
+        setTable(invoiceList);
         setFixData();
     }
 
@@ -674,54 +675,39 @@ public class VendorViewPaidInvoice extends javax.swing.JFrame {
         jPanel13.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_jPanel13MouseEntered
 
-    private void setTable(String feeTypes) {
+    private void setTable(ArrayList<Payment> invoiceList) {
         ArrayList<String> toTable = new ArrayList<>();
-        
-        feeTypes = feeTypes + ",";
-        String[] feeTypeList = feeTypes.split(",");
-        
-        ArrayList<String> feeList = new ArrayList<>(Arrays.asList(feeTypeList));
-        
-        ArrayList<ArrayList> invoiceList = VD.getCurrentUnitInvoice(this.VD.getUnitNo());
-        ArrayList<String> compList = invoiceList.get(1);
         
         LocalDate latestDate = null;
         double totalAmount = 0;
-        for (String eachComp : compList) {
-            String[] compDet = eachComp.split(VD.TF.sp);
-            String compInv = compDet[0];
-            
-            if (compInv.equals(this.invoiceNo)) {
-                String compType = compDet[2];
-                if (feeList.contains(compType)) {
-                    String issueDate = compDet[11];
-                    String consump = compDet[4];
-                    String unit = compDet[5];
-                    String unitPrice = compDet[6];
-                    String totalPrice = compDet[7];
-                    String payDate = compDet[9].toUpperCase() + " - " + compDet[10];
-                    
-                    LocalDate eachDate = VD.DTF.formatDate2(compDet[10]);
-                    if (latestDate != null) {
-                        if (eachDate.isAfter(latestDate)) {
-                            latestDate = eachDate;
-                        }
-                    }
-                    else {
-                        latestDate = eachDate;
-                    }
-                    
-                    totalAmount = Double.parseDouble(totalPrice) + totalAmount;
-                    
-                    String[] data = {compType, issueDate, consump, unit, unitPrice, payDate, totalPrice};
-                    String line = "";
-                    for (String eachData : data) {
-                        line = line + eachData + VD.TF.sp;
-                    }
-                    
-                    toTable.add(line);
+        for (Payment eachComp : invoiceList) {
+            String compType = eachComp.getFeeType();
+            String issueDate = eachComp.getIssuedDate();
+            String consump = eachComp.getConsumption();
+            String unit = eachComp.getUnit();
+            float unitPrice = eachComp.getUnitPrice();
+            float totalPrice = eachComp.getTotalPrice();
+            String payDate = eachComp.getPaymentBy().toUpperCase() + " - " + eachComp.getPaymentDate();
+
+            LocalDate eachDate = VD.DTF.formatDate2(eachComp.getPaymentDate());
+            if (latestDate != null) {
+                if (eachDate.isAfter(latestDate)) {
+                    latestDate = eachDate;
                 }
             }
+            else {
+                latestDate = eachDate;
+            }
+
+            totalAmount = totalPrice + totalAmount;
+
+            String[] data = {compType, issueDate, consump, unit, String.format("%.02f", unitPrice), payDate, String.format("%.02f", totalPrice)};
+            String line = "";
+            for (String eachData : data) {
+                line = line + eachData + VD.TF.sp;
+            }
+
+            toTable.add(line);
         }
         
         lastPayDate.setText(String.valueOf(latestDate));
