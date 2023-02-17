@@ -347,11 +347,6 @@ public class BuildingExecutive extends Users{
         return searchedList;
     }
     
-    // check is the user an employee
-    public boolean isEmployee(String roleCode) {
-        return roleCode.equals("scg") || roleCode.equals("tcn") || roleCode.equals("cln");
-    }
-    
     // get employee full role description
     public String showEmployeeFullRoleName(String role) {
         String employeeRole = null;
