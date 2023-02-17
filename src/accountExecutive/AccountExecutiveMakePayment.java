@@ -8,10 +8,12 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.HomePage;
+import pms_parkhill_residence.Invoice;
 import pms_parkhill_residence.Payment;
 /**
  *
@@ -23,15 +25,17 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
      * Creates new form homePage
      * @param PM
      * @param AE
+     * @param invoiceList
      */
-    public AccountExecutiveMakePayment(Payment PM, AccountExecutive AE) {
+    public AccountExecutiveMakePayment(Payment PM, AccountExecutive AE,
+            ArrayList<Invoice> invoiceList) {
         initComponents();
         setWindowIcon();
         this.AE = AE;
         this.PM = PM;
         setCurrentProfile();
         setFixData();
-        setTable();
+        setTable(invoiceList);
         setTableDesign();
         
         aceMakePayment = this;
@@ -913,21 +917,21 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
         unitNoLabel.setText(PM.getUnitNo());
     }
     
-    private void setTable() {
-        List<String> paymentFeesDetails = PM.displayOnePayment(PM.getInvoiceNo());
-        String[] feesDetailsArray = new String[paymentFeesDetails.size()];
-        paymentFeesDetails.toArray(feesDetailsArray);
+    private void setTable(ArrayList<Invoice> invoiceList) {
+//        List<String> paymentFeesDetails = PM.displayOnePayment(PM.getInvoiceNo());
+//        String[] feesDetailsArray = new String[paymentFeesDetails.size()];
+//        paymentFeesDetails.toArray(feesDetailsArray);
         float subTotal = 0.00f;
         DefaultTableModel tableModel = (DefaultTableModel)paymentTable.getModel();
         
-        for (int i=0; i<paymentFeesDetails.size(); i++) {
-            String[] paymentDetails = feesDetailsArray[i].split(";");
-            String feeType = paymentDetails[0];
-            String issueDate = paymentDetails[1];
-            String consump = paymentDetails[2];
-            String unit = paymentDetails[3];
-            String unitPrice = paymentDetails[4];
-            String totalPrice = paymentDetails[5];
+//        for (int i=0; i<paymentFeesDetails.size(); i++) {
+        for (Invoice eachInv:invoiceList) {
+            String feeType = eachInv.getFeeType();
+            String issueDate = eachInv.getIssuedDate();
+            String consump = eachInv.getConsumption();
+            String unit = eachInv.getUnit();
+            String unitPrice = String.valueOf(eachInv.getUnitPrice());
+            String totalPrice = String.valueOf(eachInv.getTotalPrice());
 
             subTotal += Float.valueOf(totalPrice);
             String tbData[] = {feeType, issueDate, consump, unit, unitPrice, 
@@ -1490,7 +1494,7 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutiveMakePayment(null, null).setVisible(true);
+                new AccountExecutiveMakePayment(null, null, null).setVisible(true);
             }
         });
     }

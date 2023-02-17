@@ -10,11 +10,13 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.HomePage;
 import pms_parkhill_residence.Invoice;
+import pms_parkhill_residence.Payment;
 
 /**
  *
@@ -26,14 +28,16 @@ public class AccountExecutiveViewInvoice extends javax.swing.JFrame {
      * Creates new form homePage
      * @param INV
      * @param AE
+     * @param paymentList
      */
-    public AccountExecutiveViewInvoice(Invoice INV, AccountExecutive AE) {
+    public AccountExecutiveViewInvoice(Invoice INV, AccountExecutive AE,
+                        ArrayList<Payment> paymentList) {
         initComponents();
         setWindowIcon();
         this.AE = AE;
         this.INV = INV;
         setFixData();
-        setTable();
+        setTable(paymentList);
         setTableDesign();
     }
 
@@ -932,23 +936,24 @@ public class AccountExecutiveViewInvoice extends javax.swing.JFrame {
         generatedDate.setText(String.valueOf(LocalDate.now()));
     }
     
-    private void setTable() {
-        List<String> paymentFeesDetails = INV.extractOneInvoiceDetails(INV);
+    private void setTable(ArrayList<Payment> paymentList) {
+//        List<String> paymentFeesDetails = INV.extractOneInvoiceDetails(INV);
+        
         float subTotal = 0.00f;
         DefaultTableModel tableModel = (DefaultTableModel)invoiceTable.getModel();
         
-        for (int i=0; i<paymentFeesDetails.size(); i++) {
-            String[] paymentDetails = paymentFeesDetails.get(i).split(";");
-            String feeType = paymentDetails[0];
-            String issueDate = paymentDetails[1];
-            String consump = paymentDetails[2];
-            String unit = paymentDetails[3];
-            String unitPrice = paymentDetails[4];
-            String totalPrice = paymentDetails[5];
+//        for (int i=0; i<paymentFeesDetails.size(); i++) {
+        for (Invoice eachPay:paymentList) {
+            String feeType = eachPay.getFeeType();
+            String issueDate = eachPay.getIssuedDate();
+            String consump = eachPay.getConsumption();
+            String unit = eachPay.getUnit();
+            String unitPrice = String.valueOf(eachPay.getUnitPrice());
+            Float totalPrice = eachPay.getTotalPrice();
 
-            subTotal += Float.valueOf(totalPrice);
+            subTotal += totalPrice;
             String tbData[] = {feeType, issueDate, consump, unit, unitPrice, 
-                totalPrice};
+                AE.currencyFormat(totalPrice)};
             tableModel.addRow(tbData);
         } 
         totalLabel.setText("Total: RM" + AE.currencyFormat(subTotal));
@@ -992,7 +997,7 @@ public class AccountExecutiveViewInvoice extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutiveViewInvoice(null, null).setVisible(true);
+                new AccountExecutiveViewInvoice(null, null, null).setVisible(true);
             }
         });
     }

@@ -196,25 +196,25 @@ public class Invoice {
         return availableInvoices;
     }
     
-    // method to extract specific invoice details
-    public List<String> extractOneInvoiceDetails(Invoice INV) {
-        List<String> RavailableFees = new ArrayList<>();
-        
-        for (int i=0; i<INV.availableFees.size(); i++) {
-            String[] paymentDetails = INV.availableFees.get(i).split(";");
-            String eInvoiceNo = paymentDetails[0];
-            String feeType = paymentDetails[2];
-            String issueDate = paymentDetails[9];
-            String consump = paymentDetails[4];
-            String unit = paymentDetails[5];
-            String unitPrice = paymentDetails[6];
-            String totalPrice = paymentDetails[7];
-            
-            RavailableFees.add(feeType +";"+ issueDate +";"+ consump +";"+
-                    unit +";"+ unitPrice +";"+ totalPrice +";");
-        } 
-        return RavailableFees;
-    }
+//    // method to extract specific invoice details
+//    public List<String> extractOneInvoiceDetails(Invoice INV) {
+//        List<String> RavailableFees = new ArrayList<>();
+//        
+//        for (int i=0; i<INV.availableFees.size(); i++) {
+//            String[] paymentDetails = INV.availableFees.get(i).split(";");
+//            String eInvoiceNo = paymentDetails[0];
+//            String feeType = paymentDetails[2];
+//            String issueDate = paymentDetails[9];
+//            String consump = paymentDetails[4];
+//            String unit = paymentDetails[5];
+//            String unitPrice = paymentDetails[6];
+//            String totalPrice = paymentDetails[7];
+//            
+//            RavailableFees.add(feeType +";"+ issueDate +";"+ consump +";"+
+//                    unit +";"+ unitPrice +";"+ totalPrice +";");
+//        } 
+//        return RavailableFees;
+//    }
     
     public ArrayList<Invoice> getCurrentUnitInvoice(String unitNo) {
         ArrayList<Invoice> incompleteInvoice = new ArrayList<>();     

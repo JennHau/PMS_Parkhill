@@ -8,10 +8,12 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.HomePage;
+import pms_parkhill_residence.Invoice;
 import pms_parkhill_residence.Payment;
 
 /**
@@ -684,8 +686,9 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
         if (column == 6 && action.equals("MAKE PAYMENT")) {
             String invoiceNo = String.valueOf(tableModel.getValueAt(row, 0));
             String unitNo = String.valueOf(tableModel.getValueAt(row, 2));
+            ArrayList<Invoice> invoiceList = AE.PYM.getSameUnpaidInvoiceNo(unitNo, invoiceNo);
             PM.setInvoiceNo(invoiceNo); PM.setUnitNo(unitNo);
-            AccountExecutiveMakePayment ae = new AccountExecutiveMakePayment(PM, AE);
+            AccountExecutiveMakePayment ae = new AccountExecutiveMakePayment(PM, AE, invoiceList);
             ae.setVisible(true);
             dispose();
         } else if (column == 6 && action.equals("ISSUE RECEIPT")) {

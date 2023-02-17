@@ -97,47 +97,47 @@ public class Payment extends Invoice {
         return pendingPaymentList;
     }
     
-    // extract specific payment details
-    public List<String> displayOnePayment(String invoiceNo) {
-        List<String> paymentFees = new ArrayList<String>();
-        try {
-            List<String> invoicesList = fh.fileRead("invoices.txt");
-            
-            List<String> paidList = fh.fileRead("payment.txt");
-            
-            // compare invoice data with payment data to prevent double payment
-            for (int i = 1; i < invoicesList.size(); i++) {
-                String[] feesDetails = invoicesList.get(i).split(";");
-                
-                Invoice invoice = new Invoice(feesDetails);
-                
-                String cDetails = invoice.getFeeType() + ";"
-                        + invoice.getIssuedDate() + ";" + invoice.getConsumption() + ";"
-                        + invoice.getUnit() + ";" + invoice.getUnitPrice()
-                        + ";" + invoice.getTotalPrice() + ";";
-
-                if (invoice.getInvoiceNo().equals(invoiceNo)) {
-                    boolean check = true;
-                    for(int j = 1; j < paidList.size(); j++) {
-                        String[] paymentDetails = paidList.get(j).split(";");
-                        
-                        Payment payment = new Payment(paymentDetails);
-                        
-                        if(invoice.getInvoiceNo().equals(payment.getInvoiceNo())
-                                && invoice.getFeeType().equals(payment.getFeeType())) {
-                            check = false;
-                        }
-                    }
-                    if(check) {
-                        paymentFees.add(cDetails);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return paymentFees;
-    }
+//    // extract specific payment details
+//    public List<String> displayOnePayment(String invoiceNo) {
+//        List<String> paymentFees = new ArrayList<String>();
+//        try {
+//            List<String> invoicesList = fh.fileRead("invoices.txt");
+//            
+//            List<String> paidList = fh.fileRead("payment.txt");
+//            
+//            // compare invoice data with payment data to prevent double payment
+//            for (int i = 1; i < invoicesList.size(); i++) {
+//                String[] feesDetails = invoicesList.get(i).split(";");
+//                
+//                Invoice invoice = new Invoice(feesDetails);
+//                
+//                String cDetails = invoice.getFeeType() + ";"
+//                        + invoice.getIssuedDate() + ";" + invoice.getConsumption() + ";"
+//                        + invoice.getUnit() + ";" + invoice.getUnitPrice()
+//                        + ";" + invoice.getTotalPrice() + ";";
+//
+//                if (invoice.getInvoiceNo().equals(invoiceNo)) {
+//                    boolean check = true;
+//                    for(int j = 1; j < paidList.size(); j++) {
+//                        String[] paymentDetails = paidList.get(j).split(";");
+//                        
+//                        Payment payment = new Payment(paymentDetails);
+//                        
+//                        if(invoice.getInvoiceNo().equals(payment.getInvoiceNo())
+//                                && invoice.getFeeType().equals(payment.getFeeType())) {
+//                            check = false;
+//                        }
+//                    }
+//                    if(check) {
+//                        paymentFees.add(cDetails);
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return paymentFees;
+//    }
     
     // method to store newly made payment
     public void storePayment(Invoice invoice, String userID) {
@@ -449,7 +449,7 @@ public class Payment extends Invoice {
         // to change the issued invoice list to same data structure
         for (Invoice eachInv : invoiceList) {
             String issuedDate = DTF.changeFormatDate(eachInv.getIssuedDate());
-            String[] data = {issuedDate, "Invoice", eachInv.getInvoiceNo() + " " + eachInv.getFeeType(), eachInv.getUnitPrice().toString(), "-"};
+            String[] data = {issuedDate, "Invoice", eachInv.getInvoiceNo() + " " + eachInv.getFeeType(), eachInv.getTotalPrice().toString(), "-"};
             
             String line = "";
             for (String eachData : data) {
@@ -461,7 +461,7 @@ public class Payment extends Invoice {
         // change the paid invoice list to same data structure
         for (Payment eachPm : paymentList) {
             String date = DTF.changeFormatDate(eachPm.getPaymentDate());
-            String[] data = {date, "Invoice Payment", eachPm.getInvoiceNo() + " " + eachPm.getFeeType() + " - " + eachPm.getUnitPrice().toString() + " in excess payments.", "-", eachPm.getTotalPrice().toString()};
+            String[] data = {date, "Invoice Payment", eachPm.getInvoiceNo() + " " + eachPm.getFeeType() + " - " + eachPm.getTotalPrice().toString() + " in excess payments.", "-", eachPm.getTotalPrice().toString()};
             
             String line = "";
             for (String eachData : data) {

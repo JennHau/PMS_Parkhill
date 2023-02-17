@@ -10,12 +10,14 @@ import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.HomePage;
 import pms_parkhill_residence.Invoice;
+import pms_parkhill_residence.Payment;
 
 /**
  *
@@ -867,9 +869,10 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                                     "ISSUE INVOICE", JOptionPane.INFORMATION_MESSAGE);
                 }
             } else if (statusCB.getSelectedItem() == "ISSUED"){
-                dispose();
+                ArrayList<Payment> paymentList = AE.PYM.getSamePaidInvoiceNo(unitNo, invoiceNo);
                 Invoice INV = new Invoice(invoiceNo);
-                new AccountExecutiveViewInvoice(INV, AE).setVisible(true);
+                new AccountExecutiveViewInvoice(INV, AE, paymentList).setVisible(true);
+                dispose();
             }
         }
     }//GEN-LAST:event_invoiceTableMouseClicked

@@ -761,8 +761,8 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
             BufferedWriter bw = new BufferedWriter(fw);
             fw.write(feeType +";"+ target +";");
             fw.flush(); bw.flush(); fw.close(); bw.close();
-            dispose();
             new AccountExecutiveIssueInvoiceDetail(AE).setVisible(true);
+            dispose();
             } 
         } catch (Exception e) {
             e.printStackTrace();

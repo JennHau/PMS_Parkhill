@@ -17,6 +17,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import pms_parkhill_residence.FileHandling;
+import pms_parkhill_residence.Payment;
 import pms_parkhill_residence.Users;
 
 /**
@@ -26,6 +27,7 @@ import pms_parkhill_residence.Users;
 public class AccountExecutive extends Users {
 
     FileHandling fh = new FileHandling();
+    Payment PYM = new Payment();
 
     public AccountExecutive() {}
     
