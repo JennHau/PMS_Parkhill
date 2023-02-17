@@ -8,8 +8,8 @@ import java.awt.Toolkit;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import pms_parkhill_residence.Invoice;
-import pms_parkhill_residence.PMS_DateTimeFormatter;
+import classes.Invoice;
+import classes.PMS_DateTimeFormatter;
 
 /**
  *

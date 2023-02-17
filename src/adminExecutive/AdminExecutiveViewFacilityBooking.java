@@ -11,7 +11,7 @@ import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.FacilityBookingPaymentByHour;
+import classes.FacilityBookingPaymentByHour;
 import pms_parkhill_residence.HomePage;
 
 /**

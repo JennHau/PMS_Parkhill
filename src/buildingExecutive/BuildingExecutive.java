@@ -5,7 +5,7 @@
 package buildingExecutive;
 
 import java.awt.Color;
-import pms_parkhill_residence.CRUD;
+import classes.CRUD;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,11 +21,11 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import pms_parkhill_residence.Complaint;
-import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.PMS_DateTimeFormatter;
-import pms_parkhill_residence.TextFile;
-import pms_parkhill_residence.Users;
+import classes.Complaint;
+import classes.FileHandling;
+import classes.PMS_DateTimeFormatter;
+import classes.TextFile;
+import classes.Users;
 
 /**
  *

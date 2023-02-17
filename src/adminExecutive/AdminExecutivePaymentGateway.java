@@ -13,7 +13,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.FileHandling;
+import classes.FileHandling;
+import classes.PropertyUnit;
 
 /**
  *
@@ -416,12 +417,13 @@ public class AdminExecutivePaymentGateway extends javax.swing.JFrame {
     }//GEN-LAST:event_bookingTableMouseClicked
 
     private void setUnitNoCB() {
-        List<String> availableUnit = AE.extractAllProperties("residential");
+//        List<String> availableUnit = AE.extractAllProperties("residential");
+        List<PropertyUnit> availableUnit = AE.PU.extractAllProperties("residential");
         unitNoCB.addItem("-PLEASE SELECT-");
-        for(int i = 0; i<availableUnit.size(); i++) {
-            String[] unitDetails = availableUnit.get(i).split(";");
-            String unitNo = unitDetails[0];
-            String status = unitDetails[2];
+        
+        for(PropertyUnit eachUnit:availableUnit) {
+            String unitNo = eachUnit.getUnitNo();
+            String status = eachUnit.getStatus();
             if(status.equals("sold")) {
                 unitNoCB.addItem(unitNo);
             }

@@ -21,8 +21,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import pms_parkhill_residence.Complaint;
-import pms_parkhill_residence.FileHandling;
+import classes.Complaint;
+import classes.FileHandling;
 
 /**
  *

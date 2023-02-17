@@ -7,7 +7,7 @@ package accountExecutive;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
-import pms_parkhill_residence.Payment;
+import classes.Payment;
 
 /**
  *

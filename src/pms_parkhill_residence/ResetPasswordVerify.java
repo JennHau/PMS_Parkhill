@@ -4,6 +4,7 @@
  */
 package pms_parkhill_residence;
 
+import classes.Users;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Toolkit;

@@ -4,6 +4,7 @@
  */
 package adminExecutive;
 
+import classes.PropertyUnit;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -1061,23 +1062,28 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
         DefaultTableModel tableModel = (DefaultTableModel)unitTable.getModel();
         tableModel.setRowCount(0);
             
-        List<String> availableList = 
-                AE.extractAllProperties(String.valueOf
-                                (typeCB.getSelectedItem()).toLowerCase());
+//        List<String> availableList = 
+//                AE.extractAllProperties(String.valueOf
+//                                (typeCB.getSelectedItem()).toLowerCase());
         
-        String[] propertiesArray = new String[availableList.size()];
-        availableList.toArray(propertiesArray);
+        List<PropertyUnit> propertyList = AE.PU.extractAllProperties(String.valueOf
+                            (typeCB.getSelectedItem()).toLowerCase());
         
-        for (int i = 0; i < availableList.size(); i++) {
-            String[] propertyDetails = propertiesArray[i].split(";");
-            String unitNo = propertyDetails[0];
-            String squareFoot = propertyDetails[1];
-            String status = propertyDetails[2];
-            String dateOfSold = propertyDetails[3];
+//        String[] propertiesArray = new String[availableList.size()];
+//        availableList.toArray(propertiesArray);
+        
+        int i = 0;
+        for (PropertyUnit eachUnit:propertyList) {
+//            String[] propertyDetails = propertiesArray[i].split(";");
+            String unitNo = eachUnit.getUnitNo();
+            String squareFoot = String.valueOf(eachUnit.getSquareFeet());
+            String status = eachUnit.getStatus();
+            String dateOfSold = eachUnit.getDateOfSold();
             
             String[] tbData = {String.valueOf(i+1), unitNo, squareFoot, status,
                 dateOfSold, "MANAGE"};
             tableModel.addRow(tbData);
+            i++;
         }
     }
     

@@ -8,7 +8,7 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
-import pms_parkhill_residence.Payment;
+import classes.Payment;
 
 /**
  *

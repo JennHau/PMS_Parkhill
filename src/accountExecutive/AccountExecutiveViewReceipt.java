@@ -9,9 +9,9 @@ import java.awt.Component;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.PMS_DateTimeFormatter;
-import pms_parkhill_residence.Payment;
+import classes.FileHandling;
+import classes.PMS_DateTimeFormatter;
+import classes.Payment;
 
 
 /**

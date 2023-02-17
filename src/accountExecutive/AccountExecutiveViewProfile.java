@@ -8,7 +8,7 @@ import java.awt.Cursor;
 import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 import pms_parkhill_residence.HomePage;
-import pms_parkhill_residence.Validation;
+import classes.Validation;
 
 /**
  *

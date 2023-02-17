@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.Facility;
+import classes.Facility;
 import pms_parkhill_residence.HomePage;
 
 /**

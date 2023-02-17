@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package pms_parkhill_residence;
+package classes;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -373,6 +373,22 @@ public class Payment extends Invoice {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    // extract all unit that having outstanding fee
+    public boolean checkOutstandingFee(String unitNo) {
+        List<String> oustandingFee = displayAllPayment("PENDING");
+        String[] oustandingFeeArray = new String[oustandingFee.size()];
+        oustandingFee.toArray(oustandingFeeArray);
+        
+        for (int i = 0; i < oustandingFee.size(); i++) {
+            String[] feeDetails = oustandingFeeArray[i].split(";");
+            String eUnitNo = feeDetails[2];
+            
+            if (unitNo.equals(eUnitNo)) {
+                return false;
+            }
+        } return true;
     }
     
     // store newly issued statement 

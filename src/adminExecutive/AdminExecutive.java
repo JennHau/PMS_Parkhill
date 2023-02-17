@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import accountExecutive.AccountExecutive;
+import classes.Complaint;
 import java.awt.Color;
 import java.io.File;
 import java.time.LocalDate;
@@ -18,11 +19,14 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import pms_parkhill_residence.FacilityBookingPaymentByBooking;
-import pms_parkhill_residence.FacilityBookingPaymentByHour;
-import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Payment;
-import pms_parkhill_residence.Users;
+import classes.FacilityBookingPaymentByBooking;
+import classes.FacilityBookingPaymentByHour;
+import classes.FileHandling;
+import classes.PMS_DateTimeFormatter;
+import classes.Payment;
+import classes.PropertyUnit;
+import classes.Users;
+import java.time.LocalTime;
 import residentANDtenant.ResidentTenant;
 
 /**
@@ -33,6 +37,9 @@ public class AdminExecutive extends Users{
     
     FileHandling fh = new FileHandling();
     Payment PM = new Payment();
+    PropertyUnit PU = new PropertyUnit();
+    Complaint CP = new Complaint();
+    PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
     
     public AdminExecutive(){}
     
@@ -51,28 +58,28 @@ public class AdminExecutive extends Users{
         return str;
     }
     
-    // method to extract specific property unit details
-    public List<String> extractAllProperties(String type) {
-        List<String> propertiesList = fh.fileRead("propertyDetails.txt");
-        String[] propertiesArray = new String[propertiesList.size()];
-        propertiesList.toArray(propertiesArray);
-        
-        List<String> availableList = new ArrayList<>();
-        
-        for (int i = 1; i < propertiesList.size(); i++) {
-            String[] propertyDetails = propertiesArray[i].split(";");
-            String unitNo = propertyDetails[0];
-            String eTypes = propertyDetails[1].toLowerCase();
-            String squareFoot = propertyDetails[2];
-            String status = propertyDetails[3];
-            String dateOfSold = propertyDetails[4];
-            
-            if (type.equals(eTypes)) {
-                availableList.add(unitNo +";"+ squareFoot +";"+ status +";"+
-                        dateOfSold +";");
-            }
-        } return availableList;
-    }
+//    // method to extract specific property unit details
+//    public List<String> extractAllProperties(String type) {
+//        List<String> propertiesList = fh.fileRead("propertyDetails.txt");
+//        String[] propertiesArray = new String[propertiesList.size()];
+//        propertiesList.toArray(propertiesArray);
+//        
+//        List<String> availableList = new ArrayList<>();
+//        
+//        for (int i = 1; i < propertiesList.size(); i++) {
+//            String[] propertyDetails = propertiesArray[i].split(";");
+//            String unitNo = propertyDetails[0];
+//            String eTypes = propertyDetails[1].toLowerCase();
+//            String squareFoot = propertyDetails[2];
+//            String status = propertyDetails[3];
+//            String dateOfSold = propertyDetails[4];
+//            
+//            if (type.equals(eTypes)) {
+//                availableList.add(unitNo +";"+ squareFoot +";"+ status +";"+
+//                        dateOfSold +";");
+//            }
+//        } return availableList;
+//    }
     
     // method to extract all available property unit details 
     public List<String> extractAllProperties() {
@@ -95,137 +102,76 @@ public class AdminExecutive extends Users{
         } return availableList;
     }
     
-    // check whether newly added unitNo is existed
-    public boolean checkUnitAvailability(String unitNo) {
-        List<String> propertiesList =  fh.fileRead("propertyDetails.txt");
-        String[] propertiesArray = new String[propertiesList.size()];
-        propertiesList.toArray(propertiesArray);
-        
-        for (int i = 1; i < propertiesList.size(); i++) {
-            String[] propertyDetails = propertiesArray[i].split(";");
-            String eUnitNo = propertyDetails[0].toLowerCase();
-            
-            if (unitNo.equals(eUnitNo)) {
-                return false;
-            }
-        }
-        return true;
-    }
+//    // check whether newly added unitNo is existed
+//    public boolean checkUnitAvailability(String unitNo) {
+//        List<String> propertiesList =  fh.fileRead("propertyDetails.txt");
+//        String[] propertiesArray = new String[propertiesList.size()];
+//        propertiesList.toArray(propertiesArray);
+//        
+//        for (int i = 1; i < propertiesList.size(); i++) {
+//            String[] propertyDetails = propertiesArray[i].split(";");
+//            String eUnitNo = propertyDetails[0].toLowerCase();
+//            
+//            if (unitNo.equals(eUnitNo)) {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
     
-    // method to modify specific unit details
-    public void modifyUnitDetails(String unitNo, String type, String squareFoot) {
-        List<String> propertiesList =  fh.fileRead("propertyDetails.txt");
-        String[] propertiesArray = new String[propertiesList.size()];
-        propertiesList.toArray(propertiesArray);
-        
-        List<String> newData = new ArrayList<>();
-        
-        for (int i = 0; i < propertiesList.size(); i++) {
-            String[] propertyDetails = propertiesArray[i].split(";");
-            String eUnitNo = propertyDetails[0];
-            String eTypes = propertyDetails[1];
-            String status = propertyDetails[3];
-            String dateOfSold = propertyDetails[4];
-            
-            if(eUnitNo.equals(unitNo) && eTypes.equals(type)) {
-                newData.add(eUnitNo +";"+ eTypes +";"+ squareFoot +";"+ status
-                +";"+ dateOfSold +";");
-            } else {
-                newData.add(propertiesArray[i]);
-            }
-        } fh.fileWrite("propertyDetails.txt", false, newData);
-    }
+//    // method to modify specific unit details
+//    public void modifyUnitDetails(String unitNo, String type, String squareFoot) {
+//        List<String> propertiesList =  fh.fileRead("propertyDetails.txt");
+//        String[] propertiesArray = new String[propertiesList.size()];
+//        propertiesList.toArray(propertiesArray);
+//        
+//        List<String> newData = new ArrayList<>();
+//        
+//        for (int i = 0; i < propertiesList.size(); i++) {
+//            String[] propertyDetails = propertiesArray[i].split(";");
+//            String eUnitNo = propertyDetails[0];
+//            String eTypes = propertyDetails[1];
+//            String status = propertyDetails[3];
+//            String dateOfSold = propertyDetails[4];
+//            
+//            if(eUnitNo.equals(unitNo) && eTypes.equals(type)) {
+//                newData.add(eUnitNo +";"+ eTypes +";"+ squareFoot +";"+ status
+//                +";"+ dateOfSold +";");
+//            } else {
+//                newData.add(propertiesArray[i]);
+//            }
+//        } fh.fileWrite("propertyDetails.txt", false, newData);
+//    }
     
-    // extract all unit that having outstanding fee
-    public boolean checkOutstandingFee(String unitNo) {
-        List<String> oustandingFee = PM.displayAllPayment("PENDING");
-        String[] oustandingFeeArray = new String[oustandingFee.size()];
-        oustandingFee.toArray(oustandingFeeArray);
-        
-        for (int i = 0; i < oustandingFee.size(); i++) {
-            String[] feeDetails = oustandingFeeArray[i].split(";");
-            String eUnitNo = feeDetails[2];
-            
-            if (unitNo.equals(eUnitNo)) {
-                return false;
-            }
-        } return true;
-    }
     
-    // delete a property unit
-    public void deleteUnit(String unitNo) {
-        List<String> propertiesList =  fh.fileRead("propertyDetails.txt");
-        String[] propertiesArray = new String[propertiesList.size()];
-        propertiesList.toArray(propertiesArray);
-        
-        // move deleted unit to inactive text file
-        List<String> newData1 = new ArrayList<>();
-        List<String> newData2 = new ArrayList<>();
-        String currentDeleteID = null;
-        
-        for (int i = 0; i < propertiesList.size(); i++) {
-            String[] propertyDetails = propertiesArray[i].split(";");
-            String eUnitNo = propertyDetails[0];
-            
-            if(eUnitNo.equals(unitNo)) {
-                currentDeleteID = getURTDeleteID();
-                newData2.add(currentDeleteID +";"+ propertiesArray[i]
-                        + LocalDateTime.now() +";");
-            } else {
-                newData1.add(propertiesArray[i]);
-            }
-        } 
-        fh.fileWrite("propertyDetails.txt", false, newData1);
-        fh.fileWrite("inactivePropertyDetails.txt", true, newData2);
-        deleteTenantResident(unitNo, currentDeleteID);
-    }
     
-    public String getURTDeleteID() {
-        Integer tempID; 
-        
-        Integer currentDeleteID1 = Integer.parseInt(getLatestID
-                    ("inactiveUserProfile.txt", "dlt").substring(3));
-        Integer currentDeleteID2 = Integer.parseInt(getLatestID
-                    ("inactivePropertyDetails.txt", "dlt").substring(3));
-
-        if(currentDeleteID1>currentDeleteID2) {
-            tempID = currentDeleteID1;
-        } else {
-            tempID = currentDeleteID2;
-        }
-                
-        int times = 6 - String.valueOf(tempID).length();
-        
-        String zero = "";
-        
-        // ensure that all primary ID are having 6 numbers
-        switch (times) {
-            case 0 ->                 {
-                     zero = "";
-                }
-            case 1 ->                 {
-                     zero = "0";
-                }
-            case 2 ->                 {
-                     zero = "00";
-                }
-            case 3 ->                 {
-                     zero = "000";
-                }
-            case 4 ->                 {
-                     zero = "0000";
-                }
-            case 5 ->                 {
-                     zero = "00000";
-                }
-            default -> {
-            }
-        }
-        
-        
-        String currentUsableID = "dlt" + zero +String.valueOf(tempID);
-        return currentUsableID;
-    }
+//    // delete a property unit
+//    public void deleteUnit(String unitNo) {
+//        List<String> propertiesList =  fh.fileRead("propertyDetails.txt");
+//        String[] propertiesArray = new String[propertiesList.size()];
+//        propertiesList.toArray(propertiesArray);
+//        
+//        // move deleted unit to inactive text file
+//        List<String> newData1 = new ArrayList<>();
+//        List<String> newData2 = new ArrayList<>();
+//        String currentDeleteID = null;
+//        
+//        for (int i = 0; i < propertiesList.size(); i++) {
+//            String[] propertyDetails = propertiesArray[i].split(";");
+//            String eUnitNo = propertyDetails[0];
+//            
+//            if(eUnitNo.equals(unitNo)) {
+//                currentDeleteID = getURTDeleteID();
+//                newData2.add(currentDeleteID +";"+ propertiesArray[i]
+//                        + LocalDateTime.now() +";");
+//            } else {
+//                newData1.add(propertiesArray[i]);
+//            }
+//        } 
+//        fh.fileWrite("propertyDetails.txt", false, newData1);
+//        fh.fileWrite("inactivePropertyDetails.txt", true, newData2);
+//        deleteTenantResident(unitNo, currentDeleteID);
+//    }
     
     // get any lastest ID
     public String getLatestID(String filename, String initial) {
@@ -328,7 +274,7 @@ public class AdminExecutive extends Users{
         } 
         fh.fileWrite("userProfile.txt", false, newData1);
         fh.fileWrite("inactiveUserProfile.txt", true, newData2);
-        updatePropertySoldStatus(unitNo, "unsold");
+        PU.updatePropertySoldStatus(unitNo, "unsold");
         
         AccountExecutive acce = new AccountExecutive();
         acce.deleteTrans(unitNo, currentDeleteID);
@@ -365,11 +311,9 @@ public class AdminExecutive extends Users{
     //get specific user details
     public String[] extractRTDetails(String userID) {
         List<String> userProfile = fh.fileRead("userProfile.txt");
-        String[] userProfileArray = new String[userProfile.size()];
-        userProfile.toArray(userProfileArray);
         
         for (int i = 0; i<userProfile.size(); i++) {
-            String[] userInfo2 = userProfileArray[i].split(";");
+            String[] userInfo2 = userProfile.get(i).split(";");
             String userID_temp = userInfo2[0];
             
             if (userID_temp.equals(userID.toLowerCase())) {
@@ -378,98 +322,98 @@ public class AdminExecutive extends Users{
         } return null;
     }
     
-    // admin modify resident tenant account
-    public void modifyRTAccount(ResidentTenant RT) {
-        List<String> userProfile = fh.fileRead("userProfile.txt");
-        String[] userProfileArray = new String[userProfile.size()];
-        userProfile.toArray(userProfileArray);
-        
-        List<String> newData = new ArrayList<>();
-        
-        for (int i = 0; i<userProfile.size(); i++) {
-            String[] userInfo = userProfileArray[i].split(";");
-            String userID_temp = userInfo[0];
-            String password_temp = userInfo[2];
-            
-            if (userID_temp.equals(RT.getUserID())) {
-                newData.add(RT.getUserID() +";"+ RT.getEmail() +";"+ password_temp
-                        +";"+ RT.getFirstName() +";"+ RT.getLastName() +";"+
-                        RT.getIdentificationNo() +";"+ RT.getGender()+";"+
-                        RT.getPhoneNo()+";"+ RT.getUnitNo() +";");
-            } else {
-                newData.add(userProfileArray[i]);
-            }
-        } fh.fileWrite("userProfile.txt", false, newData);
-    }
+//    // admin modify resident tenant account
+//    public void modifyRTAccount(ResidentTenant RT) {
+//        List<String> userProfile = fh.fileRead("userProfile.txt");
+//        String[] userProfileArray = new String[userProfile.size()];
+//        userProfile.toArray(userProfileArray);
+//        
+//        List<String> newData = new ArrayList<>();
+//        
+//        for (int i = 0; i<userProfile.size(); i++) {
+//            String[] userInfo = userProfileArray[i].split(";");
+//            String userID_temp = userInfo[0];
+//            String password_temp = userInfo[2];
+//            
+//            if (userID_temp.equals(RT.getUserID())) {
+//                newData.add(RT.getUserID() +";"+ RT.getEmail() +";"+ password_temp
+//                        +";"+ RT.getFirstName() +";"+ RT.getLastName() +";"+
+//                        RT.getIdentificationNo() +";"+ RT.getGender()+";"+
+//                        RT.getPhoneNo()+";"+ RT.getUnitNo() +";");
+//            } else {
+//                newData.add(userProfileArray[i]);
+//            }
+//        } fh.fileWrite("userProfile.txt", false, newData);
+//    }
     
-    // extract all deleted property unit details
-    public List<String> extractAllPropertiesHistory(String type) {
-        List<String> propertiesList = fh.fileRead("inactivePropertyDetails.txt");
-        String[] propertiesArray = new String[propertiesList.size()];
-        propertiesList.toArray(propertiesArray);
-        
-        List<String> availableList = new ArrayList<>();
-        
-        for (int i = 1; i < propertiesList.size(); i++) {
-            String[] propertyDetails = propertiesArray[i].split(";");
-            String deleteID = propertyDetails[0];
-            String unitNo = propertyDetails[1];
-            String eTypes = propertyDetails[2].toLowerCase();
-            String squareFoot = propertyDetails[3];
-            String status = propertyDetails[4];
-            String dateOfSold = propertyDetails[5];
-            String deletedDateTime = propertyDetails[6];
-            
-            if (type.equals(eTypes)) {
-                availableList.add(deleteID +";"+ unitNo +";"+ squareFoot +";"+
-                        status +";"+ dateOfSold +";"+ deletedDateTime +";");
-            }
-        } return availableList;
-    }
-    
-    // validate whether a same unitNo is existed before restore deleted property unit
-    public boolean restoreUnitValidation(String unitNo) {
-        List<String> propertiesList = fh.fileRead("propertyDetails.txt");
-        String[] propertiesArray = new String[propertiesList.size()];
-        propertiesList.toArray(propertiesArray);
-        
-        for (int i = 1; i < propertiesList.size(); i++) {
-            String[] propertyDetails = propertiesArray[i].split(";");
-            String eUnitNo = propertyDetails[0];
-            if (unitNo.equals(eUnitNo)) {
-                return false;
-            }
-        } return true;
-    }
-    
-    // method to restore deleted property unit
-    public void restoreUnit(String deletionID) { 
-        List<String> propertiesList = fh.fileRead("inactivePropertyDetails.txt");
-        String[] propertiesArray = new String[propertiesList.size()];
-        propertiesList.toArray(propertiesArray);
-        
-        List<String> newData1 = new ArrayList<>();
-        List<String> newData2 = new ArrayList<>();
-        
-        for (int i = 0; i < propertiesList.size(); i++) {
-            String[] propertyDetails = propertiesArray[i].split(";");
-            String deleteID = propertyDetails[0];
-            String unitNo = propertyDetails[1];
-            String eTypes = propertyDetails[2];
-            String squareFoot = propertyDetails[3];
-            String status = propertyDetails[4];
-            String dateOfSold = propertyDetails[5];
-            
-            if (deletionID.equals(deleteID)) {
-                newData1.add(unitNo +";"+ eTypes +";"+ squareFoot +";"+ status +";"+
-                        dateOfSold +";");
-            } else {
-                newData2.add(propertiesArray[i]);
-            }
-        } fh.fileWrite("propertyDetails.txt", true, newData1);
-        fh.fileWrite("inactivePropertyDetails.txt", false, newData2);
-        restoreResidentTenant(deletionID);
-    }
+//    // extract all deleted property unit details
+//    public List<String> extractAllPropertiesHistory(String type) {
+//        List<String> propertiesList = fh.fileRead("inactivePropertyDetails.txt");
+//        String[] propertiesArray = new String[propertiesList.size()];
+//        propertiesList.toArray(propertiesArray);
+//        
+//        List<String> availableList = new ArrayList<>();
+//        
+//        for (int i = 1; i < propertiesList.size(); i++) {
+//            String[] propertyDetails = propertiesArray[i].split(";");
+//            String deleteID = propertyDetails[0];
+//            String unitNo = propertyDetails[1];
+//            String eTypes = propertyDetails[2].toLowerCase();
+//            String squareFoot = propertyDetails[3];
+//            String status = propertyDetails[4];
+//            String dateOfSold = propertyDetails[5];
+//            String deletedDateTime = propertyDetails[6];
+//            
+//            if (type.equals(eTypes)) {
+//                availableList.add(deleteID +";"+ unitNo +";"+ squareFoot +";"+
+//                        status +";"+ dateOfSold +";"+ deletedDateTime +";");
+//            }
+//        } return availableList;
+//    }
+//    
+//    // validate whether a same unitNo is existed before restore deleted property unit
+//    public boolean restoreUnitValidation(String unitNo) {
+//        List<String> propertiesList = fh.fileRead("propertyDetails.txt");
+//        String[] propertiesArray = new String[propertiesList.size()];
+//        propertiesList.toArray(propertiesArray);
+//        
+//        for (int i = 1; i < propertiesList.size(); i++) {
+//            String[] propertyDetails = propertiesArray[i].split(";");
+//            String eUnitNo = propertyDetails[0];
+//            if (unitNo.equals(eUnitNo)) {
+//                return false;
+//            }
+//        } return true;
+//    }
+//    
+//    // method to restore deleted property unit
+//    public void restoreUnit(String deletionID) { 
+//        List<String> propertiesList = fh.fileRead("inactivePropertyDetails.txt");
+//        String[] propertiesArray = new String[propertiesList.size()];
+//        propertiesList.toArray(propertiesArray);
+//        
+//        List<String> newData1 = new ArrayList<>();
+//        List<String> newData2 = new ArrayList<>();
+//        
+//        for (int i = 0; i < propertiesList.size(); i++) {
+//            String[] propertyDetails = propertiesArray[i].split(";");
+//            String deleteID = propertyDetails[0];
+//            String unitNo = propertyDetails[1];
+//            String eTypes = propertyDetails[2];
+//            String squareFoot = propertyDetails[3];
+//            String status = propertyDetails[4];
+//            String dateOfSold = propertyDetails[5];
+//            
+//            if (deletionID.equals(deleteID)) {
+//                newData1.add(unitNo +";"+ eTypes +";"+ squareFoot +";"+ status +";"+
+//                        dateOfSold +";");
+//            } else {
+//                newData2.add(propertiesArray[i]);
+//            }
+//        } fh.fileWrite("propertyDetails.txt", true, newData1);
+//        fh.fileWrite("inactivePropertyDetails.txt", false, newData2);
+//        restoreResidentTenant(deletionID);
+//    }
     
     // method to restore deleted Resident Tenant
     public void restoreResidentTenant(String deletionID) {
@@ -499,7 +443,7 @@ public class AdminExecutive extends Users{
                         lastName +";"+ identificationNo +";"+ gender +";"
                         + phoneNo +";"+ eUnitNo +";");
                 if (!userID.equals("Parkhill")) {
-                    updatePropertySoldStatus(eUnitNo, "sold");
+                    PU.updatePropertySoldStatus(eUnitNo, "sold");
                 }
             } else {
                 newData2.add(userArray[i]);
@@ -602,28 +546,28 @@ public class AdminExecutive extends Users{
         
         fh.fileWrite("userProfile.txt", true, newData);
         
-        updatePropertySoldStatus(RT.getUnitNo(), "sold");
+        PU.updatePropertySoldStatus(RT.getUnitNo(), "sold");
     }
     
     // get all tenant resident details based on type 
     public List<String> extractAllTenantResident(String type) {
         List<String> userList = fh.fileRead("userProfile.txt");
-        String[] userArray = new String[userList.size()];
-        userList.toArray(userArray);
+//        String[] userArray = new String[userList.size()];
+//        userList.toArray(userArray);
         
         List<String> availableList = new ArrayList<>();
         
         for (int i = 1; i < userList.size(); i++) {
-            String[] userDetails = userArray[i].split(";");
+            String[] userDetails = userList.get(i).split(";");
             String userID = userDetails[0].toUpperCase();
             
             if (type.equals("Residential")) {
                 if (userID.startsWith("TNT") || userID.startsWith("RSD")) {
-                availableList.add(userArray[i]);
+                availableList.add(userList.get(i));
                 }
             } else if (type.equals("Commercial")) {
                 if (userID.startsWith("VDR")) {
-                    availableList.add(userArray[i]);
+                    availableList.add(userList.get(i));
                 }
             }
             
@@ -710,88 +654,88 @@ public class AdminExecutive extends Users{
         return currentUsableID;
     }
     
-    // get all unsold unit
-    public List<String> getAvailableUnit(String type) {
-        List<String> availableList = new ArrayList<>();
-        
-        List<String> userList = fh.fileRead("userProfile.txt");
-        String[] userArray = new String[userList.size()];
-        userList.toArray(userArray);
-        
-        switch (type) {
-            case "Commercial" -> {
-                for (int i = 1; i < userList.size(); i++) {
-                    String[] userDetails = userArray[i].split(";");
-                    String userID = userDetails[0];
-                    String uniNo = userDetails[8];
-                    
-                    if (userID.equals("Parkhill") && uniNo.startsWith("S")) {
-                        availableList.add(uniNo);
-                    }
-                }
-            }
-            case "Tenant" -> {
-                for (int i = 1; i < userList.size(); i++) {
-                    String[] userDetails = userArray[i].split(";");
-                    String userID = userDetails[0];
-                    String uniNo = userDetails[8];
-                    
-                    if (userID.equals("Parkhill") && !uniNo.startsWith("S")) {
-                        availableList.add(uniNo);
-                    }
-                }
-            }
-            case "Resident" -> {
-                for (int i = 1; i < userList.size(); i++) {
-                    int check = 0;
-                    String[] userDetails = userArray[i].split(";");
-                    String uniNo = userDetails[8];
-                    
-                    for (int j = 1; j < userList.size(); j++) {
-                        String[] userDetails2 = userArray[j].split(";");
-                        String userID = userDetails2[0];
-                        String uniNo2 = userDetails2[8];
-                        if (uniNo.equals(uniNo2) && !uniNo.startsWith("S") 
-                                && !userID.equals("Parkhill")) {
-                            check++;
-                        }
-                    // check == 1 (consists tenant) / check == 2 (consists RT)    
-                    } if (check == 1) {
-                        availableList.add(uniNo);
-                    }
-                }
-            }
-            default -> {
-            } 
-        } return availableList;
-    }   
-    
-    // method to change property unit status
-    public void updatePropertySoldStatus(String unitNo, String status) {
-        List<String> propertyList = fh.fileRead("propertyDetails.txt");
-        String[] propertyArray = new String[propertyList.size()];
-        propertyList.toArray(propertyArray);
-        
-        List<String> newData = new ArrayList<>();
-        
-        for (int i = 0; i < propertyList.size(); i++) {
-            String[] propertyDetails = propertyArray[i].split(";");
-            String eUnitNo = propertyDetails[0];
-            String eTarget = propertyDetails[1];
-            String eSquareF = propertyDetails[2];
-            
-            if (unitNo.equals(eUnitNo) && status.equals("sold")) {
-                newData.add(eUnitNo +";"+ eTarget +";"+ eSquareF +";"+ "sold"
-                        +";"+ todayDate() +";");
-            } else if (unitNo.equals(eUnitNo) && status.equals("unsold")) {
-                newData.add(eUnitNo +";"+ eTarget +";"+ eSquareF +";"+ "unsold"
-                        +";"+ "-" +";");
-            } else {
-                newData.add(propertyArray[i]);
-            }
-            
-        } fh.fileWrite("propertyDetails.txt", false, newData);
-    }
+//    // get all unsold unit
+//    public List<String> getAvailableUnit(String type) {
+//        List<String> availableList = new ArrayList<>();
+//        
+//        List<String> userList = fh.fileRead("userProfile.txt");
+//        String[] userArray = new String[userList.size()];
+//        userList.toArray(userArray);
+//        
+//        switch (type) {
+//            case "Commercial" -> {
+//                for (int i = 1; i < userList.size(); i++) {
+//                    String[] userDetails = userArray[i].split(";");
+//                    String userID = userDetails[0];
+//                    String uniNo = userDetails[8];
+//                    
+//                    if (userID.equals("Parkhill") && uniNo.startsWith("S")) {
+//                        availableList.add(uniNo);
+//                    }
+//                }
+//            }
+//            case "Tenant" -> {
+//                for (int i = 1; i < userList.size(); i++) {
+//                    String[] userDetails = userArray[i].split(";");
+//                    String userID = userDetails[0];
+//                    String uniNo = userDetails[8];
+//                    
+//                    if (userID.equals("Parkhill") && !uniNo.startsWith("S")) {
+//                        availableList.add(uniNo);
+//                    }
+//                }
+//            }
+//            case "Resident" -> {
+//                for (int i = 1; i < userList.size(); i++) {
+//                    int check = 0;
+//                    String[] userDetails = userArray[i].split(";");
+//                    String uniNo = userDetails[8];
+//                    
+//                    for (int j = 1; j < userList.size(); j++) {
+//                        String[] userDetails2 = userArray[j].split(";");
+//                        String userID = userDetails2[0];
+//                        String uniNo2 = userDetails2[8];
+//                        if (uniNo.equals(uniNo2) && !uniNo.startsWith("S") 
+//                                && !userID.equals("Parkhill")) {
+//                            check++;
+//                        }
+//                    // check == 1 (consists tenant) / check == 2 (consists RT)    
+//                    } if (check == 1) {
+//                        availableList.add(uniNo);
+//                    }
+//                }
+//            }
+//            default -> {
+//            } 
+//        } return availableList;
+//    }   
+//    
+//    // method to change property unit status
+//    public void updatePropertySoldStatus(String unitNo, String status) {
+//        List<String> propertyList = fh.fileRead("propertyDetails.txt");
+//        String[] propertyArray = new String[propertyList.size()];
+//        propertyList.toArray(propertyArray);
+//        
+//        List<String> newData = new ArrayList<>();
+//        
+//        for (int i = 0; i < propertyList.size(); i++) {
+//            String[] propertyDetails = propertyArray[i].split(";");
+//            String eUnitNo = propertyDetails[0];
+//            String eTarget = propertyDetails[1];
+//            String eSquareF = propertyDetails[2];
+//            
+//            if (unitNo.equals(eUnitNo) && status.equals("sold")) {
+//                newData.add(eUnitNo +";"+ eTarget +";"+ eSquareF +";"+ "sold"
+//                        +";"+ todayDate() +";");
+//            } else if (unitNo.equals(eUnitNo) && status.equals("unsold")) {
+//                newData.add(eUnitNo +";"+ eTarget +";"+ eSquareF +";"+ "unsold"
+//                        +";"+ "-" +";");
+//            } else {
+//                newData.add(propertyArray[i]);
+//            }
+//            
+//        } fh.fileWrite("propertyDetails.txt", false, newData);
+//    }
     
     // extract all complaint details
     public List<String> extractComplaintDetails() {
@@ -802,20 +746,23 @@ public class AdminExecutive extends Users{
         
         for (int i = 1; i < complaintList.size(); i++) {
             String[] complaintDetails = complaintList.get(i).split(";");
-            String complaintId = complaintDetails[0];
-            String complainerId = complaintDetails[1];
-            String complaintDesc = complaintDetails[2];
-            String date = complaintDetails[3];
-            String time = complaintDetails[4];
-            String status = complaintDetails[5];
+            Complaint CP = new Complaint(complaintDetails);
+//            String complaintId = complaintDetails[0];
+//            String complainerId = complaintDetails[1];
+//            String complaintDesc = complaintDetails[2];
+//            String date = complaintDetails[3];
+//            String time = complaintDetails[4];
+//            String status = complaintDetails[5];
             
             for (int j = 1; j < userList.size(); j++) {
                 String[] userDetails = userList.get(j).split(";");
                 String userID = userDetails[0];
                 String unitNo = userDetails[8];
-                if (userID.equals(complainerId)) {
-                    availableList.add(complaintId +";"+ complainerId +";"+ unitNo +";"+
-                            complaintDesc +";"+ date +";"+ time +";"+ status);
+                if (userID.equals(CP.getComplainerID())) {
+                    availableList.add(CP.getComplaintID() +";"+ CP.getComplainerID()
+                            +";"+ unitNo +";"+ CP.getComplaintDetails() +";"+
+                            CP.getComplaintDate() +";"+ CP.getComplaintTime()
+                            +";"+ CP.getComplaintStatus());
                 }
             }
         } return availableList;
@@ -885,32 +832,33 @@ public class AdminExecutive extends Users{
 //        return currentUsableID;
 //    }
     
-    // store new complaint into text file
-    public void fileComplaint(String complainerID, String desc) {
-        Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String todayDate = formatter.format(date);
-        
-        String currentTime = new SimpleDateFormat("HH:mm:ss").format
-                            (Calendar.getInstance().getTime());
-        
-        LocalDateTime recordedDT = LocalDateTime.now();
-        
-        String recordedPersonID = "";
-        List<String> rp =  fh.fileRead("currentSession.txt");
-        for (int i = 1; i < rp.size(); i++) {
-            String[] userDetails = rp.get(i).split(";");
-            String userID = userDetails[0];
-            recordedPersonID = userID;
-        }
-            
-        List<String> newData = new ArrayList<>();
-        newData.add(getLatestID("complaints.txt", "cmp") +";"+ complainerID +";"+ desc +";"+ 
-                    todayDate +";"+ currentTime +";"+ "Pending" +";"+ recordedPersonID
-                    +";"+ recordedDT +";");
-        
-        fh.fileWrite("complaints.txt", true, newData);
-    }
+//    // store new complaint into text file
+//    public void fileComplaint(String complainerID, String desc) {
+//        
+//        Date date = new Date();
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//        String todayDate = formatter.format(date);
+//        
+//        String currentTime = new SimpleDateFormat("HH:mm:ss").format
+//                            (Calendar.getInstance().getTime());
+//        
+//        LocalDateTime recordedDT = LocalDateTime.now();
+//        
+//        String recordedPersonID = "";
+//        List<String> rp =  fh.fileRead("currentSession.txt");
+//        for (int i = 1; i < rp.size(); i++) {
+//            String[] userDetails = rp.get(i).split(";");
+//            String userID = userDetails[0];
+//            recordedPersonID = userID;
+//        }
+//            
+//        List<String> newData = new ArrayList<>();
+//        newData.add(getLatestID("complaints.txt", "cmp") +";"+ complainerID +";"+ desc +";"+ 
+//                    todayDate +";"+ currentTime +";"+ "Pending" +";"+ recordedPersonID
+//                    +";"+ recordedDT +";");
+//        
+//        fh.fileWrite("complaints.txt", true, newData);
+//    }
     
     // get complainer details
     public List<String> getComplainerUnitIDName(String complainerID) {
@@ -921,7 +869,7 @@ public class AdminExecutive extends Users{
         for (int i = 1; i < userList.size(); i++) {
             String[] complaintDetails = userList.get(i).split(";");
             String userID = complaintDetails[0];
-            String name = complaintDetails[3] + complaintDetails[4];
+            String name = complaintDetails[3] +" "+ complaintDetails[4];
             String unitNo = complaintDetails[8];
             
             if (userID.equals(complainerID)) {
@@ -931,49 +879,49 @@ public class AdminExecutive extends Users{
         } return availableComplainer;
     }
     
-    // modify complaint description
-    public void modifyComplaint(String complaintID, String complainerID, String desc) {
-        Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String todayDate = formatter.format(date);
-        
-        String currentTime = new SimpleDateFormat("HH:mm:ss").format
-                            (Calendar.getInstance().getTime());
-        
-        LocalDateTime recordedDT = LocalDateTime.now();
-        
-        String recordedPersonID = "";
-        List<String> rp =  fh.fileRead("currentSession.txt");
-        for (int i = 1; i < rp.size(); i++) {
-            String[] userDetails = rp.get(i).split(";");
-            String userID = userDetails[0];
-            recordedPersonID = userID;
-        }
-        
-        List<String> newData = new ArrayList<>();
-        newData.add(complaintID +";"+ complainerID +";"+ desc +";"+ 
-                    todayDate +";"+ currentTime +";"+ "Pending" +";"+ recordedPersonID
-                    +";"+ recordedDT +";");
-        
-        deleteComplaint(complaintID);
-        fh.fileWrite("complaints.txt", true, newData);
-    }
-    
-    // delete available complaint
-    public void deleteComplaint(String complaintID) {
-        List<String> complaintList =  fh.fileRead("complaints.txt");
-        
-        List<String> newData = new ArrayList<>();
-        
-        for (int i = 0; i < complaintList.size(); i++) {
-            String[] complaintDetails = complaintList.get(i).split(";");
-            String eComplaintID = complaintDetails[0];
-            
-            if (!complaintID.equals(eComplaintID)) {
-                newData.add(complaintList.get(i));
-            }
-        } fh.fileWrite("complaints.txt", false, newData);
-    }
+//    // modify complaint description
+//    public void modifyComplaint(String complaintID, String complainerID, String desc) {
+//        Date date = new Date();
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//        String todayDate = formatter.format(date);
+//        
+//        String currentTime = new SimpleDateFormat("HH:mm:ss").format
+//                            (Calendar.getInstance().getTime());
+//        
+//        LocalDateTime recordedDT = LocalDateTime.now();
+//        
+//        String recordedPersonID = "";
+//        List<String> rp =  fh.fileRead("currentSession.txt");
+//        for (int i = 1; i < rp.size(); i++) {
+//            String[] userDetails = rp.get(i).split(";");
+//            String userID = userDetails[0];
+//            recordedPersonID = userID;
+//        }
+//        
+//        List<String> newData = new ArrayList<>();
+//        newData.add(complaintID +";"+ complainerID +";"+ desc +";"+ 
+//                    todayDate +";"+ currentTime +";"+ "Pending" +";"+ recordedPersonID
+//                    +";"+ recordedDT +";");
+//        
+//        deleteComplaint(complaintID);
+//        fh.fileWrite("complaints.txt", true, newData);
+//    }
+//    
+//    // delete available complaint
+//    public void deleteComplaint(String complaintID) {
+//        List<String> complaintList =  fh.fileRead("complaints.txt");
+//        
+//        List<String> newData = new ArrayList<>();
+//        
+//        for (int i = 0; i < complaintList.size(); i++) {
+//            String[] complaintDetails = complaintList.get(i).split(";");
+//            String eComplaintID = complaintDetails[0];
+//            
+//            if (!complaintID.equals(eComplaintID)) {
+//                newData.add(complaintList.get(i));
+//            }
+//        } fh.fileWrite("complaints.txt", false, newData);
+//    }
     
     // extract all employees details
     public List<String> extractEmployeeDetails() {

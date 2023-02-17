@@ -12,7 +12,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.FileHandling;
+import classes.FileHandling;
+import classes.PropertyUnit;
 
 /**
  *
@@ -311,7 +312,7 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
         
         if (!newUnitNo.equals("") && !squareFoot.equals("")) {
             warningMessage.setText("");
-            boolean check = AE.checkUnitAvailability(newUnitNo.toLowerCase());
+            boolean check = AE.PU.checkUnitAvailability(newUnitNo.toLowerCase());
             
             if (check) {
                 int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
@@ -322,16 +323,10 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
             
                 if(result == JOptionPane.YES_OPTION){
                     warningMessage.setText("");
-                
-                    List<String> newData1 = new ArrayList<>();
-                    newData1.add(newUnitNo.toUpperCase() +";"+ newType +";"+ 
-                            squareFoot +";"+ "unsold" +";"+ "-" +";");
-                    fh.fileWrite("propertyDetails.txt", true, newData1);
-
-                    List<String> newData2 = new ArrayList<>();
-                    newData2.add("Parkhill;parkhill@gmail.com;Parkhill@123;Parkill;"
-                            + "Residence;-;-;-;" + newUnitNo.toUpperCase() + ";");             
-                    fh.fileWrite("userProfile.txt", check, newData2);
+                    
+                    PropertyUnit PU = new PropertyUnit(newUnitNo.toUpperCase(),
+                            newType, Integer.parseInt(squareFoot), "unsold", "-");
+                    PU.addUnit();
 
                     JOptionPane.showMessageDialog (null, "New unit has been added!", 
                                     "ADD PROPERTY UNIT", JOptionPane.INFORMATION_MESSAGE);
@@ -364,23 +359,41 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
         DefaultTableModel tableModel = (DefaultTableModel)unitDetailsTable.getModel();
         tableModel.setRowCount(0);
             
-        List<String> availableList = 
-                AE.extractAllProperties(String.valueOf(typeCB.getSelectedItem())
-                                    .toLowerCase());
+//        List<String> availableList = 
+//                AE.extractAllProperties(String.valueOf(typeCB.getSelectedItem())
+//                                    .toLowerCase());
+//        
+//        String[] propertiesArray = new String[availableList.size()];
+//        availableList.toArray(propertiesArray);
+//        
+//        for (int i = 0; i < availableList.size(); i++) {
+//            String[] propertyDetails = propertiesArray[i].split(";");
+//            String unitNo = propertyDetails[0];
+//            String squareFoot = propertyDetails[1];
+//            String status = propertyDetails[2];
+//            String dateOfSold = propertyDetails[3];
+//            
+//            String[] tbData = {String.valueOf(i+1), unitNo, squareFoot, status,
+//                dateOfSold};
+//            tableModel.addRow(tbData);
+        List<PropertyUnit> propertyList = AE.PU.extractAllProperties(String.valueOf
+                            (typeCB.getSelectedItem()).toLowerCase());
         
-        String[] propertiesArray = new String[availableList.size()];
-        availableList.toArray(propertiesArray);
+//        String[] propertiesArray = new String[availableList.size()];
+//        availableList.toArray(propertiesArray);
         
-        for (int i = 0; i < availableList.size(); i++) {
-            String[] propertyDetails = propertiesArray[i].split(";");
-            String unitNo = propertyDetails[0];
-            String squareFoot = propertyDetails[1];
-            String status = propertyDetails[2];
-            String dateOfSold = propertyDetails[3];
+        int i = 0;
+        for (PropertyUnit eachUnit:propertyList) {
+//            String[] propertyDetails = propertiesArray[i].split(";");
+            String unitNo = eachUnit.getUnitNo();
+            String squareFoot = String.valueOf(eachUnit.getSquareFeet());
+            String status = eachUnit.getStatus();
+            String dateOfSold = eachUnit.getDateOfSold();
             
             String[] tbData = {String.valueOf(i+1), unitNo, squareFoot, status,
-                dateOfSold};
+                dateOfSold, "MANAGE"};
             tableModel.addRow(tbData);
+            i++;
         }
     }
     

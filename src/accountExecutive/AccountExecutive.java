@@ -17,10 +17,10 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.PMS_DateTimeFormatter;
-import pms_parkhill_residence.Payment;
-import pms_parkhill_residence.Users;
+import classes.FileHandling;
+import classes.PMS_DateTimeFormatter;
+import classes.Payment;
+import classes.Users;
 
 /**
  *

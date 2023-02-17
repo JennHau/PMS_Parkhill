@@ -4,12 +4,16 @@
  */
 package adminExecutive;
 
+import classes.Complaint;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
-import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
+import classes.FileHandling;
+import classes.Users;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 /**
  *
@@ -250,7 +254,16 @@ public class AdminExecutiveAddComplaint extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
             
                 if(result == JOptionPane.YES_OPTION){
-                    AE.fileComplaint(complainerID.toLowerCase(), desc);
+//                    AE.fileComplaint(complainerID.toLowerCase(), desc);
+
+                    String[] compData = {AE.CP.getNewCompId(),
+                        complainerID.toLowerCase(), desc,
+                        AE.DTF.formatDate(LocalDate.now().toString()).toString(),
+                        AE.DTF.formatTime(LocalTime.now().toString()).toString(),
+                        "Pending", AE.getUserID(), String.valueOf(LocalDateTime.now())};
+                    Complaint CP = new Complaint(compData);
+                    CP.storeNewComplaint();
+                    
                     JOptionPane.showMessageDialog (null, "Complaint has been filed!", 
                                     "FILE COMPLAINT", JOptionPane.INFORMATION_MESSAGE);
                     dispose();

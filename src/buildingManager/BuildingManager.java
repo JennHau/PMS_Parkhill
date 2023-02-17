@@ -18,8 +18,8 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
+import classes.FileHandling;
+import classes.Users;
 
 /**
  *

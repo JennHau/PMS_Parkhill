@@ -17,7 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.PMS_DateTimeFormatter;
+import classes.PMS_DateTimeFormatter;
 
 /**
  *

@@ -7,8 +7,8 @@ package adminExecutive;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
-import pms_parkhill_residence.Complaint;
-import pms_parkhill_residence.FileHandling;
+import classes.Complaint;
+import classes.FileHandling;
 
 /**
  *
@@ -298,8 +298,10 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
         JOptionPane.QUESTION_MESSAGE);
 
         if(result == JOptionPane.YES_OPTION){
-            AE.modifyComplaint(CP.getComplaintID(), CP.getComplainerID().toLowerCase(),
-                    complaintDetailsTA.getText());
+//            AE.modifyComplaint(CP.getComplaintID(), CP.getComplainerID().toLowerCase(),
+//                    complaintDetailsTA.getText());
+            CP.setComplaintDetails(complaintDetailsTA.getText());
+            CP.updateComplaint();
             JOptionPane.showMessageDialog (null, "Complaint has been updated!", 
                             "MODIFY COMPLAINT", JOptionPane.INFORMATION_MESSAGE);
             dispose();
@@ -335,7 +337,8 @@ public class AdminExecutiveModifyComplaint extends javax.swing.JFrame {
         JOptionPane.QUESTION_MESSAGE);
 
         if(result == JOptionPane.YES_OPTION){
-            AE.deleteComplaint(CP.getComplaintID());
+//            AE.deleteComplaint(CP.getComplaintID());
+            CP.removeComplaint();
             JOptionPane.showMessageDialog (null, "Complaint has been deleted!", 
                             "DELETE COMPLAINT", JOptionPane.INFORMATION_MESSAGE);
             dispose();

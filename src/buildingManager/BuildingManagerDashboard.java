@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import pms_parkhill_residence.Dashboard;
-import pms_parkhill_residence.FileHandling;
+import classes.Dashboard;
+import classes.FileHandling;
 import pms_parkhill_residence.HomePage;
 
 /**

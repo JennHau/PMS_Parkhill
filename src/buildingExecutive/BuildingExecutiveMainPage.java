@@ -15,8 +15,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import pms_parkhill_residence.Complaint;
-import pms_parkhill_residence.Dashboard;
+import classes.Complaint;
+import classes.Dashboard;
 
 /**
  *

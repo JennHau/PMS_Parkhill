@@ -12,14 +12,14 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import pms_parkhill_residence.CRUD;
-import pms_parkhill_residence.Complaint;
-import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Invoice;
-import pms_parkhill_residence.PMS_DateTimeFormatter;
-import pms_parkhill_residence.Payment;
-import pms_parkhill_residence.TextFile;
-import pms_parkhill_residence.Users;
+import classes.CRUD;
+import classes.Complaint;
+import classes.FileHandling;
+import classes.Invoice;
+import classes.PMS_DateTimeFormatter;
+import classes.Payment;
+import classes.TextFile;
+import classes.Users;
 
 /**
  *

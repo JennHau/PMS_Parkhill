@@ -4,6 +4,8 @@
  */
 package pms_parkhill_residence;
 
+import classes.Validation;
+import classes.Users;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import javax.swing.JOptionPane;

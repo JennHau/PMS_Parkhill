@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.HomePage;
-import pms_parkhill_residence.Payment;
+import classes.Payment;
 
 /**
  *

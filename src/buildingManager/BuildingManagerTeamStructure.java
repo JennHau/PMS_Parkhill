@@ -12,9 +12,9 @@ import java.io.File;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import pms_parkhill_residence.FileHandling;
+import classes.FileHandling;
 import pms_parkhill_residence.HomePage;
-import pms_parkhill_residence.Users;
+import classes.Users;
 
 /**
  *
