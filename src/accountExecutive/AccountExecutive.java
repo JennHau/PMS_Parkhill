@@ -10,14 +10,17 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
+import classes.FileHandling;
+import classes.PMS_DateTimeFormatter;
+import classes.Payment;
+import classes.Users;
 
 /**
  *
@@ -26,6 +29,8 @@ import pms_parkhill_residence.Users;
 public class AccountExecutive extends Users {
 
     FileHandling fh = new FileHandling();
+    Payment PYM = new Payment();
+    PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
 
     public AccountExecutive() {}
     
@@ -152,7 +157,6 @@ public class AccountExecutive extends Users {
                 referenceDate = createdDate;
             }
         }
-
         // find the rest of the monthYear range based on start month
         LocalDate ld2 = LocalDate.parse(referenceDate, f);
         int rm = ld2.getMonthValue();
@@ -358,7 +362,7 @@ public class AccountExecutive extends Users {
     }
     
     // method to search all available unit to issue statement based on monthYear
-    public List<String> extractAllStatementUnit(String status, String monthYear) {       
+    public List<String> extractAllStatementUnit(String status, String monthYear) {
         List<String> transList = fh.fileRead("invoices.txt");
         List<String> statementList = fh.fileRead("statements.txt");
         

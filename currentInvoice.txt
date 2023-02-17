@@ -1,1 +1,1 @@
-Electricity;Residential;
+Gas;Residential;

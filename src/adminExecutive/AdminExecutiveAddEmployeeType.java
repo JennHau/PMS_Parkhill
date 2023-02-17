@@ -11,7 +11,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.FileHandling;
+import classes.FileHandling;
 
 /**
  *
@@ -51,7 +51,7 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
         addBt = new javax.swing.JButton();
         cancelBt = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable()
+        employeeTypeTable = new javax.swing.JTable()
         {
             @Override
 
@@ -178,7 +178,7 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        employeeTypeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -194,15 +194,15 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
-        jTable1.setRowHeight(30);
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        employeeTypeTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        employeeTypeTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        employeeTypeTable.setRowHeight(30);
+        employeeTypeTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                employeeTypeTableMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(employeeTypeTable);
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jSeparator1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -425,11 +425,11 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_initialiseTFKeyTyped
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    private void employeeTypeTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeTypeTableMouseClicked
         // TODO add your handling code here:
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        int column = jTable1.getSelectedColumn();
-        int row = jTable1.getSelectedRow();
+        DefaultTableModel tableModel = (DefaultTableModel)employeeTypeTable.getModel();
+        int column = employeeTypeTable.getSelectedColumn();
+        int row = employeeTypeTable.getSelectedRow();
         
         if (column == 3) {
             employeeTypeTF.setText((String)tableModel.getValueAt(row, 1));
@@ -437,10 +437,10 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
             addBt.setEnabled(false); deleteBt.setEnabled(true);
             employeeTypeTF.setEnabled(false); initialiseTF.setEnabled(false);
         }
-    }//GEN-LAST:event_jTable1MouseClicked
+    }//GEN-LAST:event_employeeTypeTableMouseClicked
 
     private void setTable() {
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel)employeeTypeTable.getModel();
         tableModel.setRowCount(0);
         List<String> availableList = AE.extractEmployeeType();
         
@@ -462,7 +462,7 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
     private void setTableDesign() {
         int[] colummnIgnore = {1};
         int[] columnLength = {40, 270, 100, 100};
-        AE.setTableDesign(jTable1, jLabel3, columnLength, colummnIgnore);
+        AE.setTableDesign(employeeTypeTable, jLabel3, columnLength, colummnIgnore);
     }
     
     /**
@@ -1529,6 +1529,7 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
     private javax.swing.JButton clearAllBt;
     private javax.swing.JButton deleteBt;
     private javax.swing.JTextField employeeTypeTF;
+    private javax.swing.JTable employeeTypeTable;
     private javax.swing.JTextField initialiseTF;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
@@ -1540,7 +1541,6 @@ public class AdminExecutiveAddEmployeeType extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel warningMessage;
     // End of variables declaration//GEN-END:variables
 }

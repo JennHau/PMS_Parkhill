@@ -11,7 +11,7 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.Invoice;
+import classes.Invoice;
 
 /**
  *

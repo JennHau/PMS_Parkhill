@@ -6,7 +6,7 @@ package residentANDtenant;
 
 import java.awt.Color;
 import java.time.LocalTime;
-import pms_parkhill_residence.CRUD;
+import classes.CRUD;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JLabel;
@@ -14,15 +14,15 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import pms_parkhill_residence.Complaint;
-import pms_parkhill_residence.Facility;
-import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Invoice;
-import pms_parkhill_residence.PMS_DateTimeFormatter;
-import pms_parkhill_residence.Payment;
-import pms_parkhill_residence.TextFile;
-import pms_parkhill_residence.Users;
-import pms_parkhill_residence.VisitorPass;
+import classes.Complaint;
+import classes.Facility;
+import classes.FileHandling;
+import classes.Invoice;
+import classes.PMS_DateTimeFormatter;
+import classes.Payment;
+import classes.TextFile;
+import classes.Users;
+import classes.VisitorPass;
 
 /**
  *

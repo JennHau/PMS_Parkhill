@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package pms_parkhill_residence;
+package classes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -182,8 +182,7 @@ public class Complaint {
     // update the complaint details
     public void updateComplaint() {
         String compData = this.toString();
-        
-        crud.update(TF.complaintFiles, compData, this.complaintID, 0);
+        crud.update(TF.complaintFiles, this.complaintID, compData, 0);
     }
     
     // store a newly created complaint

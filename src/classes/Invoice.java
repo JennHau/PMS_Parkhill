@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package pms_parkhill_residence;
+package classes;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -116,6 +116,7 @@ public class Invoice {
 
         // get data for invoice that havent issue
         List<String> availableInvoices = new ArrayList<String>();
+        
         if (status.equals("PENDING")) {
             List<String> propertyDetailsList = fh.fileRead("propertyDetails.txt");
             String[] propertyDetailsArray = new String[propertyDetailsList.size()];
@@ -131,15 +132,14 @@ public class Invoice {
                 String squareFeet = propertyDetails[2];
 
                 List<String> invoicesList = fh.fileRead("invoices.txt");
-                String[] invoicesArray = new String[invoicesList.size()];
-                invoicesList.toArray(invoicesArray);
 
                 for (int j = 1; j < invoicesList.size(); j++) {
-                    String[] invoiceDetails = invoicesArray[j].split(";");
-                    String eInvoiceNo = invoiceDetails[0];
-                    String eFeeType = invoiceDetails[2];
-                    if (eInvoiceNo.equals(eUnitNo + cMonthYear)
-                            && eFeeType.equals(feeTypeName)) {
+                    String[] invoiceDetails = invoicesList.get(j).split(";");
+                    
+                    Invoice invoice = new Invoice(invoiceDetails);
+                    
+                    if (invoice.getInvoiceNo().equals(eUnitNo + cMonthYear)
+                            && invoice.getFeeType().equals(feeTypeName)) {
                         check = true;
                     }
                 }
@@ -178,23 +178,15 @@ public class Invoice {
                 String eTarget = propertyDetails[1];
 
                 List<String> invoicesList = fh.fileRead("invoices.txt");
-                String[] invoicesArray = new String[invoicesList.size()];
-                invoicesList.toArray(invoicesArray);
 
                 for (int j = 1; j < invoicesList.size(); j++) {
-                    String[] invoiceDetails = invoicesArray[j].split(";");
-                    String eInvoiceNo = invoiceDetails[0];
-                    String unitNo = invoiceDetails[1];
-                    String eFeeType = invoiceDetails[2];
-                    String consump = invoiceDetails[4];
-                    String unit = invoiceDetails[5];
-                    String unitPrice = invoiceDetails[6];
-                    String totalPrice = invoiceDetails[7];
+                    String[] invoiceDetails = invoicesList.get(j).split(";");
+                    Invoice invoice = new Invoice(invoiceDetails);
 
-                    if (eInvoiceNo.equals(eUnitNo + cMonthYear)
-                            && eTarget.equals(target) && eFeeType.equals(feeTypeName)) {
-                        String invoiceLine = unitNo + ";" + consump + ";"
-                                + unit + ";" + unitPrice + ";" + totalPrice;
+                    if (invoice.getInvoiceNo().equals(eUnitNo + cMonthYear)
+                            && eTarget.equals(target) && invoice.getFeeType().equals(feeTypeName)) {
+                        String invoiceLine = invoice.getUnitNo() + ";" + invoice.getConsumption() + ";"
+                                + invoice.getUnit() + ";" + invoice.getUnitPrice() + ";" + invoice.getTotalPrice();
                         availableInvoices.add(invoiceLine);
                     }
                 }
@@ -203,25 +195,25 @@ public class Invoice {
         return availableInvoices;
     }
     
-    // method to extract specific invoice details
-    public List<String> extractOneInvoiceDetails(Invoice INV) {
-        List<String> RavailableFees = new ArrayList<>();
-        
-        for (int i=0; i<INV.availableFees.size(); i++) {
-            String[] paymentDetails = INV.availableFees.get(i).split(";");
-            String eInvoiceNo = paymentDetails[0];
-            String feeType = paymentDetails[2];
-            String issueDate = paymentDetails[9];
-            String consump = paymentDetails[4];
-            String unit = paymentDetails[5];
-            String unitPrice = paymentDetails[6];
-            String totalPrice = paymentDetails[7];
-            
-            RavailableFees.add(feeType +";"+ issueDate +";"+ consump +";"+
-                    unit +";"+ unitPrice +";"+ totalPrice +";");
-        } 
-        return RavailableFees;
-    }
+//    // method to extract specific invoice details
+//    public List<String> extractOneInvoiceDetails(Invoice INV) {
+//        List<String> RavailableFees = new ArrayList<>();
+//        
+//        for (int i=0; i<INV.availableFees.size(); i++) {
+//            String[] paymentDetails = INV.availableFees.get(i).split(";");
+//            String eInvoiceNo = paymentDetails[0];
+//            String feeType = paymentDetails[2];
+//            String issueDate = paymentDetails[9];
+//            String consump = paymentDetails[4];
+//            String unit = paymentDetails[5];
+//            String unitPrice = paymentDetails[6];
+//            String totalPrice = paymentDetails[7];
+//            
+//            RavailableFees.add(feeType +";"+ issueDate +";"+ consump +";"+
+//                    unit +";"+ unitPrice +";"+ totalPrice +";");
+//        } 
+//        return RavailableFees;
+//    }
     
     public ArrayList<Invoice> getCurrentUnitInvoice(String unitNo) {
         ArrayList<Invoice> incompleteInvoice = new ArrayList<>();     

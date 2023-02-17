@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import pms_parkhill_residence.Users;
-import pms_parkhill_residence.Validation;
+import classes.Users;
+import classes.Validation;
 
 /**
  *

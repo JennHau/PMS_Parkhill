@@ -7,7 +7,7 @@ package residentANDtenant;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import pms_parkhill_residence.Invoice;
+import classes.Invoice;
 
 /**
  *

@@ -7,7 +7,7 @@ package accountExecutive;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
-import pms_parkhill_residence.Payment;
+import classes.Payment;
 
 /**
  *
@@ -502,7 +502,8 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
         } else {
             cPeriod = period.substring(0, 1) +"/"+ period.substring(1);
         }
-        periodLabel.setText(cPeriod); totalLabel.setText("Total: RM" + PM.getTotalPrice());
+        periodLabel.setText(cPeriod); totalLabel.setText("Total: RM" + 
+                                AE.currencyFormat(PM.getTotalPrice()));
    }
     
     private void setPayerCB() {

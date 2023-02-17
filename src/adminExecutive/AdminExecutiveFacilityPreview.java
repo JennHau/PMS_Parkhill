@@ -4,7 +4,7 @@
  */
 package adminExecutive;
 
-import pms_parkhill_residence.FacilityBookingPaymentByHour;
+import classes.FacilityBookingPaymentByHour;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.awt.Color;

@@ -6,7 +6,7 @@ package buildingExecutive;
 
 import java.awt.Color;
 import java.awt.Component;
-import pms_parkhill_residence.CRUD;
+import classes.CRUD;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.time.LocalTime;
@@ -18,8 +18,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import pms_parkhill_residence.Complaint;
-import pms_parkhill_residence.FileHandling;
+import classes.Complaint;
+import classes.FileHandling;
 
 /**
  *

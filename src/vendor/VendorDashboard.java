@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import pms_parkhill_residence.Complaint;
-import pms_parkhill_residence.Dashboard;
-import pms_parkhill_residence.Invoice;
-import pms_parkhill_residence.Payment;
+import classes.Complaint;
+import classes.Dashboard;
+import classes.Invoice;
+import classes.Payment;
 
 /**
  *
