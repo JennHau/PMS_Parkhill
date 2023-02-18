@@ -12,7 +12,7 @@ import java.util.List;
  * @author Winson
  */
 
-public class Complaint {    
+public class Complaint implements Status{    
     private String complaintID;
     private String complainerID;
     private String complaintDetails;
@@ -57,6 +57,19 @@ public class Complaint {
         this.lastUpdateDateTime = compDet[7];
     }
     
+    // update the complaint status method
+    @Override
+    public void updateStatus() {
+        String[] complaintDetails = toString().split(TF.sp);
+        
+        String complaint = "";
+        for (String eachData : complaintDetails) {
+            complaint += eachData + TF.sp;
+        }
+        
+        CRUD crud = new CRUD();
+        crud.update(TF.complaintFiles, complaintDetails[0], complaint, 0);
+    }
     
     public List<ArrayList<Complaint>> getComplaints(String currentRTid) {
         List<ArrayList<Complaint>> complaintList = new ArrayList<>();
@@ -164,19 +177,6 @@ public class Complaint {
         }
         
         return compCode + (minimumId + 1);
-    }
-    
-    // update the complaint status method
-    public void updateComplaintStatus(Complaint complaints) {
-        String[] complaintDetails = complaints.toString().split(TF.sp);
-        
-        String complaint = "";
-        for (String eachData : complaintDetails) {
-            complaint += eachData + TF.sp;
-        }
-        
-        CRUD crud = new CRUD();
-        crud.update(TF.complaintFiles, complaintDetails[0], complaint, 0);
     }
     
     // update the complaint details

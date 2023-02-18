@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package pms_parkhill_residence;
+package classes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +21,33 @@ public class Employee {
     private String icNo;
     private String gender;
     
+    private ArrayList<AssignedJob> employeeJob = new ArrayList<>();
+    private String positionCode;
+    
+    FileHandling FH = new FileHandling();
+    TextFile TF = new TextFile();
+    public Job JB = new Job();
+    
+    public Employee(String empId) {
+        List<String> employeeList = FH.fileRead(TF.fullEmployeeList);
+        for (String eachEmp : employeeList) {
+            String[] empData = eachEmp.split(TF.sp);
+            String eId = empData[0];
+            if (eId.equals(empId)) {
+                this.empID = eId;
+                this.empEmail = empData[1];
+                this.empName = empData[2];
+                this.phoneNo = empData[3];
+                this.position = empData[4];
+                this.icNo = empData[5];
+                this.gender = empData[6];
+                
+                setPositionCode();
+                setEmployeeJobList();
+            }
+        }
+    }
+    
     public Employee(String[] empData) {
         this.empID = empData[0];
         this.empEmail = empData[1];
@@ -29,6 +56,32 @@ public class Employee {
         this.position = empData[4];
         this.icNo = empData[5];
         this.gender = empData[6];
+        
+        setPositionCode();
+        setEmployeeJobList();
+    }
+    
+    private void setEmployeeJobList() {
+        List<String> allJob = FH.fileRead(TF.employeeJobFile);
+        
+        boolean firstLine = true;
+        for (String jobLine : allJob) {
+            if (!firstLine) {
+                AssignedJob assJob = new AssignedJob(jobLine.split(TF.sp));
+
+                String emplyID = assJob.getTaskEmpID();
+
+                if (emplyID.equals(this.empID)) {
+                    employeeJob.add(assJob);
+                }
+            }
+            
+            firstLine = false;
+        }
+    }
+    
+    public ArrayList<AssignedJob> getEmployeeJobList() {
+        return employeeJob;
     }
     
     private final String[] empCode = {"scg", "tcn", "cln"};
@@ -38,7 +91,32 @@ public class Employee {
 
         return employeeCode.contains(this.empID.substring(0, 3));
     }
-
+    
+    // Getter and Setter
+    private void setPositionCode() {
+        switch (this.position) {
+            case "Security Guard" -> this.positionCode = empCode[0];
+            case "Technician" -> this.positionCode = empCode[1];
+            case "Cleaner" -> this.positionCode = empCode[2];
+        }
+    }
+    
+    public String getPositionCode(String code) {
+        String roleCode;
+        switch (code) {
+            case "Security Guard" -> roleCode = empCode[0];
+            case "Technician" -> roleCode = empCode[1];
+            case "Cleaner" -> roleCode = empCode[2];
+            default -> roleCode = null;
+        }
+        
+        return roleCode;
+    }
+    
+    public String getPositionCode() {
+        return this.positionCode;
+    }
+            
     /**
      * @return the empID
      */

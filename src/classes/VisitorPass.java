@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author Winson
  */
-public class VisitorPass {
+public class VisitorPass implements Status{
     private String passID;
     private String visitorIC;
     private String visitorName;
@@ -87,6 +87,11 @@ public class VisitorPass {
         }
         
         return registeredVisitor;
+    }
+    
+    @Override
+    public void updateStatus() {
+        
     }
     
     public void updateVisitorPass() {

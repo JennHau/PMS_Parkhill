@@ -439,7 +439,7 @@ public class ComplaintsDetails extends javax.swing.JFrame {
         complaint.setStatusUpdatedBy(this.BE.getUserID());
         complaint.setLastUpdateDateTime(BE.DTF.currentDateTime());
         
-        BE.CP.updateComplaintStatus(this.complaint);
+        BE.CP.updateStatus();
     }//GEN-LAST:event_statusBTNActionPerformed
 
     private void statusComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusComboBoxActionPerformed

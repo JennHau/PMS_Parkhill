@@ -4,6 +4,8 @@
  */
 package buildingExecutive;
 
+import classes.AssignedJob;
+import classes.Employee;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -1045,16 +1047,13 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                 }
 
                 if (securityID != null) {
-                    try {
-                        String[] empDet = BE.getEmployeeDetails(securityID.toLowerCase());
+                    Employee employee = new Employee(securityID.toLowerCase());
 
-                        securityIdComboBox.addItem(securityID);
-                        securityIdComboBox.setSelectedItem(rowData[5]);
-                        securityNameTF.setText((String) rowData[6]);
-                        contactNoTF.setText(empDet[3]);
-                    } catch (IOException ex) {
-                        Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    securityIdComboBox.addItem(securityID);
+                    securityIdComboBox.setSelectedItem(rowData[5]);
+                    securityNameTF.setText((String) rowData[6]);
+                    contactNoTF.setText(employee.getPhoneNo());
+                    
                     removeEmpBTN.setEnabled(true);
                 }
                 else {
@@ -1198,22 +1197,18 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         // TODO add your handling code here:
         String securityId = (String) securityIdComboBox.getSelectedItem();
         if (securityId != null) {
-            try {
-                String[] securityDet = BE.getEmployeeDetails(securityId.toLowerCase());
-                if (securityDet != null) {
-                    String securityName = securityDet[2];
-                    String contact = securityDet[3];
-                    securityNameTF.setText(securityName);
-                    contactNoTF.setText(contact);
-                    updateBTN.setEnabled(true);
-                }
-                else {
-                    securityNameTF.setText("");
-                    contactNoTF.setText("");
-                    updateBTN.setEnabled(false);
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
+            Employee employee = new Employee(securityId.toLowerCase());
+            if (employee.isEmployee()) {
+                String securityName = employee.getEmpName();
+                String contact = employee.getPhoneNo();
+                securityNameTF.setText(securityName);
+                contactNoTF.setText(contact);
+                updateBTN.setEnabled(true);
+            }
+            else {
+                securityNameTF.setText("");
+                contactNoTF.setText("");
+                updateBTN.setEnabled(false);
             }
         }
     }//GEN-LAST:event_securityIdComboBoxActionPerformed
@@ -1406,27 +1401,28 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         }
         
         for (String eachEmp : employeeIdList) {
-            String employeeId = eachEmp.split(BE.TF.sp)[0];
-            ArrayList<String> jobList = BE.getAssignedJobForSpecificEmployee(employeeId);
+            Employee employee = new Employee(eachEmp.split(BE.TF.sp));
+            
+            ArrayList<AssignedJob> jobList = employee.getEmployeeJobList();
             
             boolean cannotPatroll = false;
             if (!jobList.isEmpty()) {
-                for (String eachJob : jobList) {
-                    String[] jobDetails = eachJob.split(BE.TF.sp);
-                    String assignedJobCode = jobDetails[3];
+                for (AssignedJob eachJob : jobList) {
+                    String assignedJobCode = eachJob.getJobID();
+                    
                     if (!assignedJobCode.equals("NS") && !assignedJobCode.equals("MS")) {
 //                    if (assignedJobCode.equals("NS") || assignedJobCode.equals("MS") || assignedJobCode.equals("PT")) {
-                        int repitition = Integer.valueOf(jobDetails[4]);
+                        int repitition = eachJob.getRepetition();
 
-                        String timeNeeded = jobDetails[5];
+                        String timeNeeded = eachJob.getTimeNeeded();
                         LocalDate workingDate = null;
-                        LocalTime workingTime = BE.DTF.formatTime(jobDetails[7]);
-                        String[] workingEndDateTime = jobDetails[8].split(" ");
+                        LocalTime workingTime = BE.DTF.formatTime(eachJob.getStartTime());
+                        String[] workingEndDateTime = eachJob.getExpectedEndDateTime().split(" ");
 
                         LocalTime workingStartTime2;
                         LocalTime workingEndTime2;
 
-                        ArrayList<String> dateData = BE.compareJobDate(repitition, workingEndDateTime, jobDetails, timeNeeded, dayOfToday, inputDate, workingTime, workingDate);
+                        ArrayList<String> dateData = BE.compareJobDate(repitition, workingEndDateTime, eachJob, timeNeeded, dayOfToday, inputDate, workingTime, workingDate);
 
                         if (!dateData.isEmpty()) {
                             workingDate = BE.DTF.formatDate(dateData.get(0));
@@ -1450,8 +1446,8 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             }
             
             
-            if (!cannotPatroll && !canPatrollId.contains(employeeId)) {
-                canPatrollId.add(employeeId.toUpperCase());
+            if (!cannotPatroll && !canPatrollId.contains(employee.getEmpID())) {
+                canPatrollId.add(employee.getEmpID().toUpperCase());
             }
         }
         
