@@ -4,6 +4,7 @@
  */
 package pms_parkhill_residence;
 
+import java.awt.Color;
 import java.util.List;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -24,8 +25,12 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -38,6 +43,12 @@ public class SecurityGuard extends Users {
     public static void main(String[] args) throws IOException {
         displayTable("test-table.txt");
 
+    }
+    public SecurityGuard() {};
+    public SecurityGuard (String userID, String email, String password, String firstName,
+                 String lastName, String identificationNo, String gender, String phoneNo){
+        super(userID, email, password,  firstName, lastName,  identificationNo,
+                gender, phoneNo);
     }
     
 //    diaplay table
@@ -73,7 +84,7 @@ FileHandling fh = new FileHandling();
 
     ;
     
-//    convert date to 12 january 2023
+//    convert date to from january 2023 to 2023-02-24
     public static String convertdate(String f) throws ParseException {
         String datestring =f;
         SimpleDateFormat inputFormat = new SimpleDateFormat("dd MMMM yyyy");
@@ -99,9 +110,16 @@ FileHandling fh = new FileHandling();
 
     ;
 //        convert time to 12.30am
-        public static String coverttime(String f) {
+        public static String coverttimeToPm(String f) {
         LocalTime Current = LocalTime.parse(f);
         DateTimeFormatter format = DateTimeFormatter.ofPattern("h:mm a");
+        String F_Current = Current.format(format);
+        return F_Current;
+    }
+        
+         public static String coverttimeTolocaltime(String f) {
+        LocalTime Current = LocalTime.parse(f);
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm :ss");
         String F_Current = Current.format(format);
         return F_Current;
     }
@@ -273,6 +291,39 @@ FileHandling fh = new FileHandling();
         fh.fileWrite("SG_Incident.txt", false, modified_data);
         JOptionPane.showMessageDialog(null, "Incident Updated Successfully");
 
+    }
+    
+     public void setTableDesign(JTable jTable, JLabel jLabel, int[] columnLength, int[] ignoreColumn) {
+        // design for the table header
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setBackground(new Color(13, 24, 42));
+        headerRenderer.setHorizontalAlignment(jLabel.CENTER);
+        headerRenderer.setForeground(new Color(255, 255, 255));
+        for (int i = 0; i < jTable.getModel().getColumnCount(); i++) {
+            jTable.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
+
+        ArrayList<Integer> ignoreColumnList = new ArrayList<>();
+        for (int i : ignoreColumn) {
+            ignoreColumnList.add(i);
+        }
+
+        // design for the table row
+        DefaultTableCellRenderer rowRenderer = new DefaultTableCellRenderer();
+        rowRenderer.setHorizontalAlignment(jLabel.CENTER);
+        for (int i = 0; i < jTable.getModel().getColumnCount(); i++) {
+            if (!ignoreColumnList.contains(i)) {
+                jTable.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
+            }
+        }
+
+        TableColumnModel columnModel = jTable.getColumnModel();
+        // set first column width of the table to suitable value
+        for (int count = 0; count < columnLength.length; count++) {
+            columnModel.getColumn(count).setMaxWidth(columnLength[count]);
+            columnModel.getColumn(count).setMinWidth(columnLength[count]);
+            columnModel.getColumn(count).setPreferredWidth(columnLength[count]);
+        }
     }
 
 };

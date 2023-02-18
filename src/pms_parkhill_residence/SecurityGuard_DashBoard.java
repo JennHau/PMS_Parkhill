@@ -28,7 +28,7 @@ public class SecurityGuard_DashBoard extends javax.swing.JFrame {
      */
     Dashboard dh = new Dashboard();
 
-    public SecurityGuard_DashBoard() {
+    public SecurityGuard_DashBoard(SecurityGuard SG) {
         initComponents();
         setWindowIcon();
         jLabel14.setText(dh.count_uncheck_checkpoint().toString());
@@ -36,8 +36,18 @@ public class SecurityGuard_DashBoard extends javax.swing.JFrame {
         displaybarchart();
         System.out.println(dh.count_today_visitor());
         jLabel25.setText(dh.count_today_visitor().toString());
+        this.SG=SG;
+        setCurrentProfile();
     }
+    
+    private final SecurityGuard SG;
+    private void setCurrentProfile() {
+        username.setText(SG.getFirstName() +" "+ SG.getLastName());
+    }
+    
 
+
+//    SHOW THE INCIDENT NUMBER BAR CHART
     public void displaybarchart() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         dataset.setValue(dh.count_number_incident().pending, "Number of Incident", "PENDING");
@@ -98,7 +108,7 @@ public class SecurityGuard_DashBoard extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        username = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
@@ -424,11 +434,11 @@ public class SecurityGuard_DashBoard extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("PARKHILL RESIDENCE SECURITY");
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
-        jLabel7.setText("USERNAME");
+        username.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        username.setForeground(new java.awt.Color(102, 102, 102));
+        username.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        username.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
+        username.setText("USERNAME");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -438,7 +448,7 @@ public class SecurityGuard_DashBoard extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
+                .addComponent(username, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
         jPanel3Layout.setVerticalGroup(
@@ -447,7 +457,7 @@ public class SecurityGuard_DashBoard extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
+                    .addComponent(username))
                 .addContainerGap(9, Short.MAX_VALUE))
         );
 
@@ -729,20 +739,22 @@ public class SecurityGuard_DashBoard extends javax.swing.JFrame {
     private void SearchVisitorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SearchVisitorMouseClicked
         // TODO add your handling code here:
 //        new SecurityGuard_SearchVisitor().setVisible(true);
-        SecurityGuard_SearchVisitor.main(new String[0]);
-        this.dispose();
+        dispose();
+        new SecurityGuard_SearchVisitor(SG).setVisible(true);
     }//GEN-LAST:event_SearchVisitorMouseClicked
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         // TODO add your handling code here:
-        SecurityGuard_ManageIncident.main(new String[0]);
-        this.dispose();
+        dispose();
+        new SecurityGuard_ManageIncident(SG).setVisible(true);
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         // TODO add your handling code here:
-        SecurityGuard_Check_in.main(new String[0]);
-        this.dispose();
+//        SecurityGuard_Check_in.main(SG);
+//        this.dispose();
+        dispose();
+        new SecurityGuard_Check_in(SG).setVisible(true);
     }//GEN-LAST:event_jLabel6MouseClicked
 
     private void setWindowIcon() {
@@ -842,7 +854,7 @@ public class SecurityGuard_DashBoard extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SecurityGuard_DashBoard().setVisible(true);
+                new SecurityGuard_DashBoard(null).setVisible(true);
             }
         });
     }
@@ -866,7 +878,6 @@ public class SecurityGuard_DashBoard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -891,5 +902,6 @@ public class SecurityGuard_DashBoard extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JLabel username;
     // End of variables declaration//GEN-END:variables
 }

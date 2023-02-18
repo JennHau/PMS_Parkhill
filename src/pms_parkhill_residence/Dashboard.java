@@ -35,7 +35,10 @@ public class Dashboard {
     
 //    To count the number of checkpoint that hvt check
     public Integer count_uncheck_checkpoint() {
-        List<String> row = fh.fileRead("SG_Checkpoint.txt");
+        
+        String patrollingScheduleFileFormat = "patrollingScheduleFiles/patrollingFile_";
+//        sg.currentdate()
+        List<String> row = fh.fileRead(patrollingScheduleFileFormat + "2023-01-31.txt");
         String[] rowary = new String[row.size()];
         row.toArray(rowary);
         int number = 0;
@@ -74,7 +77,9 @@ public class Dashboard {
 
     //    To count the number of checkpoint that check
     public Integer count_checked_checkpoint() {
-        List<String> row = fh.fileRead("SG_Checkpoint.txt");
+        String patrollingScheduleFileFormat = "patrollingScheduleFiles/patrollingFile_";
+//        sg.currentdate()
+        List<String> row = fh.fileRead(patrollingScheduleFileFormat + "2023-01-31.txt");
         String[] rowary = new String[row.size()];
         row.toArray(rowary);
         int number = 0;

@@ -34,21 +34,30 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    public SecurityGuard_SearchVisitor() {
+    public SecurityGuard_SearchVisitor(SecurityGuard SG) {
         initComponents();
         setWindowIcon();
         todaydate.setText(sg.currentdate().toString());
         displayTable();
+        this.SG = SG;
+        setCurrentProfile();
 
     }
     SecurityGuard sg = new SecurityGuard();
     FileHandling fh = new FileHandling();
 
+    private final SecurityGuard SG;
+
+    private void setCurrentProfile() {
+        username.setText(SG.getFirstName() + " " + SG.getLastName());
+    }
+
+//    get to read the user detail from userProfile.txt
     public String getSpecificUser(String userId) {
         List<String> userProfile = fh.fileRead("userProfile.txt");
         for (String eachUser : userProfile) {
             String uId = eachUser.split(";")[0];
-            if (uId.equals(userId)) {
+            if (uId.equalsIgnoreCase(userId)) {
                 return eachUser;
             }
         }
@@ -56,8 +65,9 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         return null;
     }
 
+//    display table
     public void displayTable() {
-        List<String> row = fh.fileRead("visitorpass.txt");
+        List<String> row = fh.fileRead("visitorPass.txt");
 
         String[] rowlist = new String[row.size()];
         row.toArray(rowlist);
@@ -87,36 +97,12 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
                 model.addRow(table);
             }
 
-           
         }
-         if (model.getRowCount() == 0) {
-                Object[] rowData = {"No data available"};
-                model.addRow(rowData);
-            }
+        if (model.getRowCount() == 0) {
+            Object[] rowData = {"No data available"};
+            model.addRow(rowData);
+        }
 
-
-//        -----------------------------
-//                                      if want specific data only 
-//        try {
-//            List<String> datalist = sg.gettabledata("data.txt");
-//            String[] dataarray = new String[datalist.size()];
-//            datalist.toArray(dataarray);
-//
-//            for (int i = 0; i < datalist.size(); i++) {
-//                String[] datasplit = dataarray[i].split(";");
-//                String id = datasplit[0];
-//                String email = datasplit[1];
-//                String firstname = datasplit[2];
-//                
-//                String table[]={id,email,firstname};
-//                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-//                 model.addRow(table);
-//
-//            }
-//
-//        } catch (IOException ex) {
-//            Logger.getLogger(SecurityGuard_SearchVisitor.class.getName()).log(Level.SEVERE, null, ex);
-//        }
     }
 
     /**
@@ -151,7 +137,7 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        username = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         todaydate = new javax.swing.JLabel();
         visitor_id = new javax.swing.JLabel();
@@ -506,11 +492,11 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(13, 24, 42));
 
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
-        jLabel7.setText("USERNAME");
-        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
+        username.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        username.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
+        username.setText("USERNAME");
+        username.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        username.setForeground(new java.awt.Color(102, 102, 102));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -519,9 +505,9 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 555, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(345, 345, 345)
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
-                .addGap(20, 20, 20))
+                .addGap(328, 328, 328)
+                .addComponent(username, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
+                .addGap(37, 37, 37))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -529,7 +515,7 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
+                    .addComponent(username))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -661,6 +647,17 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         jPanel6.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 623, 960, 0));
         jPanel6.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 430, 960, -1));
         jPanel6.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 630, 960, 10));
+
+        changedate.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                changedateMouseClicked(evt);
+            }
+        });
+        changedate.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                changedatePropertyChange(evt);
+            }
+        });
         jPanel6.add(changedate, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 60, 180, -1));
 
         visitor_id6.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
@@ -769,6 +766,7 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_search_id_fieldActionPerformed
 
+//    search bar that search key word
     private void search_id_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_id_fieldKeyReleased
         // TODO add your handling code here:
 
@@ -787,10 +785,11 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
 
     private void dashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardMouseClicked
         // TODO add your handling code here:
-        SecurityGuard_DashBoard.main(new String[0]);
-        this.dispose();
+        dispose();
+        new SecurityGuard_DashBoard(SG).setVisible(true);
     }//GEN-LAST:event_dashboardMouseClicked
 
+//    get all value to display when action clicked
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
         int index = jTable1.getSelectedRow();
@@ -802,9 +801,7 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
             String unit = model1.getValueAt(selectedModelIndex, 3).toString();
             String icno = model1.getValueAt(selectedModelIndex, 2).toString();
             String CID = model1.getValueAt(selectedModelIndex, 4).toString();
-//            String CIT = model1.getValueAt(selectedModelIndex, 5).toString();
             String COD = model1.getValueAt(selectedModelIndex, 5).toString();
-//            String COT = model1.getValueAt(selectedModelIndex, 7).toString();
 
             id.setText(visitorid);
             name.setText(visitorname);
@@ -812,37 +809,21 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
             ic.setText(icno);
             checkindate.setText(CID);
             checkoutdate.setText(COD);
-//            check_in_datetime.datePicker.setText(CID);
-//            check_in_datetime.timePicker.setText(CIT);
-//            check_out_datetime.datePicker.setText(COD);
-//            check_out_datetime.timePicker.setText(COT);
-//            jButton1.setEnabled(true);
-        }
-        if (checkindate.getText().isBlank()) {
-            enablecheckinbutton();
-        } else {
-            enablecheckoutbutton();
-        }
 
-//        if (status.getItemCount() == 0) {
-//            combobox();
-//        }
+            if (checkindate.getText().isBlank() || checkindate.getText().length() < 5) {
+                enablecheckinbutton();
+            } else {
+                enablecheckoutbutton();
+            }
+
 
     }//GEN-LAST:event_jTable1MouseClicked
-
-//    private void combobox() {
-//        String[] status_dropbox = {"Checked", "expired", "unchecked"};
-//        for (int i = 0; i < status_dropbox.length; i++) {
-//            status.addItem(status_dropbox[i].toUpperCase());
-//
-//        }
-//
-//    }
+    }
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         // TODO add your handling code here:
-        SecurityGuard_ManageIncident.main(new String[0]);
-        this.dispose();
+        dispose();
+        new SecurityGuard_ManageIncident(SG).setVisible(true);
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void search_id_fieldMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_search_id_fieldMouseEntered
@@ -857,8 +838,9 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
 //            jButton1.setEnabled(true);
 //        }
 //    }
+//    enable check in button
     private void enablecheckinbutton() {
-        if (checkindate.getText().isBlank()) {
+        if (checkindate.getText().isBlank() || checkindate.getText().length() < 5) {
             Checkin.setEnabled(true);
             Checkout.setEnabled(false);
 
@@ -868,8 +850,9 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         }
     }
 
+//    enable checkout button
     private void enablecheckoutbutton() {
-        if (checkoutdate.getText().isBlank()) {
+        if (checkoutdate.getText().isBlank() || checkoutdate.getText().length() < 5) {
             Checkout.setEnabled(true);
             Checkin.setEnabled(false);
         } else {
@@ -878,8 +861,8 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
     }
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         // TODO add your handling code here:
-        SecurityGuard_Check_in.main(new String[0]);
-        this.dispose();
+        dispose();
+        new SecurityGuard_Check_in(SG).setVisible(true);
     }//GEN-LAST:event_jLabel6MouseClicked
 
     private void idKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_idKeyReleased
@@ -926,6 +909,7 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_checkoutdateKeyReleased
 
+//    check in function that check in current datetime
     private void CheckinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckinActionPerformed
         // TODO add your handling code here:
 
@@ -966,6 +950,7 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
 
     }//GEN-LAST:event_CheckinActionPerformed
 
+    //    check in function that check out current datetime
     private void CheckoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckoutActionPerformed
         // TODO add your handling code here:
 
@@ -1006,10 +991,12 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
 
     }//GEN-LAST:event_CheckoutActionPerformed
 
+//    Will Auto detect the date text field and display respective date data
     private void changedatebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changedatebuttonActionPerformed
         // TODO add your handling code here:
         String change_d = changedate.getText();
         try {
+            System.out.println("test" + change_d);
             todaydate.setText(sg.convertdate(change_d));
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             model.setRowCount(0);
@@ -1020,6 +1007,15 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_changedatebuttonActionPerformed
+
+    private void changedateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changedateMouseClicked
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_changedateMouseClicked
+
+    private void changedatePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_changedatePropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_changedatePropertyChange
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
@@ -1182,7 +1178,7 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SecurityGuard_SearchVisitor().setVisible(true);
+                new SecurityGuard_SearchVisitor(null).setVisible(true);
             }
         });
     }
@@ -1210,7 +1206,6 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -1237,6 +1232,7 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
     private javax.swing.JTextField name;
     private javax.swing.JTextField search_id_field;
     private javax.swing.JLabel todaydate;
+    private javax.swing.JLabel username;
     private javax.swing.JLabel visitor_id;
     private javax.swing.JLabel visitor_id1;
     private javax.swing.JLabel visitor_id2;

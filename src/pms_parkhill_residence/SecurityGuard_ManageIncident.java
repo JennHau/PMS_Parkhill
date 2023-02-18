@@ -33,14 +33,23 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
     /**
      * Creates new form homePage
      */
-    FileHandling fh = new FileHandling();
-    SecurityGuard sg = new SecurityGuard();
-
-    public SecurityGuard_ManageIncident() {
+    public SecurityGuard_ManageIncident(SecurityGuard SG) {
         initComponents();
         setWindowIcon();
         displayTable();
+        setTableDesign();
+        this.SG = SG;
+        setCurrentProfile();
 
+    }
+    
+    FileHandling fh = new FileHandling();
+    SecurityGuard sg = new SecurityGuard();
+    accountExecutive.AccountExecutive AE= new accountExecutive.AccountExecutive();
+    private final SecurityGuard SG;
+
+     private void setCurrentProfile() {
+        username.setText(SG.getFirstName() + " " + SG.getLastName());
     }
 
     public void displayTable() {
@@ -67,6 +76,16 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
             }
 
         }
+        
+     
+    }
+       private void setTableDesign() {
+        int[] colummnIgnore = {0};
+        int[] columnLength = {100, 100, 200, 200, 100, 100};
+        sg.setTableDesign(jTable, jfield2, columnLength, colummnIgnore);
+           System.out.println("test");
+        
+        
 
 //        -----------------------------
 //                                      if want specific data only 
@@ -123,7 +142,7 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        username = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         visitor_id = new javax.swing.JLabel();
@@ -168,9 +187,9 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
             }
         });
 
-        dashboard.setText("Dashboard");
         dashboard.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         dashboard.setForeground(new java.awt.Color(255, 255, 255));
+        dashboard.setText("Dashboard");
         dashboard.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 dashboardMouseClicked(evt);
@@ -196,9 +215,9 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
 
         jPanel7.setBackground(new java.awt.Color(13, 24, 42));
 
-        SearchVisitor.setText("Search Visitor Pass");
         SearchVisitor.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         SearchVisitor.setForeground(new java.awt.Color(255, 255, 255));
+        SearchVisitor.setText("Search Visitor Pass");
         SearchVisitor.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 SearchVisitorMouseClicked(evt);
@@ -224,10 +243,10 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
 
         jPanel8.setBackground(new java.awt.Color(13, 50, 79));
 
-        jLabel5.setText("Manage Incident ");
         jLabel5.setBackground(new java.awt.Color(13, 24, 42));
         jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Manage Incident ");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -248,9 +267,9 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
 
         jPanel9.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel6.setText("Check Point Management");
         jLabel6.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Check Point Management");
         jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel6MouseClicked(evt);
@@ -276,9 +295,9 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
 
         jPanel10.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel8.setText("Fourth Module");
         jLabel8.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Fourth Module");
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -299,10 +318,10 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
 
         jPanel11.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/notificationIcon.png"))); // NOI18N
-        jLabel9.setText(" NOTIFICATIONS");
         jLabel9.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/notificationIcon.png"))); // NOI18N
+        jLabel9.setText(" NOTIFICATIONS");
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
@@ -323,9 +342,9 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
 
         jPanel12.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel10.setText("LOGOUT");
         jLabel10.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("LOGOUT");
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
@@ -346,10 +365,10 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
 
         jPanel13.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
-        jLabel11.setText("VIEW PROFILE");
         jLabel11.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
+        jLabel11.setText("VIEW PROFILE");
 
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
@@ -370,10 +389,10 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
 
         jPanel14.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
-        jLabel12.setText("LOGOUT");
         jLabel12.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
+        jLabel12.setText("LOGOUT");
 
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
         jPanel14.setLayout(jPanel14Layout);
@@ -448,16 +467,16 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(153, 153, 153), null, null));
 
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("PARKHILL RESIDENCE SECURITY");
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(13, 24, 42));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel2.setText("PARKHILL RESIDENCE SECURITY");
 
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
-        jLabel7.setText("USERNAME");
-        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
+        username.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        username.setForeground(new java.awt.Color(102, 102, 102));
+        username.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        username.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
+        username.setText("USERNAME");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -467,8 +486,8 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 555, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(345, 345, 345)
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(20, 20, 20))
+                .addComponent(username, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(30, 30, 30))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -476,7 +495,7 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
+                    .addComponent(username))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -644,8 +663,8 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
 
     private void SearchVisitorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SearchVisitorMouseClicked
         // TODO add your handling code here:
-        SecurityGuard_SearchVisitor.main(new String[0]);
-        this.dispose();
+        dispose();
+        new SecurityGuard_SearchVisitor(SG).setVisible(true);
 
     }//GEN-LAST:event_SearchVisitorMouseClicked
 
@@ -671,8 +690,8 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
 
     private void dashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardMouseClicked
         // TODO add your handling code here:
-        SecurityGuard_DashBoard.main(new String[0]);
-        this.dispose();
+        dispose();
+        new SecurityGuard_DashBoard(SG).setVisible(true);
     }//GEN-LAST:event_dashboardMouseClicked
 
     private void jTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMouseClicked
@@ -739,7 +758,7 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         this.dispose();
-        SecurityGuard_Add_new_incident add = new SecurityGuard_Add_new_incident();
+        SecurityGuard_Add_new_incident add = new SecurityGuard_Add_new_incident(SG);
 //        add.setSize(400, 300);
         add.setLocationRelativeTo(null);
         add.setDefaultCloseOperation(add.DISPOSE_ON_CLOSE);
@@ -750,8 +769,8 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         // TODO add your handling code here:
-        SecurityGuard_Check_in.main(new String[0]);
-        this.dispose();
+        dispose();
+        new SecurityGuard_Check_in(SG).setVisible(true);
     }//GEN-LAST:event_jLabel6MouseClicked
 
     private void datetimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datetimeActionPerformed
@@ -1075,7 +1094,7 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SecurityGuard_ManageIncident().setVisible(true);
+                new SecurityGuard_ManageIncident(null).setVisible(true);
             }
         });
     }
@@ -1096,7 +1115,6 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -1122,6 +1140,7 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
     private javax.swing.JTextField search_id_field;
     private javax.swing.JTextField status;
     private javax.swing.JComboBox<String> status_combobox;
+    private javax.swing.JLabel username;
     private javax.swing.JLabel visitor_id;
     private javax.swing.JLabel visitor_id1;
     private javax.swing.JLabel visitor_id2;

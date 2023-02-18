@@ -24,15 +24,18 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
     /**
      * Creates new form SecurityGuard_Add_new_incident
      */
-    FileHandling fh =new FileHandling();
-        SecurityGuard sg = new SecurityGuard();
+    FileHandling fh = new FileHandling();
+    SecurityGuard sg = new SecurityGuard();
+    private final SecurityGuard SG;
 
-    public SecurityGuard_Add_new_incident() {
+    public SecurityGuard_Add_new_incident(SecurityGuard SG) {
         initComponents();
         displayIncidentId();
         jTextField1.setText("PENDING");
-        jTextField2.setText("SCG000001");
-        DATE.setText(sg.currentdate()+" "+ sg.currenttime());
+        DATE.setText(sg.currentdate() + " " + sg.currenttime());
+        this.SG = SG;
+        Recorded_By.setText(SG.getUserID());
+
     }
 
     /**
@@ -53,7 +56,7 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jfield = new javax.swing.JLabel();
         jfield1 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        Recorded_By = new javax.swing.JTextField();
         jfield2 = new javax.swing.JLabel();
         jfield3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -142,18 +145,18 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
         jfield1.setForeground(new java.awt.Color(153, 153, 153));
         jfield1.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
-        jTextField2.setBackground(new java.awt.Color(204, 204, 204));
-        jTextField2.setEnabled(false);
-        jTextField2.setHighlighter(null);
-        jTextField2.setOpaque(true);
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        Recorded_By.setBackground(new java.awt.Color(204, 204, 204));
+        Recorded_By.setEnabled(false);
+        Recorded_By.setHighlighter(null);
+        Recorded_By.setOpaque(true);
+        Recorded_By.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                Recorded_ByActionPerformed(evt);
             }
         });
-        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+        Recorded_By.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField2KeyReleased(evt);
+                Recorded_ByKeyReleased(evt);
             }
         });
 
@@ -254,7 +257,7 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
                             .addComponent(jfield2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jfield1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jfield, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2)
+                            .addComponent(Recorded_By)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
                             .addComponent(jTextField1)
                             .addComponent(jTextField3)
@@ -276,7 +279,7 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jfield1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(7, 7, 7)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Recorded_By, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jfield2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -306,58 +309,54 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void Recorded_ByActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Recorded_ByActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_Recorded_ByActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        BufferedWriter bw = null;
-//        try {
-            // TODO add your handling code here:
-            String incident = jTextArea1.getText().trim();
-            String status = jTextField1.getText();
-            String record = jTextField2.getText();
-            String no = jTextField3.getText();
-            String date = DATE.getText();
-            SecurityGuard sg = new SecurityGuard();
+//        create a new incident
 
-            String[] ary = {no+";"+record+";"+incident+";"+date+";"+status+";"};
-            List<String>arylist = Arrays.asList(ary);
-            fh.fileWrite("SG_Incident.txt", true,arylist);
+        String incident = jTextArea1.getText().trim();
+        String status = jTextField1.getText();
+        String record = Recorded_By.getText();
+        String no = jTextField3.getText();
+        String date = DATE.getText();
+        SecurityGuard sg = new SecurityGuard();
 
-            int result = JOptionPane.showConfirmDialog(null,
-                    "Incident has been Created Successfully !", "Be ok!", JOptionPane.DEFAULT_OPTION);
-            if (result == 0) {
-                dispose();
-                SecurityGuard_ManageIncident add = new SecurityGuard_ManageIncident();
-                add.setVisible(true);
-            }
-//        }
-    
-//        } catch (IOException ex) {
-//            Logger.getLogger(SecurityGuard_Add_new_incident.class.getName()).log(Level.SEVERE, null, ex);
-//        } finally {
-//        }
+        String[] ary = {no + ";" + record + ";" + incident + ";" + date + ";" + status + ";"};
+        List<String> arylist = Arrays.asList(ary);
+        fh.fileWrite("SG_Incident.txt", true, arylist);
+
+        int result = JOptionPane.showConfirmDialog(null,
+                "Incident has been Created Successfully !", "Be ok!", JOptionPane.DEFAULT_OPTION);
+        if (result == 0) {
+            dispose();
+            SecurityGuard_ManageIncident add = new SecurityGuard_ManageIncident(SG);
+            add.setVisible(true);
+        }
+
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public void displayIncidentId() {
-        
-        List <String> row  = fh.fileRead("SG_Incident.txt");
-        String[] rowary =new String[row.size()];
+
+//        Always display the latest incident ID
+        List<String> row = fh.fileRead("SG_Incident.txt");
+        String[] rowary = new String[row.size()];
         row.toArray(rowary);
-        String idformat="ICD";
+        String idformat = "ICD";
         int maxnum = 0;
         int latest, temp;
         for (int i = 1; i < rowary.length; i++) {
             String s = rowary[i].toString().trim();
             String[] line_split = s.split(";");
             String Iid = line_split[0];
-            Iid=Iid.replace("ICD", "");
+            Iid = Iid.replace("ICD", "");
             int int_id = Integer.parseInt(Iid);
             int[] maxx = {int_id};
             maxnum = maxx[0];
@@ -369,10 +368,11 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
         }
         System.out.println(maxnum);
         maxnum += 1;
-        String show =idformat+String.valueOf(maxnum);
+        String show = idformat + String.valueOf(maxnum);
         jTextField3.setText(show);
     }
 
+//    ENABLE BUTTON IF TEXT AREA IS FILL
     public void enablebutton() {
         if (jTextArea1.getText().isBlank()) {
             jButton1.setEnabled(false);
@@ -395,10 +395,10 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
         enablebutton();
     }//GEN-LAST:event_jTextField1KeyReleased
 
-    private void jTextField2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyReleased
+    private void Recorded_ByKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Recorded_ByKeyReleased
         // TODO add your handling code here:
         enablebutton();
-    }//GEN-LAST:event_jTextField2KeyReleased
+    }//GEN-LAST:event_Recorded_ByKeyReleased
 
     private void dateTimePicker2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dateTimePicker2KeyReleased
         // TODO add your handling code here:
@@ -412,10 +412,10 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
 
     private void cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelActionPerformed
         // TODO add your handling code here:
-        this.dispose();
-        SecurityGuard_ManageIncident add = new SecurityGuard_ManageIncident();
-        add.setVisible(true);
-        
+
+        dispose();
+        new SecurityGuard_ManageIncident(SG).setVisible(true);
+
     }//GEN-LAST:event_cancelActionPerformed
 
     private void DATEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DATEActionPerformed
@@ -456,13 +456,14 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SecurityGuard_Add_new_incident().setVisible(true);
+                new SecurityGuard_Add_new_incident(null).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField DATE;
+    private javax.swing.JTextField Recorded_By;
     private java.awt.Button button1;
     private javax.swing.JButton cancel;
     private javax.swing.JButton jButton1;
@@ -474,7 +475,6 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JLabel jfield;
     private javax.swing.JLabel jfield1;
