@@ -4,6 +4,7 @@
  */
 package residentANDtenant;
 
+import classes.Facility;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -767,7 +768,7 @@ public class ResidentTenantBookedFacility extends javax.swing.JFrame {
             
             if (status.equals("MODIFY")) {
                 String date = String.valueOf(bookedFacTab.getValueAt(row, 2));
-                String facilityID = RT.getFacilityId(bookingID);
+                String facilityID = RT.getFacilityId(bookingID.toLowerCase());
 
                 fb.Facility(facilityID);
                 RT.toManageBookedFacility(RT, fb, bookingID.toLowerCase(), date);

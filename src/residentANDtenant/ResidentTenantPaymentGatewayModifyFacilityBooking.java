@@ -4,7 +4,6 @@
  */
 package residentANDtenant;
 
-import adminExecutive.*;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Toolkit;
@@ -383,7 +382,6 @@ public class ResidentTenantPaymentGatewayModifyFacilityBooking extends javax.swi
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    AdminExecutive ae = new AdminExecutive();
     FileHandling fh = new FileHandling();
     List<String> bookingList = new ArrayList<>();
     String bookingID; 
@@ -409,7 +407,7 @@ public class ResidentTenantPaymentGatewayModifyFacilityBooking extends javax.swi
             tableModel.addRow(tbData);
         }
         
-        List<String> feeData = ae.extractFacilityBookingFee(facilityID.toLowerCase(),
+        List<String> feeData = RT.extractFacilityBookingFee(facilityID.toLowerCase(),
                     bookingList.size());
         for(int i = 0; i<feeData.size(); i++) {
             String[] feeDetails = feeData.get(i).split(";");
@@ -424,7 +422,7 @@ public class ResidentTenantPaymentGatewayModifyFacilityBooking extends javax.swi
         bookingIDLabel.setText(bookingID); facilityIDLabel.setText(facilityID);
         currentChargesLabel.setText("RM " + totalPrice);
         
-        String advancedPaymentFee = ae.calculateFacilityAdvancedPayment(bookingID.toLowerCase());
+        String advancedPaymentFee = RT.calculateFacilityAdvancedPayment(bookingID.toLowerCase());
         advancedPaymentLabel.setText("RM " + advancedPaymentFee);
         
         Float pending = Float.valueOf(totalPrice) - Float.valueOf(advancedPaymentFee);
@@ -432,7 +430,7 @@ public class ResidentTenantPaymentGatewayModifyFacilityBooking extends javax.swi
         totalPending = df.format(pending);
         
         totalLabel.setText("TOTAL: RM " + totalPending); dateLabel.setText(date);
-        unitNoLabel.setText(ae.extractFacilityBookingUnit(bookingID.toLowerCase()));
+        unitNoLabel.setText(RT.extractFacilityBookingUnit(bookingID.toLowerCase()));
         
         tableDesignSetUp();
     }
@@ -455,22 +453,35 @@ public class ResidentTenantPaymentGatewayModifyFacilityBooking extends javax.swi
         JOptionPane.QUESTION_MESSAGE);
 
         if(result == JOptionPane.YES_OPTION){
+            ArrayList<String> newData = new ArrayList<>();
+            for(int i = 0; i<bookingList.size(); i++) {
+                String[] bookingDetails = bookingList.get(i).split(";");
+                String startTime = bookingDetails[3];
+                String endTime = bookingDetails[4];
+                newData.add(bookingID.toLowerCase() +";"+ facilityID.toLowerCase()
+                        +";"+ bookingDetails[2] +";"+ String.valueOf(unitNoLabel.getText())
+                        +";"+ date +";"+ startTime +";"+ endTime +";"+ unitPrice
+                        +";"+ totalPrice +";"+ String.valueOf(LocalDate.now()) +";");
+            }
+            
             if (Double.parseDouble(totalPending) <= 0) {
+                RT.deleteFacilityBooking(bookingID.toLowerCase());
+                fh.fileWrite("facilityBooking.txt", true, newData);
+                
                 JOptionPane.showMessageDialog (null, "Facility Booking has been modified! Please contact admin for refund (If any). Thank you.", 
                                 "MODIFY FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
-            }
-            else {
-                ArrayList<String> newData = new ArrayList<>();
-                for(int i = 0; i<bookingList.size(); i++) {
-                    String[] bookingDetails = bookingList.get(i).split(";");
-                    String startTime = bookingDetails[3];
-                    String endTime = bookingDetails[4];
-                    newData.add(bookingID.toLowerCase() +";"+ facilityID.toLowerCase()
-                            +";"+ facilityName +";"+ String.valueOf(unitNoLabel.getText())
-                            +";"+ date +";"+ startTime +";"+ endTime +";"+ unitPrice
-                            +";"+ totalPrice +";"+ String.valueOf(LocalDate.now()) +";");
+                
+                if (ResidentTenantPaymentGatewayModifyFacilityBooking.rtPayFacMod != null) {
+                    ResidentTenantPaymentGatewayModifyFacilityBooking.rtPayFacMod.dispose();
                 }
                 
+                if (ResidentTenantManageBookedFacility.rtManageBooked != null) {
+                    ResidentTenantManageBookedFacility.rtManageBooked.dispose();
+                }
+                
+                RT.toBookedFacility(RT);
+            }
+            else {
                 RT.toPaymentCredential(RT, totalPending, newData, true, true, null);
             }
         }

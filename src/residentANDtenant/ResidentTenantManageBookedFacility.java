@@ -4,7 +4,6 @@
  */
 package residentANDtenant;
 
-import adminExecutive.*;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -76,8 +75,18 @@ public class ResidentTenantManageBookedFacility extends javax.swing.JFrame {
                 Object value = getModel().getValueAt(rowIndex,columnIndex);
 
                 if(columnIndex == 4){
-                    componenet.setBackground(new Color(0,70,126));
-                    componenet.setForeground(new Color(255, 255, 255));
+                    if(value.equals("PAST")){
+                        componenet.setBackground(new Color(255, 0, 0));
+                        componenet.setForeground(new Color(255, 255, 255));
+
+                    } else if(value.equals("SELECTED")){
+                        componenet.setBackground(new Color(102,102,102));
+                        componenet.setForeground(new Color(255, 255, 255));
+                    }
+                    else {
+                        componenet.setBackground(new Color(0,70,126));
+                        componenet.setForeground(new Color(255, 255, 255));
+                    }
                 }
 
                 else {
@@ -791,7 +800,6 @@ public class ResidentTenantManageBookedFacility extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    AdminExecutive ae = new AdminExecutive();
     String facilityID; String facilityName; String bookingID; Integer quantity;
     String date;
     
@@ -832,6 +840,10 @@ public class ResidentTenantManageBookedFacility extends javax.swing.JFrame {
         if (column == 4 && status.equals("SELECT")) {
             tableModel.setValueAt("SELECTED", row, 4);
             setTable2();
+        } else if (status.equals("PAST")) {
+            warningMessage.setText("Invalid Slot...");
+        } else if (status.equals("BOOKED")) {
+            warningMessage.setText("The slot has been booked.");
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -889,6 +901,8 @@ public class ResidentTenantManageBookedFacility extends javax.swing.JFrame {
             String endTime = (String)tableModel2.getValueAt(i, 2);
             String date = String.valueOf(datePicker1.getDate());
             
+            System.out.println(fctName);
+            
             availableList.add(bkgID +";"+ fctID +";"+ fctName +";"+ startTime
                     +";"+ endTime +";"+ date);
         }
@@ -904,7 +918,7 @@ public class ResidentTenantManageBookedFacility extends javax.swing.JFrame {
         JOptionPane.QUESTION_MESSAGE);
 
         if(result == JOptionPane.YES_OPTION){
-            ae.deleteFacilityBooking(bookingID);
+            RT.deleteFacilityBooking(bookingID);
             JOptionPane.showMessageDialog (null, "Facility Booking has been deleted!", 
                             "DELETE FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
             dispose();
@@ -1056,9 +1070,8 @@ public class ResidentTenantManageBookedFacility extends javax.swing.JFrame {
             tableModel.setRowCount(0);
             String pickDate = String.valueOf(datePicker1.getDate());
             String variation = (String)variationCB.getSelectedItem();
-            List<String> availableList = ae.extractFacilityTimeSlot(facilityID, variation, pickDate, bookingID);
-
-
+            List<String> availableList = RT.extractFacilityTimeSlot(facilityID, variation, pickDate, bookingID);
+            
             for (int i = 0; i < availableList.size(); i++) {
                 String[] employeeDetails = availableList.get(i).split(";");
                 String facilityName = employeeDetails[0];
@@ -1067,22 +1080,20 @@ public class ResidentTenantManageBookedFacility extends javax.swing.JFrame {
                 String bookedBy = employeeDetails[3];
                 String action = employeeDetails[4];
                 
-                String selectedDate = datePicker1.getDate().toString();
-
-                LocalDateTime dateTimeSel = RT.DTF.combineStringDateTime(selectedDate, startTime);
-                LocalDateTime dateTimeNow = LocalDateTime.now();
-
-                if (dateTimeSel.isBefore(dateTimeNow)) {
-                    if (action.equals("SELECT")) {
-                        action = "PAST";
-                    }
+                LocalDateTime dateTime = RT.DTF.combineStringDateTime(pickDate, endTime);
+                
+                if (dateTime.isBefore(LocalDateTime.now())) {
+                    action = "PAST";
                 }
+                
                 String[] tbData = {facilityName, startTime, endTime, bookedBy, action};
                 tableModel.addRow(tbData);
             }
-        } else {
+        } 
+        else {
             warningMessage.setText("Invalid date!");
         }
+        
         setTable2();
     }
     

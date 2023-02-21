@@ -4,11 +4,15 @@
  */
 package classes;
 
+import java.util.List;
+
 /**
  *
  * @author Winson
  */
 public class TextFile {
+    FileHandling FH = new FileHandling();
+    
     // Text file default splitter
     public String sp = ";";
     
@@ -71,4 +75,54 @@ public class TextFile {
     
     // temporary usage file
     public String tempFile = "tempPatFile.txt";
+    
+    public String getLatestID(String filename, String initial) {
+        List<String> userList =  FH.fileRead(filename);
+        String[] userArray = new String[userList.size()];
+        userList.toArray(userArray);
+        
+        int largestID = 0;
+        for (int i = 1; i < userList.size(); i++) {
+            String[] userDetails = userArray[i].split(";");
+            String id = userDetails[0];
+            if(id.startsWith(initial)) {
+                int existingID = Integer.valueOf(userDetails[0].substring(3));
+                if(existingID > largestID) {
+                    largestID = existingID;
+                }
+            }
+            
+        } largestID++;
+        int times = 6 - String.valueOf(largestID).length();
+        
+        String zero = "";
+        
+        // ensure that all primary ID are having 6 numbers
+        switch (times) {
+            case 0 ->                 {
+                     zero = "";
+                }
+            case 1 ->                 {
+                     zero = "0";
+                }
+            case 2 ->                 {
+                     zero = "00";
+                }
+            case 3 ->                 {
+                     zero = "000";
+                }
+            case 4 ->                 {
+                     zero = "0000";
+                }
+            case 5 ->                 {
+                     zero = "00000";
+                }
+            default -> {
+            }
+        }
+        
+        
+        String currentUsableID = initial + zero +String.valueOf(largestID);
+        return currentUsableID;
+    }
 }
