@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.HomePage;
+import classes.Payment;
 
 /**
  *
@@ -49,7 +50,7 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable()
+        receiptTable = new javax.swing.JTable()
         {
             @Override
 
@@ -153,8 +154,8 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setText("ISSUE RECEIPT");
 
-        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        receiptTable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        receiptTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -170,14 +171,14 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
-        jTable1.setRowHeight(30);
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        receiptTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        receiptTable.setRowHeight(30);
+        receiptTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                receiptTableMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(receiptTable);
 
         jLabel16.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(153, 153, 153));
@@ -693,6 +694,7 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private final AccountExecutive AE;
+    Payment PM = new Payment();
     
     private void setCurrentProfile() {
         usernameLabel.setText(AE.getFirstName() +" "+ AE.getLastName());
@@ -700,16 +702,16 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
     
     private void clearbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearbtActionPerformed
         searchTextField.setText("");
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel)receiptTable.getModel();
         tableModel.setRowCount(0);
         setTable();
     }//GEN-LAST:event_clearbtActionPerformed
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    private void receiptTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_receiptTableMouseClicked
         // TODO add your handling code here:
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        int column = jTable1.getSelectedColumn();
-        int row = jTable1.getSelectedRow();
+        DefaultTableModel tableModel = (DefaultTableModel)receiptTable.getModel();
+        int column = receiptTable.getSelectedColumn();
+        int row = receiptTable.getSelectedRow();
         if (column == 6) {
             String invoiceNo = String.valueOf(tableModel.getValueAt(row, 0));
             String unitNo = String.valueOf(tableModel.getValueAt(row, 1));
@@ -724,16 +726,17 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
                     List<String> receiptDetails = new ArrayList<>();
                     String feeType = String.valueOf(tableModel.getValueAt(row, 2));
                     receiptDetails.add(invoiceNo +";"+ feeType +";");
-                    AE.issueReceipt(receiptDetails);
+                    PM.issueReceipt(receiptDetails);
                     setTable();
                     JOptionPane.showMessageDialog (null, "Receipt has been issued!", 
                                     "ISSUE RECEIPT", JOptionPane.INFORMATION_MESSAGE);
                 }
             } else if (statusCB.getSelectedItem() == "ISSUED"){
-                new AccountExecutiveViewReceipt(unitNo, invoiceNo, AE).setVisible(true);
+                PM.setUnitNo(unitNo); PM.setInvoiceNo(invoiceNo);
+                new AccountExecutiveViewReceipt(PM, AE).setVisible(true);
             }
         }
-    }//GEN-LAST:event_jTable1MouseClicked
+    }//GEN-LAST:event_receiptTableMouseClicked
 
     private void statusCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusCBActionPerformed
         // TODO add your handling code here:
@@ -742,7 +745,7 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
 
     private void jLabel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseClicked
         // TODO add your handling code here:
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel)receiptTable.getModel();
         if (statusCB.getSelectedItem() == "PENDING" && tableModel.getRowCount() >0) {
             issueAllReceipt();
         }
@@ -765,8 +768,8 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
 
     private void dashboardLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseClicked
         // TODO add your handling code here:
-        dispose();
         new AccountExecutiveDashboard(AE).setVisible(true);
+        dispose();
     }//GEN-LAST:event_dashboardLabelMouseClicked
 
     private void dashboardLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardLabelMouseEntered
@@ -776,8 +779,8 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
 
     private void dashboardPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanelMouseClicked
         // TODO add your handling code here:
-        dispose();
         new AccountExecutiveDashboard(AE).setVisible(true);
+        dispose();
     }//GEN-LAST:event_dashboardPanelMouseClicked
 
     private void dashboardPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardPanelMouseEntered
@@ -787,8 +790,8 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
 
     private void issueInvoiceLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoiceLabelMouseClicked
         // TODO add your handling code here:
-        dispose();
         new AccountExecutiveIssueInvoice(AE).setVisible(true);
+        dispose();
     }//GEN-LAST:event_issueInvoiceLabelMouseClicked
 
     private void issueInvoiceLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoiceLabelMouseEntered
@@ -798,8 +801,8 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
 
     private void issueInvoicePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoicePanelMouseClicked
         // TODO add your handling code here:
-        dispose();
         new AccountExecutiveIssueInvoice(AE).setVisible(true);
+        dispose();
     }//GEN-LAST:event_issueInvoicePanelMouseClicked
 
     private void issueInvoicePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueInvoicePanelMouseEntered
@@ -809,8 +812,8 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
 
     private void paymentLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentLabelMouseClicked
         // TODO add your handling code here:
-        dispose();
         new AccountExecutivePayment(AE).setVisible(true);
+        dispose();
     }//GEN-LAST:event_paymentLabelMouseClicked
 
     private void paymentLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentLabelMouseEntered
@@ -820,8 +823,8 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
 
     private void paymentPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentPanelMouseClicked
         // TODO add your handling code here:
-        dispose();
         new AccountExecutivePayment(AE).setVisible(true);
+        dispose();
     }//GEN-LAST:event_paymentPanelMouseClicked
 
     private void paymentPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentPanelMouseEntered
@@ -853,8 +856,8 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
 
     private void outstandingFeeLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeeLabelMouseClicked
         // TODO add your handling code here:
-        dispose();
         new AccountExecutiveIssueOutstandingFee(AE).setVisible(true);
+        dispose();
     }//GEN-LAST:event_outstandingFeeLabelMouseClicked
 
     private void outstandingFeeLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeeLabelMouseEntered
@@ -864,8 +867,8 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
 
     private void outstandingFeePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeePanelMouseClicked
         // TODO add your handling code here:
-        dispose();
         new AccountExecutiveIssueOutstandingFee(AE).setVisible(true);
+        dispose();
     }//GEN-LAST:event_outstandingFeePanelMouseClicked
 
     private void outstandingFeePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outstandingFeePanelMouseEntered
@@ -874,9 +877,9 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
     }//GEN-LAST:event_outstandingFeePanelMouseEntered
 
     private void logoutLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabelMouseClicked
-        // TODO add your handling code here:
-        dispose();
+        // TODO add your handling code here:dispose();
         new HomePage().setVisible(true);
+        dispose();
     }//GEN-LAST:event_logoutLabelMouseClicked
 
     private void logoutLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabelMouseEntered
@@ -886,8 +889,8 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
 
     private void logoutPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutPanelMouseClicked
         // TODO add your handling code here:
-        dispose();
         new HomePage().setVisible(true);
+        dispose();
     }//GEN-LAST:event_logoutPanelMouseClicked
 
     private void logoutPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutPanelMouseEntered
@@ -897,8 +900,8 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
 
     private void viewProfileLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileLabelMouseClicked
         // TODO add your handling code here:
-        dispose();
         new AccountExecutiveViewProfile(AE).setVisible(true);
+        dispose();
     }//GEN-LAST:event_viewProfileLabelMouseClicked
 
     private void viewProfileLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileLabelMouseEntered
@@ -913,8 +916,8 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
 
     private void issueStatementLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementLabelMouseClicked
         // TODO add your handling code here:
-        dispose();
         new AccountExecutiveIssueStatement(AE).setVisible(true);
+        dispose();
     }//GEN-LAST:event_issueStatementLabelMouseClicked
 
     private void issueStatementLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementLabelMouseEntered
@@ -924,8 +927,8 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
 
     private void issueStatementPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementPanelMouseClicked
         // TODO add your handling code here:
-        dispose();
         new AccountExecutiveIssueStatement(AE).setVisible(true);
+        dispose();
     }//GEN-LAST:event_issueStatementPanelMouseClicked
 
     private void issueStatementPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_issueStatementPanelMouseEntered
@@ -935,7 +938,7 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
 
     private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
         // TODO add your handling code here:
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel)receiptTable.getModel();
         // reset table
         tableModel.setRowCount(0);
         setTable();
@@ -943,7 +946,7 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
             String module_code = searchTextField.getText().toUpperCase();
             for (int i=0; i<tableModel.getRowCount(); i++) {
                 // get module code from table
-                String tmodule_code = String.valueOf(jTable1.getValueAt(i, 1)).toUpperCase();
+                String tmodule_code = String.valueOf(receiptTable.getValueAt(i, 1)).toUpperCase();
                 // if module code not contain in search bar
                 if (!tmodule_code.contains(module_code)) {
                     // remove module from table
@@ -965,16 +968,16 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
 
     private void viewProfilePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfilePanelMouseClicked
         // TODO add your handling code here:
-        dispose();
         new AccountExecutiveViewProfile(AE).setVisible(true);
+        dispose();
     }//GEN-LAST:event_viewProfilePanelMouseClicked
 
     private void setTable() {
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel)receiptTable.getModel();
         tableModel.setRowCount(0);
         String status = String.valueOf(statusCB.getSelectedItem());
         if (status.equals("PENDING")) {
-            List<String> pendingReceiptList = AE.extractReceipt(status);
+            List<String> pendingReceiptList = PM.displayReceipt(status);
             String[] pendingReceiptArray = new String[pendingReceiptList.size()];
             pendingReceiptList.toArray(pendingReceiptArray);
 
@@ -992,7 +995,7 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
                 tableModel.addRow(tbData);
             }
         } else if (status.equals("ISSUED")) {
-            List<String> issuedReceiptList = AE.extractReceipt(status);
+            List<String> issuedReceiptList = PM.displayReceipt(status);
             String[] issuedReceiptArray = new String[issuedReceiptList.size()];
             issuedReceiptList.toArray(issuedReceiptArray);
 
@@ -1027,7 +1030,7 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
 
             if(result == JOptionPane.YES_OPTION){
                 List<String> receiptDetails = new ArrayList<String>();
-                DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+                DefaultTableModel tableModel = (DefaultTableModel)receiptTable.getModel();
 
                 for (int i=0; i<tableModel.getRowCount(); i++) {
                     String invoiceNo = String.valueOf(tableModel.getValueAt(i, 0));
@@ -1035,7 +1038,7 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
                     String cDetails = invoiceNo +";"+ feeType +";";
                     receiptDetails.add(cDetails);
                 } 
-                    AE.issueReceipt(receiptDetails);
+                    PM.issueReceipt(receiptDetails);
                     setTable();
                     JOptionPane.showMessageDialog (null, "Receipts have been issued!", 
                                     "ISSUE RECEIPT", JOptionPane.INFORMATION_MESSAGE);
@@ -1049,8 +1052,8 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
     
     private void setTableDesign() {
         int[] colummnIgnore = {};
-        int[] columnLength = {137, 137, 138, 137, 137, 137, 137};
-        AE.setTableDesign(jTable1, jLabel16, columnLength, colummnIgnore);
+        int[] columnLength = {137, 117, 138, 137, 137, 137, 157};
+        AE.setTableDesign(receiptTable, jLabel16, columnLength, colummnIgnore);
     }
     
     /**
@@ -1620,13 +1623,13 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel logoutLabel;
     private javax.swing.JPanel logoutPanel;
     private javax.swing.JLabel outstandingFeeLabel;
     private javax.swing.JPanel outstandingFeePanel;
     private javax.swing.JLabel paymentLabel;
     private javax.swing.JPanel paymentPanel;
+    private javax.swing.JTable receiptTable;
     private javax.swing.JTextField searchTextField;
     private javax.swing.JComboBox<String> statusCB;
     private javax.swing.JLabel usernameLabel;

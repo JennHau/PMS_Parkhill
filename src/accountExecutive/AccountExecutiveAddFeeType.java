@@ -10,10 +10,8 @@ import java.awt.Toolkit;
 import java.text.DecimalFormat;
 import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -58,7 +56,7 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
         addBt = new javax.swing.JButton();
         cancelBt = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable()
+        feeTypeTable = new javax.swing.JTable()
         {
             @Override
 
@@ -187,7 +185,7 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        feeTypeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -203,9 +201,9 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
-        jTable1.setRowHeight(30);
-        jScrollPane1.setViewportView(jTable1);
+        feeTypeTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        feeTypeTable.setRowHeight(30);
+        jScrollPane1.setViewportView(feeTypeTable);
 
         jSeparator1.setForeground(new java.awt.Color(153, 153, 153));
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -464,7 +462,7 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
 
     public void setTable() {
         try{
-            DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+            DefaultTableModel tableModel = (DefaultTableModel)feeTypeTable.getModel();
             tableModel.setRowCount(0);
             List<String> feeTypesList = AE.extractFeeTypes("feeTypes.txt");
             String[] feeTypes = new String[feeTypesList.size()];
@@ -493,7 +491,7 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
     private void setTableDesign() {
         int[] colummnIgnore = {1};
         int[] columnLength = {40, 150, 90, 120, 80, 120};
-        AE.setTableDesign(jTable1, jLabel1, columnLength, colummnIgnore);
+        AE.setTableDesign(feeTypeTable, jLabel1, columnLength, colummnIgnore);
     }
     
     /**
@@ -663,6 +661,7 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
     private javax.swing.JButton cancelBt;
     private javax.swing.JComboBox<String> categoryCB;
     private javax.swing.JTextField feeTypeNameTF;
+    private javax.swing.JTable feeTypeTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -676,7 +675,6 @@ public class AccountExecutiveAddFeeType extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JCheckBox squareFeetOption;
     private javax.swing.JComboBox<String> targetCB;
     private javax.swing.JTextField unitPriceTF;

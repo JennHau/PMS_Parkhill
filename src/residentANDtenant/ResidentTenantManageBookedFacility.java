@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.Facility;
+import classes.Facility;
 
 /**
  *
@@ -172,7 +172,7 @@ public class ResidentTenantManageBookedFacility extends javax.swing.JFrame {
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(153, 153, 153), null, null));
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("ADMIN EXECUTIVE");
+        jLabel2.setText("PARKHILL RESIDENCE RESIDENT & TENANT");
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(13, 24, 42));
 

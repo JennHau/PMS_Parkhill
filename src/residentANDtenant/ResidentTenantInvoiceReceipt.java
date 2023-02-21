@@ -9,7 +9,7 @@ import java.awt.Component;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.FileHandling;
+import classes.FileHandling;
 
 
 /**
@@ -313,7 +313,7 @@ public class ResidentTenantInvoiceReceipt extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void setDefault() {
-        ArrayList<String> invoiceList = RT.getCurrentUnitIssuedReceipt(RT.getUnitNo());
+        ArrayList<String> invoiceList = RT.PYM.extractSingleReceiptData(RT.getUnitNo());
         ArrayList<String> toReceipt = new ArrayList<>();
         
         String invoicePeriod = null;

@@ -9,9 +9,9 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import classes.Invoice;
 
 /**
  *
@@ -25,8 +25,9 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
      * Creates new form homePage
      * @param invoiceNo
      * @param RT
+     * @param invoiceList
      */
-    public ResidentTenantInvoicePayment(String invoiceNo, ResidentTenant RT, String feeTypes) {
+    public ResidentTenantInvoicePayment(String invoiceNo, ResidentTenant RT, ArrayList<Invoice> invoiceList) {
         initComponents();
         payTab = (DefaultTableModel) paymentTable.getModel();
         
@@ -34,7 +35,8 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
         this.invoiceNo = invoiceNo;
         this.RT = RT;
         this.unitNo = this.RT.getUnitNo();
-        setTable(feeTypes);
+        this.invoiceList = invoiceList;
+        setTable(invoiceList);
         setFixData();
     }
 
@@ -684,10 +686,11 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
     private final String invoiceNo;
     private final String unitNo;
     private String total;
+    private final ArrayList<Invoice> invoiceList;
     
     private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
         // TODO add your handling code here:
-        new ResidentTenantInvoicePaymentGateway(invoiceNo, RT, total).setVisible(true);
+        new ResidentTenantInvoicePaymentGateway(invoiceNo, RT, total, invoiceList).setVisible(true);
         dispose();
     }//GEN-LAST:event_jLabel18MouseClicked
 
@@ -698,7 +701,7 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
 
     private void jPanel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseClicked
         // TODO add your handling code here:
-        new ResidentTenantInvoicePaymentGateway(invoiceNo, RT, total).setVisible(true);
+        new ResidentTenantInvoicePaymentGateway(invoiceNo, RT, total, invoiceList).setVisible(true);
         dispose();
     }//GEN-LAST:event_jPanel5MouseClicked
 
@@ -839,42 +842,27 @@ public class ResidentTenantInvoicePayment extends javax.swing.JFrame {
         visitorPassOuterTab.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_visitorPassOuterTabMouseEntered
 
-    private void setTable(String feeTypes) {
+    private void setTable(ArrayList<Invoice> invoiceList) {
         ArrayList<String> toTable = new ArrayList<>();
         
-        feeTypes = feeTypes + ",";
-        String[] feeTypeList = feeTypes.split(",");
-        
-        ArrayList<String> feeList = new ArrayList<>(Arrays.asList(feeTypeList));
-        
-        ArrayList<ArrayList> invoiceList = RT.getCurrentUnitInvoice(this.RT.getUnitNo());
-        ArrayList<String> incompList = invoiceList.get(0);
-        
         double totalAmount = 0;
-        for (String eachIncomp : incompList) {
-            String[] incompDet = eachIncomp.split(RT.TF.sp);
-            String incompInv = incompDet[0];
-            
-            if (incompInv.equals(this.invoiceNo)) {
-                String incompType = incompDet[2];
-                if (feeList.contains(incompType)) {
-                    String issueDate = incompDet[9];
-                    String consump = incompDet[4];
-                    String unit = incompDet[5];
-                    String unitPrice = incompDet[6];
-                    String totalPrice = incompDet[7];
-                    
-                    totalAmount = Double.parseDouble(totalPrice) + totalAmount;
-                    
-                    String[] data = {incompType, issueDate, consump, unit, unitPrice, totalPrice};
-                    String line = "";
-                    for (String eachData : data) {
-                        line = line + eachData + RT.TF.sp;
-                    }
-                    
-                    toTable.add(line);
-                }
+        for (Invoice invoice : invoiceList) {
+            String incompType = invoice.getFeeType();
+            String issueDate = invoice.getIssuedDate();
+            String consump = invoice.getConsumption();
+            String unit = invoice.getUnit();
+            String unitPrice = invoice.getUnitNo();
+            double totalPrice = invoice.getTotalPrice();
+
+            totalAmount = totalPrice + totalAmount;
+
+            String[] data = {incompType, issueDate, consump, unit, unitPrice, String.format("%.02f", totalPrice)};
+            String line = "";
+            for (String eachData : data) {
+                line = line + eachData + RT.TF.sp;
             }
+
+            toTable.add(line);
         }
         
         total = String.format("%.02f", totalAmount);

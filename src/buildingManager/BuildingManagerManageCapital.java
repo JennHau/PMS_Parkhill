@@ -11,7 +11,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.FileHandling;
+import classes.FileHandling;
 
 /**
  *
@@ -49,7 +49,7 @@ public class BuildingManagerManageCapital extends javax.swing.JFrame {
         addBt = new javax.swing.JButton();
         cancelBt = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable()
+        capitalTable = new javax.swing.JTable()
         {
             @Override
 
@@ -160,8 +160,8 @@ public class BuildingManagerManageCapital extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        capitalTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        capitalTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -177,14 +177,14 @@ public class BuildingManagerManageCapital extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
-        jTable1.setRowHeight(30);
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        capitalTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        capitalTable.setRowHeight(30);
+        capitalTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                capitalTableMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(capitalTable);
 
         jSeparator1.setForeground(new java.awt.Color(153, 153, 153));
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -338,11 +338,11 @@ public class BuildingManagerManageCapital extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_capitalAmountTFKeyReleased
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    private void capitalTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_capitalTableMouseClicked
         // TODO add your handling code here:
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        int column = jTable1.getSelectedColumn();
-        int row = jTable1.getSelectedRow();
+        DefaultTableModel tableModel = (DefaultTableModel)capitalTable.getModel();
+        int column = capitalTable.getSelectedColumn();
+        int row = capitalTable.getSelectedRow();
 
         if (column == 3) {
             int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
@@ -361,11 +361,11 @@ public class BuildingManagerManageCapital extends javax.swing.JFrame {
             }
             
         }
-    }//GEN-LAST:event_jTable1MouseClicked
+    }//GEN-LAST:event_capitalTableMouseClicked
 
     public void setTable() {
         try{
-            DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+            DefaultTableModel tableModel = (DefaultTableModel)capitalTable.getModel();
             tableModel.setRowCount(0);
             
             List<String> capitalList = fh.fileRead("financialCapital.txt");
@@ -389,7 +389,7 @@ public class BuildingManagerManageCapital extends javax.swing.JFrame {
     private void setTableDesign() {
         int[] colummnIgnore = {};
         int[] columnLength = {40, 160, 145, 145};
-        BM.setTableDesign(jTable1, jLabel14, columnLength, colummnIgnore);
+        BM.setTableDesign(capitalTable, jLabel14, columnLength, colummnIgnore);
     }
     
     /**
@@ -942,6 +942,7 @@ public class BuildingManagerManageCapital extends javax.swing.JFrame {
     private javax.swing.JButton addBt;
     private javax.swing.JButton cancelBt;
     private javax.swing.JTextField capitalAmountTF;
+    private javax.swing.JTable capitalTable;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -950,7 +951,6 @@ public class BuildingManagerManageCapital extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel warningMessage;
     // End of variables declaration//GEN-END:variables
 }

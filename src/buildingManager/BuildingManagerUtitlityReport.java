@@ -9,7 +9,7 @@ import java.awt.Component;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.FileHandling;
+import classes.FileHandling;
 
 
 /**
@@ -52,7 +52,7 @@ public class BuildingManagerUtitlityReport extends javax.swing.JFrame {
         doneBt = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable()
+        reportTable = new javax.swing.JTable()
         {
             @Override
 
@@ -147,8 +147,8 @@ public class BuildingManagerUtitlityReport extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("UTITILY REPORT");
 
-        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        reportTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        reportTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -164,14 +164,14 @@ public class BuildingManagerUtitlityReport extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
-        jTable1.setRowHeight(30);
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        reportTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        reportTable.setRowHeight(30);
+        reportTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                reportTableMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(reportTable);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(204, 204, 204));
@@ -380,7 +380,7 @@ public class BuildingManagerUtitlityReport extends javax.swing.JFrame {
     }
     
     private void setTable() {
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel)reportTable.getModel();
         tableModel.setRowCount(0);
         
         List<String> invoiceDetails = fh.fileRead("invoices.txt");
@@ -412,14 +412,14 @@ public class BuildingManagerUtitlityReport extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_doneBtActionPerformed
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    private void reportTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportTableMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTable1MouseClicked
+    }//GEN-LAST:event_reportTableMouseClicked
 
     private void setTableDesign() {
         int[] colummnIgnore = {1};
         int[] columnLength = {147, 147, 147, 148};
-        BM.setTableDesign(jTable1, jLabel4, columnLength, colummnIgnore);
+        BM.setTableDesign(reportTable, jLabel4, columnLength, colummnIgnore);
     }
     
     /**
@@ -482,9 +482,9 @@ public class BuildingManagerUtitlityReport extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel monthYearLabel;
     private javax.swing.JLabel reportDataNTime;
+    private javax.swing.JTable reportTable;
     private javax.swing.JLabel tConsumptionLabel;
     private javax.swing.JLabel totalPriceLabel;
     private javax.swing.JLabel utilityTypeLabel;

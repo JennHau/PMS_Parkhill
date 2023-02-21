@@ -4,11 +4,13 @@
  */
 package buildingManager;
 
+import accountExecutive.AccountExecutive;
+import buildingExecutive.BuildingExecutive;
 import java.awt.Toolkit;
 import javax.swing.JOptionPane;
-import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
-import pms_parkhill_residence.Validation;
+import classes.FileHandling;
+import classes.Users;
+import classes.Validation;
 
 /**
  *
@@ -469,8 +471,15 @@ public class BuildingManagerModifyUser extends javax.swing.JFrame {
                     JOptionPane.QUESTION_MESSAGE);
 
                 if(result == JOptionPane.YES_OPTION){
-                    BM.modifyOthersAccount(userID, email, password, firstName,
-                        lastName, idNo, gender, phoneNo, "-");
+                    if(userRoleTF.getText().equals("Account Executive")) {
+                        AccountExecutive ACE = new AccountExecutive(userID, email,
+                                password, firstName, lastName, idNo, gender, phoneNo);
+                        BM.modifyACEAccount(ACE);
+                    } else {
+                        BuildingExecutive BE = new BuildingExecutive(userID, email,
+                                password, firstName, lastName, idNo, gender, phoneNo);
+                        BM.modifyBEAccount(BE);
+                    }
                     JOptionPane.showMessageDialog (null, "User account has been modified!",
                         "MODIFY USER ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
                     dispose();

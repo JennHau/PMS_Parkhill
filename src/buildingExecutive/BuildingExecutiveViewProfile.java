@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import pms_parkhill_residence.Users;
-import pms_parkhill_residence.Validation;
+import classes.Users;
+import classes.Validation;
 
 /**
  *
@@ -949,7 +949,7 @@ public class BuildingExecutiveViewProfile extends javax.swing.JFrame {
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, BE);
+            BE.toPatrollingManagement(this, BE, null);
         } catch (IOException ex) {
             Logger.getLogger(BuildingExecutiveMainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -959,7 +959,7 @@ public class BuildingExecutiveViewProfile extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, BE);
+            BE.toPatrollingManagement(this, BE, null);
         } catch (IOException ex) {
             Logger.getLogger(BuildingExecutiveMainPage.class.getName()).log(Level.SEVERE, null, ex);
         }

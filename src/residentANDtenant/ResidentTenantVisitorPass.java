@@ -15,7 +15,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.PMS_DateTimeFormatter;
+import classes.PMS_DateTimeFormatter;
+import classes.VisitorPass;
 
 /**
  *
@@ -44,10 +45,14 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
         regVisTable = (DefaultTableModel) registeredVisitorTable.getModel();
         
         setWindowIcon();
+        
+        // set up table
         registeredVisitorTableSetUp();
         
+        // clear all field
         clearField();
         
+        // set current user profile
         setCurrentUserProfile();
     }
     
@@ -76,13 +81,11 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
     private void registeredVisitorTableSetUp() {
         String visitorStatus = statusCB.getSelectedItem().toString();
         
-        ArrayList<String> registeredVisitor = RT.getCurrentRTvisitor(RT.getUserID());
+        ArrayList<VisitorPass> registeredVisitor = RT.VP.getCurrentUserRegisteredVisitor(RT.getUserID());
         ArrayList<String> toTable = new ArrayList<>();
         
-        for (String eachPass: registeredVisitor) {
-            String[] passDet = eachPass.split(RT.TF.sp);
-            
-            String status = passDet[7];
+        for (VisitorPass eachPass: registeredVisitor) {
+            String status = eachPass.getCheckInStatus();
             
             if (status.equals(visitorStatus)) {
                 String action = "VIEW";
@@ -91,14 +94,14 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
                     action = "MODIFY";
                 }
                 
-                String tableLine = passDet[0].toUpperCase() + RT.TF.sp + passDet[2] + RT.TF.sp + 
-                                    passDet[3] + RT.TF.sp + passDet[5] + RT.TF.sp + 
-                                    passDet[6] + RT.TF.sp + passDet[7] + RT.TF.sp + 
+                String tableLine = eachPass.getPassID().toUpperCase() + RT.TF.sp + eachPass.getVisitorName() + RT.TF.sp + 
+                                    eachPass.getCarPlate() + RT.TF.sp + eachPass.getDate() + RT.TF.sp + 
+                                    eachPass.getTime() + RT.TF.sp + status + RT.TF.sp + 
                                     action + RT.TF.sp;
 
-                 if (passDet[7].equals(RT.visitorPassStatus[0])) {
-                     toTable.add(tableLine);
-                 }
+                if (status.equals(VisitorPass.visitorPassStatus[0])) {
+                    toTable.add(tableLine);
+                }
             }
         }
         
@@ -870,14 +873,24 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
         
         tableSelected(colSel, rowSel, regVisTable);
     }//GEN-LAST:event_registeredVisitorTableMouseClicked
-
+    
     private void deleteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBTNActionPerformed
         // TODO add your handling code here:
-        RT.crud.delete(RT.TF.visitorPass, passID, 0);
-        registeredVisitorTableSetUp();
-        clearField();
-    }//GEN-LAST:event_deleteBTNActionPerformed
+        int result = JOptionPane.showConfirmDialog(null,"Are you sure to delete this visitor?",
+                "VISITOR PASS",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE);
 
+        if(result == JOptionPane.YES_OPTION){
+            VisitorPass pass = new VisitorPass(this.passID);
+            pass.removeVisitorPass();
+
+            registeredVisitorTableSetUp();
+
+            clearField();
+        }
+    }//GEN-LAST:event_deleteBTNActionPerformed
+    
     private void saveBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBTNActionPerformed
         // TODO add your handling code here:
         // Compare selected date
@@ -890,31 +903,14 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
             JOptionPane.QUESTION_MESSAGE);
 
             if(result == JOptionPane.YES_OPTION){
-                ArrayList<String> updateList = new ArrayList<>();
-
-                String data = this.passID + RT.TF.sp + visitorIcTF.getText() + RT.TF.sp + 
-                              visitorNameTF.getText() + RT.TF.sp + visitorCarPlateTF.getText() + RT.TF.sp + 
-                              visitorContactTF.getText() + RT.TF.sp + dateTimePicker.datePicker.getDate() + RT.TF.sp + 
-                              dateTimePicker.timePicker.getTime() + RT.TF.sp + RT.visitorPassStatus[0] + RT.TF.sp + 
-                              "-" + RT.TF.sp + "-" + RT.TF.sp + this.RT.getUserID() + RT.TF.sp + DTF.getDateTimeNow() + RT.TF.sp;
-
-                List<String> visitorFile = RT.fh.fileRead(RT.TF.visitorPass);
-
-                boolean found = false;
+                String[] dataList = {this.passID, visitorIcTF.getText(), visitorNameTF.getText(), 
+                                     visitorCarPlateTF.getText(), visitorContactTF.getText(), 
+                                     dateTimePicker.datePicker.getDate().toString(), dateTimePicker.timePicker.getTime().toString(), 
+                                     VisitorPass.visitorPassStatus[0], RT.TF.sp, RT.TF.sp, this.RT.getUserID(), DTF.currentDateTime()};
                 
-                for (String eachVis : visitorFile) {
-                    String pId = eachVis.split(RT.TF.sp)[0];
-                    if (pId.equals(this.passID)) {
-                        found = true;
-                    }
-                }
+                VisitorPass newPass = new VisitorPass(dataList);
 
-                if (found) {
-                    RT.crud.update(RT.TF.visitorPass, passID, data, 0);
-                } else {
-                    updateList.add(data);
-                    RT.crud.create(RT.TF.visitorPass, updateList);
-                }
+                newPass.updateVisitorPass();
 
                 clearField();
                 registeredVisitorTableSetUp();

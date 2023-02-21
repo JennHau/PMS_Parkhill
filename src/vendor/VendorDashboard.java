@@ -12,9 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import pms_parkhill_residence.Complaints;
-import pms_parkhill_residence.Dashboard;
-import pms_parkhill_residence.Users;
+import classes.Complaint;
+import classes.Dashboard;
+import classes.Invoice;
+import classes.Payment;
 
 /**
  *
@@ -47,43 +48,30 @@ public class VendorDashboard extends javax.swing.JFrame {
     }
     
     private void setData() {
-        // Set Complaints
-        ArrayList<ArrayList> complaints = VD.CP.getComplaints(VD.getUserID());
-        ArrayList<String> pendingComp = complaints.get(0);
-        ArrayList<String> completedComp = complaints.get(1);
+        // Set Complaint
+        List<ArrayList<Complaint>> complaints = VD.CP.getComplaints(VD.getUserID());
+        ArrayList<Complaint> pendingComplaints = complaints.get(0);
+        ArrayList<Complaint> progressingComplaints = complaints.get(1);
+        ArrayList<Complaint> completedComplaints = complaints.get(2);
         
-        int pendComp = 0;
-        int progComp = 0;
-        
-        for (String eachComp : pendingComp) {
-            String compDet = eachComp.split(VD.TF.sp)[4];
-            if (compDet.equals(Complaints.cptStatus.Pending.toString())) {
-                pendComp ++;
-            }
-            else {
-                progComp ++;
-            }
-        }
-        
-        pendingCompLabel.setText(String.valueOf(pendComp));
-        progCompLabel.setText(String.valueOf(progComp));
-        completedCompLabel.setText(String.valueOf(completedComp.size()));
+        pendingCompLabel.setText(String.valueOf(pendingComplaints.size()));
+        progCompLabel.setText(String.valueOf(progressingComplaints.size()));
+        completedCompLabel.setText(String.valueOf(completedComplaints.size()));
         
         // Set pending fee amount
-        ArrayList<ArrayList> pendingFee = VD.getCurrentUnitInvoice(VD.getUserID());
-        ArrayList<String> unpaidInv = pendingFee.get(0);
-        ArrayList<String> paidInv = pendingFee.get(1);
+        ArrayList<Invoice> pendingFee = VD.PYM.getCurrentUnitInvoice(VD.getUserID());
+        ArrayList<Payment> paidInv = VD.PYM.getCurrentUnitPayment(this.VD.getUnitNo());
         
         double totalPending = 0;
-        for (String eachFee : unpaidInv) {
-            double feeTotal = Double.parseDouble(eachFee.split(VD.TF.sp)[7]);
+        for (Invoice eachFee : pendingFee) {
+            double feeTotal = eachFee.getTotalPrice();
             totalPending += feeTotal;
         }
         pendingFeeLabel.setText(String.format("%.02f", totalPending));
         
         double totalPaid = 0;
-        for (String eachFee : paidInv) {
-            double feeTotal = Double.parseDouble(eachFee.split(VD.TF.sp)[7]);
+        for (Payment eachFee : paidInv) {
+            double feeTotal = eachFee.getTotalPrice();
             totalPaid += feeTotal;
         }
         pendingFeeLabel.setText(String.format("%.02f", totalPaid));

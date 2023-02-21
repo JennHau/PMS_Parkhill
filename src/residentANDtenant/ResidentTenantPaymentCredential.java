@@ -5,14 +5,11 @@
 package residentANDtenant;
 
 import java.awt.Toolkit;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import pms_parkhill_residence.PMS_DateTimeFormatter;
+import classes.Invoice;
+import classes.PMS_DateTimeFormatter;
 
 /**
  *
@@ -20,6 +17,7 @@ import pms_parkhill_residence.PMS_DateTimeFormatter;
  */
 public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
     private ArrayList<String> itemList;
+    private ArrayList<Invoice> invoiceList;
     private final boolean forFacility;
     private final boolean modifyBooking;
     
@@ -33,15 +31,19 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
      * @param itemList
      * @param forFacility
      * @param modify
+     * @param invoiceList
      */
-    public ResidentTenantPaymentCredential(ResidentTenant RT, String totalAmount, ArrayList itemList, boolean forFacility, boolean modify) {
+    public ResidentTenantPaymentCredential(ResidentTenant RT, String totalAmount, ArrayList itemList, boolean forFacility, boolean modify, ArrayList<Invoice> invoiceList) {
         this.RT = RT;
         this.forFacility = forFacility;
         this.modifyBooking = modify;
+        this.invoiceList = invoiceList;
         this.setItemList(itemList);
-        amountSetUp(totalAmount);
         
         initComponents();
+        
+        this.amountSetUp(totalAmount);
+        
         runDefaultSetUp();
     }
     
@@ -323,95 +325,65 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
                 payable = checkExpiryDate();
                 
                 if (payable) {
-                    payable = checkCVV();    
+                    payable = checkCVV();
                     
                     if (payable) {
-                        if (!itemList.isEmpty()) {
-                            if (forFacility) {
-                                if (modifyBooking) {
-                                    String bookingId = itemList.get(0).split(RT.TF.sp)[0];
+                        if (itemList != null) {
+                            if (!itemList.isEmpty()) {
+                                if (forFacility) {
+                                    if (modifyBooking) {
+                                        String bookingId = itemList.get(0).split(RT.TF.sp)[0];
 
-                                    RT.crud.delete(RT.TF.facilityBookingFile, bookingId, 0);
-                                    RT.fh.fileWrite("facilityBooking.txt", true, itemList);
-                                    JOptionPane.showMessageDialog (null, "Facility Booking has been modified!", 
-                                                    "MODIFY FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
-                                }
-                                else {
-                                    RT.fh.fileWrite("facilityBooking.txt", true, itemList);
-                                    JOptionPane.showMessageDialog (null, "Facility Booking has been made!", 
-                                                    "FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
-                                }
-                            }
-                            else {
-                                ArrayList<String> paidInv = new ArrayList<>();
-                                ArrayList<String> incompInv = (ArrayList<String>) (RT.getCurrentUnitInvoice(RT.getUnitNo())).get(0);
-
-                                for (String eachInv : incompInv) {
-                                    String[] invDet = eachInv.split(RT.TF.sp);
-                                    
-                                    System.out.println(Arrays.toString(invDet));
-                                    
-                                    String invNo = invDet[0];
-
-                                    for (String eachId : itemList) {
-                                        if (eachId.equals(invNo)) {
-                                            String deletedID = invDet[invDet.length-1];
-                                            String issuedDate = invDet[invDet.length-2];
-
-                                            invDet[invDet.length-2] = RT.getUserID();
-
-                                            try {
-                                                invDet[invDet.length-1] = DTF.changeFormatDate2(LocalDate.now().toString());
-                                            } catch (ParseException ex) {
-                                                Logger.getLogger(ResidentTenantPaymentCredential.class.getName()).log(Level.SEVERE, null, ex);
-                                            }
-
-                                            String toPay = "";
-                                            for (String eachData : invDet) {
-                                                toPay = toPay + eachData + RT.TF.sp;
-                                            }
-
-                                            toPay = toPay + issuedDate + RT.TF.sp + deletedID + RT.TF.sp;
-
-                                            paidInv.add(toPay);
-                                        }
+                                        RT.crud.delete(RT.TF.facilityBookingFile, bookingId, 0);
+                                        RT.FH.fileWrite("facilityBooking.txt", true, itemList);
+                                        JOptionPane.showMessageDialog (null, "Facility Booking has been modified!", 
+                                                        "MODIFY FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
+                                    }
+                                    else {
+                                        RT.FH.fileWrite("facilityBooking.txt", true, itemList);
+                                        JOptionPane.showMessageDialog (null, "Facility Booking has been made!", 
+                                                        "FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
                                     }
                                 }
-
-                                RT.crud.create(RT.TF.paymentFile, paidInv);
-
-                                JOptionPane.showMessageDialog (null, "Payment has been made successfully!", 
-                                "PAYMENT", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        }
+                        else if (!invoiceList.isEmpty()){
+                            for (Invoice eachInvId : invoiceList) {
+                                RT.PYM.storePayment(eachInvId, RT.getUserID());
                             }
 
-                            if (ResidentTenantPaymentManagement.rtPayMan != null) {
-                                ResidentTenantPaymentManagement.rtPayMan.dispose();
-                            }
+                            JOptionPane.showMessageDialog (null, "Payment has been made successfully!", 
+                            "PAYMENT", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        
+                        
+                        if (ResidentTenantPaymentManagement.rtPayMan != null) {
+                            ResidentTenantPaymentManagement.rtPayMan.dispose();
+                        }
 
-                            if (ResidentTenantFacilityPaymentGateway.rtFacPay != null) {
-                                ResidentTenantFacilityPaymentGateway.rtFacPay.dispose();
-                            }
+                        if (ResidentTenantFacilityPaymentGateway.rtFacPay != null) {
+                            ResidentTenantFacilityPaymentGateway.rtFacPay.dispose();
+                        }
 
-                            if (ResidentTenantBookFacility.rtBookFacility != null) {
-                                ResidentTenantBookFacility.rtBookFacility.dispose();
-                            }
+                        if (ResidentTenantBookFacility.rtBookFacility != null) {
+                            ResidentTenantBookFacility.rtBookFacility.dispose();
+                        }
 
-                            if (ResidentTenantPaymentGatewayModifyFacilityBooking.rtPayFacMod != null) {
-                                ResidentTenantPaymentGatewayModifyFacilityBooking.rtPayFacMod.dispose();
-                            }
+                        if (ResidentTenantPaymentGatewayModifyFacilityBooking.rtPayFacMod != null) {
+                            ResidentTenantPaymentGatewayModifyFacilityBooking.rtPayFacMod.dispose();
+                        }
 
-                            if (ResidentTenantManageBookedFacility.rtManageBooked != null) {
-                                ResidentTenantManageBookedFacility.rtManageBooked.dispose();
-                            }
+                        if (ResidentTenantManageBookedFacility.rtManageBooked != null) {
+                            ResidentTenantManageBookedFacility.rtManageBooked.dispose();
+                        }
 
-                            this.dispose();
+                        this.dispose();
 
-                            if (forFacility) {
-                                RT.toBookedFacility(RT);
-                            }
-                            else {
-                                RT.toPaymentManagement(RT);
-                            }
+                        if (forFacility) {
+                            RT.toBookedFacility(RT);
+                        }
+                        else {
+                            RT.toPaymentManagement(RT);
                         }
                     }
                     else {
@@ -540,7 +512,7 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ResidentTenantPaymentCredential(null, null, null, false, false).setVisible(true);
+                new ResidentTenantPaymentCredential(null, null, null, false, false, null).setVisible(true);
             }
         });
     }

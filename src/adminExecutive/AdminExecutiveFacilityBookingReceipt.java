@@ -9,7 +9,7 @@ import java.awt.Component;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.FileHandling;
+import classes.FileHandling;
 
 
 /**
@@ -49,7 +49,7 @@ public class AdminExecutiveFacilityBookingReceipt extends javax.swing.JFrame {
         doneBt = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable()
+        receiptTable = new javax.swing.JTable()
         {
             @Override
 
@@ -152,8 +152,8 @@ public class AdminExecutiveFacilityBookingReceipt extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(13, 24, 42));
         jLabel1.setText("FACILITY BOOKING RECEIPT");
 
-        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        receiptTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        receiptTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -169,14 +169,14 @@ public class AdminExecutiveFacilityBookingReceipt extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
-        jTable1.setRowHeight(30);
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        receiptTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        receiptTable.setRowHeight(30);
+        receiptTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                receiptTableMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(receiptTable);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -316,7 +316,7 @@ public class AdminExecutiveFacilityBookingReceipt extends javax.swing.JFrame {
     
     private void setDefault() {
         List<String> availableList = fh.fileRead("facilityBooking.txt");
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel)receiptTable.getModel();
         
         for(int i = 0; i<availableList.size(); i++) {
             String[] bookingDetails = availableList.get(i).split(";");
@@ -347,14 +347,14 @@ public class AdminExecutiveFacilityBookingReceipt extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_doneBtActionPerformed
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    private void receiptTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_receiptTableMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTable1MouseClicked
+    }//GEN-LAST:event_receiptTableMouseClicked
 
     private void setTableDesign() {
         int[] colummnIgnore = {0};
         int[] columnLength = {150, 100, 100, 100};
-        AE.setTableDesign(jTable1, jLabel4, columnLength, colummnIgnore);
+        AE.setTableDesign(receiptTable, jLabel4, columnLength, colummnIgnore);
     }
     
     /**
@@ -411,7 +411,7 @@ public class AdminExecutiveFacilityBookingReceipt extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable receiptTable;
     private javax.swing.JLabel totalLabel;
     private javax.swing.JLabel unitNoLabel;
     // End of variables declaration//GEN-END:variables

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -44,6 +45,7 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
         tableDesignSetUp();
     }
     
+    // set up combo box selection
     private void comboBoxSetUp() {
         ArrayList<String> dateRange = getDateRange();
         
@@ -55,6 +57,7 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
         monthCB.setSelectedItem(0);
     }
     
+    // set up table
     private void compTabSetUp() {
         ArrayList<String> allComp = new ArrayList<>();
         
@@ -134,12 +137,14 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
         }
     }
     
+    // table design
     private void tableDesignSetUp() {
         int[] columnIgnore = {3};
-        int[] columnLength = {120, 120, 495, 80, 120};
+        int[] columnLength = {100, 120, 120, 510, 120};
         BE.setTableDesign(complaintReportTable, jLabel2, columnLength, columnIgnore);
     }
     
+    // get date range of the complaint
     private ArrayList getDateRange() {
         List<String> allComp = BE.fh.fileRead(BE.TF.complaintFiles);
         
@@ -355,7 +360,6 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
                 "DATE", "COMPLAINT ID", "COMPLAINER ID", "DETAILS", "STATUS"
             }
         ));
-        complaintReportTable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         complaintReportTable.setForeground(new java.awt.Color(51, 51, 51));
         complaintReportTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
         complaintReportTable.setRowHeight(30);
@@ -769,7 +773,11 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
         String reportTitle = "Complaint Report - " + monthCB.getSelectedItem().toString();
         
         if (!tableData.isEmpty()) {
-            BE.toAllReportsPage(BE, reportTitle, tableData);
+            new BuildingExecutiveComplaintReportPage(BE, reportTitle, tableData).setVisible(true);
+        }
+        else {
+            JOptionPane.showMessageDialog (null, "The report has no data...", 
+                                                    "GENERATE REPORT", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -847,7 +855,7 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, BE);
+            BE.toPatrollingManagement(this, BE, null);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -857,7 +865,7 @@ public class BuildingExecutiveComplaintsReports extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, BE);
+            BE.toPatrollingManagement(this, BE, null);
         } catch (IOException ex) {
             System.out.println(ex);
         }

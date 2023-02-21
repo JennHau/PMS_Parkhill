@@ -9,8 +9,7 @@ import java.awt.Component;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
+import classes.FileHandling;
 
 
 /**

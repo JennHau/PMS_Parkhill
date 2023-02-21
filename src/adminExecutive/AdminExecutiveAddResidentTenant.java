@@ -8,9 +8,9 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
-import pms_parkhill_residence.Validation;
+import classes.FileHandling;
+import classes.Validation;
+import residentANDtenant.ResidentTenant;
 
 /**
  *
@@ -20,6 +20,7 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
+     * @param AE
      */
     public AdminExecutiveAddResidentTenant(AdminExecutive AE) {
         initComponents();
@@ -70,7 +71,7 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         typeCB = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
         setBackground(new java.awt.Color(13, 24, 42));
         setResizable(false);
@@ -138,7 +139,6 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
         });
 
         cancelBt.setText("CLOSE");
-        cancelBt.setActionCommand("CLOSE");
         cancelBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtActionPerformed(evt);
@@ -433,11 +433,11 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
         List<String> availableUnit = new ArrayList<>();
         
         if (typeCB.getSelectedItem().equals("Commercial")) {
-            availableUnit = AE.getAvailableUnit("Commercial");
+            availableUnit = AE.PU.getAvailableUnit("Commercial");
         } else if (typeCB.getSelectedItem().equals("Residential") && tenantRB.isSelected()){
-            availableUnit = AE.getAvailableUnit("Tenant");
+            availableUnit = AE.PU.getAvailableUnit("Tenant");
         } else if (typeCB.getSelectedItem().equals("Residential") && residentRB.isSelected()){
-            availableUnit = AE.getAvailableUnit("Resident");
+            availableUnit = AE.PU.getAvailableUnit("Resident");
         }
         
         for (int i = 0; i<availableUnit.size(); i++) {
@@ -475,8 +475,9 @@ public class AdminExecutiveAddResidentTenant extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
                 
                 if(result == JOptionPane.YES_OPTION){
-                    AE.userRegistration(userID, email, password, firstName,
+                    ResidentTenant RT = new ResidentTenant(userID, email, password, firstName,
                             lastName, idNo, gender, phoneNo, unitNo);
+                    AE.RTRegistration(RT);
                     JOptionPane.showMessageDialog (null, "New user has been added!", 
                                     "USER REGISTRATION", JOptionPane.INFORMATION_MESSAGE);
                     dispose();

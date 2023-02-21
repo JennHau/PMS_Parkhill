@@ -17,7 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.PMS_DateTimeFormatter;
+import classes.PMS_DateTimeFormatter;
 
 /**
  *
@@ -55,7 +55,7 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
     }
     
     private void paymentHistoryTableSetUp() throws ParseException {
-        ArrayList<String> receiptList = VD.getCurrentUnitIssuedReceipt(this.VD.getUnitNo());
+        ArrayList<String> receiptList = VD.PYM.extractSingleReceiptData(VD.getUnitNo());
         ArrayList<String> sortedList;
         
         ArrayList<String> arrangedList = new ArrayList<>();
@@ -91,7 +91,7 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
                 String toAdd = "";
             
                 String feeType = "Invoice - " + feeTypes.substring(0, feeTypes.length()-1);
-                double totalPrice = VD.getTotalPricePerInvoice(invoiceNo, receiptList);
+                double totalPrice = VD.PYM.getTotalPricePerPayment(invoiceNo, this.VD.getUnitNo());
                 String paidDate = String.valueOf(latestDate);
                 String[] data = {invoiceNo.toUpperCase(), feeType, String.format("%.02f", totalPrice), paidDate, "RECEIPT"};
 

@@ -1,22 +1,23 @@
-id;slot;block;level;checkpoints;checkBefore;securityID;securityName;remarks;status;checkedAt;updatedBy;lastUpdate
-1;00:00;A;Level 1-5;Level 5;01:30:01;scg184573;x;x;test;x;x;x
-2;00:00;A;Level 6-10;Level 10;01:00:01;scg184573;x ;x ;CHECKED;9:19 pm;2023-01-19T19:30:01;x; 
-3;00:00;A;Level 11-15;Level 15;01:00:01;scg184573;x;x;x;x;x;x
-4;00:00;B;Level 1-5;Level 5;01:00:01;scg184573;x;x;x;x;x;x
-5;00:00;B;Level 6-10;Level 10;01:00:01;scg184573;x;x;x;x;x;x; 
-6;00:00;B;Level 11-15;Level 15;01:00:01;scg184573;x;x;x;x;x;x; 
-7;00:00;S;Level 1-2;Level 2;01:00:01;scg184573;x;x;x;x;x;x
-8;08:00;A;Level 1-5;Level 5;09:00:01;scg184573;x;x;x;x;x;x
-9;08:00;A;Level 6-10;Level 10;09:00:01;scg184573;x;x;CHECKED;9:56 pm;x;x
-10;08:00;A;Level 11-15;Level 15;09:00:01;scg184573;x;x;x;x;x;x
-11;08:00;B;Level 1-5;Level 5;09:00:01; scg184573;x;x;x;x;x;x
-12;08:00;B;Level 6-10;Level 10;09:00:01;scg184573;x;x;x;x;x;x
-13;08:00;B;Level 11-15;Level 15;09:00:01;scg184573;x;x;x;x;x;x
-14;08:00;S;Level 1-2;Level 2;09:00:01;scg184573;x;x;x;x;x;x
-15;16:00;A;Level 1-5;Level 5;17:00:01;scg184573;x;x;x;x;x;x
-16;16:00;A;Level 6-10;Level 10;17:00:01;scg184573;x;x;x;x;x;x
-17;16:00;A;Level 11-15;Level 15;17:00:01;scg184573;x;x;x;x;x;x
-18;16:00;B;Level 1-5;Level 5;17:00:01;scg184573;x;x;x;x;x;x
-19;16:00;B;Level 6-10;Level 10;17:00:01;scg184573;x;x;CHECKED;4:10 pm;x;x
-20;16:00;B;Level 11-15;Level 15;17:00:01;scg184573;x;x;CHECKED;00:35:30;x;x
-21;16:00;S;Level 1-2;Level 2;17:00:01;scg184573;x;x;CHECKED;00:35:37;x;x
+id;slot;block;level;checkpoints;checkBefore;securityID;securityName;remarks;status;checkedAt;updatedBy;lastUpdate;
+1;00:00;A;Level 1-5;Level 5;01:00;scg000001;-;-;Unassign;-;-;-;
+2;00:00;A;Level 6-10;Level 10;01:00;-;-;-;Unassign;-;-;-;
+3;00:00;A;Level 11-15;Level 15;01:00;-;-;-;Unassign;-;-;-;
+4;00:00;B;Level 1-5;Level 5;01:00;-;-;-;Unassign;-;-;-;
+5;00:00;B;Level 6-10;Level 10;01:00;-;-;-;Unassign;-;-;-;
+6;00:00;B;Level 11-15;Level 15;01:00;-;-;-;Unassign;-;-;-;
+7;00:00;S;Level 1-2;Level 2;01:00;-;-;-;Unassign;-;-;-;
+8;08:00;A;Level 1-5;Level 5;09:00;scg000001;hi hi; ;Pending;-;bde000001;2023-02-21 01:33;
+9;08:00;A;Level 6-10;Level 10;09:00;scg000001;Ahmad Muhammad;- ;Pending;-;bde000001;2023-02-21 02:32;
+10;08:00;A;Level 11-15;Level 15;09:00;scg000001;-;-;Unassign;-;-;-;
+11;08:00;B;Level 1-5;Level 5;09:00;scg000001;-;-;Unassign;-;-;-;
+12;08:00;B;Level 6-10;Level 10;09:00;scg000001;-;-;Unassign;-;-;-;
+13;08:00;B;Level 11-15;Level 15;09:00;scg000001;-;-;Unassign;-;-;-;
+14;08:00;S;Level 1-2;Level 2;09:00;-;-;-;Unassign;-;-;-;
+15;16:00;A;Level 1-5;Level 5;17:00;-;-;-;Unassign;-;-;-;
+16;16:00;A;Level 6-10;Level 10;17:00;-;-;-;Unassign;-;-;-;
+17;16:00;A;Level 11-15;Level 15;17:00;-;-;-;Unassign;-;-;-;
+18;16:00;B;Level 1-5;Level 5;17:00;-;-;-;Unassign;-;-;-;
+19;16:00;B;Level 6-10;Level 10;17:00;-;-;-;Unassign;-;-;-;
+20;16:00;B;Level 11-15;Level 15;17:00;-;-;-;Unassign;-;-;-;
+21;16:00;S;Level 1-2;Level 2;17:00;-;-;-;Unassign;-;-;-;
+22;22:30;S;Level 2;Level 2;00:30;-;-;-;Unassign;-;bde000001;2023-02-21 13:52

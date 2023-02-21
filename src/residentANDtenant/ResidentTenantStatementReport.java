@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.FileHandling;
+import classes.FileHandling;
 
 
 /**
@@ -353,7 +353,7 @@ public class ResidentTenantStatementReport extends javax.swing.JFrame {
     
     private void setDefault() {
         try {
-            ArrayList<String> statementList = RT.getCurrentUnitMonthStatement(monthNyear);
+            ArrayList<String> statementList = RT.PYM.displayOneStatement(this.RT.getUnitNo(), monthNyear);
             
             RT.setTableRow(stateTab, statementList);
             
@@ -392,7 +392,7 @@ public class ResidentTenantStatementReport extends javax.swing.JFrame {
     }
     
     private void setIssuedDate() {
-        List<String> statementFile = RT.fh.fileRead(RT.TF.statementFile);
+        List<String> statementFile = RT.FH.fileRead(RT.TF.statementFile);
         for (String eachState : statementFile) {
             String[] stateDet = eachState.split(RT.TF.sp);
             String statePeriod = stateDet[0];

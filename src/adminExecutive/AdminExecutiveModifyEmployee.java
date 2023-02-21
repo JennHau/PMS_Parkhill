@@ -7,9 +7,9 @@ package adminExecutive;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
-import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
-import pms_parkhill_residence.Validation;
+import classes.FileHandling;
+import classes.Users;
+import classes.Validation;
 
 /**
  *

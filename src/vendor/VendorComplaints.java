@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.Complaints;
+import classes.Complaint;
 
 /**
  *
@@ -26,6 +26,7 @@ public class VendorComplaints extends javax.swing.JFrame {
     DefaultTableModel pendingProgressTable;
     DefaultTableModel completedTable;
     
+    Complaint CP;
     private String complaintID;
     
     /**
@@ -60,16 +61,20 @@ public class VendorComplaints extends javax.swing.JFrame {
         compStatusTF.setText("");
         
         this.complaintID = null;
+        this.CP = null;
     }
     
     private void complaintsTableSetUp() {
-        ArrayList<ArrayList> currentRTcomplaints = VD.CP.getComplaints(VD.getUserID());
+        List<ArrayList<Complaint>> currentRTcomplaints = VD.CP.getComplaints(VD.getUserID());
         
-        ArrayList<String> pendingComp = currentRTcomplaints.get(0);
-        ArrayList<String> completedComp = currentRTcomplaints.get(1);
+        ArrayList<Complaint> pendingComp = currentRTcomplaints.get(0);
+        ArrayList<Complaint> progressingComp = currentRTcomplaints.get(1);
+        ArrayList<Complaint> completedComp = currentRTcomplaints.get(2);
         
-        VD.setTableRow(pendingProgressTable, pendingComp);
-        VD.setTableRow(completedTable, completedComp);
+        pendingComp.addAll(progressingComp);
+        
+        VD.setTableRow(pendingProgressTable, VD.CP.tableFormForRTandVD(pendingComp));
+        VD.setTableRow(completedTable, VD.CP.tableFormForRTandVD(completedComp));
         
         tableDesignSetUp();
     }
@@ -721,10 +726,12 @@ public class VendorComplaints extends javax.swing.JFrame {
 
     private void registerBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBTNActionPerformed
         // TODO add your handling code here:
+        this.CP = null;
+        
         complaintID = VD.CP.getNewCompId();
         complaintIdTF.setText(complaintID.toUpperCase());
         compDetTA.setText("");
-        compStatusTF.setText(Complaints.cptStatus.Pending.toString());
+        compStatusTF.setText(Complaint.cptStatus.Pending.toString());
         
         compDetTA.setEnabled(true);
         saveBTN.setEnabled(true);
@@ -741,37 +748,22 @@ public class VendorComplaints extends javax.swing.JFrame {
 
     private void saveBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBTNActionPerformed
         // TODO add your handling code here:
-        ArrayList<String> newCompData = new ArrayList<>();
         
         String compDes = compDetTA.getText();
         String compStatus = compStatusTF.getText();
-        List<String> compFile = VD.fh.fileRead(VD.TF.complaintFiles);
         
-        boolean notFound = true;
-        for (String eachComp : compFile) {
-            String compId = eachComp.split(VD.TF.sp)[0];
+        String[] compData = {this.complaintID, VD.getUserID(), compDes, VD.DTF.formatDate(LocalDate.now().toString()).toString(), VD.DTF.formatTime(LocalTime.now().toString()).toString(), compStatus, VD.TF.empty, VD.TF.empty};
+        
+        if (CP != null) {
+            CP.setComplaintDetails(compDes);
             
-            if (compId.equals(this.complaintID)) {
-                String updateInfo = this.complaintID + VD.TF.sp + VD.getUserID() + VD.TF.sp + 
-                                    compDes + VD.TF.sp + LocalDate.now() + VD.TF.sp + VD.DTF.formatTime(LocalTime.now().toString()) + VD.TF.sp +
-                                    compStatus + VD.TF.sp + eachComp.split(VD.TF.sp)[6] + VD.TF.sp + 
-                                    eachComp.split(VD.TF.sp)[7] + VD.TF.sp; 
-                newCompData.add(updateInfo);
-                notFound = false;
-            }
-            else {
-                newCompData.add(eachComp);
-            }
+            CP.updateComplaint();
         }
-        
-        if (notFound) {
-            String newInfo = this.complaintID + VD.TF.sp + VD.getUserID() + VD.TF.sp +
-                             compDes + VD.TF.sp + LocalDate.now() + VD.TF.sp + VD.DTF.formatTime(LocalTime.now().toString()) + VD.TF.sp +
-                             compStatus + VD.TF.sp + VD.TF.empty + VD.TF.sp + VD.TF.empty + VD.TF.sp;
-            newCompData.add(newInfo);
+        else {
+            CP = new Complaint(compData);
+            
+            CP.storeNewComplaint();
         }
-        
-        VD.fh.fileWrite(VD.TF.complaintFiles, false, newCompData);
         
         complaintsTableSetUp();
         
@@ -873,19 +865,22 @@ public class VendorComplaints extends javax.swing.JFrame {
     private void tableSelected(int colSel, int rowSel, DefaultTableModel table) {
         if (colSel == 5) {
             this.complaintID = table.getValueAt(rowSel, 0).toString();
-            String complaintDet = table.getValueAt(rowSel, 1).toString();
-            String compStatus = table.getValueAt(rowSel, 4).toString();
+            
+            CP = new Complaint(this.complaintID.toLowerCase());
+            
+            String complaintDet = CP.getComplaintDetails();
+            String compStatus = CP.getComplaintStatus();
             
             complaintIdTF.setText(complaintID);
             compDetTA.setText(complaintDet);
             compStatusTF.setText(compStatus);
             
-            if (compStatus.equals(Complaints.cptStatus.Pending.toString())) {
+            if (compStatus.equals(Complaint.cptStatus.Pending.toString())) {
                 saveBTN.setEnabled(true);
                 deleteBTN.setEnabled(true);
                 compDetTA.setEnabled(true);
             }
-            else if (compStatus.equals(Complaints.cptStatus.Progressing.toString())) {
+            else if (compStatus.equals(Complaint.cptStatus.Progressing.toString())) {
                 saveBTN.setEnabled(false);
                 deleteBTN.setEnabled(true);
                 compDetTA.setEnabled(false);

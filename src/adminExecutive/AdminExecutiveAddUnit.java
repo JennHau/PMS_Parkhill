@@ -12,7 +12,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.FileHandling;
+import classes.FileHandling;
+import classes.PropertyUnit;
 
 /**
  *
@@ -54,7 +55,7 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
         addBt = new javax.swing.JButton();
         cancelBt = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable()
+        unitDetailsTable = new javax.swing.JTable()
         {
             @Override
 
@@ -153,8 +154,8 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
             }
         });
 
-        addBt.setText("ADD");
         addBt.setBackground(new java.awt.Color(0, 204, 0));
+        addBt.setText("ADD");
         addBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addBtActionPerformed(evt);
@@ -168,7 +169,7 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        unitDetailsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -184,10 +185,10 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
-        jTable1.setRowHeight(30);
-        jScrollPane1.setViewportView(jTable1);
+        unitDetailsTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        unitDetailsTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        unitDetailsTable.setRowHeight(30);
+        jScrollPane1.setViewportView(unitDetailsTable);
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jSeparator1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -311,7 +312,7 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
         
         if (!newUnitNo.equals("") && !squareFoot.equals("")) {
             warningMessage.setText("");
-            boolean check = AE.checkUnitAvailability(newUnitNo.toLowerCase());
+            boolean check = AE.PU.checkUnitAvailability(newUnitNo.toLowerCase());
             
             if (check) {
                 int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
@@ -322,16 +323,10 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
             
                 if(result == JOptionPane.YES_OPTION){
                     warningMessage.setText("");
-                
-                    List<String> newData1 = new ArrayList<>();
-                    newData1.add(newUnitNo.toUpperCase() +";"+ newType +";"+ 
-                            squareFoot +";"+ "Unsold" +";"+ "-" +";");
-                    fh.fileWrite("propertyDetails.txt", true, newData1);
-
-                    List<String> newData2 = new ArrayList<>();
-                    newData2.add("Parkhill;parkhill@gmail.com;Parkhill@123;Parkill;"
-                            + "Residence;-;-;-;" + newUnitNo.toUpperCase() + ";");             
-                    fh.fileWrite("userProfile.txt", check, newData2);
+                    
+                    PropertyUnit PU = new PropertyUnit(newUnitNo.toUpperCase(),
+                            newType, Integer.parseInt(squareFoot), "unsold", "-");
+                    PU.addUnit();
 
                     JOptionPane.showMessageDialog (null, "New unit has been added!", 
                                     "ADD PROPERTY UNIT", JOptionPane.INFORMATION_MESSAGE);
@@ -361,26 +356,44 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
     }//GEN-LAST:event_typeCBActionPerformed
 
     private void setTable() {
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel)unitDetailsTable.getModel();
         tableModel.setRowCount(0);
             
-        List<String> availableList = 
-                AE.extractAllProperties(String.valueOf(typeCB.getSelectedItem())
-                                    .toLowerCase());
+//        List<String> availableList = 
+//                AE.extractAllProperties(String.valueOf(typeCB.getSelectedItem())
+//                                    .toLowerCase());
+//        
+//        String[] propertiesArray = new String[availableList.size()];
+//        availableList.toArray(propertiesArray);
+//        
+//        for (int i = 0; i < availableList.size(); i++) {
+//            String[] propertyDetails = propertiesArray[i].split(";");
+//            String unitNo = propertyDetails[0];
+//            String squareFoot = propertyDetails[1];
+//            String status = propertyDetails[2];
+//            String dateOfSold = propertyDetails[3];
+//            
+//            String[] tbData = {String.valueOf(i+1), unitNo, squareFoot, status,
+//                dateOfSold};
+//            tableModel.addRow(tbData);
+        List<PropertyUnit> propertyList = AE.PU.extractAllProperties(String.valueOf
+                            (typeCB.getSelectedItem()).toLowerCase());
         
-        String[] propertiesArray = new String[availableList.size()];
-        availableList.toArray(propertiesArray);
+//        String[] propertiesArray = new String[availableList.size()];
+//        availableList.toArray(propertiesArray);
         
-        for (int i = 0; i < availableList.size(); i++) {
-            String[] propertyDetails = propertiesArray[i].split(";");
-            String unitNo = propertyDetails[0];
-            String squareFoot = propertyDetails[1];
-            String status = propertyDetails[2];
-            String dateOfSold = propertyDetails[3];
+        int i = 0;
+        for (PropertyUnit eachUnit:propertyList) {
+//            String[] propertyDetails = propertiesArray[i].split(";");
+            String unitNo = eachUnit.getUnitNo();
+            String squareFoot = String.valueOf(eachUnit.getSquareFeet());
+            String status = eachUnit.getStatus();
+            String dateOfSold = eachUnit.getDateOfSold();
             
             String[] tbData = {String.valueOf(i+1), unitNo, squareFoot, status,
-                dateOfSold};
+                dateOfSold, "MANAGE"};
             tableModel.addRow(tbData);
+            i++;
         }
     }
     
@@ -391,7 +404,7 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
     private void setTableDesign() {
         int[] colummnIgnore = {1};
         int[] columnLength = {40, 130, 135, 135, 140};
-        AE.setTableDesign(jTable1, jLabel3, columnLength, colummnIgnore);
+        AE.setTableDesign(unitDetailsTable, jLabel3, columnLength, colummnIgnore);
     }
     
     /**
@@ -954,9 +967,9 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField squareFootTF;
     private javax.swing.JComboBox<String> typeCB;
+    private javax.swing.JTable unitDetailsTable;
     private javax.swing.JTextField unitNoTF;
     private javax.swing.JLabel warningMessage;
     // End of variables declaration//GEN-END:variables

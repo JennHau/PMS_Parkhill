@@ -6,9 +6,10 @@ package adminExecutive;
 
 import java.awt.Toolkit;
 import javax.swing.JOptionPane;
-import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
-import pms_parkhill_residence.Validation;
+import classes.FileHandling;
+import classes.Users;
+import classes.Validation;
+import residentANDtenant.ResidentTenant;
 
 /**
  *
@@ -512,8 +513,10 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
                 
                 if(result == JOptionPane.YES_OPTION){
-                    AE.modifyOthersAccount(userID, email, password, firstName,
-                            lastName, idNo, gender, phoneNo, unitNo);
+                    ResidentTenant RT = new ResidentTenant(userID, email,
+                        password, firstName, lastName, idNo, gender, phoneNo, unitNo);
+                    RT.modifySelfAccount();
+//                    AE.modifyRTAccount(RT);
                     JOptionPane.showMessageDialog (null, "User account has been modified!", 
                                     "MODIFY USER ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
@@ -612,7 +615,7 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
             if (typeCB.getSelectedItem().equals("Commercial") || 
                     (typeCB.getSelectedItem().equals("Residential") 
                     && tenantRB.isSelected())) {
-                AE.deleteTenantResident(unitNoTF.getText());
+                AE.deleteTenantResident(unitNoTF.getText(), null);
 
             } else if (typeCB.getSelectedItem().equals("Residential") 
                     && residentRB.isSelected()) {

@@ -4,10 +4,12 @@
  */
 package buildingManager;
 
+import accountExecutive.AccountExecutive;
+import buildingExecutive.BuildingExecutive;
 import java.awt.Toolkit;
 import javax.swing.JOptionPane;
-import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Validation;
+import classes.FileHandling;
+import classes.Validation;
 
 /**
  *
@@ -390,6 +392,7 @@ public class BuildingManagerAddUser extends javax.swing.JFrame {
         if (!firstName.equals("") && !lastName.equals("") && !email.equals("")
                 && !idNo.equals("") && !phoneNo.equals("") &&
                 !gender.equals("-PLEASE SELECT-")) {
+            
             if (validation.emailValid(email) && 
                     validation.emailDuplication(email, "userProfile.txt", userID)) {
                 warningMessage.setText("");
@@ -400,8 +403,16 @@ public class BuildingManagerAddUser extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
                 
                 if(result == JOptionPane.YES_OPTION){
-                    BM.userRegistration(userID, email, password, firstName,
-                            lastName, idNo, gender, phoneNo);
+                    
+                    if(userRoleTF.getText().equals("Account Executive")) {
+                        AccountExecutive ACE = new AccountExecutive(userID, email,
+                                password, firstName, lastName, idNo, gender, phoneNo);
+                        BM.addAccountExecutive(ACE);
+                    } else {
+                        BuildingExecutive BE = new BuildingExecutive(userID, email,
+                                password, firstName, lastName, idNo, gender, phoneNo);
+                        BM.addBuildingExecutive(BE);
+                    }
                     JOptionPane.showMessageDialog (null, "New user has been added!", 
                                     "USER REGISTRATION", JOptionPane.INFORMATION_MESSAGE);
                     dispose();

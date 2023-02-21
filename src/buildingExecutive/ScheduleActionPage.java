@@ -11,8 +11,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
+import classes.FileHandling;
+import classes.Users;
 
 /**
  *
@@ -390,8 +390,8 @@ public class ScheduleActionPage extends javax.swing.JFrame {
             
             ArrayList<String> newItem = new ArrayList<>();
             
-            newSlot = newSlot + " " + BE.TF.sp + " " + BE.TF.sp + " " + BE.TF.sp + " " + BE.TF.sp + " " + BE.TF.sp + 
-                      currentBEid + BE.TF.sp + BE.combineStringDateTime(LocalDate.now().toString(), LocalTime.now().toString());
+            newSlot = newSlot + BE.TF.empty + BE.TF.sp + BE.TF.empty + BE.TF.sp + BE.TF.empty + BE.TF.sp + "Unassign" + BE.TF.sp + BE.TF.empty + BE.TF.sp + 
+                      currentBEid + BE.TF.sp + BE.DTF.currentDateTime();
             
             newItem.add(newSlot);
             
@@ -404,7 +404,7 @@ public class ScheduleActionPage extends javax.swing.JFrame {
             if (BuildingExecutivePatrollingManagement.BEpatrollingManagement != null) {
                 BuildingExecutivePatrollingManagement.BEpatrollingManagement.dispose();
             }
-            BE.toPatrollingManagement(this, BE);
+            BE.toPatrollingManagement(this, BE, inputDate);
         } catch (IOException ex) {
             Logger.getLogger(ScheduleActionPage.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -431,7 +431,7 @@ public class ScheduleActionPage extends javax.swing.JFrame {
         int selHour = Integer.valueOf(timeSpinner.getSelectedItem().toString());
         
         if (slotTimePicker.getTime()!= null) {
-            endTimeTF.setText(slotTimePicker.getTime().plusHours(selHour).plusSeconds(1).toString());
+            endTimeTF.setText(slotTimePicker.getTime().plusHours(selHour).toString());
             endTimeTF.setEnabled(false);
         }
     }//GEN-LAST:event_timeSpinnerActionPerformed

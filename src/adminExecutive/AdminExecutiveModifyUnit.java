@@ -11,7 +11,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.FileHandling;
+import classes.FileHandling;
+import classes.PropertyUnit;
 
 /**
  *
@@ -59,7 +60,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
         modifyBt = new javax.swing.JButton();
         cancelBt = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable()
+        propertyUnitTable = new javax.swing.JTable()
         {
             @Override
 
@@ -184,7 +185,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        propertyUnitTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -200,10 +201,10 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
-        jTable1.setRowHeight(30);
-        jScrollPane1.setViewportView(jTable1);
+        propertyUnitTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        propertyUnitTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        propertyUnitTable.setRowHeight(30);
+        jScrollPane1.setViewportView(propertyUnitTable);
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jSeparator1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -346,7 +347,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
             String type = String.valueOf(typeCB.getSelectedItem());
             String unitNo = unitNoTF.getText();
             String squareFoot = squareFootTF.getText();
-            AE.modifyUnitDetails(unitNo, type, squareFoot);
+            AE.PU.modifyUnit(unitNo, type, squareFoot);
             
             JOptionPane.showMessageDialog (null, "Property unit has been modified!", 
                          "MODIFY PROPERTY UNIT", JOptionPane.INFORMATION_MESSAGE);
@@ -361,8 +362,8 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
         dispose();
-        AdminExecutiveUnitManagement ae = new AdminExecutiveUnitManagement(AE);
-        ae.setVisible(true);
+//        AdminExecutiveUnitManagement ae = new AdminExecutiveUnitManagement(AE);
+//        ae.setVisible(true);
     }//GEN-LAST:event_cancelBtActionPerformed
 
     private void squareFootTFKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_squareFootTFKeyReleased
@@ -415,7 +416,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
 
     private void deleteBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtActionPerformed
         // TODO add your handling code here:
-        boolean check = AE.checkOutstandingFee(unitNo);
+        boolean check = AE.PM.checkOutstandingFee(unitNo);
         
         if (check) {
             warningMessage.setText("");
@@ -427,7 +428,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
             JOptionPane.QUESTION_MESSAGE);
 
             if(result == JOptionPane.YES_OPTION){
-                AE.deleteUnit(unitNo);
+                AE.PU.deleteUnit(unitNo);
                 JOptionPane.showMessageDialog (null, "The property unit and its "
                         + "respective user(s) have been deleted!", 
                         "DELETE PROPERTY UNIT", JOptionPane.INFORMATION_MESSAGE);
@@ -449,25 +450,44 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
     }
     
     private void setTable() {
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel)propertyUnitTable.getModel();
         tableModel.setRowCount(0);
-        List<String> availableList = 
-                AE.extractAllProperties(type.toLowerCase());
+//        List<String> availableList = 
+//                AE.extractAllProperties(type.toLowerCase());
+//        
+//        String[] propertiesArray = new String[availableList.size()];
+//        availableList.toArray(propertiesArray);
+//        
+//        for (int i = 0; i < availableList.size(); i++) {
+//            String[] propertyDetails = propertiesArray[i].split(";");
+//            String unitNo = propertyDetails[0];
+//            String squareFoot = propertyDetails[1];
+//            String status = propertyDetails[2];
+//            String dateOfSold = propertyDetails[3];
+//            
+//            String[] tbData = {String.valueOf(i+1), unitNo, squareFoot, status,
+//                dateOfSold};
+//            tableModel.addRow(tbData);
+//        }
+        List<PropertyUnit> propertyList = AE.PU.extractAllProperties(String.valueOf
+                            (typeCB.getSelectedItem()).toLowerCase());
         
-        String[] propertiesArray = new String[availableList.size()];
-        availableList.toArray(propertiesArray);
+//        String[] propertiesArray = new String[availableList.size()];
+//        availableList.toArray(propertiesArray);
         
-        for (int i = 0; i < availableList.size(); i++) {
-            String[] propertyDetails = propertiesArray[i].split(";");
-            String unitNo = propertyDetails[0];
-            String squareFoot = propertyDetails[1];
-            String status = propertyDetails[2];
-            String dateOfSold = propertyDetails[3];
+        int i = 0;
+        for (PropertyUnit eachUnit:propertyList) {
+//            String[] propertyDetails = propertiesArray[i].split(";");
+            String unitNo = eachUnit.getUnitNo();
+            String squareFoot = String.valueOf(eachUnit.getSquareFeet());
+            String status = eachUnit.getStatus();
+            String dateOfSold = eachUnit.getDateOfSold();
             
             String[] tbData = {String.valueOf(i+1), unitNo, squareFoot, status,
-                dateOfSold};
+                dateOfSold, "MANAGE"};
             tableModel.addRow(tbData);
-        }
+            i++;
+        }    
     }
     
     private void setWindowIcon() {
@@ -477,7 +497,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
     private void setTableDesign() {
         int[] colummnIgnore = {};
         int[] columnLength = {40, 135, 135, 135, 140};
-        AE.setTableDesign(jTable1, jLabel14, columnLength, colummnIgnore);
+        AE.setTableDesign(propertyUnitTable, jLabel14, columnLength, colummnIgnore);
     }
     
     /**
@@ -1552,8 +1572,8 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JButton modifyBt;
+    private javax.swing.JTable propertyUnitTable;
     private javax.swing.JTextField squareFootTF;
     private javax.swing.JComboBox<String> typeCB;
     private javax.swing.JTextField unitNoTF;

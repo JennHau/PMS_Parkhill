@@ -15,9 +15,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import pms_parkhill_residence.Complaints;
-import pms_parkhill_residence.Dashboard;
-import pms_parkhill_residence.Users;
+import classes.Complaint;
+import classes.Dashboard;
 
 /**
  *
@@ -48,10 +47,12 @@ public class BuildingExecutiveMainPage extends javax.swing.JFrame {
         setComboBox();
     }
     
+    // set current building executive profile
     private void setCurrentUserProfile() {
         userNameLabel.setText(BE.getFirstName() + " " + BE.getLastName());
     }
     
+    // year combo box set up
     private void setComboBox() {
         ArrayList<String> compYear = new ArrayList<>();
         
@@ -88,10 +89,11 @@ public class BuildingExecutiveMainPage extends javax.swing.JFrame {
         }
     }
     
+    // set data (complaints and employee data) for building executive
     private void setData() {
         // find total upcoming job
         List<String> jobFile = BE.fh.fileRead(BE.TF.employeeJobFile);
-        int jobCount = jobFile.size();
+        int jobCount = jobFile.size()-1;
         totalUpcomingJob.setText(String.valueOf(jobCount));
         
         // find total pending complaints
@@ -99,7 +101,7 @@ public class BuildingExecutiveMainPage extends javax.swing.JFrame {
         int compCount = 0;
         for (String eachComp : complaints) {
             String compStatus = eachComp.split(BE.TF.sp)[5];
-            if (compStatus.equals(Complaints.cptStatus.Pending.toString())) {
+            if (compStatus.equals(Complaint.cptStatus.Pending.toString())) {
                 compCount++;
             }
         }
@@ -124,6 +126,7 @@ public class BuildingExecutiveMainPage extends javax.swing.JFrame {
         securityLabel.setText(String.valueOf(security));
     }
     
+    // set chart for building executive
     private void setBarChart() {
         String selYear = (yearCB.getSelectedItem() != null) ? yearCB.getSelectedItem().toString() : null;
         
@@ -141,10 +144,10 @@ public class BuildingExecutiveMainPage extends javax.swing.JFrame {
                     
                     if (compYear == Integer.valueOf(selYear)) {
                         currentYearComp.add(eachComp);
-                    }
-                    
-                    if (!monthValue.contains(String.valueOf(compMonth))) {
-                        monthValue.add(String.valueOf(compMonth));
+                        
+                        if (!monthValue.contains(String.valueOf(compMonth))) {
+                            monthValue.add(String.valueOf(compMonth));
+                        }
                     }
                 }
                 
@@ -923,7 +926,7 @@ public class BuildingExecutiveMainPage extends javax.swing.JFrame {
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, BE);
+            BE.toPatrollingManagement(this, BE, null);
         } catch (IOException ex) {
             Logger.getLogger(BuildingExecutiveMainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -933,7 +936,7 @@ public class BuildingExecutiveMainPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
-            BE.toPatrollingManagement(this, BE);
+            BE.toPatrollingManagement(this, BE, null);
         } catch (IOException ex) {
             Logger.getLogger(BuildingExecutiveMainPage.class.getName()).log(Level.SEVERE, null, ex);
         }

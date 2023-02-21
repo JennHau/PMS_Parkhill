@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import pms_parkhill_residence.FileHandling;
+import classes.FileHandling;
 
 /**
  *
@@ -177,9 +177,9 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
                 String level = recDet[3];
                 String checkpoints = recDet[4];
                 String checkBef = recDet[5];
-                int timeDiff = BE.formatTime(checkBef).compareTo(BE.formatTime(slot));
+                int timeDiff = BE.DTF.formatTime(checkBef).compareTo(BE.DTF.formatTime(slot));
                 
-                slotTimePicker.setTime(BE.formatTime(slot));
+                slotTimePicker.setTime(BE.DTF.formatTime(slot));
                 endTimeTF.setText(checkBef);
                 timeSpinner.setSelectedItem(timeDiff);
                 blockTF.setSelectedItem(block);
@@ -379,6 +379,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         });
 
         saveBTN.setText("Save");
+        saveBTN.setEnabled(false);
         saveBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveBTNActionPerformed(evt);
@@ -728,7 +729,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
                     String patCode = jobDet[jobDet.length-1];
                     if (!patCode.equals(BE.TF.empty)) {
                         String[] patDate = patCode.split(" ");
-                        if (!BE.formatDate(patDate[0]).equals(inputDate)) {
+                        if (!BE.DTF.formatDate(patDate[0]).equals(inputDate)) {
                             removePat.add(eachJob);
                         }
                     }
@@ -746,10 +747,12 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
             fh.fileWrite(BE.TF.employeeJobFile, false, removePat);
 
             try {
-                BE.toPatrollingManagement(this, BE);
+                BE.toPatrollingManagement(this, BE, null);
             } catch (IOException ex) {
                 java.util.logging.Logger.getLogger(PatrollingScheduleModification.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
+            
+            saveBTN.setEnabled(false);
         }
     }//GEN-LAST:event_saveBTNActionPerformed
 
@@ -760,6 +763,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
             BE.tableSettingUpdate(this.timeIntervalSet, this.levelIntervalSet, Integer.valueOf(this.timeRequest), false);
             tableSetUp();
         }
+        saveBTN.setEnabled(true);
     }//GEN-LAST:event_hourComboBoxActionPerformed
 
     private void defaultBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultBTNActionPerformed
@@ -783,6 +787,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
             BE.tableSettingUpdate(this.timeIntervalSet, this.levelIntervalSet, Integer.valueOf(this.timeRequest), false);
             tableSetUp();
         }
+        saveBTN.setEnabled(true);
     }//GEN-LAST:event_levelIntervalComboBoxActionPerformed
     
     private void scheduleJTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scheduleJTMouseClicked
@@ -820,6 +825,8 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         fieldEnabled(true);
         levelTF.setEnabled(false);
         checkPTF.setEnabled(false);
+        
+        saveBTN.setEnabled(true);
     }//GEN-LAST:event_addRowBTNActionPerformed
 
     private void blockTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blockTFActionPerformed
@@ -922,10 +929,14 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
 
     private void backBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBTNActionPerformed
         // TODO add your handling code here:
-        int result = JOptionPane.showConfirmDialog(null,"Your changes are not saved. Are you sure to"
+        int result = JOptionPane.YES_OPTION;
+        
+        if (saveBTN.isEnabled()) {
+            result = JOptionPane.showConfirmDialog(null,"Your changes are not saved. Are you sure to"
                 + "discard the changes?", "PATROLLING SCHEDULE",
-        JOptionPane.YES_NO_OPTION,
-        JOptionPane.QUESTION_MESSAGE);
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
+        }
 
         if(result == JOptionPane.YES_OPTION){
             if (new File(BE.TF.tempFile).exists()) {
@@ -933,7 +944,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
             }
 
             try {
-                BE.toPatrollingManagement(this, BE);
+                BE.toPatrollingManagement(this, BE, null);
             } catch (IOException ex) {
                 java.util.logging.Logger.getLogger(PatrollingScheduleModification.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }

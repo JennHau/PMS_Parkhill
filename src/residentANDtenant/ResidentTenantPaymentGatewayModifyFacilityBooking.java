@@ -15,8 +15,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.Facility;
-import pms_parkhill_residence.FileHandling;
+import classes.Facility;
+import classes.FileHandling;
 
 /**
  *
@@ -471,7 +471,7 @@ public class ResidentTenantPaymentGatewayModifyFacilityBooking extends javax.swi
                             +";"+ totalPrice +";"+ String.valueOf(LocalDate.now()) +";");
                 }
                 
-                RT.toPaymentCredential(RT, totalPending, newData, true, true);
+                RT.toPaymentCredential(RT, totalPending, newData, true, true, null);
             }
         }
     }//GEN-LAST:event_bookBtActionPerformed

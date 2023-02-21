@@ -4,9 +4,10 @@
  */
 package buildingExecutive;
 
+import classes.AssignedJob;
 import java.awt.Color;
 import java.awt.Component;
-import pms_parkhill_residence.CRUD;
+import classes.CRUD;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.time.LocalTime;
@@ -14,59 +15,66 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
-import pms_parkhill_residence.Complaints;
-import pms_parkhill_residence.FileHandling;
+import classes.Complaint;
+import classes.Employee;
+import classes.FileHandling;
+import classes.Job;
 
 /**
  *
  * @author Winson
  */
 public class JobModificationPage extends javax.swing.JFrame {
-    private String currentBEid;
-    private Complaints complaint;
+//    private String currentBEid;
+    private final Complaint complaint;
+    private final BuildingExecutive BE;
+    private final Employee employee;
+    private final AssignedJob assignedJob;
     
     DefaultTableModel jobTable;
-    private final BuildingExecutive BE;
     FileHandling fileHandling = new FileHandling();
     CRUD crud = new CRUD();
     
     private String selectedId;
     
-    private String jobId;
-    private String complaintId;
-    private String employeeId;
+//    private String complaintId;
+//    private String employeeId;
     private String positionCode;
     
     /**
      * Creates new form EmployeeJobAssignation
      * @param BE
-     * @param positionCode employee position code
-     * @param jobID
+     * @param assignedJob
      * @param complaint
-     * @param employeeID
+     * @param employee
      * @throws java.io.IOException
      */
-    public JobModificationPage(BuildingExecutive BE, String positionCode, String jobID, Complaints complaint, String employeeID) throws IOException {
+    public JobModificationPage(BuildingExecutive BE, AssignedJob assignedJob, Complaint complaint, Employee employee) {
         this.BE = BE;
-        this.setCurrentBEid(this.BE.getUserID());
-        this.setJobId(jobID);
-        this.setComplaintId(complaint.getComplaintID());
-        this.setEmployeeId(employeeID);
-        this.setPositionCode(positionCode);
+        this.employee = employee;
+        this.complaint = complaint;
+        this.assignedJob = assignedJob;
+        this.setPositionCode(employee.getPositionCode());
+
+//        this.setCurrentBEid(this.BE.getUserID());
+//        this.setComplaintId(complaint.getComplaintID());
+//        this.setEmployeeId(employee.getEmpID());
         
         initComponents();
         jobTable = (DefaultTableModel) jobsTableUI.getModel();
-        runDefaultSetUp();
+        try {
+            runDefaultSetUp();
+        } catch (IOException ex) {
+            Logger.getLogger(JobModificationPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void runDefaultSetUp() throws IOException {
         setWindowIcon();
         comboBoxSetUp(this.positionCode);
-        tableJobSetUp(this.positionCode);
+        tableJobSetUp();
         
         deleteBTN.setEnabled(false);
         updateBTN.setEnabled(false);
@@ -76,19 +84,14 @@ public class JobModificationPage extends javax.swing.JFrame {
         setPatrollingReportTableDesign();
     }
     
-    private void tableJobSetUp(String positionCode) throws IOException {
-        List<String> readJobLists = fileHandling.fileRead(BE.TF.jobListFile);
+    private void tableJobSetUp() {
         ArrayList<String> jobList = new ArrayList<>();
+        ArrayList<Job> availableJob = assignedJob.extractJobForSpecificRole(positionCode, null);
         
         int numberOfItem = 1;
-        for (String readLine : readJobLists) {
-            String[] jobDetails = readLine.split(BE.TF.sp);
-            String roleCode = jobDetails[0];
-            
-            if (roleCode.equals(positionCode)) {
-                jobList.add(numberOfItem + BE.TF.sp + jobDetails[2] + BE.TF.sp + jobDetails[3] + BE.TF.sp + jobDetails[4]);
-                numberOfItem++;
-            }
+        for (Job eachJob : availableJob) {
+            jobList.add(numberOfItem + BE.TF.sp + eachJob.getTask()+ BE.TF.sp + eachJob.getTimeNeeded() + BE.TF.sp + eachJob.getJobStartTime());
+            numberOfItem++;
         }
         
         BE.setTableRow(jobTable, jobList);
@@ -126,7 +129,7 @@ public class JobModificationPage extends javax.swing.JFrame {
                     dataField.add(timeNeededSpinner.getValue().toString()+timeValue);
 
                     if (startTimePicker.getTime()!=null) {
-                        dataField.add(BE.formatTime(startTimePicker.getTime().toString()).toString());
+                        dataField.add(BE.DTF.formatTime(startTimePicker.getTime().toString()).toString());
 
                         for (String eachData :  dataField) {
                             toLine = toLine + eachData + BE.TF.sp;
@@ -262,8 +265,11 @@ public class JobModificationPage extends javax.swing.JFrame {
             jobsTableUI.getColumnModel().getColumn(0).setResizable(false);
             jobsTableUI.getColumnModel().getColumn(1).setResizable(false);
             jobsTableUI.getColumnModel().getColumn(2).setResizable(false);
+            jobsTableUI.getColumnModel().getColumn(2).setHeaderValue("TIME REQUIRED");
             jobsTableUI.getColumnModel().getColumn(3).setResizable(false);
+            jobsTableUI.getColumnModel().getColumn(3).setHeaderValue("START TIME");
             jobsTableUI.getColumnModel().getColumn(4).setResizable(false);
+            jobsTableUI.getColumnModel().getColumn(4).setHeaderValue("ACTION");
         }
 
         employeeRoleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Technician", "Cleaner", "Security Guard" }));
@@ -458,13 +464,9 @@ public class JobModificationPage extends javax.swing.JFrame {
     private void employeeRoleComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeeRoleComboBoxActionPerformed
         // TODO add your handling code here:
         String selectedRole = (String) employeeRoleComboBox.getSelectedItem();
-        try {
-            String roleCode = BE.getEmployeePositionCode(null, selectedRole);
-            tableJobSetUp(roleCode);
-        } catch (IOException ex) {
-            
-            Logger.getLogger(JobModificationPage.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
+        positionCode = employee.getPositionCode(selectedRole);
+        tableJobSetUp();
     }//GEN-LAST:event_employeeRoleComboBoxActionPerformed
 
     private void jobsTableUIMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jobsTableUIMouseClicked
@@ -499,7 +501,7 @@ public class JobModificationPage extends javax.swing.JFrame {
                 
                 String startTime = jobDetails[4];
                 if (!startTime.equals(" ")) {
-                    LocalTime jobStartTime = BE.getTimeCategory(BE.formatTime(startTime));
+                    LocalTime jobStartTime = BE.DTF.getTimeCategory(BE.DTF.formatTime(startTime));
                     startTimePicker.setTime(jobStartTime);
                     startTimePicker.setEnabled(true);
                     timeNeededSpinner.setEnabled(true);
@@ -536,11 +538,7 @@ public class JobModificationPage extends javax.swing.JFrame {
         
         clearField();
         
-        try {
-            tableJobSetUp(positionCode);
-        } catch (IOException ex) {
-            Logger.getLogger(JobModificationPage.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        tableJobSetUp();
     }//GEN-LAST:event_deleteBTNActionPerformed
 
     private void updateBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBTNActionPerformed
@@ -552,11 +550,7 @@ public class JobModificationPage extends javax.swing.JFrame {
         
         clearField();
         
-        try {
-            tableJobSetUp(positionCode);
-        } catch (IOException ex) {
-            Logger.getLogger(JobModificationPage.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        tableJobSetUp();
     }//GEN-LAST:event_updateBTNActionPerformed
 
     private void addBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBTNActionPerformed
@@ -569,11 +563,7 @@ public class JobModificationPage extends javax.swing.JFrame {
         crud.create(BE.TF.jobListFile, addItem);
         clearField();
         
-        try {
-            tableJobSetUp(positionCode);
-        } catch (IOException ex) {
-            Logger.getLogger(JobModificationPage.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        tableJobSetUp();
     }//GEN-LAST:event_addBTNActionPerformed
 
     private void timeValueCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeValueCBActionPerformed
@@ -586,7 +576,7 @@ public class JobModificationPage extends javax.swing.JFrame {
             EmployeeJobAssignation.employeeJobAssignation.dispose();
         }
         
-        BE.toEmployeeJobAssignation(this.BE, this.employeeId, this.jobId, this.complaint, false);
+        BE.toEmployeeJobAssignation(this.BE, this.employee.getEmpID(), this.assignedJob.getTaskID(), this.complaint, false);
         this.dispose();
     }//GEN-LAST:event_backBTNActionPerformed
     
@@ -637,11 +627,7 @@ public class JobModificationPage extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                try {
-                    new JobModificationPage(null, null, null, null, null).setVisible(true);
-                } catch (IOException ex) {
-                    Logger.getLogger(JobModificationPage.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                new JobModificationPage(null, null, null, null).setVisible(true);
             }
         });
     }
@@ -670,61 +656,61 @@ public class JobModificationPage extends javax.swing.JFrame {
     private javax.swing.JButton updateBTN;
     // End of variables declaration//GEN-END:variables
 
-    /**
-     * @return the currentBEid
-     */
-    public String getCurrentBEid() {
-        return currentBEid;
-    }
+//    /**
+//     * @return the currentBEid
+//     */
+//    public String getCurrentBEid() {
+//        return currentBEid;
+//    }
+//
+//    /**
+//     * @param currentBEid the currentBEid to set
+//     */
+//    public void setCurrentBEid(String currentBEid) {
+//        this.currentBEid = currentBEid;
+//    }
+//
+//    /**
+//     * @return the jobId
+//     */
+//    public String getJobId() {
+//        return jobId;
+//    }
+//
+//    /**
+//     * @param jobId the jobId to set
+//     */
+//    public void setJobId(String jobId) {
+//        this.jobId = jobId;
+//    }
 
-    /**
-     * @param currentBEid the currentBEid to set
-     */
-    public void setCurrentBEid(String currentBEid) {
-        this.currentBEid = currentBEid;
-    }
+//    /**
+//     * @return the complaintId
+//     */
+//    public String getComplaintId() {
+//        return complaintId;
+//    }
+//
+//    /**
+//     * @param complaintId the complaintId to set
+//     */
+//    public void setComplaintId(String complaintId) {
+//        this.complaintId = complaintId;
+//    }
 
-    /**
-     * @return the jobId
-     */
-    public String getJobId() {
-        return jobId;
-    }
-
-    /**
-     * @param jobId the jobId to set
-     */
-    public void setJobId(String jobId) {
-        this.jobId = jobId;
-    }
-
-    /**
-     * @return the complaintId
-     */
-    public String getComplaintId() {
-        return complaintId;
-    }
-
-    /**
-     * @param complaintId the complaintId to set
-     */
-    public void setComplaintId(String complaintId) {
-        this.complaintId = complaintId;
-    }
-
-    /**
-     * @return the employeeId
-     */
-    public String getEmployeeId() {
-        return employeeId;
-    }
-
-    /**
-     * @param employeeId the employeeId to set
-     */
-    public void setEmployeeId(String employeeId) {
-        this.employeeId = employeeId;
-    }
+//    /**
+//     * @return the employeeId
+//     */
+//    public String getEmployeeId() {
+//        return employeeId;
+//    }
+//
+//    /**
+//     * @param employeeId the employeeId to set
+//     */
+//    public void setEmployeeId(String employeeId) {
+//        this.employeeId = employeeId;
+//    }
 
     /**
      * @return the selectedId

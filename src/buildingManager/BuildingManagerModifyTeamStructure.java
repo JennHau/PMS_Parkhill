@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.FileHandling;
+import classes.FileHandling;
 
 /**
  *
@@ -59,7 +59,7 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
         modifyBt = new javax.swing.JButton();
         cancelBt = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable()
+        roleTitleTable = new javax.swing.JTable()
         {
             @Override
 
@@ -192,8 +192,8 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        roleTitleTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        roleTitleTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -209,14 +209,14 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
-        jTable1.setRowHeight(30);
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        roleTitleTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        roleTitleTable.setRowHeight(30);
+        roleTitleTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                roleTitleTableMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(roleTitleTable);
 
         jSeparator1.setForeground(new java.awt.Color(153, 153, 153));
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -479,11 +479,11 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
         return dest.exists();
     }
     
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    private void roleTitleTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roleTitleTableMouseClicked
         // TODO add your handling code here:
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        int column = jTable1.getSelectedColumn();
-        int row = jTable1.getSelectedRow();
+        DefaultTableModel tableModel = (DefaultTableModel)roleTitleTable.getModel();
+        int column = roleTitleTable.getSelectedColumn();
+        int row = roleTitleTable.getSelectedRow();
         
         String roleTitle = (String)tableModel.getValueAt(row, 0);
         if (column == 2) {
@@ -496,7 +496,7 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
             previousProfilePicPath = defaultFilePath + roleTitle + "." + defaultFileExtension;
         }
         setImage(roleTitle);
-    }//GEN-LAST:event_jTable1MouseClicked
+    }//GEN-LAST:event_roleTitleTableMouseClicked
 
     private void browseBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseBtActionPerformed
          //To allow BM upload the image from the file explorer
@@ -534,7 +534,7 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
     }//GEN-LAST:event_browseBtActionPerformed
 
     private void setTable() {
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel)roleTitleTable.getModel();
         tableModel.setRowCount(0);
         List<String> roleList = fh.fileRead("teamStructure.txt");
         
@@ -558,7 +558,7 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
     private void setTableDesign() {
         int[] colummnIgnore = {0, 1};
         int[] columnLength = {180, 220, 110};
-        BM.setTableDesign(jTable1, jLabel14, columnLength, colummnIgnore);
+        BM.setTableDesign(roleTitleTable, jLabel14, columnLength, colummnIgnore);
     }
     
     /**
@@ -2660,9 +2660,9 @@ public class BuildingManagerModifyTeamStructure extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JButton modifyBt;
     private javax.swing.JTextField roleTitleTF;
+    private javax.swing.JTable roleTitleTable;
     private javax.swing.JLabel warningMessage;
     // End of variables declaration//GEN-END:variables
 }

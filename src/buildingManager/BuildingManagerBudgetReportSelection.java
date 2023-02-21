@@ -7,8 +7,8 @@ package buildingManager;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
-import pms_parkhill_residence.FileHandling;
-import pms_parkhill_residence.Users;
+import classes.FileHandling;
+import classes.Users;
 
 /**
  *

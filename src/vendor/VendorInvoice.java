@@ -11,6 +11,8 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import classes.Invoice;
+import classes.Payment;
 
 /**
  *
@@ -21,8 +23,6 @@ public class VendorInvoice extends javax.swing.JFrame {
     
     DefaultTableModel invIncompTab;
     DefaultTableModel invCompTab;
-    
-    private ArrayList<ArrayList> invoiceNoList;
     
     /**
      * Creates new form homePage
@@ -48,29 +48,25 @@ public class VendorInvoice extends javax.swing.JFrame {
     }
     
     private void invoiceTableSetUp() {
-        ArrayList<String> incompleteInvoice = new ArrayList<>();
+       ArrayList<String> incompleteInvoice = new ArrayList<>();
         ArrayList<String> completeInvoice = new ArrayList<>();
         
-        invoiceNoList = VD.getCurrentUnitInvoice(this.VD.getUnitNo());
-        ArrayList<String> incompList = invoiceNoList.get(0);
-        ArrayList<String> compList = invoiceNoList.get(1);
+        ArrayList<Invoice> incompList = VD.PYM.getCurrentUnitInvoice(this.VD.getUnitNo());
+        ArrayList<Payment> compList = VD.PYM.getCurrentUnitPayment(this.VD.getUnitNo());
         
         ArrayList<String> incompInvCode = new ArrayList<>();
         ArrayList<String> compInvCode = new ArrayList<>();
         
-        
-        for (String eachIncomp : incompList) {
-            String[] invDet = eachIncomp.split(VD.TF.sp);
-            String invNo = invDet[0];
+        for (Invoice eachInv : incompList) {
+            String invNo = eachInv.getInvoiceNo();
             
             String feeType = "";
             if (!incompInvCode.contains(invNo)) {
-                for (String secIncomp : incompList) {
-                    String[] eachIncompDet = secIncomp.split(VD.TF.sp);
-                    String incompInvNo = eachIncompDet[0];
+                for (Invoice secIncomp : incompList) {
+                    String incompInvNo = secIncomp.getInvoiceNo();
                     
                     if (incompInvNo.equals(invNo)) {
-                        String type = eachIncompDet[2];
+                        String type = secIncomp.getFeeType();
                         feeType = feeType + type + ",";
                     }
                 }
@@ -78,8 +74,8 @@ public class VendorInvoice extends javax.swing.JFrame {
                 feeType = feeType.substring(0, feeType.length()-1);
                     
                 String incompletedLine = "";
-
-                double totalAmount = VD.getTotalPricePerInvoice(invNo, incompList);
+                
+                double totalAmount = VD.PYM.getTotalPricePerInvoice(invNo, incompList);
 
                 String[] tableData = {invNo.toUpperCase(), feeType, String.format("%.02f", totalAmount), "PAY"};
                 for (String eachData : tableData) {
@@ -88,22 +84,19 @@ public class VendorInvoice extends javax.swing.JFrame {
 
                 incompleteInvoice.add(incompletedLine);
                 
-                
                 incompInvCode.add(invNo);
             }
         }
         
-        for (String eachComp : compList) {
-            String[] payDet = eachComp.split(VD.TF.sp);
-            String invNo = payDet[0];
+        for (Payment eachPm : compList) {
+            String invNo = eachPm.getInvoiceNo();
             
             String feeType = "";
             if (!compInvCode.contains(invNo)) {
-                for (String newEachComp : compList) {
-                    String[] compPayDet = newEachComp.split(VD.TF.sp);
-                    String compInvNo = compPayDet[0];
+                for (Payment newEachPm : compList) {
+                    String compInvNo = newEachPm.getInvoiceNo();
                     if (compInvNo.equals(invNo)) {
-                        String type = compPayDet[2];
+                        String type = newEachPm.getFeeType();
                         feeType = feeType + type + ",";
                     }
                 }
@@ -112,9 +105,9 @@ public class VendorInvoice extends javax.swing.JFrame {
                 
                 String completedLine = "";
                 
-                double totalAmount = VD.getTotalPricePerInvoice(invNo, compList);
+                double totalAmount = VD.PYM.getTotalPricePerPayment(invNo, compList);
                 
-                String[] tableData = {payDet[0].toUpperCase(), feeType, String.format("%.02f", totalAmount), payDet[9].toUpperCase(), "VIEW"};
+                String[] tableData = {invNo.toUpperCase(), feeType, String.format("%.02f", totalAmount), eachPm.getPaymentBy().toUpperCase(), "VIEW"};
                 for (String eachData : tableData) {
                     completedLine = completedLine + eachData + VD.TF.sp;
                 }
@@ -140,18 +133,7 @@ public class VendorInvoice extends javax.swing.JFrame {
     }
     
     private void invoiceComboBoxSetUp() {
-        ArrayList<String> invoiceCode = new ArrayList<>();
-        
-        for (ArrayList eachList : invoiceNoList) {
-            ArrayList<String> loopList = eachList;
-            for (String incomp : loopList) {
-                String[] incompDet = incomp.split(VD.TF.sp);
-                String invNo = incompDet[0];
-                if (!invoiceCode.contains(invNo)) {
-                    invoiceCode.add(invNo);
-                }
-            }
-        }
+        ArrayList<String> invoiceCode = VD.PYM.getInvoiceCode(VD.getUnitNo());
         
         invoiceNoCB.removeAllItems();
         invoiceNoCB.addItem("All");
@@ -739,9 +721,11 @@ public class VendorInvoice extends javax.swing.JFrame {
         int selRow = invoiceIncompleteTable.getSelectedRow();
         
         String invoiceNo = VD.validateTableSelectionAndGetValue(invIncompTab, selCol, selRow, 3, 0);
-        String feeTypes = VD.validateTableSelectionAndGetValue(invIncompTab, selCol, selRow, 3, 1);
+        
+        ArrayList<Invoice> invoiceList = VD.PYM.getSameUnpaidInvoiceNo(VD.getUnitNo(), invoiceNo);
+        
         if (invoiceNo != null) {
-            VD.toInvoicePayment(invoiceNo, VD, feeTypes);
+            VD.toInvoicePayment(invoiceNo, VD, invoiceList);
             this.dispose();
         }
     }//GEN-LAST:event_invoiceIncompleteTableMouseClicked
@@ -785,9 +769,11 @@ public class VendorInvoice extends javax.swing.JFrame {
         int selRow = invoiceCompleteTable.getSelectedRow();
         
         String invoiceNo = VD.validateTableSelectionAndGetValue(invCompTab, selCol, selRow, 4, 0);
-        String feeTypes = VD.validateTableSelectionAndGetValue(invCompTab, selCol, selRow, 4, 1);
+        
+        ArrayList<Payment> paidList = VD.PYM.getCurrentUnitPayment(invoiceNo);
+        
         if (invoiceNo != null) {
-            VD.toViewPaidInvoice(VD, invoiceNo, feeTypes);
+            VD.toViewPaidInvoice(VD, invoiceNo, paidList);
             this.dispose();
         }
     }//GEN-LAST:event_invoiceCompleteTableMouseClicked

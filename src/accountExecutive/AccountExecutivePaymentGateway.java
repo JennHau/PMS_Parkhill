@@ -7,7 +7,7 @@ package accountExecutive;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
-import pms_parkhill_residence.Users;
+import classes.Payment;
 
 /**
  *
@@ -17,18 +17,14 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
-     * @param invoiceNo
-     * @param unitNo
-     * @param total
+     * @param PM
      * @param AE
      */
-    public AccountExecutivePaymentGateway(String invoiceNo, String unitNo, String total, AccountExecutive AE) {
+    public AccountExecutivePaymentGateway(Payment PM, AccountExecutive AE) {
         initComponents();
         setWindowIcon();
-        this.invoiceNo = invoiceNo;
-        this.unitNo = unitNo;
-        this.total = total;
         this.AE = AE;
+        this.PM = PM;
         setFixData();
         setPayerCB();
     }
@@ -407,10 +403,8 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private final String invoiceNo;
-    private final String unitNo;
-    private final String total;
     private final AccountExecutive AE;
+    private final Payment PM;
     
     private void userIDTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userIDTFActionPerformed
         // TODO add your handling code here:
@@ -439,7 +433,7 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
             JOptionPane.QUESTION_MESSAGE);
 
             if(result == JOptionPane.YES_OPTION){
-                AE.storePayment(invoiceNo, userIDTF.getText());
+//                PM.storePayment(PM.getInvoiceNo(), userIDTF.getText());
                 JOptionPane.showMessageDialog (null, "Payment has been made successfully!", 
                     "PAYMENT", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
@@ -495,15 +489,25 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
     }//GEN-LAST:event_phoneNoTFActionPerformed
 
     private void setFixData() {
-        invoiceNoLabel.setText(this.invoiceNo);
-        unitNoLabel.setText(this.unitNo);
-        String period = this.invoiceNo.substring(this.invoiceNo.length()-6);
-        String cPeriod = period.substring(0, 2) +"/"+ period.substring(2);
-        periodLabel.setText(cPeriod); totalLabel.setText("Total: RM" + total);
+        String invoiceNo = PM.getInvoiceNo();
+        String unitNo = PM.getUnitNo();
+        invoiceNoLabel.setText(invoiceNo);
+        unitNoLabel.setText(unitNo);
+        
+        String period = invoiceNo.replace(unitNo, "");
+        String cPeriod;
+        
+        if(period.length() > 5) {
+            cPeriod = period.substring(0, 2) +"/"+ period.substring(2);
+        } else {
+            cPeriod = period.substring(0, 1) +"/"+ period.substring(1);
+        }
+        periodLabel.setText(cPeriod); totalLabel.setText("Total: RM" + 
+                                AE.currencyFormat(PM.getTotalPrice()));
    }
     
     private void setPayerCB() {
-        List<String> userName = AE.extractUnitUsers(unitNo);
+        List<String> userName = AE.extractUnitUsers(PM.getUnitNo());
         payerCB.addItem("-Please Select-");
         for (String userName1 : userName) {
             payerCB.addItem(userName1);
@@ -799,7 +803,7 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutivePaymentGateway(null, null, null, null).setVisible(true);
+                new AccountExecutivePaymentGateway(null, null).setVisible(true);
             }
         });
     }

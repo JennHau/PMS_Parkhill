@@ -11,7 +11,7 @@ import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import pms_parkhill_residence.FacilityBookingPaymentByHour;
+import classes.FacilityBookingPaymentByHour;
 import pms_parkhill_residence.HomePage;
 
 /**
@@ -52,7 +52,7 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable()
+        facilityBookingTable = new javax.swing.JTable()
         {
             @Override
 
@@ -163,8 +163,7 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
         jLabel14.setText("FACILITY BOOKING LIST");
         jLabel14.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
-        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        facilityBookingTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -180,14 +179,15 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
-        jTable1.setRowHeight(30);
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        facilityBookingTable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        facilityBookingTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        facilityBookingTable.setRowHeight(30);
+        facilityBookingTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                facilityBookingTableMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(facilityBookingTable);
 
         jLabel16.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(153, 153, 153));
@@ -759,18 +759,18 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
     
     private void clearbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearbtActionPerformed
        searchTextField.setText("");
-       DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+       DefaultTableModel tableModel = (DefaultTableModel)facilityBookingTable.getModel();
        tableModel.setRowCount(0);
        setTable();
     }//GEN-LAST:event_clearbtActionPerformed
 
     
     
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    private void facilityBookingTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facilityBookingTableMouseClicked
         // TODO add your handling code here:
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        int column = jTable1.getSelectedColumn();
-        int row = jTable1.getSelectedRow();
+        DefaultTableModel tableModel = (DefaultTableModel)facilityBookingTable.getModel();
+        int column = facilityBookingTable.getSelectedColumn();
+        int row = facilityBookingTable.getSelectedRow();
         String status = String.valueOf(statusCB1.getSelectedItem());
         
         
@@ -784,15 +784,15 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
             new AdminExecutiveManageBookedFacility(fb, bookingID, date, AE, variation).setVisible(true);
             
         } else if(column == 7 && status.equals("HISTORY") &&
-                tableModel.getValueAt(row, 7).equals("VIEW RECEIPT")) {
+                tableModel.getValueAt(row, 7).equals("VIEW")) {
             String bookingID = String.valueOf(tableModel.getValueAt(row, 0));
             new AdminExecutiveFacilityBookingReceipt(bookingID).setVisible(true);
         }
-    }//GEN-LAST:event_jTable1MouseClicked
+    }//GEN-LAST:event_facilityBookingTableMouseClicked
 
     private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
         // TODO add your handling code here:
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel)facilityBookingTable.getModel();
         // reset table
         tableModel.setRowCount(0);
         setTable();
@@ -800,7 +800,7 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
             String module_code = searchTextField.getText().toUpperCase();
             for (int i=0; i<tableModel.getRowCount(); i++) {
                 // get module code from table
-                String tmodule_code = String.valueOf(jTable1.getValueAt(i, 0)).toUpperCase();
+                String tmodule_code = String.valueOf(facilityBookingTable.getValueAt(i, 0)).toUpperCase();
                 // if module code not contain in search bar
                 if (!tmodule_code.contains(module_code)) {
                     // remove module from table
@@ -1053,7 +1053,7 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
     }
     
     private void setTable() {
-        DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel)facilityBookingTable.getModel();
         tableModel.setRowCount(0);
         
         String status = (String)statusCB1.getSelectedItem();
@@ -1072,7 +1072,7 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
             if(statusCB1.getSelectedItem().equals("UPCOMING")) {
                 action = "MANAGE";
             } else if (statusCB1.getSelectedItem().equals("HISTORY") && !payment.equals("-")){
-                action = "VIEW RECEIPT";
+                action = "VIEW";
             } else {
                 action = "-";
             }
@@ -1084,9 +1084,9 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
     }
     
     private void setTableDesign() {
-        int[] colummnIgnore = {};
+        int[] colummnIgnore = {1};
         int[] columnLength = {110, 190, 110, 110, 110, 110, 110, 110};
-        AE.setTableDesign(jTable1, jLabel14, columnLength, colummnIgnore);
+        AE.setTableDesign(facilityBookingTable, jLabel14, columnLength, colummnIgnore);
     }
 
     /**
@@ -17519,6 +17519,7 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
     private javax.swing.JPanel employeeManagePanel;
     private javax.swing.JLabel facBookManageLabel;
     private javax.swing.JPanel facBookManagePanel;
+    private javax.swing.JTable facilityBookingTable;
     private javax.swing.JLabel facilityManageLabel;
     private javax.swing.JPanel facilityManagePanel;
     private javax.swing.JLabel facilityTypeLabel;
@@ -17531,7 +17532,6 @@ public class AdminExecutiveViewFacilityBooking extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel logoutLabel;
     private javax.swing.JPanel logoutPanel;
     private javax.swing.JLabel rTManageLabel;

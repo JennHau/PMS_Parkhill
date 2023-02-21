@@ -1,2 +1,3 @@
 deleteID;userID;email;password;firstName;lastName;identificationNo;gender;phoneNo;unitNo;deletedDateTime;
-dlt000001;rsd000001;wongjennhau@gmail.com;Parkhill@1234;Wong;Jenn Hau;123123123;Male;019-880-8339;B-15-05;2023-01-31T16:36:29.316927400;
+dlt000001;tnt000151;wong@gmaillsdkskd.com;Parkhill@1234;Hello;Wong;324234;Male;2343-234929384;C-01-01;2023-02-16T16:06:59.178610700;
+dlt000003;Parkhill;parkhill@gmail.com;Parkhill@123;Parkill;Residence;-;-;-;C-01-01;2023-02-16T16:07:12.533716500;

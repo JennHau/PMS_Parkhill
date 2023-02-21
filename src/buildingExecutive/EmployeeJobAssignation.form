@@ -642,7 +642,7 @@
                     <Column editable="true" title="JOB ID" type="java.lang.Object"/>
                     <Column editable="false" title="JOB TITLE" type="java.lang.String"/>
                     <Column editable="false" title="DATE &amp; TIME" type="java.lang.String"/>
-                    <Column editable="false" title="ASSIGNEE ID" type="java.lang.String"/>
+                    <Column editable="false" title="ASSIGNEE" type="java.lang.String"/>
                     <Column editable="false" title="ACTION" type="java.lang.Object"/>
                   </Table>
                 </Property>
