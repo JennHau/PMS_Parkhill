@@ -721,10 +721,10 @@ public class VendorInvoice extends javax.swing.JFrame {
         int selRow = invoiceIncompleteTable.getSelectedRow();
         
         String invoiceNo = VD.validateTableSelectionAndGetValue(invIncompTab, selCol, selRow, 3, 0);
-        
-        ArrayList<Invoice> invoiceList = VD.PYM.getSameUnpaidInvoiceNo(VD.getUnitNo(), invoiceNo);
-        
+                
         if (invoiceNo != null) {
+            ArrayList<Invoice> invoiceList = VD.PYM.getSameUnpaidInvoiceNo(VD.getUnitNo(), invoiceNo);
+            
             VD.toInvoicePayment(invoiceNo, VD, invoiceList);
             this.dispose();
         }
@@ -769,10 +769,10 @@ public class VendorInvoice extends javax.swing.JFrame {
         int selRow = invoiceCompleteTable.getSelectedRow();
         
         String invoiceNo = VD.validateTableSelectionAndGetValue(invCompTab, selCol, selRow, 4, 0);
-        
-        ArrayList<Payment> paidList = VD.PYM.getCurrentUnitPayment(invoiceNo);
-        
+                
         if (invoiceNo != null) {
+            ArrayList<Payment> paidList = VD.PYM.getSamePaidInvoiceNo(this.VD.getUnitNo(), invoiceNo);
+            
             VD.toViewPaidInvoice(VD, invoiceNo, paidList);
             this.dispose();
         }

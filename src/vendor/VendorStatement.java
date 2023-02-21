@@ -48,6 +48,8 @@ public class VendorStatement extends javax.swing.JFrame {
         } catch (ParseException ex) {
             System.out.println(ex);
         }
+        
+        tableDesignSetUp();
     }
     
     private void statementTableSetUp() throws ParseException {
@@ -58,12 +60,11 @@ public class VendorStatement extends javax.swing.JFrame {
         // Set table row
         VD.setTableRow(stateTab, monthStatement);
         
-        tableDesignSetUp();
     }
     
     private void tableDesignSetUp() {
         int[] columnIgnore = {2};
-        int[] columnLength = {60, 160, 317, 160, 160};
+        int[] columnLength = {90, 160, 467, 130, 130};
         VD.setTableDesign(statementTableSetUp, jLabel2, columnLength, columnIgnore);
     }
     

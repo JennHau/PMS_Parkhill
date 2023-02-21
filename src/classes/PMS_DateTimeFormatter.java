@@ -80,7 +80,7 @@ public class PMS_DateTimeFormatter{
             time = time.withMinute(30);
         }
         
-        return time;
+        return formatTime(String.valueOf(time));
     }
     
     public LocalDateTime combineStringDateTime(String date, String time) {

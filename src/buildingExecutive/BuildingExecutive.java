@@ -26,6 +26,7 @@ import classes.Complaint;
 import classes.Employee;
 import classes.FileHandling;
 import classes.PMS_DateTimeFormatter;
+import classes.Patrolling;
 import classes.TextFile;
 import classes.Users;
 
@@ -39,6 +40,7 @@ public class BuildingExecutive extends Users{
     FileHandling fh = new FileHandling();
     Complaint CP = new Complaint();
     CRUD crud = new CRUD();
+    Patrolling PT = new Patrolling();
     
     // Repitition
     final int repititionON = 1;
@@ -93,7 +95,7 @@ public class BuildingExecutive extends Users{
                     if (DTF.combineStringDateTime(endDateTime[0], endDateTime[1]).isBefore(LocalDateTime.now())){
                         String emplyId = eachData[1];
                         Employee employee = new Employee(emplyId);
-                        historyList.add(eachData[0].toUpperCase() + TF.sp
+                        historyList.add(eachData[0] + TF.sp
                                 + eachData[1] + TF.sp
                                 + employee.getEmpName() + TF.sp
                                 + eachData[2] + TF.sp
@@ -152,7 +154,7 @@ public class BuildingExecutive extends Users{
                 
                 Employee workingEmp = new Employee(jobLineDetails.getTaskEmpID());
                 
-                String timeNeeded = jobLineDetails.getTimeNeeded();
+                String timeNeeded = jobLineDetails.getExpectedTimeRequired();
                 LocalDate workingDate = null;
                 LocalTime workingTime = DTF.formatTime(jobLineDetails.getStartTime());
                 String[] workingEndDateTime = jobLineDetails.getExpectedEndDateTime().split(" ");
@@ -162,7 +164,7 @@ public class BuildingExecutive extends Users{
                 
                 // check the job is repeated or overnight
                 ArrayList<String> dateData = compareJobDate(repitition, workingEndDateTime, jobLineDetails, timeNeeded, dayOfWeek, localDate, workingTime, workingDate);
-                
+             
                 // assign value to the working data and time according to the comparedJobDate method
                 if (!dateData.isEmpty()){
                     workingDate = DTF.formatDate(dateData.get(0));
@@ -177,8 +179,9 @@ public class BuildingExecutive extends Users{
                 // If the working date is not null
                 if (workingDate != null) {
                     // Compare the job with inputted date and time
+                    
                     boolean addToList = compareDateTime(localDate, localTime, workingDate, workingTime, workingEndDateTime, workingStartTime2, workingEndTime2);
-
+                    
                     // Add the job to assigned list
                     if (addToList) {
                         if (!workingList.contains(workingEmp.getEmpID())) {
@@ -230,6 +233,7 @@ public class BuildingExecutive extends Users{
         
         if (repitition == repititionON) {
             int overnightDay = checkOvernight(DTF.formatTime(workingEndDateTime[1]), timeNeeded);
+            
             boolean isOvernight = (overnightDay != 0);
             ArrayList<String> dayToRepeat = new ArrayList<>(Arrays.asList(assignedJob.getDayToRepeat().split(",")));
 
@@ -244,10 +248,9 @@ public class BuildingExecutive extends Users{
                     foundYesterday = true;
                 }
             }
-
+            
             if (isOvernight && foundYesterday || 
                 isOvernight && foundToday || 
-                isOvernight && foundYesterday ||
                 !isOvernight && foundToday && !foundYesterday) 
             {
                 workingDate = localDate;
@@ -352,19 +355,6 @@ public class BuildingExecutive extends Users{
         return searchedList;
     }
     
-//    // get employee full role description
-//    public String showEmployeeFullRoleName(String role) {
-//        String employeeRole = null;
-//        
-//        switch (role) {
-//            case "scg" -> employeeRole = "Security Guard";
-//            case "tnc" -> employeeRole = "Technician";
-//            case "cln" -> employeeRole = "Cleaner";
-//        }
-//        
-//        return employeeRole;
-//    }
-    
     // validate table data selection
     public String validateTableSelectionAndGetValue(DefaultTableModel table, int selectedColumn, int selectedRow, int expectedColumn, int getValueColumn) {
         if (selectedColumn == expectedColumn) {
@@ -395,29 +385,34 @@ public class BuildingExecutive extends Users{
     // find the job details from the job file
     public String findJobDetailsUsingDescriptionOrId(String jobCode, String jobDesc) {
         List<String> jobList = fh.fileRead(TF.jobListFile);
+        
+        boolean firstLine = true;
         for (String eachJob : jobList) {
-            String jobId = eachJob.split(TF.sp)[1];
-            String description = eachJob.split(TF.sp)[2];
-            
-            if (jobCode != null) {
-                if (jobId.equals(jobCode)) {
-                    return eachJob;
+            if (!firstLine) {
+                String jobId = eachJob.split(TF.sp)[1];
+                String description = eachJob.split(TF.sp)[2];
+
+                if (jobCode != null) {
+                    if (jobId.equals(jobCode)) {
+                        return eachJob;
+                    }
+                }
+
+                if (jobDesc != null) {
+                    if (jobDesc.equals(description)) {
+                        return eachJob;
+                    }
                 }
             }
             
-            if (jobDesc != null) {
-                if (jobDesc.equals(description)) {
-                    return eachJob;
-                }
-            }
-            
+            firstLine = false;
         }
         
         return null;
     }
     
     // get new job id
-    public String getNewTaskId(String fileName, int idColumn) throws IOException {
+    public String getNewTaskId(String fileName, int idColumn) {
         List<String> readFile = fh.fileRead(fileName);
         
         String jobIdCode = "tsk";
@@ -474,7 +469,7 @@ public class BuildingExecutive extends Users{
     public int checkOvernight(LocalTime timeEndExpected, String expectedTimeNeeded) {
         String timePlace = expectedTimeNeeded.substring(expectedTimeNeeded.length()-1);
         int timeNeeded = Integer.valueOf(expectedTimeNeeded.substring(0, expectedTimeNeeded.length()-1));
-            
+        
         if (timePlace.equals("h")) {
             timeNeeded*=60;
         }
@@ -559,6 +554,7 @@ public class BuildingExecutive extends Users{
                             + "-" + TF.sp
                             + "-" + TF.sp
                             + "-" + TF.sp
+                            + "Unassign" + TF.sp
                             + "-" + TF.sp
                             + "-" + TF.sp
                             + "-" + TF.sp);
@@ -575,6 +571,7 @@ public class BuildingExecutive extends Users{
                     + "-" + TF.sp
                     + "-" + TF.sp
                     + "-" + TF.sp
+                    + "Unassign" + TF.sp
                     + "-" + TF.sp
                     + "-" + TF.sp
                     + "-" + TF.sp);

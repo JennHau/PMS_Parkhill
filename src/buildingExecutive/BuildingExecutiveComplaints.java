@@ -313,6 +313,8 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
             }
         });
 
+        newComplaintsTable.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
+        newComplaintsTable.setForeground(new java.awt.Color(51, 51, 51));
         newComplaintsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -356,6 +358,8 @@ public class BuildingExecutiveComplaints extends javax.swing.JFrame {
             newComplaintsTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
+        actionedComplaintsTable.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
+        actionedComplaintsTable.setForeground(new java.awt.Color(51, 51, 51));
         actionedComplaintsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},

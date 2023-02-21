@@ -146,7 +146,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
     
     private void tableDesignSetUp() {
         int[] columnIgnore = {2};
-        int[] columnLength = {60, 160, 317, 160, 160, 120};
+        int[] columnLength = {50, 155, 342, 155, 155, 120};
         RT.setTableDesign(paymentHistoryTable, jLabel2, columnLength, columnIgnore);
     }
 

@@ -73,7 +73,7 @@ public class JobModificationPage extends javax.swing.JFrame {
     
     private void runDefaultSetUp() throws IOException {
         setWindowIcon();
-        comboBoxSetUp(this.positionCode);
+        comboBoxSetUp();
         tableJobSetUp();
         
         deleteBTN.setEnabled(false);
@@ -86,11 +86,11 @@ public class JobModificationPage extends javax.swing.JFrame {
     
     private void tableJobSetUp() {
         ArrayList<String> jobList = new ArrayList<>();
-        ArrayList<Job> availableJob = assignedJob.extractJobForSpecificRole(positionCode, null);
+        ArrayList<Job> availableJob = employee.JB.extractJobForSpecificRole(positionCode, null);
         
         int numberOfItem = 1;
         for (Job eachJob : availableJob) {
-            jobList.add(numberOfItem + BE.TF.sp + eachJob.getTask()+ BE.TF.sp + eachJob.getTimeNeeded() + BE.TF.sp + eachJob.getJobStartTime());
+            jobList.add(numberOfItem + BE.TF.sp + eachJob.getTask()+ BE.TF.sp + eachJob.getTimeNeeded() + BE.TF.sp + eachJob.getJobStartTime() + BE.TF.sp + "MODIFY");
             numberOfItem++;
         }
         
@@ -101,9 +101,8 @@ public class JobModificationPage extends javax.swing.JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
     
-    private void comboBoxSetUp(String positionCode) {
-        String employeeRoleName = BE.showEmployeeFullRoleName(positionCode);
-        employeeRoleComboBox.setSelectedItem(employeeRoleName);
+    private void comboBoxSetUp() {
+        employeeRoleComboBox.setSelectedItem(this.positionCode);
     }
     
     private String getAllField(boolean add) {
@@ -158,7 +157,7 @@ public class JobModificationPage extends javax.swing.JFrame {
     
     private void setPatrollingReportTableDesign() {
         int[] columnIgnore = {1};
-        int[] columnLength = {60, 245, 90, 120, 80};
+        int[] columnLength = {60, 235, 110, 120, 80};
         BE.setTableDesign(jobsTableUI, jLabel2, columnLength, columnIgnore);
     }
     
@@ -576,7 +575,9 @@ public class JobModificationPage extends javax.swing.JFrame {
             EmployeeJobAssignation.employeeJobAssignation.dispose();
         }
         
-        BE.toEmployeeJobAssignation(this.BE, this.employee.getEmpID(), this.assignedJob.getTaskID(), this.complaint, false);
+        String taskID = (this.assignedJob != null) ? this.assignedJob.getTaskID() : null;
+        
+        BE.toEmployeeJobAssignation(this.BE, this.employee.getEmpID(), taskID, this.complaint, false);
         this.dispose();
     }//GEN-LAST:event_backBTNActionPerformed
     

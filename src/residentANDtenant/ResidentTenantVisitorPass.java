@@ -82,6 +82,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
         String visitorStatus = statusCB.getSelectedItem().toString();
         
         ArrayList<VisitorPass> registeredVisitor = RT.VP.getCurrentUserRegisteredVisitor(RT.getUserID());
+        
         ArrayList<String> toTable = new ArrayList<>();
         
         for (VisitorPass eachPass: registeredVisitor) {
@@ -882,8 +883,8 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
         JOptionPane.QUESTION_MESSAGE);
 
         if(result == JOptionPane.YES_OPTION){
-            VisitorPass pass = new VisitorPass(this.passID);
-            pass.removeVisitorPass();
+            RT.VP = new VisitorPass(this.passID);
+            RT.VP.removeVisitorPass();
 
             registeredVisitorTableSetUp();
 
@@ -906,11 +907,11 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
                 String[] dataList = {this.passID, visitorIcTF.getText(), visitorNameTF.getText(), 
                                      visitorCarPlateTF.getText(), visitorContactTF.getText(), 
                                      dateTimePicker.datePicker.getDate().toString(), dateTimePicker.timePicker.getTime().toString(), 
-                                     VisitorPass.visitorPassStatus[0], RT.TF.sp, RT.TF.sp, this.RT.getUserID(), DTF.currentDateTime()};
+                                     VisitorPass.visitorPassStatus[0], RT.TF.empty, RT.TF.empty, this.RT.getUserID(), DTF.currentDateTime()};
                 
-                VisitorPass newPass = new VisitorPass(dataList);
-
-                newPass.updateVisitorPass();
+                RT.VP = new VisitorPass(dataList);
+                
+                RT.VP.updateVisitorPass();
 
                 clearField();
                 registeredVisitorTableSetUp();

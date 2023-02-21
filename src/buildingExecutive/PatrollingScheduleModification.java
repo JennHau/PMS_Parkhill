@@ -68,10 +68,10 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         cleanField();
         
         setEachComboBox();
+                
+        setPatrollingReportTableDesign();
         
         patrollingSchedule = this;
-        
-        setPatrollingReportTableDesign();
     }
     
     private void fileSetUp(String file) {
@@ -702,8 +702,9 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         if(result == JOptionPane.YES_OPTION){
             String timeGap = hourComboBox.getSelectedItem().toString();
             String levelInterval = levelIntervalComboBox.getSelectedItem().toString();
+            String timeNeeded = timeNeededCB.getSelectedItem().toString();
             
-            String[] item = {inputDate.toString(), timeGap, levelInterval, this.currentBEid, BE.DTF.currentDateTime()};
+            String[] item = {inputDate.toString(), timeGap, levelInterval, timeNeeded, this.currentBEid, BE.DTF.currentDateTime()};
             
             String data = "";
             for (String eachItem : item) {
@@ -746,8 +747,12 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
             
             fh.fileWrite(BE.TF.employeeJobFile, false, removePat);
 
+            if (BuildingExecutivePatrollingManagement.BEpatrollingManagement != null) {
+                BuildingExecutivePatrollingManagement.BEpatrollingManagement.dispose();
+            }
+            
             try {
-                BE.toPatrollingManagement(this, BE, null);
+                BE.toPatrollingManagement(this, BE, inputDate);
             } catch (IOException ex) {
                 java.util.logging.Logger.getLogger(PatrollingScheduleModification.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
@@ -933,7 +938,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         
         if (saveBTN.isEnabled()) {
             result = JOptionPane.showConfirmDialog(null,"Your changes are not saved. Are you sure to"
-                + "discard the changes?", "PATROLLING SCHEDULE",
+                + " discard the changes?", "PATROLLING SCHEDULE",
             JOptionPane.YES_NO_OPTION,
             JOptionPane.QUESTION_MESSAGE);
         }
@@ -943,8 +948,12 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
                 new File(BE.TF.tempFile).delete();
             }
 
+            if (BuildingExecutivePatrollingManagement.BEpatrollingManagement != null) {
+                BuildingExecutivePatrollingManagement.BEpatrollingManagement.dispose();
+            }
+            
             try {
-                BE.toPatrollingManagement(this, BE, null);
+                BE.toPatrollingManagement(this, BE, inputDate);
             } catch (IOException ex) {
                 java.util.logging.Logger.getLogger(PatrollingScheduleModification.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }

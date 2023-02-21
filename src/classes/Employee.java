@@ -84,7 +84,7 @@ public class Employee {
         return employeeJob;
     }
     
-    private final String[] empCode = {"scg", "tcn", "cln"};
+    public final String[] empCode = {"scg", "tcn", "cln"};
     
     public boolean isEmployee() {
         List<String> employeeCode = new ArrayList<>(Arrays.asList(empCode));

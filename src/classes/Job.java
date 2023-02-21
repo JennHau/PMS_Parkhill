@@ -63,7 +63,7 @@ public class Job {
                     jobLists.add(jobLine);
                 }
 
-                if ((roleCode.equals("cmp")) && (complaintId != null)) {
+                if (complaintId != null) {
                     jobLists.add(jobLine);
                 }
             }

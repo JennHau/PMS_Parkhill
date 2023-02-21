@@ -23,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import classes.FileHandling;
+import classes.Patrolling;
 
 /**
  *
@@ -46,9 +47,13 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     private String dayOfToday;
     private String patID;
     
+    private Patrolling patrolling;
+    private AssignedJob assignedJob;
+    
     /**
      * Creates new form homePage
      * @param BE
+     * @param selectedDate
      * @throws java.io.IOException
      */
     public BuildingExecutivePatrollingManagement(BuildingExecutive BE, LocalDate selectedDate) throws IOException {
@@ -66,7 +71,9 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         scheduleTable = (DefaultTableModel) patrollingScheduleTable.getModel();
         
         setWindowIcon();
+        
         getTodayDay();
+        
         patrollingScheduleTableSetUp();
         fieldAction(false);
         
@@ -102,21 +109,20 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         
         setSelectedDateFile();
         
-        List<String> patrollingSchedule = fh.fileRead(patrollingScheduleFile);
+        ArrayList<Patrolling> patrollingSchedule = BE.PT.extractAllPatrolling(patrollingScheduleFile);
         
         boolean firstLine = true;
-        for (String slots : patrollingSchedule) {
+        for (Patrolling slots : patrollingSchedule) {
             if (!firstLine) {
-                String[] slotDetails = slots.split(BE.TF.sp);
-                String patSlot = slotDetails[1];
-                String patBlock = slotDetails[2];
-                String patLevel = slotDetails[3];
-                String patCheckPoints = slotDetails[4];
-                String patCheckBef = slotDetails[5];
-                String securityID = slotDetails[6].toUpperCase();
-                String securityName = slotDetails[7];
-                String patStatus = slotDetails[9];
-                String assignee = slotDetails[11].toUpperCase();
+                String patSlot = slots.getSlot();
+                String patBlock = slots.getBlock();
+                String patLevel = slots.getLevel();
+                String patCheckPoints = slots.getCheckpoints();
+                String patCheckBef = slots.getCheckBefore();
+                String securityID = slots.getPatSecID().toUpperCase();
+                String securityName = slots.getPatSecName();
+                String patStatus = slots.getStatus();
+                String assignee = slots.getUpdatedBy().toUpperCase();
                 
                 LocalTime slotTime = BE.DTF.formatTime(patSlot);
                 
@@ -139,6 +145,10 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                 
                 if (action.equals("PAST")) {
                     patStatus = "Unassign";
+                }
+                
+                if (action.equals("PAST") && !securityID.equals(BE.TF.empty) && !patStatus.equals("Checked")) {
+                    patStatus = "Uncheck";
                 }
                     
                 forTableSetup.add(patSlot + BE.TF.sp + patBlock + BE.TF.sp + 
@@ -1011,33 +1021,29 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         
         String securityID = (!patrollingScheduleTable.getValueAt(selectedRow, 5).equals("-")) ? (patrollingScheduleTable.getValueAt(selectedRow, 5)).toString() : null;
         
-        Object[] rowData = new Object[scheduleTable.getColumnCount()];
-        
         if (correctSel) {
             String actionText = patrollingScheduleTable.getValueAt(selectedRow, selectedCol).toString();
             
             if (actionText.equals("ASSIGN") || actionText.equals("MODIFY") || actionText.equals("VIEW")) {
                 List<String> scheduleFile = fh.fileRead(patrollingScheduleFile);
-                patID = scheduleFile.get(selectedRow+1).split(BE.TF.sp)[0];
-                String checkedAt = scheduleFile.get(selectedRow+1).split(BE.TF.sp)[10];
+                String[] patDet = scheduleFile.get(selectedRow+1).split(BE.TF.sp);
+                
+                patrolling = new Patrolling(patDet);
+                
+                String checkedAt = patrolling.getCheckedAt();
 
-                for (int data = 0; data < scheduleTable.getColumnCount(); data++) {
-                    rowData[data] = scheduleTable.getValueAt(selectedRow, data);
-                }
+                inputTime = BE.DTF.formatTime(patrolling.getSlot());
+                slotTF.setText(patrolling.getSlot());
+                blockTF.setText(patrolling.getBlock());
+                levelTF.setText(patrolling.getLevel());
+                checkpointsTF.setText(patrolling.getCheckpoints());
+                statusTF.setText(patrolling.getStatus());
 
-                inputTime = BE.DTF.formatTime(rowData[0].toString());
-                slotTF.setText((String) rowData[0]);
-                blockTF.setText((String) rowData[1]);
-                levelTF.setText((String) rowData[2]);
-                checkpointsTF.setText((String) rowData[3]);
-
-                statusTF.setText(rowData[7].toString());
-
-                if (!checkedAt.equals("-")) {
+                if (!checkedAt.equals(BE.TF.empty)) {
                     timeCheckedPicker.setTime(BE.DTF.formatTime(checkedAt));
                 }
                 else {
-                    timeCheckedPicker.setText("-");
+                    timeCheckedPicker.setText(BE.TF.empty);
                 }
 
                 try {
@@ -1048,15 +1054,19 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
                 if (securityID != null) {
                     Employee employee = new Employee(securityID.toLowerCase());
+                    
+                    assignedJob = new AssignedJob(String.valueOf(inputDate), patrolling.getPatID());
 
                     securityIdComboBox.addItem(securityID);
-                    securityIdComboBox.setSelectedItem(rowData[5]);
-                    securityNameTF.setText((String) rowData[6]);
+                    securityIdComboBox.setSelectedItem(securityID);
+                    securityNameTF.setText(employee.getEmpName());
                     contactNoTF.setText(employee.getPhoneNo());
                     
                     removeEmpBTN.setEnabled(true);
                 }
                 else {
+                    assignedJob = null;
+                    
                     removeEmpBTN.setEnabled(false);
                     securityIdComboBox.setSelectedIndex(0);
                     securityNameTF.setText("");
@@ -1092,67 +1102,36 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         JOptionPane.QUESTION_MESSAGE);
         
         if(result == JOptionPane.YES_OPTION){
-            ArrayList<String> toUpdateList = new ArrayList<>();
-
-            String slot = slotTF.getText();
-            String checkpoint = checkpointsTF.getText();
             String securityId = securityIdComboBox.getSelectedItem().toString();
             String securityName = securityNameTF.getText();
             String remarks = (!remarksTA.getText().equals("")) ? remarksTA.getText() : " ";
+            
+            patrolling.setPatSecID(securityId.toLowerCase());
+            patrolling.setPatSecName(securityName);
+            patrolling.setPatRemarks(remarks);
+            patrolling.setStatus("Pending");
+            patrolling.setUpdatedBy(this.BE.getUserID());
+            patrolling.setLastUpdate(BE.DTF.currentDateTime());
 
-            List<String> scheduleList = fh.fileRead(patrollingScheduleFile);
-
-            String checkBef = null;
-            for (String eachSched : scheduleList) {
-                String[] schedules = eachSched.split(BE.TF.sp);
-                String id = schedules[0];
-                checkBef = schedules[5];
-                
-                if (id.equals(patID)) {
-                    toUpdateList.add(id + BE.TF.sp + schedules[1] + BE.TF.sp + schedules[2] + BE.TF.sp + schedules[3] + BE.TF.sp +
-                            checkpoint + BE.TF.sp + checkBef + BE.TF.sp + securityId.toLowerCase() + BE.TF.sp + securityName + BE.TF.sp + 
-                            remarks + BE.TF.sp + "Pending" + BE.TF.sp + BE.TF.empty + BE.TF.sp + this.getCurrentBEid() + BE.TF.sp + 
-                            BE.DTF.currentDateTime() + BE.TF.sp);
-                }
-                else {
-                    toUpdateList.add(eachSched);
-                }
-            }
-
-            fh.fileWrite(patrollingScheduleFile, false, toUpdateList);
-
-            String timeNeeded = String.valueOf(BE.DTF.formatTime(checkBef).compareTo(BE.DTF.formatTime(slot)));
-
-            patrollingScheduleTableSetUp();
+            patrolling.updatePatrolling(patrollingScheduleFile);
+            
             fieldAction(false);
-
-            deletePatScheduleFromJobFile();
-
-            String newTaskId = null;
-            try {
-                newTaskId = BE.getNewTaskId(BE.TF.employeeJobFile, 0);
-            } catch (IOException ex) {
-                Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
+            patrollingScheduleTableSetUp();
 
             try {
+                updatePatShceduleFromJobFile();
                 comboBoxSetUp();
                 updateBTN.setEnabled(false);
                 removeSlotBTN.setEnabled(false);
                 removeEmpBTN.setEnabled(false);
                 cleanField();
+                
+                patrolling = null;
+                assignedJob = null;
             } catch (IOException ex) {
                 Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-            ArrayList<String> addJob = new ArrayList<>();
-            if (newTaskId != null) {
-                addJob.add(newTaskId + BE.TF.sp + securityId.toLowerCase() + BE.TF.sp + BE.TF.empty + BE.TF.sp + 
-                        "PT" + BE.TF.sp + 0 + BE.TF.sp + timeNeeded+"h" + BE.TF.sp + this.inputDate + BE.TF.sp + slot + BE.TF.sp + this.inputDate + " " + checkBef + 
-                        BE.TF.sp + BE.TF.empty + BE.TF.sp + remarks + BE.TF.sp + BE.getUserID() + BE.TF.sp + 
-                        BE.DTF.currentDateTime() + BE.TF.sp + inputDate + " " + patID + BE.TF.sp);
-            }
-            fh.fileWrite(BE.TF.employeeJobFile, true, addJob);
         }
     }//GEN-LAST:event_updateBTNActionPerformed
     
@@ -1164,46 +1143,48 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         JOptionPane.QUESTION_MESSAGE);
         
         if(result == JOptionPane.YES_OPTION){
-            ArrayList<String> toRemove = new ArrayList<>();
-            List<String> oldSchedule = fh.fileRead(patrollingScheduleFile);
-
-            for (String eachSche : oldSchedule) {
-                String[] scheDet = eachSche.split(BE.TF.sp);
-                String slotId = scheDet[0];
-                if (slotId.equals(patID)) {
-                    toRemove.add(scheDet[0] + BE.TF.sp + scheDet[1] + BE.TF.sp + scheDet[2] + BE.TF.sp + 
-                                 scheDet[3] + BE.TF.sp + scheDet[4] + BE.TF.sp + scheDet[5] + BE.TF.sp + 
-                                 BE.TF.empty + BE.TF.sp + BE.TF.empty + BE.TF.sp + BE.TF.empty + BE.TF.sp + "Unassign" + BE.TF.sp + BE.TF.empty + BE.TF.sp + 
-                                 BE.getUserID() + BE.TF.sp + BE.DTF.currentDateTime() + BE.TF.sp);
-                }
-                else {
-                    toRemove.add(eachSche);
-                }
-            }
-
-            fh.fileWrite(patrollingScheduleFile, false, toRemove);
+            
+            patrolling.setPatSecID(BE.TF.empty);
+            patrolling.setPatSecName(BE.TF.empty);
+            patrolling.setStatus("Unassign");
+            patrolling.setPatRemarks(BE.TF.empty);
+            patrolling.setUpdatedBy(BE.getUserID());
+            patrolling.setLastUpdate(BE.DTF.currentDateTime());
+            
+            patrolling.updatePatrolling(patrollingScheduleFile);
             
             patrollingScheduleTableSetUp();
             
-            deletePatScheduleFromJobFile();
+            try {
+                deletePatScheduleFromJobFile();
+            } catch (IOException ex) {
+                Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
             cleanField();
             
             removeSlotBTN.setEnabled(false);
+            assignedJob = null;
+            patrolling = null;
         }
     }//GEN-LAST:event_removeEmpBTNActionPerformed
     
     private void securityIdComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_securityIdComboBoxActionPerformed
         // TODO add your handling code here:
         String securityId = (String) securityIdComboBox.getSelectedItem();
-        if (securityId != null) {
+        
+        if (securityId != null && !securityId.equals("Not Selected")) {
             Employee employee = new Employee(securityId.toLowerCase());
+
             if (employee.isEmployee()) {
                 String securityName = employee.getEmpName();
                 String contact = employee.getPhoneNo();
                 securityNameTF.setText(securityName);
                 contactNoTF.setText(contact);
                 updateBTN.setEnabled(true);
+
+                patrolling.setPatSecID(securityId);
+                patrolling.setPatSecName(securityName);
             }
             else {
                 securityNameTF.setText("");
@@ -1225,7 +1206,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     private void manageScheduleBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageScheduleBTNActionPerformed
         // TODO add your handling code here:
         BE.toScheduleModification(this.BE, patrollingScheduleFile, inputDate);
-        this.dispose();
+        this.setAlwaysOnTop(false);
     }//GEN-LAST:event_manageScheduleBTNActionPerformed
 
     private void removeSlotBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeSlotBTNActionPerformed
@@ -1247,7 +1228,11 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
             fh.fileWrite(patrollingScheduleFile, false, updatedSched);
 
-            deletePatScheduleFromJobFile();
+            try {
+                deletePatScheduleFromJobFile();
+            } catch (IOException ex) {
+                Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
             patrollingScheduleTableSetUp();
 
@@ -1256,6 +1241,9 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             removeSlotBTN.setEnabled(false);
             removeEmpBTN.setEnabled(false);
             cleanField();
+            
+            assignedJob = null;
+            patrolling = null;
         }
     }//GEN-LAST:event_removeSlotBTNActionPerformed
 
@@ -1360,30 +1348,40 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         jPanel9.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_jPanel9MouseEntered
     
-    private void deletePatScheduleFromJobFile() {
-        ArrayList<String> removeFromJobFile = new ArrayList<>();
-        
-        String dayCode  = inputDate + " " + patID;
-        
-        List<String> getEmployeeList = fh.fileRead(BE.TF.employeeJobFile);
-        for (String eachJob : getEmployeeList) {
-            String[] jobDet = eachJob.split(BE.TF.sp);
-            String patCode = jobDet[jobDet.length - 1];
-            
-            if (!patCode.equals(dayCode)) {
-                removeFromJobFile.add(eachJob);
-            }
-        }
-        
-        fh.fileWrite(BE.TF.employeeJobFile, false, removeFromJobFile);
+    private void deletePatScheduleFromJobFile() throws IOException {
+        assignedJob.updateJobTextFile(assignedJob.deleteItem);
         
         removeEmpBTN.setEnabled(false);
         updateBTN.setEnabled(false);
         fieldAction(false);
     }
     
+    private void updatePatShceduleFromJobFile() throws IOException {
+        if (assignedJob != null) {
+            assignedJob.setTaskEmpID(patrolling.getPatSecID());
+            assignedJob.setRemarks(patrolling.getPatRemarks());
+            assignedJob.setUpdateBy(patrolling.getUpdatedBy());
+            assignedJob.setUpdatedTime(patrolling.getLastUpdate());
+            
+            assignedJob.updateJobTextFile(assignedJob.updateItem);
+        }
+        else {
+            String newTaskId = BE.getNewTaskId(BE.TF.employeeJobFile, 0);
+            String expectedEndDateTime = String.valueOf(inputDate) + " " + patrolling.getCheckBefore();
+            String patCode = String.valueOf(inputDate) + " " + patrolling.getPatID();
+            String timeNeeded = String.valueOf(BE.DTF.formatTime(patrolling.getCheckBefore()).compareTo(BE.DTF.formatTime(patrolling.getSlot())));
+            
+            assignedJob = new AssignedJob(newTaskId, patrolling.getPatSecID(), BE.TF.empty, "PT", 0, 
+                                          timeNeeded+"h", String.valueOf(inputDate), patrolling.getSlot(), 
+                                          expectedEndDateTime, BE.TF.empty, patrolling.getPatRemarks(), 
+                                          BE.getUserID(), BE.DTF.currentDateTime(), patCode);
+            
+            assignedJob.updateJobTextFile(assignedJob.addItem);
+        }
+    }
+    
     private void comboBoxSetUp() throws IOException {
-        ArrayList<String> employeeIdList = new ArrayList<>();
+        ArrayList<Employee> employeeList = new ArrayList<>();
         ArrayList<String> canPatrollId = new ArrayList<>();
 
         List<String> getEmployeeList = BE.fh.fileRead(BE.TF.fullEmployeeList);
@@ -1392,63 +1390,67 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         for (String eachEmp : getEmployeeList) {
             if (!firstLine) {
                 String employeeId = eachEmp.split(BE.TF.sp)[0];
-                if (!employeeIdList.contains(employeeId)) {
-                    employeeIdList.add(employeeId);
+                
+                Employee emp = new Employee(employeeId);
+                
+                if (emp.getPositionCode().equals(emp.empCode[0])) {
+                    employeeList.add(emp);
                 }
             }
             
             firstLine = false;
         }
         
-        for (String eachEmp : employeeIdList) {
-            Employee employee = new Employee(eachEmp.split(BE.TF.sp));
-            
-            ArrayList<AssignedJob> jobList = employee.getEmployeeJobList();
-            
-            boolean cannotPatroll = false;
-            if (!jobList.isEmpty()) {
-                for (AssignedJob eachJob : jobList) {
-                    String assignedJobCode = eachJob.getJobID();
-                    
-                    if (!assignedJobCode.equals("NS") && !assignedJobCode.equals("MS")) {
-//                    if (assignedJobCode.equals("NS") || assignedJobCode.equals("MS") || assignedJobCode.equals("PT")) {
-                        int repitition = eachJob.getRepetition();
+        firstLine = true;
+        for (Employee eachEmp : employeeList) {
+            if (!firstLine) {
+                ArrayList<AssignedJob> jobList = eachEmp.getEmployeeJobList();
 
-                        String timeNeeded = eachJob.getTimeNeeded();
-                        LocalDate workingDate = null;
-                        LocalTime workingTime = BE.DTF.formatTime(eachJob.getStartTime());
-                        String[] workingEndDateTime = eachJob.getExpectedEndDateTime().split(" ");
+                boolean cannotPatroll = false;
+                if (!jobList.isEmpty()) {
+                    for (AssignedJob eachJob : jobList) {
+                        String assignedJobCode = eachJob.getJobID();
 
-                        LocalTime workingStartTime2;
-                        LocalTime workingEndTime2;
+                        if (!assignedJobCode.equals("NS") && !assignedJobCode.equals("MS")) {
+                            int repitition = eachJob.getRepetition();
 
-                        ArrayList<String> dateData = BE.compareJobDate(repitition, workingEndDateTime, eachJob, timeNeeded, dayOfToday, inputDate, workingTime, workingDate);
+                            String timeNeeded = eachJob.getExpectedTimeRequired();
+                            LocalDate workingDate = null;
+                            LocalTime workingTime = BE.DTF.formatTime(eachJob.getStartTime());
+                            String[] workingEndDateTime = eachJob.getExpectedEndDateTime().split(" ");
 
-                        if (!dateData.isEmpty()) {
-                            workingDate = BE.DTF.formatDate(dateData.get(0));
-                            workingTime = BE.DTF.formatTime(dateData.get(1));
+                            LocalTime workingStartTime2;
+                            LocalTime workingEndTime2;
 
-                            workingStartTime2 = (!dateData.get(2).equals("null")) ? BE.DTF.formatTime(dateData.get(2)) : null;
-                            workingEndTime2 = (!dateData.get(3).equals("null")) ? BE.DTF.formatTime(dateData.get(3)) : null;
+                            ArrayList<String> dateData = BE.compareJobDate(repitition, workingEndDateTime, eachJob, timeNeeded, dayOfToday, inputDate, workingTime, workingDate);
 
-                            workingEndDateTime = dateData.get(4).split(" ");
+                            if (!dateData.isEmpty()) {
+                                workingDate = BE.DTF.formatDate(dateData.get(0));
+                                workingTime = BE.DTF.formatTime(dateData.get(1));
 
-                            if (workingDate != null) {
-                                cannotPatroll = BE.compareDateTime(inputDate, inputTime, workingDate, workingTime, workingEndDateTime, workingStartTime2, workingEndTime2);
+                                workingStartTime2 = (!dateData.get(2).equals("null")) ? BE.DTF.formatTime(dateData.get(2)) : null;
+                                workingEndTime2 = (!dateData.get(3).equals("null")) ? BE.DTF.formatTime(dateData.get(3)) : null;
+
+                                workingEndDateTime = dateData.get(4).split(" ");
+
+                                if (workingDate != null) {
+                                    cannotPatroll = BE.compareDateTime(inputDate, inputTime, workingDate, workingTime, workingEndDateTime, workingStartTime2, workingEndTime2);
+                                }
                             }
-                        }
 
-                        if (cannotPatroll) {
-                            break;
+                            if (cannotPatroll) {
+                                break;
+                            }
                         }
                     }
                 }
+                
+                if (!cannotPatroll && !canPatrollId.contains(eachEmp.getEmpID())) {
+                    canPatrollId.add(eachEmp.getEmpID().toUpperCase());
+                }
             }
             
-            
-            if (!cannotPatroll && !canPatrollId.contains(employee.getEmpID())) {
-                canPatrollId.add(employee.getEmpID().toUpperCase());
-            }
+            firstLine = false;
         }
         
         securityIdComboBox.removeAllItems();
@@ -1457,71 +1459,6 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         for (String eachId : canPatrollId) {
             securityIdComboBox.addItem(eachId);
         }
-        
-//        ArrayList<String> assignedEmployee = BE.getSpecificStatusEmployeeList(inputDate, inputTime, "Security Guard", null, BE.assignedEmployee);
-//        ArrayList<String> unassignedEmployee = BE.getSpecificStatusEmployeeList(inputDate, inputTime, "Security Guard", null, BE.unassignedEmployee);
-//        ArrayList<String> canPatrollId = new ArrayList<>();
-//        
-//        for (String unassign : unassignedEmployee) {
-//            assignedEmployee.add(unassign);
-//        }
-//        
-//        for (String allEmp : assignedEmployee) {
-//            String empId = allEmp.split(BE.TF.sp)[0];
-//            
-//            ArrayList<String> jobList = BE.getAssignedJobForSpecificEmployee(empId);
-//            
-//            boolean cannotPatroll = false;
-//            if (!jobList.isEmpty()) {
-//                for (String eachJob : jobList) {
-//                    String[] jobDetails = eachJob.split(BE.TF.sp);
-//                    String assignedJobCode = jobDetails[3];
-//                    if (assignedJobCode.equals("NS") || assignedJobCode.equals("MS")) {
-////                    if (assignedJobCode.equals("NS") || assignedJobCode.equals("MS") || assignedJobCode.equals("PT")) {
-//                        int repitition = Integer.valueOf(jobDetails[4]);
-//
-//                        String timeNeeded = jobDetails[5];
-//                        LocalDate workingDate = null;
-//                        LocalTime workingTime = BE.DTF.formatTime(jobDetails[7]);
-//                        String[] workingEndDateTime = jobDetails[8].split(" ");
-//
-//                        LocalTime workingStartTime2;
-//                        LocalTime workingEndTime2;
-//
-//                        ArrayList<String> dateData = BE.compareJobDate(repitition, workingEndDateTime, jobDetails, timeNeeded, dayOfToday, inputDate, workingTime, workingDate);
-//
-//                        if (!dateData.isEmpty()) {
-//                            workingDate = BE.DTF.formatDate(dateData.get(0));
-//                            workingTime = BE.DTF.formatTime(dateData.get(1));
-//
-//                            workingStartTime2 = (!dateData.get(2).equals("null")) ? BE.DTF.formatTime(dateData.get(2)) : null;
-//                            workingEndTime2 = (!dateData.get(3).equals("null")) ? BE.DTF.formatTime(dateData.get(3)) : null;
-//
-//                            workingEndDateTime = dateData.get(4).split(" ");
-//
-//                            if (workingDate != null) {
-//                                cannotPatroll = BE.compareDateTime(inputDate, inputTime, workingDate, workingTime, workingEndDateTime, workingStartTime2, workingEndTime2);
-//                            }
-//                        }
-//
-//                        if (cannotPatroll) {
-//                            break;
-//                        }
-//                    }
-//                }
-//            }
-//            
-//            if (!cannotPatroll && !canPatrollId.contains(empId)) {
-//                canPatrollId.add(empId.toUpperCase());
-//            }
-//        }
-//        
-//        securityIdComboBox.removeAllItems();
-//        securityIdComboBox.addItem("Not Selected");
-//        
-//        for (String eachId : canPatrollId) {
-//            securityIdComboBox.addItem(eachId);
-//        }
     }
     
     private void disableManageButton() {
