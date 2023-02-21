@@ -216,13 +216,13 @@ public class AdminExecutiveModifyFacility extends javax.swing.JFrame {
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Operating Start Hour:");
 
-        startHourCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-PLEASE SELECT-", "00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00" }));
+        startHourCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-PLEASE SELECT-", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00" }));
 
         jLabel12.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(102, 102, 102));
         jLabel12.setText("Operating End Hour:");
 
-        endHourCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-PLEASE SELECT-", "00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00" }));
+        endHourCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-PLEASE SELECT-", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00" }));
         endHourCB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 endHourCBActionPerformed(evt);
@@ -596,6 +596,8 @@ public class AdminExecutiveModifyFacility extends javax.swing.JFrame {
         
         if(!fctName.equals("") && !startHour.equals("-PLEASE SELECT-") &&
                 !endHour.equals("-PLEASE SELECT-") && !imageNameLabel.equals("")) {
+            if(Integer.parseInt(startHour.substring(0, 2)) 
+                    >= Integer.parseInt(endHour.substring(0, 2)) == false) {
             if(check) {
                 if(payment.equals("true") && (unitPrice.equals("") ||
                     unit.equals("-PLEASE SELECT-"))) {
@@ -658,7 +660,9 @@ public class AdminExecutiveModifyFacility extends javax.swing.JFrame {
             } else {
                 warningMessage.setText("Facility is existed in the system!");
             }
-            
+            } else {
+                warningMessage.setText("Invalid Start Time & End Time!");
+            }
         } else {
             warningMessage.setText("Please complete the form!");
         }

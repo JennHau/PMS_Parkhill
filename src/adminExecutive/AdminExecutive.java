@@ -1159,7 +1159,9 @@ public class AdminExecutive extends Users{
                         }
                     } 
                     if(check){
-                        timeSlot.add(variation +";"+ cStartTime +";"+ String.valueOf(j+1) + ":00" +";"+ "-" +";"+ "SELECT");
+                        String newEndTime = String.valueOf(j+1);
+                        newEndTime = (newEndTime.length() != 2) ? "0" + newEndTime : newEndTime;
+                        timeSlot.add(variation +";"+ cStartTime +";"+ newEndTime + ":00" +";"+ "-" +";"+ "SELECT");
                     }
                 }
             }
