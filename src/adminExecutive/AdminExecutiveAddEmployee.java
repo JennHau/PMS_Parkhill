@@ -4,6 +4,7 @@
  */
 package adminExecutive;
 
+import classes.Employee;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.util.List;
@@ -390,6 +391,7 @@ public class AdminExecutiveAddEmployee extends javax.swing.JFrame {
         String position = (String)positionCB.getSelectedItem();
         String firstName = firstNameTF.getText();
         String lastName = lastNameTF.getText();
+        String name = firstName +" "+ lastName;
         String email = emailTF.getText().toLowerCase();
         String phoneNo = phoneNoTF.getText();
         String id = userIDTF.getText().toLowerCase();
@@ -412,8 +414,10 @@ public class AdminExecutiveAddEmployee extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
                 
                 if(result == JOptionPane.YES_OPTION){
-                    AE.addEmployee(id, email, firstName, lastName, phoneNo, position,
-                            identificationNo, gender);
+                    String[] newData = {id, email, name, phoneNo, position,
+                            identificationNo, gender};
+                    Employee EMP = new Employee(newData);
+                    AE.addEmployee(EMP);
                     JOptionPane.showMessageDialog (null, "New employee account has been added!", 
                                         "ADD EMPLOYEE ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
                     dispose();

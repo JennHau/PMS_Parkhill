@@ -28,6 +28,8 @@ public class Employee {
     TextFile TF = new TextFile();
     public Job JB = new Job();
     
+    public Employee(){}
+    
     public Employee(String empId) {
         List<String> employeeList = FH.fileRead(TF.fullEmployeeList);
         for (String eachEmp : employeeList) {
@@ -111,6 +113,20 @@ public class Employee {
         }
         
         return roleCode;
+    }
+    
+    public ArrayList<Employee> getAllEmployeeDetails() {
+        List<String> employeeList =  FH.fileRead("employeeList.txt");
+        
+        ArrayList<Employee> availableList = new ArrayList<>();
+        
+        for (int i = 1; i < employeeList.size(); i++) {
+            String[] employeeDetails = employeeList.get(i).split(";");
+            Employee EMP = new Employee(employeeDetails);
+            
+            availableList.add(EMP);
+        } return availableList;
+    
     }
     
     public String getPositionCode() {
