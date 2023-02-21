@@ -847,7 +847,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
 
     private void registerBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBTNActionPerformed
         // TODO add your handling code here:
-        passID = RT.getNewPassID();
+        passID = RT.getNewVisitorPassID();
         passIdTF.setText(passID.toUpperCase());
         
         visitorIcTF.setEnabled(true);

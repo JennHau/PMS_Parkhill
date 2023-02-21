@@ -2,3 +2,4 @@ visitorPassId;visitorIC;visitorName;carPlate;visitorContact;date;time;checkInSta
 vsp543211;010101101111;Andrew Siah;VZ8888;012-3456789;2023-01-26;23:13;Registered;-;-;rsd000001;2023-02-01 22:46:01;
 vsp543212;123456101234;Winson;ABC1234;0123456789;2023-02-08;01:30;Registered;-;-;rsd000001;2023-02-01 21:27:01;
 vsp543213;123;abc;1234;12345;2023-02-08;00:30;Registered;-;-;vdr000001;2023-02-07 15:37;
+vsp543214;123;abcd;123abcd;1234567890;2023-02-23;02:30;Registered;-;-;tnt000001;2023-02-21 20:49;
