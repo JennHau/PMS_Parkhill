@@ -4,6 +4,7 @@
  */
 package adminExecutive;
 
+import classes.Employee;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -19,14 +20,14 @@ public class AdminExecutiveModifyEmployee extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
-     * @param id
+     * @param EMP
      * @param AE
      */
-    public AdminExecutiveModifyEmployee(String id, AdminExecutive AE) {
+    public AdminExecutiveModifyEmployee(Employee EMP, AdminExecutive AE) {
         initComponents();
         setWindowIcon();
         this.AE = AE;
-        this.id = id;
+        this.EMP = EMP;
         setDefault();
     }
 
@@ -356,30 +357,17 @@ public class AdminExecutiveModifyEmployee extends javax.swing.JFrame {
 
     FileHandling fh = new FileHandling();
     private final AdminExecutive AE;
+    private final Employee EMP;
     
-    String id;
     
     private void setDefault() {
-        List<String> employeeList = fh.fileRead("employeeList.txt");
-        for (int i = 1; i < employeeList.size(); i++) {
-            String[] employeeDetails = employeeList.get(i).split(";");
-            String id = employeeDetails[0];
-            String email = employeeDetails[1];
-            String firstName = employeeDetails[2].substring(0, employeeDetails[2].indexOf(" "));
-            String lastName = employeeDetails[2].substring(employeeDetails[2].indexOf(" ") +1);
-            String phoneNo = employeeDetails[3];
-            String position = employeeDetails[4];
-            String identificationNo = employeeDetails[5];
-            String gender = employeeDetails[6];
-            
-            if (id.equals(this.id)) {
-                positionTF.setText(position); employeeIDTF.setText(id);
-                firstNameTF.setText(firstName); lastNameTF.setText(lastName);
-                identificationNoTF.setText(identificationNo); emailTF.setText(email);
-                phoneNoTF.setText(phoneNo); genderCB.setSelectedItem(gender);
-            }
-        }
-        
+        String firstName = EMP.getEmpName().substring(0, EMP.getEmpName().indexOf(" "));
+        String lastName = EMP.getEmpName().substring(EMP.getEmpName().indexOf(" ") +1);
+
+        positionTF.setText(EMP.getPosition()); employeeIDTF.setText(EMP.getEmpID().toUpperCase());
+        firstNameTF.setText(firstName); lastNameTF.setText(lastName);
+        identificationNoTF.setText(EMP.getIcNo()); emailTF.setText(EMP.getEmpEmail());
+        phoneNoTF.setText(EMP.getPhoneNo()); genderCB.setSelectedItem(EMP.getGender());
     }
     
     private void employeeIDTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeeIDTFActionPerformed
@@ -411,6 +399,7 @@ public class AdminExecutiveModifyEmployee extends javax.swing.JFrame {
         String position = positionTF.getText();
         String firstName = firstNameTF.getText();
         String lastName = lastNameTF.getText();
+        String name = firstName +" "+ lastName;
         String email = emailTF.getText().toLowerCase();
         String phoneNo = phoneNoTF.getText();
         String id = employeeIDTF.getText().toLowerCase();
@@ -433,9 +422,11 @@ public class AdminExecutiveModifyEmployee extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
                 
                 if(result == JOptionPane.YES_OPTION){
-                    AE.deleteEmployee(id);
-                    AE.addEmployee(id, email, firstName, lastName, phoneNo, position,
-                            identificationNo, gender);
+                    String[] newData = {id, email, name, phoneNo, position,
+                            identificationNo, gender};
+                    Employee EMP = new Employee(newData);
+                    AE.deleteEmployee(EMP);
+                    AE.addEmployee(EMP);
                     JOptionPane.showMessageDialog (null, "Employee account has been modified!", 
                                         "MODIFY EMPLOYEE ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
@@ -474,7 +465,8 @@ public class AdminExecutiveModifyEmployee extends javax.swing.JFrame {
         JOptionPane.QUESTION_MESSAGE);
 
         if(result == JOptionPane.YES_OPTION){
-            AE.deleteEmployee(employeeIDTF.getText());
+            Employee EMP = new Employee(employeeIDTF.getText().toLowerCase());
+            AE.deleteEmployee(EMP);
             JOptionPane.showMessageDialog (null, "Employee account has been deleted!", 
                                 "DELETE EMPLOYEE ACCOUNT", JOptionPane.INFORMATION_MESSAGE);
             dispose();

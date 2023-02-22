@@ -152,6 +152,8 @@ public class ResidentTenantStatementReport extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("STATEMENT REPORT");
 
+        statementTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        statementTable.setForeground(new java.awt.Color(51, 51, 51));
         statementTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -168,6 +170,8 @@ public class ResidentTenantStatementReport extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        statementTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        statementTable.setRowHeight(30);
         statementTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 statementTableMouseClicked(evt);
@@ -413,7 +417,7 @@ public class ResidentTenantStatementReport extends javax.swing.JFrame {
     
     private void tableDesignSetUp() {
         int[] columnIgnore = {2};
-        int[] columnLength = {120, 150, 218, 150, 150};
+        int[] columnLength = {110, 150, 268, 130, 130};
         RT.setTableDesign(statementTable, jLabel2, columnLength, columnIgnore);
     }
     

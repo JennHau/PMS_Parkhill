@@ -356,7 +356,6 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
                             "PAYMENT", JOptionPane.INFORMATION_MESSAGE);
                         }
                         
-                        
                         if (ResidentTenantPaymentManagement.rtPayMan != null) {
                             ResidentTenantPaymentManagement.rtPayMan.dispose();
                         }
@@ -364,19 +363,19 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
                         if (ResidentTenantFacilityPaymentGateway.rtFacPay != null) {
                             ResidentTenantFacilityPaymentGateway.rtFacPay.dispose();
                         }
-
+                        
                         if (ResidentTenantBookFacility.rtBookFacility != null) {
                             ResidentTenantBookFacility.rtBookFacility.dispose();
                         }
-
+                        
                         if (ResidentTenantPaymentGatewayModifyFacilityBooking.rtPayFacMod != null) {
                             ResidentTenantPaymentGatewayModifyFacilityBooking.rtPayFacMod.dispose();
                         }
-
+                        
                         if (ResidentTenantManageBookedFacility.rtManageBooked != null) {
                             ResidentTenantManageBookedFacility.rtManageBooked.dispose();
                         }
-
+                        
                         this.dispose();
 
                         if (forFacility) {

@@ -145,7 +145,7 @@ public class VendorViewPaidInvoice extends javax.swing.JFrame {
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setText("INVOICE");
 
-        paidTable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        paidTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         paidTable.setForeground(new java.awt.Color(51, 51, 51));
         paidTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -719,7 +719,7 @@ public class VendorViewPaidInvoice extends javax.swing.JFrame {
     
     private void tableDesignSetUp() {
         int[] columnIgnore = {0};
-        int[] columnLength = {290, 110, 80, 110, 110, 150, 110};
+        int[] columnLength = {225, 110, 100, 110, 110, 175, 130};
         VD.setTableDesign(paidTable, jLabel2, columnLength, columnIgnore);
     }
     

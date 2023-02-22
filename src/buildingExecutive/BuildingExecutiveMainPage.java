@@ -40,6 +40,12 @@ public class BuildingExecutiveMainPage extends javax.swing.JFrame {
     }
     
     public final void runDefaultSetUp() {
+        try {
+            BE.updateJobList();
+        } catch (IOException ex) {
+            Logger.getLogger(BuildingExecutiveMainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         setCurrentBEid();
         setWindowIcon();
         setCurrentUserProfile();

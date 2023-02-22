@@ -573,7 +573,7 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
 
                 },
                 new String [] {
-                    "V_ID", "Name", "Identification No", "Unitno", "Check In ", "Check out  ", "Status", "Action"
+                    "Visitor_ID", "Name", "Identification No", "Unit no", "Check In ", "Check out  ", "Status", "Action"
                 }
             ) {
                 boolean[] canEdit = new boolean [] {
@@ -584,7 +584,8 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
                     return canEdit [columnIndex];
                 }
             });
-            jTable1.setRowHeight(40);
+            jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
+            jTable1.setRowHeight(30);
             jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     jTable1MouseClicked(evt);
@@ -679,9 +680,9 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
             });
             jPanel6.add(changedate, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 60, 180, -1));
 
+            visitor_id6.setText("SEARCH :");
             visitor_id6.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
             visitor_id6.setForeground(new java.awt.Color(153, 153, 153));
-            visitor_id6.setText("SEARCH :");
             jPanel6.add(visitor_id6, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, -1, -1));
 
             jLabel13.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N

@@ -19,6 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import classes.FileHandling;
+import classes.Patrolling;
 import java.awt.Component;
 import javax.swing.table.TableCellRenderer;
 
@@ -33,20 +34,23 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
      */
     FileHandling fh = new FileHandling();
     SecurityGuard sg = new SecurityGuard();
+    Patrolling pt = new Patrolling();
 
     public SecurityGuard_Check_in(SecurityGuard SG) {
+        this.SG = SG;
+
         initComponents();
         setWindowIcon();
         CheckpointTable();
         display_check_table();
         Current_date.setText(sg.currentdate().toString());
-        this.SG = SG;
         setCurrentProfile();
         setTableDesign();
 
     }
 
     private final SecurityGuard SG;
+    String today_file = "patrollingScheduleFiles/patrollingFile_" + sg.currentdate() + ".txt";
 
     private void setCurrentProfile() {
         username.setText(SG.getFirstName() + " " + SG.getLastName());
@@ -55,28 +59,23 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
 //    DISPLAY UNCHECKED CHECK POINT TABLE
     public void CheckpointTable() {
         sg.currentdate();
-        String patrollingScheduleFileFormat = "patrollingScheduleFiles/patrollingFile_";
-//        sg.currentdate()
-        List<String> row = fh.fileRead(patrollingScheduleFileFormat + "2023-01-31.txt");
+        List<String> row = fh.fileRead(this.today_file);
         String[] rowary = new String[row.size()];
         row.toArray(rowary);
 
-        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        DefaultTableModel model = (DefaultTableModel) pending_table.getModel();
 
         for (int i = 1; i < rowary.length; i++) {
             String line = rowary[i].toString().trim();
             line.toUpperCase().split(";");
             String[] line_split = line.toUpperCase().split(";");
-//            && line_split[2].equalsIgnoreCase(sg.currentdate()
             System.out.println(line_split[9]);
 
-            if (line_split[6].trim().equalsIgnoreCase(sg.getUserID()) && !line_split[9].trim().equalsIgnoreCase("CHECKED")) {
+            if (line_split[6].trim().equalsIgnoreCase(SG.getUserID()) && line_split[9].trim().equalsIgnoreCase("Pending")) {
                 String id = line_split[0];
                 String block = line_split[2];
                 String level = line_split[3];
                 String checkpoint = line_split[4];
-                System.out.println(line_split[6]);
-//                System.out.println(line_split);
                 String checkbf = sg.coverttimeToPm(line_split[5]);
                 String[] AR = {id, block, level, checkpoint, checkbf, "CHECK IN"};
                 model.addRow(AR);
@@ -90,8 +89,8 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
             label.setFont(fn);
             label.setForeground(Color.RED);
             label.setVisible(true);
-            jTable2.add(label);
-            jTable2.setFillsViewportHeight(true);
+            pending_table.add(label);
+            pending_table.setFillsViewportHeight(true);
         }
 
     }
@@ -129,7 +128,7 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable()
+        checked_table = new javax.swing.JTable()
         {@Override
 
             public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
@@ -157,7 +156,7 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
         }
         ;
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable()
+        pending_table = new javax.swing.JTable()
         {
             @Override
 
@@ -217,9 +216,9 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Dashboard");
         jLabel1.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Dashboard");
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel1MouseClicked(evt);
@@ -245,9 +244,9 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
 
         jPanel7.setBackground(new java.awt.Color(13, 24, 42));
 
+        SearchVisitor.setText("Search Visitor Pass");
         SearchVisitor.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         SearchVisitor.setForeground(new java.awt.Color(255, 255, 255));
-        SearchVisitor.setText("Search Visitor Pass");
         SearchVisitor.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 SearchVisitorMouseClicked(evt);
@@ -273,10 +272,10 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
 
         jPanel8.setBackground(new java.awt.Color(13, 24, 42));
 
+        jLabel5.setText("Manage Incident ");
         jLabel5.setBackground(new java.awt.Color(13, 24, 42));
         jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Manage Incident ");
         jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel5MouseClicked(evt);
@@ -302,10 +301,10 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
 
         jPanel9.setBackground(new java.awt.Color(13, 50, 79));
 
+        jLabel6.setText("Check Point Management");
         jLabel6.setBackground(new java.awt.Color(51, 0, 102));
         jLabel6.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Check Point Management");
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -339,10 +338,10 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
 
         jPanel11.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel9.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/notificationIcon.png"))); // NOI18N
         jLabel9.setText(" NOTIFICATIONS");
+        jLabel9.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
@@ -363,9 +362,9 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
 
         jPanel12.setBackground(new java.awt.Color(13, 24, 42));
 
+        jLabel10.setText("LOGOUT");
         jLabel10.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("LOGOUT");
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
@@ -386,10 +385,10 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
 
         jPanel13.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel11.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
         jLabel11.setText("VIEW PROFILE");
+        jLabel11.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
@@ -410,10 +409,10 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
 
         jPanel14.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel12.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
         jLabel12.setText("LOGOUT");
+        jLabel12.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
         jPanel14.setLayout(jPanel14Layout);
@@ -488,16 +487,16 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(153, 153, 153), null, null));
 
-        username.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        username.setForeground(new java.awt.Color(102, 102, 102));
         username.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         username.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
         username.setText("USERNAME");
+        username.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        username.setForeground(new java.awt.Color(102, 102, 102));
 
-        jLabel4.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(13, 24, 42));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel4.setText("CHECK POINT MANAGEMENT");
+        jLabel4.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(13, 24, 42));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -528,7 +527,7 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(226, 226, 226));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        checked_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -544,9 +543,11 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        checked_table.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        checked_table.setRowHeight(30);
+        jScrollPane1.setViewportView(checked_table);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        pending_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -562,14 +563,14 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable2.setIntercellSpacing(new java.awt.Dimension(2, 2));
-        jTable2.setRowHeight(30);
-        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+        pending_table.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        pending_table.setRowHeight(30);
+        pending_table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable2MouseClicked(evt);
+                pending_tableMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(pending_table);
 
         jPanel4.setBackground(new java.awt.Color(204, 204, 204));
         jPanel4.setForeground(new java.awt.Color(255, 255, 255));
@@ -655,19 +656,19 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
                 .addGap(27, 27, 27))
         );
 
+        Current_date.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Current_date.setFont(new java.awt.Font("Britannic Bold", 0, 18)); // NOI18N
         Current_date.setForeground(new java.awt.Color(13, 24, 42));
-        Current_date.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
-        Current_date1.setFont(new java.awt.Font("Britannic Bold", 0, 18)); // NOI18N
-        Current_date1.setForeground(new java.awt.Color(13, 24, 42));
         Current_date1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Current_date1.setText("Record");
+        Current_date1.setFont(new java.awt.Font("Britannic Bold", 0, 18)); // NOI18N
+        Current_date1.setForeground(new java.awt.Color(13, 24, 42));
 
-        Current_date2.setFont(new java.awt.Font("Britannic Bold", 0, 18)); // NOI18N
-        Current_date2.setForeground(new java.awt.Color(13, 24, 42));
         Current_date2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Current_date2.setText("Pending");
+        Current_date2.setFont(new java.awt.Font("Britannic Bold", 0, 18)); // NOI18N
+        Current_date2.setForeground(new java.awt.Color(13, 24, 42));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -734,7 +735,7 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-        
+
     private void jPanel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_jPanel2MouseEntered
@@ -759,13 +760,16 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel1MouseClicked
 
 //    DISPLAY TEXT IN THE JTEXTFIELD WHEN ACTION BUTTON IS CLICKED
-    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+    private void pending_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pending_tableMouseClicked
         // TODO add your handling code here:
-        if (jTable2.getSelectedColumn() == 5) {
-            int index = jTable2.getSelectedRow();
-            TableModel model = jTable2.getModel();
-            String check_p = model.getValueAt(index, 3).toString();
-            String CIB = model.getValueAt(index, 4).toString();
+        if (pending_table.getSelectedColumn() == 5) {
+            int index = pending_table.getSelectedRow();
+            TableModel model = pending_table.getModel();
+            String checkpoin_id = model.getValueAt(index, 0).toString();
+            pt = new Patrolling(checkpoin_id, this.today_file);
+            pt.setCurrentFile(today_file);
+            String check_p = pt.getCheckpoints();
+            String CIB = pt.getCheckBefore();
 
             chk_point.setText(check_p);
             chk_before.setText(CIB);
@@ -773,7 +777,7 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
             chk_time.setText(sg.currenttime());
             CheckIN.setEnabled(true);
         }
-    }//GEN-LAST:event_jTable2MouseClicked
+    }//GEN-LAST:event_pending_tableMouseClicked
 
     private void chk_beforeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chk_beforeActionPerformed
         // TODO add your handling code here:
@@ -786,22 +790,22 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
 //    CHECK IN BUTTON, GET CURRENT TIME AND REWRITE THE VALUE IN THE TEXTFILE
     private void CheckINActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckINActionPerformed
         // TODO add your handling code here:
-        String patrollingScheduleFileFormat = "patrollingScheduleFiles/patrollingFile_";
+//        String patrollingScheduleFileFormat = "patrollingScheduleFiles/patrollingFile_";
         String checkintime = sg.coverttimeTolocaltime(chk_time.getText());
         System.out.println(checkintime);
-        TableModel model = jTable2.getModel();
-        int index = jTable2.getSelectedRow();
+        TableModel model = pending_table.getModel();
+        int index = pending_table.getSelectedRow();
         String line, x;
         String id = model.getValueAt(index, 0).toString();
 
-        List<String> row = fh.fileRead(patrollingScheduleFileFormat + "2023-01-31.txt");
+        List<String> row = fh.fileRead(this.today_file);
         List<String> lst = new ArrayList<String>();
         System.out.println(row);
         String[] rowary = new String[row.size()];
         row.toArray(rowary);
         for (int i = 0; i < rowary.length; i++) {
             String[] values = rowary[i].split(";");
-            if (values[0].equalsIgnoreCase(id)) {
+            if (values[0].equalsIgnoreCase(pt.getPatID())) {
                 values[9] = "CHECKED";
                 values[10] = checkintime;
                 line = String.join(";", values);
@@ -812,11 +816,15 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
             }
 
         }
+        pt.setCheckedAt(checkintime);
+        pt.setStatus("Checked");
+        pt.updateStatus();
+
 //        System.out.println(lst);
-        fh.fileWrite(patrollingScheduleFileFormat + "2023-01-31.txt", false, lst);
+//        fh.fileWrite(this.today_file, false, lst);
         JOptionPane.showMessageDialog(null, "Checked Successful");
-        DefaultTableModel table = (DefaultTableModel) jTable2.getModel();
-        DefaultTableModel table1 = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel table = (DefaultTableModel) pending_table.getModel();
+        DefaultTableModel table1 = (DefaultTableModel) checked_table.getModel();
 
         table.removeRow(index);
         table1.setRowCount(0);
@@ -826,19 +834,18 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
 
 //    DISPLAY CHECKED TABLE
     public void display_check_table() {
-        String patrollingScheduleFileFormat = "patrollingScheduleFiles/patrollingFile_";
 
-        List<String> row = fh.fileRead(patrollingScheduleFileFormat + "2023-01-31.txt");
+        List<String> row = fh.fileRead(this.today_file);
         String[] rowary = new String[row.size()];
         row.toArray(rowary);
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel) checked_table.getModel();
 
         for (int i = 0; i < rowary.length; i++) {
             String line = rowary[i].toString().trim();
             line.toUpperCase().split(";");
             String[] line_split = line.toUpperCase().split(";");
 
-            if (line_split[9].trim().equalsIgnoreCase("CHECKED")) {
+            if (line_split[9].trim().equalsIgnoreCase("Checked")) {
                 String status = line_split[9];
                 String id = line_split[0];
                 String CIT = line_split[10];
@@ -857,8 +864,8 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
         int[] columnLength = {50, 50, 100, 100, 100, 100};
         int[] columnLength2 = {125, 125, 125, 125};
 
-        sg.setTableDesign(jTable2, jLabel2, columnLength, colummnIgnore);
-        sg.setTableDesign(jTable1, jLabel2, columnLength2, colummnIgnore);
+        sg.setTableDesign(pending_table, jLabel2, columnLength, colummnIgnore);
+        sg.setTableDesign(checked_table, jLabel2, columnLength2, colummnIgnore);
 
     }
     private void chk_timeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chk_timeActionPerformed
@@ -1037,6 +1044,7 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
     private javax.swing.JLabel Current_date1;
     private javax.swing.JLabel Current_date2;
     private javax.swing.JLabel SearchVisitor;
+    private javax.swing.JTable checked_table;
     private javax.swing.JTextField chk_before;
     private javax.swing.JTextField chk_point;
     private javax.swing.JTextField chk_time;
@@ -1067,8 +1075,7 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable pending_table;
     private javax.swing.JLabel username;
     // End of variables declaration//GEN-END:variables
 }

@@ -4,7 +4,6 @@
  */
 package residentANDtenant;
 
-import adminExecutive.*;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -13,12 +12,10 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
 import classes.Facility;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 /**
  *
@@ -27,8 +24,6 @@ import classes.Facility;
 public class ResidentTenantBookFacility extends javax.swing.JFrame {
     public static ResidentTenantBookFacility rtBookFacility;
     private final ResidentTenant RT;
-    
-    AdminExecutive ae = new AdminExecutive();
     
     private final Facility fb;
     private final String facilityID; 
@@ -84,8 +79,18 @@ public class ResidentTenantBookFacility extends javax.swing.JFrame {
                 Object value = getModel().getValueAt(rowIndex,columnIndex);
 
                 if(columnIndex == 4){
-                    componenet.setBackground(new Color(0,70,126));
-                    componenet.setForeground(new Color(255, 255, 255));
+                    if(value.equals("PAST")){
+                        componenet.setBackground(new Color(255, 0, 0));
+                        componenet.setForeground(new Color(255, 255, 255));
+
+                    } else if(value.equals("SELECTED")){
+                        componenet.setBackground(new Color(102,102,102));
+                        componenet.setForeground(new Color(255, 255, 255));
+                    }
+                    else {
+                        componenet.setBackground(new Color(0,70,126));
+                        componenet.setForeground(new Color(255, 255, 255));
+                    }
                 }
 
                 else {
@@ -233,6 +238,7 @@ public class ResidentTenantBookFacility extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jTable1.setForeground(new java.awt.Color(51, 51, 51));
         jTable1.setIntercellSpacing(new java.awt.Dimension(1, 1));
         jTable1.setRowHeight(25);
@@ -259,6 +265,7 @@ public class ResidentTenantBookFacility extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jTable2.setForeground(new java.awt.Color(51, 51, 51));
         jTable2.setIntercellSpacing(new java.awt.Dimension(1, 1));
         jTable2.setRowHeight(25);
@@ -783,7 +790,7 @@ public class ResidentTenantBookFacility extends javax.swing.JFrame {
         datePicker1.setDate(LocalDate.now());
         facilityTypeLabel.setText(facilityID.toUpperCase() +" - "+ facilityName);
         
-        String latestBookingID = ae.getLatestID("facilityBooking.txt", "fbk");
+        String latestBookingID = RT.TF.getLatestID("facilityBooking.txt", "fbk");
         bookingIDLabel.setText(latestBookingID.toUpperCase());
         
         if(quantity == 1) {
@@ -817,6 +824,8 @@ public class ResidentTenantBookFacility extends javax.swing.JFrame {
     
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
+        warningMessage.setText("");
+        
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
         int column = jTable1.getSelectedColumn();
         int row = jTable1.getSelectedRow();
@@ -825,6 +834,10 @@ public class ResidentTenantBookFacility extends javax.swing.JFrame {
         if (column == 4 && status.equals("SELECT")) {
             tableModel.setValueAt("SELECTED", row, 4);
             setTable2();
+        } else if (status.equals("PAST")) {
+            warningMessage.setText("Invalid Slot...");
+        } else if (status.equals("BOOKED")) {
+            warningMessage.setText("The slot has been booked.");
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -1032,7 +1045,7 @@ public class ResidentTenantBookFacility extends javax.swing.JFrame {
             tableModel.setRowCount(0);
             String pickDate = String.valueOf(datePicker1.getDate());
             String variation = (String)variationCB.getSelectedItem();
-            List<String> availableList = ae.extractFacilityTimeSlot(facilityID, variation, pickDate, bookingID);
+            List<String> availableList = RT.extractFacilityTimeSlot(facilityID, variation, pickDate, bookingID);
             
             for (int i = 0; i < availableList.size(); i++) {
                 String[] employeeDetails = availableList.get(i).split(";");
@@ -1041,13 +1054,21 @@ public class ResidentTenantBookFacility extends javax.swing.JFrame {
                 String endTime = employeeDetails[2];
                 String bookedBy = employeeDetails[3];
                 String action = employeeDetails[4];
-
+                
+                LocalDateTime dateTime = RT.DTF.combineStringDateTime(pickDate, endTime);
+                
+                if (dateTime.isBefore(LocalDateTime.now())) {
+                    action = "PAST";
+                }
+                
                 String[] tbData = {facilityName, startTime, endTime, bookedBy, action};
                 tableModel.addRow(tbData);
             }
-        } else {
+        } 
+        else {
             warningMessage.setText("Invalid date!");
         }
+        
         setTable2();
     }
     

@@ -79,14 +79,20 @@ public class VisitorPass implements Status {
         ArrayList<VisitorPass> registeredVisitor = new ArrayList<>();
 
         List<String> visitorFiles = FH.fileRead(TF.visitorPass);
+        
+        boolean firstLine = true;
         for (String eachVis : visitorFiles) {
-            String[] passData = eachVis.split(TF.sp);
+            if (!firstLine) {
+                String[] passData = eachVis.split(TF.sp);
+            
+                VisitorPass visitorPass = new VisitorPass(passData);
 
-            VisitorPass visitorPass = new VisitorPass(passData);
-
-            if (visitorPass.getResidentId().equals(userID)) {
-                registeredVisitor.add(visitorPass);
+                if (visitorPass.getResidentId().equals(userID)) {
+                    registeredVisitor.add(visitorPass);
+                }
             }
+            
+            firstLine = false;
         }
 
         return registeredVisitor;

@@ -4,6 +4,7 @@
  */
 package classes;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +28,80 @@ public class AssignedJob extends Job{
     private String updatedTime;
     private String patrolCode;
     
+    public final int deleteItem = 0;    
+    public final int updateItem = 1;
+    public final int addItem = 2;
+    
+    public AssignedJob(String taskID, String taskEmpID, String complaintID, String jobID, int repetition, String expectedTimeRequired,
+                       String startDate, String startTime, String expectedEndDateTime, String dayToRepeat, String remarks,
+                       String updateBy, String updatedTime, String patrolCode) 
+    {
+        super(jobID);
+        
+        this.taskID = taskID;
+        this.taskEmpID = taskEmpID;
+        this.complaintID = complaintID;
+        this.repetition = repetition;
+        this.expectedTimeRequired = expectedTimeRequired;
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.expectedEndDateTime = expectedEndDateTime;
+        this.dayToRepeat = dayToRepeat;
+        this.remarks = remarks;
+        this.updateBy = updateBy;
+        this.updatedTime = updatedTime;
+        this.patrolCode = patrolCode;
+    }
+    
+    public AssignedJob(String inputDate, String patID) 
+    {
+        String patCode = inputDate + " " + patID;
+        
+        List<String> jobList = FH.fileRead(TF.employeeJobFile);
+        for (String eachJob : jobList) {
+            String[] jobData = eachJob.split(TF.sp);
+            if (jobData[13].equals(patCode)) {
+                this.taskID = jobData[0];
+                this.taskEmpID = jobData[1];
+                this.complaintID = jobData[2];
+                this.repetition = Integer.parseInt(jobData[4]);
+                this.expectedTimeRequired = jobData[5];
+                this.startDate = jobData[6];
+                this.startTime = jobData[7];
+                this.expectedEndDateTime = jobData[8];
+                this.dayToRepeat = jobData[9];
+                this.remarks = jobData[10];
+                this.updateBy = jobData[11];
+                this.updatedTime = jobData[12];
+                this.patrolCode = patCode;
+                
+                this.setJobID(jobData[3]);
+            }
+        }
+    }
+    
+    public AssignedJob(String taskId) {
+        List<String> jobList = FH.fileRead(TF.employeeJobFile);
+        for (String eachJob : jobList) {
+            String[] jobData = eachJob.split(TF.sp);
+            if (jobData[0].equals(taskId)) {
+                this.taskID = jobData[0];
+                this.taskEmpID = jobData[1];
+                this.complaintID = jobData[2];
+                this.repetition = Integer.parseInt(jobData[4]);
+                this.expectedTimeRequired = jobData[5];
+                this.startDate = jobData[6];
+                this.startTime = jobData[7];
+                this.expectedEndDateTime = jobData[8];
+                this.dayToRepeat = jobData[9];
+                this.remarks = jobData[10];
+                this.updateBy = jobData[11];
+                this.updatedTime = jobData[12];
+                this.patrolCode = jobData[13];
+            }
+        }
+    }
+    
     public AssignedJob(String[] jobData) {
         super(jobData[3]);
         
@@ -48,10 +123,15 @@ public class AssignedJob extends Job{
     public ArrayList<AssignedJob> getAllAssignedJob() {
         ArrayList<AssignedJob> assignedJobList = new ArrayList<>();
         
+        boolean firstLine = true;
         List<String> jobFile = FH.fileRead(TF.employeeJobFile);
         for (String eachJob : jobFile) {
-            AssignedJob aJob = new AssignedJob(eachJob.split(TF.sp));
-            assignedJobList.add(aJob);
+            if (!firstLine) {
+                AssignedJob aJob = new AssignedJob(eachJob.split(TF.sp));
+                assignedJobList.add(aJob);
+            }
+            
+            firstLine = false;
         }
         
         return assignedJobList;
@@ -70,6 +150,37 @@ public class AssignedJob extends Job{
         }
         
         return employeeJobList;
+    }
+    
+    public void updateJobTextFile(int action) throws IOException {
+        ArrayList<AssignedJob> assignedJob = getAllAssignedJob();
+        List<String> newItemLists = new ArrayList<>();
+        
+        List<String> empJobFile = FH.fileRead(TF.employeeJobFile);
+        String header = empJobFile.get(0);
+        newItemLists.add(header);
+        
+        // make the string[] to an array list
+        String specificItem = this.toString();
+        
+        for (AssignedJob eachJob : assignedJob) {
+            String jobID = eachJob.getTaskID();
+
+            if (jobID.equals(this.taskID)) {
+                if (action == updateItem) {
+                    newItemLists.add(specificItem);
+                }
+            }
+            else {
+                newItemLists.add(eachJob.toString());
+            }
+        }
+        
+        if (action == addItem) {
+            newItemLists.add(specificItem);
+        }
+        
+        FH.fileWrite(TF.employeeJobFile, false, newItemLists);
     }
     
     @Override

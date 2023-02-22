@@ -95,7 +95,7 @@ public class BuildingExecutiveJobManagement extends javax.swing.JFrame {
             assignedEmplyTable.setEnabled(!fromComplaintsPage);
             
             if (this.complaint != null) {
-                complaintIdTF.setText(complaint.getComplaintID());
+                complaintIdTF.setText(complaint.getComplaintID().toUpperCase());
             }
         }
         else {

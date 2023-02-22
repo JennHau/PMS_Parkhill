@@ -559,7 +559,8 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        incident_table.setRowHeight(40);
+        incident_table.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        incident_table.setRowHeight(30);
         incident_table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 incident_tableMouseClicked(evt);

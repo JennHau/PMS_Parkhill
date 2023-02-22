@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import accountExecutive.AccountExecutive;
 import classes.Complaint;
+import classes.Employee;
 import java.awt.Color;
 import java.io.File;
 import java.time.LocalDate;
@@ -40,6 +41,7 @@ public class AdminExecutive extends Users{
     PropertyUnit PU = new PropertyUnit();
     Complaint CP = new Complaint();
     PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
+    Employee EMP = new Employee();
     
     public AdminExecutive(){}
     
@@ -924,22 +926,22 @@ public class AdminExecutive extends Users{
 //    }
     
     // extract all employees details
-    public List<String> extractEmployeeDetails() {
-        List<String> employeeList =  fh.fileRead("employeeList.txt");
-        
-        List<String> availableList = new ArrayList<>();
-        
-        for (int i = 1; i < employeeList.size(); i++) {
-            String[] employeeDetails = employeeList.get(i).split(";");
-            String id = employeeDetails[0];
-            String email = employeeDetails[1];
-            String name = employeeDetails[2];
-            String phoneNo = employeeDetails[3];
-            String position = employeeDetails[4];
-            
-            availableList.add(id +";"+ name +";"+ email +";"+ phoneNo +";"+ position);
-        } return availableList;
-    }
+//    public List<String> extractEmployeeDetails() {
+//        List<String> employeeList =  fh.fileRead("employeeList.txt");
+//        
+//        List<String> availableList = new ArrayList<>();
+//        
+//        for (int i = 1; i < employeeList.size(); i++) {
+//            String[] employeeDetails = employeeList.get(i).split(";");
+//            String id = employeeDetails[0];
+//            String email = employeeDetails[1];
+//            String name = employeeDetails[2];
+//            String phoneNo = employeeDetails[3];
+//            String position = employeeDetails[4];
+//            
+//            availableList.add(id +";"+ name +";"+ email +";"+ phoneNo +";"+ position);
+//        } return availableList;
+//    }
     
     // extract available employee types
     public List<String> extractEmployeeType() {
@@ -995,26 +997,28 @@ public class AdminExecutive extends Users{
     }
     
     // method to add new employee
-    public void addEmployee(String employeeID, String email, String firstName,
-            String lastName, String phoneNo, String position, String idNo, String gender) {
+    public void addEmployee(Employee EMP) {
         List<String> newData = new ArrayList<>();
-        newData.add(employeeID +";"+ email +";"+ firstName +" "+ lastName +";"+
-                phoneNo +";"+ position +";"+ idNo +";"+ gender +";");
+        newData.add(EMP.getEmpID() +";"+ EMP.getEmpEmail() +";"+ EMP.getEmpName() 
+                +";"+ EMP.getPhoneNo() +";"+ EMP.getPosition() +";"+ EMP.getIcNo()
+                +";"+ EMP.getGender() +";");
         
         fh.fileWrite("employeeList.txt", true, newData);
         
         // if employee is security guard need to add account @ userProfile.txt
-        if (employeeID.startsWith("scg")) {
+        if (EMP.getEmpID().startsWith("scg")) {
             List<String> newData2 = new ArrayList<>();
-            newData2.add(employeeID +";"+ email +";"+ "Parkhill@1234" +";"+
-                    firstName +";"+ lastName +";"+ idNo +";"+ gender +";"+
-                    phoneNo +";"+ "-" +";");
+            String firstName = EMP.getEmpName().substring(0, EMP.getEmpName().indexOf(" "));
+            String lastName = EMP.getEmpName().substring(EMP.getEmpName().indexOf(" ") + 1);
+            newData2.add(EMP.getEmpID() +";"+ EMP.getEmpEmail() +";"+ "Parkhill@1234" +";"+
+                    firstName +";"+ lastName +";"+ EMP.getIcNo() +";"+ EMP.getGender() +";"+
+                    EMP.getPhoneNo() +";"+ "-" +";");
             fh.fileWrite("userProfile.txt", true, newData2);
         }
     }
     
     // method to delete available employee
-    public void deleteEmployee(String employeeID) {
+    public void deleteEmployee(Employee EMP) {
         List<String> employeeTypeList =  fh.fileRead("employeeList.txt");
         
         List<String> newData = new ArrayList<>();
@@ -1023,13 +1027,13 @@ public class AdminExecutive extends Users{
             String[] employeeTypeDetails = employeeTypeList.get(i).split(";");
             String id = employeeTypeDetails[0];
             
-            if (!id.equals(employeeID)) {
+            if (!id.equals(EMP.getEmpID())) {
                 newData.add(employeeTypeList.get(i));
             }
         } fh.fileWrite("employeeList.txt", false, newData);
         
         // if employee is security guard need to delete account @ userProfile.txt
-        if(employeeID.startsWith("scg")) {
+        if(EMP.getEmpID().startsWith("scg")) {
             List<String> userProfileList =  fh.fileRead("userProfile.txt");
         
             newData.clear();
@@ -1038,7 +1042,7 @@ public class AdminExecutive extends Users{
                 String[] userDetails = userProfileList.get(i).split(";");
                 String id = userDetails[0];
 
-                if (!id.equals(employeeID)) {
+                if (!id.equals(EMP.getEmpID())) {
                     newData.add(userProfileList.get(i));
                 }
             } fh.fileWrite("userProfile.txt", false, newData);
@@ -1155,7 +1159,9 @@ public class AdminExecutive extends Users{
                         }
                     } 
                     if(check){
-                        timeSlot.add(variation +";"+ cStartTime +";"+ String.valueOf(j+1) + ":00" +";"+ "-" +";"+ "SELECT");
+                        String newEndTime = String.valueOf(j+1);
+                        newEndTime = (newEndTime.length() != 2) ? "0" + newEndTime : newEndTime;
+                        timeSlot.add(variation +";"+ cStartTime +";"+ newEndTime + ":00" +";"+ "-" +";"+ "SELECT");
                     }
                 }
             }

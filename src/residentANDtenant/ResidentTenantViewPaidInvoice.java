@@ -152,6 +152,8 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setText("INVOICE");
 
+        paidTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        paidTable.setForeground(new java.awt.Color(51, 51, 51));
         paidTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -168,6 +170,8 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        paidTable.setIntercellSpacing(new java.awt.Dimension(2, 2));
+        paidTable.setRowHeight(30);
         jScrollPane1.setViewportView(paidTable);
 
         jLabel16.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
@@ -882,7 +886,7 @@ public class ResidentTenantViewPaidInvoice extends javax.swing.JFrame {
     
     private void tableDesignSetUp() {
         int[] columnIgnore = {0};
-        int[] columnLength = {250, 110, 100, 110, 110, 150, 130};
+        int[] columnLength = {225, 110, 100, 110, 110, 175, 130};
         RT.setTableDesign(paidTable, jLabel2, columnLength, columnIgnore);
     }
     

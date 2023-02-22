@@ -4,10 +4,12 @@
  */
 package adminExecutive;
 
+import classes.Employee;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -760,7 +762,8 @@ public class AdminExecutiveEmployeeManagement extends javax.swing.JFrame {
         
         if (column == 5) {
             String employeeID = String.valueOf(tableModel.getValueAt(row, 0)).toLowerCase();
-            new AdminExecutiveModifyEmployee(employeeID, AE).setVisible(true);
+            Employee EMP = new Employee(employeeID);
+            new AdminExecutiveModifyEmployee(EMP, AE).setVisible(true);
         }
     }//GEN-LAST:event_employeeTableMouseClicked
 
@@ -999,17 +1002,11 @@ public class AdminExecutiveEmployeeManagement extends javax.swing.JFrame {
         DefaultTableModel tableModel = (DefaultTableModel)employeeTable.getModel();
         tableModel.setRowCount(0);
             
-        List<String> availableList = AE.extractEmployeeDetails();
+        ArrayList<Employee> availableList = AE.EMP.getAllEmployeeDetails();
         
-        for (int i = 0; i < availableList.size(); i++) {
-            String[] employeeDetails = availableList.get(i).split(";");
-            String id = employeeDetails[0];
-            String name = employeeDetails[1];
-            String email = employeeDetails[2];
-            String phoneNo = employeeDetails[3];
-            String position = employeeDetails[4];
-            
-            String[] tbData = {id.toUpperCase(), name, email, phoneNo, position, "MANAGE"};
+        for (Employee emp:availableList) {
+            String[] tbData = {emp.getEmpID().toUpperCase(), emp.getEmpName(), 
+                emp.getEmpEmail(), emp.getPhoneNo(), emp.getPosition(), "MANAGE"};
             tableModel.addRow(tbData);
         }
     }

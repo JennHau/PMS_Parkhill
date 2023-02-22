@@ -849,10 +849,10 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
         int selRow = invoiceIncompleteTable.getSelectedRow();
         
         String invoiceNo = RT.validateTableSelectionAndGetValue(invIncompTab, selCol, selRow, 3, 0);
-//        String feeTypes = RT.validateTableSelectionAndGetValue(invIncompTab, selCol, selRow, 3, 1);
 
         if (invoiceNo != null) {
             ArrayList<Invoice> invoiceList = RT.PYM.getSameUnpaidInvoiceNo(this.RT.getUnitNo(), invoiceNo);
+            
             RT.toInvoicePayment(invoiceNo, RT, invoiceList);
             this.dispose();
         }

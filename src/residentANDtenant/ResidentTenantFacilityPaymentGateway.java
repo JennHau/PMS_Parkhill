@@ -4,7 +4,6 @@
  */
 package residentANDtenant;
 
-import adminExecutive.*;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Toolkit;
@@ -342,7 +341,6 @@ public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    AdminExecutive ae = new AdminExecutive();
     FileHandling fh = new FileHandling();
     List<String> bookingList = new ArrayList<>();
     String bookingID; String facilityID; String facilityName;
@@ -362,7 +360,7 @@ public class ResidentTenantFacilityPaymentGateway extends javax.swing.JFrame {
             tableModel.addRow(tbData);
         }
         
-        List<String> feeData = ae.extractFacilityBookingFee(facilityID.toLowerCase(),
+        List<String> feeData = RT.extractFacilityBookingFee(facilityID.toLowerCase(),
                     bookingList.size());
         for(int i = 0; i<feeData.size(); i++) {
             String[] feeDetails = feeData.get(i).split(";");

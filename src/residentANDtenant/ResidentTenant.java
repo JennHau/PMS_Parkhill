@@ -16,6 +16,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import classes.Complaint;
 import classes.Facility;
+import classes.FacilityBookingPaymentByBooking;
+import classes.FacilityBookingPaymentByHour;
 import classes.FileHandling;
 import classes.Invoice;
 import classes.PMS_DateTimeFormatter;
@@ -52,7 +54,7 @@ public class ResidentTenant extends Users {
         this.unitNo = unitNo;
     }
     
-    public String getNewPassID() {
+    public String getNewVisitorPassID() {
         return VP.generateNewPassId();
     }
     
@@ -158,6 +160,133 @@ public class ResidentTenant extends Users {
         return null;
     }
     
+    public List<String> extractFacilityBookingFee(String facilityID, int hour) {
+        List<String> availableList = FH.fileRead("facility.txt");
+        List<String> feeData = new ArrayList<>();
+        
+        for (int i = 1; i < availableList.size(); i++) {
+            String[] bookingDetails = availableList.get(i).split(";");
+            String eFacilityID = bookingDetails[0];
+            boolean payment = Boolean.valueOf(bookingDetails[3]);
+            String price = bookingDetails[4];
+            String priceUnit = bookingDetails[5];
+            
+            if(facilityID.equals(eFacilityID)) {
+                // calculation for booking by per hour
+                if(payment == true && priceUnit.equals("Per Hour")) {
+                    FacilityBookingPaymentByHour fb = new FacilityBookingPaymentByHour();
+                    fb.Facility(facilityID);
+                    fb.setHour(hour); fb.calculateBookingFee();
+                    feeData.add(price +";"+ fb.getTotalPrice());
+                // calculation for booking by per booking    
+                } else if(payment && priceUnit.equals("Per Booking")) {
+                    FacilityBookingPaymentByBooking fb = new FacilityBookingPaymentByBooking();
+                    fb.Facility(facilityID); fb.calculateBookingFee(); 
+                    feeData.add("-" +";"+ fb.getTotalPrice());
+                } else {
+                    feeData.add("-" +";"+ "0.00");
+                }
+            } 
+        } return feeData;
+    }
+    
+    // get facility booking unit
+    public String extractFacilityBookingUnit(String bookingID) {
+        List<String> availableList = FH.fileRead("facilityBooking.txt");
+        
+        for (int i = 1; i < availableList.size(); i++) {
+            String[] bookingDetails = availableList.get(i).split(";");
+            String eBookingID = bookingDetails[0];
+            String unitNo = bookingDetails[3];
+            
+            if(eBookingID.equals(bookingID)) {
+                return unitNo;
+            }
+        } return null;
+    }
+    
+    // in case user modify previous booking, recalculate booking fee
+    public String calculateFacilityAdvancedPayment(String bookingID) {
+        List<String> availableList = FH.fileRead("facilityBooking.txt");
+        
+        for (int i = 1; i < availableList.size(); i++) {
+            String[] bookingDetails = availableList.get(i).split(";");
+            String eBookingID = bookingDetails[0];
+            String totalPrice = bookingDetails[8];
+            
+            if(bookingID.equals(eBookingID)) {
+                return totalPrice;
+            }
+        } return "0.00";
+    }
+    
+    // method to delete booking
+    public void deleteFacilityBooking(String bookingID) {
+        List<String> availableList = FH.fileRead("facilityBooking.txt");
+        List<String> newData = new ArrayList<>();
+        
+        for (int i = 0; i < availableList.size(); i++) {
+            String[] bookingDetails = availableList.get(i).split(";");
+            String eBookingID = bookingDetails[0];
+            
+            if(!eBookingID.equals(bookingID)) {
+                newData.add(availableList.get(i));
+            }
+        } FH.fileWrite("facilityBooking.txt", false, newData);
+    }
+    
+    public List<String> extractFacilityTimeSlot(String facilityID, String variation,
+        String date, String bookingID) 
+    {
+        FileHandling fh = new FileHandling();
+        List<String> availableList = fh.fileRead("facility.txt");
+        List<String> availableBooking = fh.fileRead("facilityBooking.txt");
+        
+        List<String> timeSlot = new ArrayList<>();
+        
+        for (int i = 1; i < availableList.size(); i++) {
+            String[] employeeDetails = availableList.get(i).split(";");
+            String eFacilityID = employeeDetails[0];
+            String startTime = employeeDetails[6];
+            String endTime = employeeDetails[7];
+            
+            // based on facility start and end time create time slot (1 hr interval)
+            int firstSlot = Integer.valueOf(startTime.substring(0, 2));
+            int lastSlot = Integer.valueOf(endTime.substring(0, 2));
+            if (eFacilityID.equals(facilityID)) {
+                for (int j = firstSlot; j < lastSlot+1; j++) {
+                    
+                    String slotValue = String.valueOf(j);
+                    slotValue = (slotValue.length() != 2) ? "0" + slotValue : slotValue;
+                    String cStartTime = slotValue + ":00";
+                    
+                    boolean check = true;
+                    for (int k = 1; k < availableBooking.size(); k++) {
+                        String[] bookingDetails = availableBooking.get(k).split(";");
+                        String bBookingID = bookingDetails[0];
+                        String bFctName = bookingDetails[2];
+                        String bBookBy = bookingDetails[3];
+                        String bDate = bookingDetails[4];
+                        String bStartTime = bookingDetails[5];
+                        String bEndTime = bookingDetails[6];
+                        if(bFctName.equals(variation) && bDate.equals(date) &&
+                                bStartTime.equals(cStartTime) && bBookingID.equals(bookingID)) {
+                            timeSlot.add(variation +";"+ cStartTime +";"+ bEndTime +";"+ bBookBy +";"+ "SELECTED");
+                            check = false;
+                        } else if(bFctName.equals(variation) && bDate.equals(date) && bStartTime.equals(cStartTime)) {
+                            timeSlot.add(variation +";"+ cStartTime +";"+ bEndTime +";"+ bBookBy +";"+ "BOOKED");
+                            check = false;
+                        }
+                    } 
+                    if(check){
+                        String newEndTime = String.valueOf(j+1);
+                        newEndTime = (newEndTime.length() != 2) ? "0" + newEndTime : newEndTime;
+                        timeSlot.add(variation +";"+ cStartTime +";"+ newEndTime + ":00" +";"+ "-" +";"+ "SELECT");
+                    }
+                }
+            }
+        } return timeSlot;
+    }
     
     public void setTableDesign(JTable jTable, JLabel jLabel, int[] columnLength, int[] ignoreColumn) {
         // design for the table header
