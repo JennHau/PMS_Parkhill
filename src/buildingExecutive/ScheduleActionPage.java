@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import classes.FileHandling;
-import classes.Users;
+import classes.User;
 
 /**
  *

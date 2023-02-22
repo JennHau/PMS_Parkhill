@@ -25,14 +25,14 @@ import classes.FileHandling;
 import classes.PMS_DateTimeFormatter;
 import classes.Payment;
 import classes.PropertyUnit;
-import classes.Users;
+import classes.User;
 import residentANDtenant.ResidentTenant;
 
 /**
  *
  * @author wongj
  */
-public class AdminExecutive extends Users{
+public class AdminExecutive extends User{
     
     public FileHandling fh = new FileHandling();
     public Payment PM = new Payment();

@@ -19,13 +19,13 @@ import classes.Invoice;
 import classes.PMS_DateTimeFormatter;
 import classes.Payment;
 import classes.TextFile;
-import classes.Users;
+import classes.User;
 
 /**
  *
  * @author Winson
  */
-public class Vendor extends Users{
+public class Vendor extends User{
     FileHandling fh = new FileHandling();
     TextFile TF = new TextFile();
     CRUD crud = new CRUD();

@@ -19,13 +19,13 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import classes.FileHandling;
-import classes.Users;
+import classes.User;
 
 /**
  *
  * @author wongj
  */
-public class BuildingManager extends Users{
+public class BuildingManager extends User{
     
     public FileHandling fh = new FileHandling();
     

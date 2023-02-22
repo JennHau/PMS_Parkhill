@@ -29,7 +29,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import classes.FileHandling;
-import classes.Users;
+import classes.User;
 import classes.Status;
 import classes.TextFile;
 
@@ -39,7 +39,7 @@ import classes.TextFile;
  */
 
 
-public class SecurityGuard extends Users implements Status{
+public class SecurityGuard extends User implements Status{
 
     public static void main(String[] args) throws IOException {
         displayTable("test-table.txt");

@@ -5,7 +5,7 @@
 package pms_parkhill_residence;
 
 import classes.Validation;
-import classes.Users;
+import classes.User;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import javax.swing.JOptionPane;
@@ -312,7 +312,7 @@ public class ResetPassword extends javax.swing.JFrame {
                 boolean check = vd.passwordValid(String.valueOf(newPasswordTF.getPassword()));
                 if(check) {
                     warningMessage.setText("");
-                    Users users = new Users();
+                    User users = new User();
                     users.resetPassword(String.valueOf(newPasswordTF.getPassword()), email);
                     JOptionPane.showMessageDialog (null, "Your password has been "
                             + "changed successfully.\nPlease log in to your account with your latest password.", 

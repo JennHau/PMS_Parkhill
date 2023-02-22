@@ -23,14 +23,14 @@ import classes.Invoice;
 import classes.PMS_DateTimeFormatter;
 import classes.Payment;
 import classes.TextFile;
-import classes.Users;
+import classes.User;
 import classes.VisitorPass;
 
 /**
  *
  * @author Winson
  */
-public class ResidentTenant extends Users {
+public class ResidentTenant extends User {
     FileHandling FH = new FileHandling();
     TextFile TF = new TextFile();
     CRUD crud = new CRUD();

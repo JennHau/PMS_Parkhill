@@ -20,13 +20,13 @@ import classes.FileHandling;
 import classes.Invoice;
 import classes.PMS_DateTimeFormatter;
 import classes.Payment;
-import classes.Users;
+import classes.User;
 
 /**
  *
  * @author wongj
  */
-public class AccountExecutive extends Users {
+public class AccountExecutive extends User {
 
     public FileHandling fh = new FileHandling();
     public Payment PYM = new Payment();

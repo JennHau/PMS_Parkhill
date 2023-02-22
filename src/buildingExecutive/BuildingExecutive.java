@@ -12,7 +12,7 @@ import classes.FileHandling;
 import classes.PMS_DateTimeFormatter;
 import classes.Patrolling;
 import classes.TextFile;
-import classes.Users;
+import classes.User;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +35,7 @@ import classes.Status;
  *
  * @author Winson
  */
-public class BuildingExecutive extends Users implements Status{
+public class BuildingExecutive extends User implements Status{
     public PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
     public TextFile TF = new TextFile();
     public FileHandling fh = new FileHandling();
