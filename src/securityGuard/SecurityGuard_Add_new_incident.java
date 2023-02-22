@@ -32,10 +32,10 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
     public SecurityGuard_Add_new_incident(SecurityGuard SG) {
         initComponents();
         displayIncidentId();
-        jTextField1.setText("PENDING");
+        status.setText("PENDING");
         DATE.setText(sg.currentdate() + " " + sg.currenttime());
         this.SG = SG;
-        Recorded_By.setText(SG.getUserID());
+        recordedby.setText(SG.getUserID());
 
     }
 
@@ -54,17 +54,17 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        status = new javax.swing.JTextField();
         jfield = new javax.swing.JLabel();
         jfield1 = new javax.swing.JLabel();
-        Recorded_By = new javax.swing.JTextField();
+        recordedby = new javax.swing.JTextField();
         jfield2 = new javax.swing.JLabel();
         jfield3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        incident_textarea = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         jfield4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        incident_no = new javax.swing.JTextField();
         cancel = new javax.swing.JButton();
         DATE = new javax.swing.JTextField();
 
@@ -98,10 +98,10 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(13, 24, 42));
 
-        jLabel2.setFont(new java.awt.Font("Britannic Bold", 3, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("Add New Incident");
+        jLabel2.setFont(new java.awt.Font("Britannic Bold", 3, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -120,103 +120,103 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
-        jTextField1.setBackground(new java.awt.Color(204, 204, 204));
-        jTextField1.setForeground(new java.awt.Color(0, 0, 0));
-        jTextField1.setEnabled(false);
-        jTextField1.setHighlighter(null);
-        jTextField1.setOpaque(true);
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        status.setBackground(new java.awt.Color(204, 204, 204));
+        status.setEnabled(false);
+        status.setForeground(new java.awt.Color(0, 0, 0));
+        status.setHighlighter(null);
+        status.setOpaque(true);
+        status.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                statusActionPerformed(evt);
             }
         });
-        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+        status.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField1KeyReleased(evt);
+                statusKeyReleased(evt);
             }
         });
 
+        jfield.setText("Status :");
         jfield.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         jfield.setForeground(new java.awt.Color(153, 153, 153));
-        jfield.setText("Status :");
         jfield.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
+        jfield1.setText("Recorded By :");
         jfield1.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         jfield1.setForeground(new java.awt.Color(153, 153, 153));
-        jfield1.setText("Recorded By :");
         jfield1.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
-        Recorded_By.setBackground(new java.awt.Color(204, 204, 204));
-        Recorded_By.setEnabled(false);
-        Recorded_By.setHighlighter(null);
-        Recorded_By.setOpaque(true);
-        Recorded_By.addActionListener(new java.awt.event.ActionListener() {
+        recordedby.setBackground(new java.awt.Color(204, 204, 204));
+        recordedby.setEnabled(false);
+        recordedby.setHighlighter(null);
+        recordedby.setOpaque(true);
+        recordedby.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Recorded_ByActionPerformed(evt);
+                recordedbyActionPerformed(evt);
             }
         });
-        Recorded_By.addKeyListener(new java.awt.event.KeyAdapter() {
+        recordedby.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                Recorded_ByKeyReleased(evt);
+                recordedbyKeyReleased(evt);
             }
         });
 
+        jfield2.setText("Date and Time :");
         jfield2.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         jfield2.setForeground(new java.awt.Color(153, 153, 153));
-        jfield2.setText("Date and Time :");
         jfield2.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
+        jfield3.setText("Incident :");
         jfield3.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         jfield3.setForeground(new java.awt.Color(153, 153, 153));
-        jfield3.setText("Incident :");
         jfield3.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setBackground(new java.awt.Color(204, 204, 204));
-        jTextArea1.addKeyListener(new java.awt.event.KeyAdapter() {
+        incident_textarea.setColumns(20);
+        incident_textarea.setRows(5);
+        incident_textarea.setBackground(new java.awt.Color(204, 204, 204));
+        incident_textarea.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextArea1KeyReleased(evt);
+                incident_textareaKeyReleased(evt);
             }
         });
-        jScrollPane1.setViewportView(jTextArea1);
+        jScrollPane1.setViewportView(incident_textarea);
 
+        jButton1.setText("Submit");
         jButton1.setBackground(new java.awt.Color(13, 24, 42));
+        jButton1.setEnabled(false);
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Submit");
-        jButton1.setEnabled(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
+        jfield4.setText("Incident No :");
         jfield4.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         jfield4.setForeground(new java.awt.Color(153, 153, 153));
-        jfield4.setText("Incident No :");
         jfield4.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
-        jTextField3.setBackground(new java.awt.Color(204, 204, 204));
-        jTextField3.setForeground(new java.awt.Color(0, 0, 0));
-        jTextField3.setEnabled(false);
-        jTextField3.setHighlighter(null);
-        jTextField3.setOpaque(true);
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+        incident_no.setBackground(new java.awt.Color(204, 204, 204));
+        incident_no.setEnabled(false);
+        incident_no.setForeground(new java.awt.Color(0, 0, 0));
+        incident_no.setHighlighter(null);
+        incident_no.setOpaque(true);
+        incident_no.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+                incident_noActionPerformed(evt);
             }
         });
-        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+        incident_no.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField3KeyReleased(evt);
+                incident_noKeyReleased(evt);
             }
         });
 
+        cancel.setText("Cancel");
         cancel.setBackground(new java.awt.Color(13, 24, 42));
         cancel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         cancel.setForeground(new java.awt.Color(255, 255, 255));
-        cancel.setText("Cancel");
         cancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelActionPerformed(evt);
@@ -258,10 +258,10 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
                             .addComponent(jfield2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jfield1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jfield, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Recorded_By)
+                            .addComponent(recordedby)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField3)
+                            .addComponent(status)
+                            .addComponent(incident_no)
                             .addComponent(DATE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -272,15 +272,15 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
                 .addComponent(jfield4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(7, 7, 7)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(incident_no, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jfield, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(7, 7, 7)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jfield1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(7, 7, 7)
-                .addComponent(Recorded_By, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(recordedby, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jfield2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -311,21 +311,21 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void statusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_statusActionPerformed
 
-    private void Recorded_ByActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Recorded_ByActionPerformed
+    private void recordedbyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recordedbyActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_Recorded_ByActionPerformed
+    }//GEN-LAST:event_recordedbyActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 //        create a new incident
 
-        String incident = jTextArea1.getText().trim();
-        String status = jTextField1.getText();
-        String record = Recorded_By.getText();
-        String no = jTextField3.getText();
+        String incident = incident_textarea.getText().trim();
+        String status = status.getText();
+        String record = recordedby.getText();
+        String no = incident_no.getText();
         String date = DATE.getText();
         SecurityGuard sg = new SecurityGuard();
 
@@ -370,46 +370,46 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
         System.out.println(maxnum);
         maxnum += 1;
         String show = idformat + String.valueOf(maxnum);
-        jTextField3.setText(show);
+        incident_no.setText(show);
     }
 
 //    ENABLE BUTTON IF TEXT AREA IS FILL
     public void enablebutton() {
-        if (jTextArea1.getText().isBlank()) {
+        if (incident_textarea.getText().isBlank()) {
             jButton1.setEnabled(false);
         } else {
             jButton1.setEnabled(true);
         }
     }
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void incident_noActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_incident_noActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_incident_noActionPerformed
 
-    private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
+    private void incident_noKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_incident_noKeyReleased
         // TODO add your handling code here:
         enablebutton();
-    }//GEN-LAST:event_jTextField3KeyReleased
+    }//GEN-LAST:event_incident_noKeyReleased
 
-    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+    private void statusKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_statusKeyReleased
         // TODO add your handling code here:
         enablebutton();
-    }//GEN-LAST:event_jTextField1KeyReleased
+    }//GEN-LAST:event_statusKeyReleased
 
-    private void Recorded_ByKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Recorded_ByKeyReleased
+    private void recordedbyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_recordedbyKeyReleased
         // TODO add your handling code here:
         enablebutton();
-    }//GEN-LAST:event_Recorded_ByKeyReleased
+    }//GEN-LAST:event_recordedbyKeyReleased
 
     private void dateTimePicker2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dateTimePicker2KeyReleased
         // TODO add your handling code here:
         enablebutton();
     }//GEN-LAST:event_dateTimePicker2KeyReleased
 
-    private void jTextArea1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea1KeyReleased
+    private void incident_textareaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_incident_textareaKeyReleased
         // TODO add your handling code here:
         enablebutton();
-    }//GEN-LAST:event_jTextArea1KeyReleased
+    }//GEN-LAST:event_incident_textareaKeyReleased
 
     private void cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelActionPerformed
         // TODO add your handling code here:
@@ -464,9 +464,10 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField DATE;
-    private javax.swing.JTextField Recorded_By;
     private java.awt.Button button1;
     private javax.swing.JButton cancel;
+    private javax.swing.JTextField incident_no;
+    private javax.swing.JTextArea incident_textarea;
     private javax.swing.JButton jButton1;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JFrame jFrame2;
@@ -474,13 +475,12 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JLabel jfield;
     private javax.swing.JLabel jfield1;
     private javax.swing.JLabel jfield2;
     private javax.swing.JLabel jfield3;
     private javax.swing.JLabel jfield4;
+    private javax.swing.JTextField recordedby;
+    private javax.swing.JTextField status;
     // End of variables declaration//GEN-END:variables
 }
