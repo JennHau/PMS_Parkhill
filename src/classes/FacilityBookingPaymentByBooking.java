@@ -24,3 +24,7 @@ public class FacilityBookingPaymentByBooking extends Facility{
         return totalPrice;
     }
 }
+
+
+
+

@@ -41,6 +41,7 @@ public class BuildingExecutiveComplaintReportPage extends javax.swing.JFrame {
         }
     }
     
+    // table design set up
     private void tableDesign() {
         int[] ignoreColumn = {3};
         int[] columnLength = {90, 120, 120, 558, 120};
@@ -279,10 +280,12 @@ public class BuildingExecutiveComplaintReportPage extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_doneBtActionPerformed
     
+    // set up table record
     private void setDefault(ArrayList tableData) {
         BE.setTableRow(stateTab, tableData);
     }
     
+    // set up field text
     private void setField(String reportTitle) {
         reportTitleLabel.setText(reportTitle);
         todayDateLabel.setText(LocalDate.now().toString());

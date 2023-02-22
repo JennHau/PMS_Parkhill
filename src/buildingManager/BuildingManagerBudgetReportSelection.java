@@ -8,7 +8,7 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
 import classes.FileHandling;
-import classes.Users;
+import classes.User;
 
 /**
  *

@@ -7,7 +7,7 @@ package adminExecutive;
 import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 import classes.FileHandling;
-import classes.Users;
+import classes.User;
 import classes.Validation;
 import residentANDtenant.ResidentTenant;
 
@@ -644,7 +644,7 @@ public class AdminExecutiveModifyResidentTenant extends javax.swing.JFrame {
             JOptionPane.QUESTION_MESSAGE);
 
             if(result == JOptionPane.YES_OPTION){
-                Users users = new Users();
+                User users = new User();
                 users.resetPasswordtoDefault("Parkhill@1234", userIDTF.getText().toLowerCase());
                 resetPassBt.setEnabled(false);
                 JOptionPane.showMessageDialog (null, "Password Reset!", 

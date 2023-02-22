@@ -6,5 +6,5 @@ id;slot;block;level;checkpoints;checkBefore;securityID;securityName;remarks;stat
 5;08:00;B;Level 1-15;Level 15;09:00;-;-;-;Unassign;-;-;-;
 6;08:00;S;Level 1-2;Level 2;09:00;-;-;-;Unassign;-;-;-;
 7;16:00;A;Level 1-15;Level 15;17:00;-;-;-;Unassign;-;-;-;
-8;16:00;B;Level 1-15;Level 15;17:00;-;-;-;Unassign;-;-;-;
+8;16:00;B;Level 1-15;Level 15;17:00;-;-;-;Unassign;-;bde000001;2023-02-22 15:18;
 9;16:00;S;Level 1-2;Level 2;17:00;-;-;-;Unassign;-;-;-;

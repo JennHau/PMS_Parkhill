@@ -23,14 +23,14 @@ import classes.Invoice;
 import classes.PMS_DateTimeFormatter;
 import classes.Payment;
 import classes.TextFile;
-import classes.Users;
+import classes.User;
 import classes.VisitorPass;
 
 /**
  *
  * @author Winson
  */
-public class ResidentTenant extends Users {
+public class ResidentTenant extends User {
     FileHandling FH = new FileHandling();
     TextFile TF = new TextFile();
     CRUD crud = new CRUD();
@@ -54,10 +54,6 @@ public class ResidentTenant extends Users {
         this.unitNo = unitNo;
     }
     
-    public String getNewVisitorPassID() {
-        return VP.generateNewPassId();
-    }
-    
     public void setTableRow(DefaultTableModel table, ArrayList arrayList) {
         table.setRowCount(0);
         
@@ -67,6 +63,7 @@ public class ResidentTenant extends Users {
         }
     }
     
+    // get specific visitor details based on pass id
     public String getVisitorDetails(String passId) {
         List<String> visitorFile = FH.fileRead(TF.visitorPass);
         for (String eachVis : visitorFile) {
@@ -79,6 +76,7 @@ public class ResidentTenant extends Users {
         return null;
     }
     
+    // get booked facility for this current resident
     public ArrayList getCurrentUnitBookedFacility(String unitNo) {
         ArrayList<String> bookedFacility = new ArrayList<>();
         
@@ -96,6 +94,7 @@ public class ResidentTenant extends Users {
         return bookedFacility;
     }
     
+    // get new facility id for booking
     public String getFacilityId(String bookingId) {
         List<String> facilityBookingFile = FH.fileRead(TF.facilityBookingFile);
         for (String eachBooking : facilityBookingFile) {
@@ -108,6 +107,7 @@ public class ResidentTenant extends Users {
         return null;
     }
     
+    // get booked start and end time
     public String[] getBookedStartAndEndTime(String bookingId) {
         String[] startEndTime = {"", ""};
         List<String> facilityBooking = FH.fileRead(TF.facilityBookingFile);
@@ -139,6 +139,7 @@ public class ResidentTenant extends Users {
         return startEndTime;
     }
     
+    // validate table selection
     public String validateTableSelectionAndGetValue(DefaultTableModel table, int selectedColumn, int selectedRow, int expectedColumn, int getValueColumn) {
         if (selectedColumn == expectedColumn) {
             String data = (String) table.getValueAt(selectedRow, getValueColumn);
@@ -148,18 +149,7 @@ public class ResidentTenant extends Users {
         return null;
     }
     
-    public String getSpecificUser(String userId) {
-        List<String> userProfile = FH.fileRead(TF.userProfile);
-        for (String eachUser : userProfile) {
-            String uId = eachUser.split(TF.sp)[0];
-            if (uId.equals(userId)) {
-                return eachUser;
-            }
-        }
-        
-        return null;
-    }
-    
+    // extract facility booking fee
     public List<String> extractFacilityBookingFee(String facilityID, int hour) {
         List<String> availableList = FH.fileRead("facility.txt");
         List<String> feeData = new ArrayList<>();
@@ -235,6 +225,7 @@ public class ResidentTenant extends Users {
         } FH.fileWrite("facilityBooking.txt", false, newData);
     }
     
+    // extract facility booking time slot
     public List<String> extractFacilityTimeSlot(String facilityID, String variation,
         String date, String bookingID) 
     {
@@ -321,6 +312,7 @@ public class ResidentTenant extends Users {
         }
     }
     
+    // to modify self account
     @Override
     public void modifySelfAccount() {
         String userID = this.getUserID().toLowerCase();
@@ -357,97 +349,78 @@ public class ResidentTenant extends Users {
         ResidentTenantMainPage page = new ResidentTenantMainPage(RT);
         page.setVisible(true);
     }
-    
     public void toPaymentCredential(ResidentTenant RT, String totalAmount, ArrayList itemId, boolean forFacility, boolean modifyBooking, ArrayList<Invoice> invoiceList) {
         ResidentTenantPaymentCredential page = new ResidentTenantPaymentCredential(RT, totalAmount, itemId, forFacility, modifyBooking, invoiceList);
         page.setVisible(true);
     }
-    
     public void toPaymentManagement(ResidentTenant RT) {
         ResidentTenantPaymentManagement page = new ResidentTenantPaymentManagement(RT);
         page.setVisible(true);
     }
-    
     public void toPaymentHistory(ResidentTenant RT) {
         ResidentTenantPaymentHistory page = new ResidentTenantPaymentHistory(RT);
         page.setVisible(true);
     }
-    
     public void toInvoice(ResidentTenant RT) {
         ResidentTenantInvoice page = new ResidentTenantInvoice(RT);
         page.setVisible(true);
     }
-    
     public void toInvoicePayment(String invoiceNo, ResidentTenant RT, ArrayList<Invoice> feeTypes) {
         ResidentTenantInvoicePayment page = new ResidentTenantInvoicePayment(invoiceNo, RT, feeTypes);
         page.setVisible(true);
     }
-    
     public void toStatement(ResidentTenant RT) {
         ResidentTenantStatement page = new ResidentTenantStatement(RT);
         page.setVisible(true);
     }
-    
     public void toFacilityReceipt(ResidentTenant RT, String bookingId) {
         ResidentTenantFacilityBookingReceipt page = new ResidentTenantFacilityBookingReceipt(RT, bookingId);
         page.setVisible(true);
     }
-    
     public void toBookedFacility(ResidentTenant RT) {
         ResidentTenantBookedFacility page = new ResidentTenantBookedFacility(RT);
         page.setVisible(true);
     }
-    
     public void toManageBookedFacility(ResidentTenant RT, Facility fb, String bookingID, String date) {
         ResidentTenantManageBookedFacility page = new ResidentTenantManageBookedFacility(RT, fb, bookingID, date);
         page.setVisible(true);
     }
-    
     public void toFacilityBookingManagement(ResidentTenant RT) {
         ResidentTenantFacilityBooking page = new ResidentTenantFacilityBooking(RT);
         page.setVisible(true);
     }
-    
     public void toFacilityPreview(ResidentTenant RT, String facilityID) {
         ResidentTenantFacilityPreview page = new ResidentTenantFacilityPreview(RT, facilityID);
         page.setVisible(true);
     }
-    
     public void toBookFacility(ResidentTenant RT, Facility fb) {
         ResidentTenantBookFacility page = new ResidentTenantBookFacility(RT, fb);
         page.setVisible(true);
     }
-    
     public void toFacilityPaymentGateway(ResidentTenant RT, List<String> bookingList, Facility fb) {
         ResidentTenantFacilityPaymentGateway page = new ResidentTenantFacilityPaymentGateway(RT, bookingList, fb);
         page.setVisible(true);
     }
-    
     public void toViewProfile(ResidentTenant RT) {
         ResidentTenantProfile page = new ResidentTenantProfile(RT);
         page.setVisible(true);
     }
-    
     public void toVisitorPass(ResidentTenant RT) {
         ResidentTenantVisitorPass page = new ResidentTenantVisitorPass(RT);
         page.setVisible(true);
     }
-    
     public void toComplaints(ResidentTenant RT) {
         ResidentTenantComplaints page = new ResidentTenantComplaints(RT);
         page.setVisible(true);
     }
-    
     public void toInvoiceReceipt(ResidentTenant RT, String invoiceNo) {
         ResidentTenantInvoiceReceipt page = new ResidentTenantInvoiceReceipt(RT, invoiceNo);
         page.setVisible(true);
     }
-    
     public void toViewPaidInvoice(ResidentTenant RT, String invoiceNo, ArrayList<Payment> paymentList) {
         ResidentTenantViewPaidInvoice page = new ResidentTenantViewPaidInvoice(invoiceNo, RT, paymentList);
         page.setVisible(true);
     }
-    
     public void toStatementReport(ResidentTenant RT, String monthNyear) {
         ResidentTenantStatementReport page = new ResidentTenantStatementReport(RT, monthNyear);
         page.setVisible(true);

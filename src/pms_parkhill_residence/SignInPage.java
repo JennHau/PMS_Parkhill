@@ -4,7 +4,7 @@
  */
 package pms_parkhill_residence;
 
-import classes.Users;
+import classes.User;
 import accountExecutive.AccountExecutive;
 import accountExecutive.AccountExecutiveDashboard;
 import adminExecutive.AdminExecutive;
@@ -13,11 +13,13 @@ import buildingExecutive.BuildingExecutive;
 import buildingExecutive.BuildingExecutiveMainPage;
 import buildingManager.BuildingManager;
 import buildingManager.BuildingManagerDashboard;
+import securityGuard.SecurityGuard;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import residentANDtenant.ResidentTenant;
 import residentANDtenant.ResidentTenantMainPage;
+import securityGuard.SecurityGuard_DashBoard;
 import vendor.Vendor;
 import vendor.VendorDashboard;
 
@@ -141,6 +143,11 @@ public class SignInPage extends javax.swing.JFrame {
         visitorLabel.setForeground(new java.awt.Color(153, 153, 153));
         visitorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         visitorLabel.setText("Visitors? Please click here");
+        visitorLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                visitorLabelMouseClicked(evt);
+            }
+        });
 
         warningMessage.setForeground(new java.awt.Color(255, 0, 0));
         warningMessage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -251,7 +258,7 @@ public class SignInPage extends javax.swing.JFrame {
     private void signInBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signInBtActionPerformed
         // TODO add your handling code here:
         try{
-            String[] userData = new Users().login(email.getText(), String.valueOf(password.getPassword()));
+            String[] userData = new User().login(email.getText(), String.valueOf(password.getPassword()));
             if (userData != null) {
                 userPage(userData);
                 dispose();
@@ -295,6 +302,10 @@ public class SignInPage extends javax.swing.JFrame {
                 BuildingManager BM = new BuildingManager(user[0], user[1], user[2], user[3], user[4], user[5], user[6], user[7]);
                 new BuildingManagerDashboard(BM).setVisible(true);
             }
+            case "scg" -> {
+                SecurityGuard sg = new SecurityGuard(user[0], user[1], user[2], user[3], user[4], user[5], user[6], user[7]);
+                new SecurityGuard_DashBoard(sg).setVisible(true);
+            }
         }
     }
 
@@ -314,6 +325,12 @@ public class SignInPage extends javax.swing.JFrame {
         dispose();
         new ResetPasswordVerify().setVisible(true);
     }//GEN-LAST:event_forgotPasswordLabelMouseClicked
+
+    private void visitorLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorLabelMouseClicked
+        // TODO add your handling code here:
+         dispose();
+        new visitor.VisitorPage().setVisible(true);
+    }//GEN-LAST:event_visitorLabelMouseClicked
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));

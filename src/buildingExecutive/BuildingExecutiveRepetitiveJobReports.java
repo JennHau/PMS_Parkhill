@@ -11,10 +11,9 @@ import java.awt.Toolkit;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
+import pms_parkhill_residence.HomePage;
 
 /**
  *
@@ -40,6 +39,7 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
         setUserProfile();
     }
     
+    // set up employee id combo box
     private void employeeComboBoxSetUp() {
         employeeIdCB.removeAllItems();
         
@@ -187,12 +187,12 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        jPanel12 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
         jPanel13 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
+        logoutPanel1 = new javax.swing.JPanel();
+        logoutLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -204,16 +204,16 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(153, 153, 153), null, null));
 
-        jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(13, 24, 42));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("PARKHILL RESIDENCE BUILDING EXECUTIVE");
+        jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(13, 24, 42));
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
         jLabel7.setText("USERNAME");
+        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -238,9 +238,9 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(226, 226, 226));
 
-        patrollingLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         patrollingLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         patrollingLabel.setText("Patrolling");
+        patrollingLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         patrollingLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 patrollingLabelMouseClicked(evt);
@@ -250,9 +250,9 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
             }
         });
 
-        complaintsLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         complaintsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         complaintsLabel.setText("Complaints");
+        complaintsLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         complaintsLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 complaintsLabelMouseClicked(evt);
@@ -262,10 +262,10 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
             }
         });
 
-        employeeJobLabel.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        employeeJobLabel.setForeground(new java.awt.Color(13, 24, 42));
         employeeJobLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         employeeJobLabel.setText("Employee Job");
+        employeeJobLabel.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        employeeJobLabel.setForeground(new java.awt.Color(13, 24, 42));
         employeeJobLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 employeeJobLabelMouseClicked(evt);
@@ -275,13 +275,13 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
             }
         });
 
+        pendingFeeLine2.setText("jTextField1");
         pendingFeeLine2.setBackground(new java.awt.Color(13, 24, 42));
         pendingFeeLine2.setForeground(new java.awt.Color(13, 24, 42));
-        pendingFeeLine2.setText("jTextField1");
 
+        jLabel23.setText("Repetitive Job Report");
         jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel23.setText("Repetitive Job Report");
 
         jobTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jobTable.setForeground(new java.awt.Color(51, 51, 51));
@@ -323,9 +323,9 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
             }
         });
 
+        jLabel25.setText("Employee ID: ");
         jLabel25.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel25.setText("Employee ID: ");
 
         employeeIdCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         employeeIdCB.addActionListener(new java.awt.event.ActionListener() {
@@ -417,9 +417,9 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Dashboard");
         jLabel1.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Dashboard");
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel1MouseClicked(evt);
@@ -453,9 +453,9 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
             }
         });
 
+        jobAssignationInnerTab.setText("Job Assignation");
         jobAssignationInnerTab.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jobAssignationInnerTab.setForeground(new java.awt.Color(255, 255, 255));
-        jobAssignationInnerTab.setText("Job Assignation");
         jobAssignationInnerTab.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jobAssignationInnerTabMouseClicked(evt);
@@ -489,10 +489,10 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setText("Complaints");
         jLabel5.setBackground(new java.awt.Color(13, 24, 42));
         jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Complaints");
         jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel5MouseClicked(evt);
@@ -526,9 +526,9 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
             }
         });
 
+        jLabel8.setText("Reports");
         jLabel8.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("Reports");
         jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel8MouseClicked(evt);
@@ -552,30 +552,6 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel12.setBackground(new java.awt.Color(13, 24, 42));
-
-        jLabel10.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
-        jLabel10.setText("LOGOUT");
-
-        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
-        jPanel12.setLayout(jPanel12Layout);
-        jPanel12Layout.setHorizontalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75))
-        );
-        jPanel12Layout.setVerticalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel10)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         jPanel13.setBackground(new java.awt.Color(13, 24, 42));
         jPanel13.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -586,10 +562,10 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
             }
         });
 
-        jLabel11.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
         jLabel11.setText("VIEW PROFILE");
+        jLabel11.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel11MouseClicked(evt);
@@ -623,9 +599,9 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setText("Patrolling Management");
         jLabel6.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Patrolling Management");
         jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel6MouseClicked(evt);
@@ -649,6 +625,46 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        logoutPanel1.setBackground(new java.awt.Color(13, 24, 42));
+        logoutPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutPanel1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logoutPanel1MouseEntered(evt);
+            }
+        });
+
+        logoutLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
+        logoutLabel1.setText("LOGOUT");
+        logoutLabel1.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        logoutLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        logoutLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutLabel1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logoutLabel1MouseEntered(evt);
+            }
+        });
+
+        javax.swing.GroupLayout logoutPanel1Layout = new javax.swing.GroupLayout(logoutPanel1);
+        logoutPanel1.setLayout(logoutPanel1Layout);
+        logoutPanel1Layout.setHorizontalGroup(
+            logoutPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, logoutPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(logoutLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(75, 75, 75))
+        );
+        logoutPanel1Layout.setVerticalGroup(
+            logoutPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(logoutPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(logoutLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -667,7 +683,7 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
                             .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(logoutPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -688,7 +704,7 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(logoutPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(9, 9, 9))
         );
 
@@ -755,6 +771,7 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         BE.toJobReports(BE);
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
@@ -864,6 +881,28 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_employeeJobLabelMouseClicked
 
+    private void logoutLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabel1MouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        new HomePage().setVisible(true);
+    }//GEN-LAST:event_logoutLabel1MouseClicked
+
+    private void logoutLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabel1MouseEntered
+        // TODO add your handling code here:
+        logoutLabel1.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_logoutLabel1MouseEntered
+
+    private void logoutPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutPanel1MouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        new HomePage().setVisible(true);
+    }//GEN-LAST:event_logoutPanel1MouseClicked
+
+    private void logoutPanel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutPanel1MouseEntered
+        // TODO add your handling code here:
+        logoutPanel1.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_logoutPanel1MouseEntered
+
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
@@ -909,7 +948,6 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel23;
@@ -921,7 +959,6 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -933,6 +970,8 @@ public class BuildingExecutiveRepetitiveJobReports extends javax.swing.JFrame {
     private javax.swing.JLabel jobAssignationInnerTab;
     private javax.swing.JPanel jobAssignationTab;
     private javax.swing.JTable jobTable;
+    private javax.swing.JLabel logoutLabel1;
+    private javax.swing.JPanel logoutPanel1;
     private javax.swing.JLabel patrollingLabel;
     private javax.swing.JTextField pendingFeeLine2;
     // End of variables declaration//GEN-END:variables

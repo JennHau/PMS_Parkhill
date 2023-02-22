@@ -19,13 +19,13 @@ import classes.Invoice;
 import classes.PMS_DateTimeFormatter;
 import classes.Payment;
 import classes.TextFile;
-import classes.Users;
+import classes.User;
 
 /**
  *
  * @author Winson
  */
-public class Vendor extends Users{
+public class Vendor extends User{
     FileHandling fh = new FileHandling();
     TextFile TF = new TextFile();
     CRUD crud = new CRUD();
@@ -56,6 +56,7 @@ public class Vendor extends Users{
         }
     }
     
+    // validate table selection
     public String validateTableSelectionAndGetValue(DefaultTableModel table, int selectedColumn, int selectedRow, int expectedColumn, int getValueColumn) {
         if (selectedColumn == expectedColumn) {
             String data = (String) table.getValueAt(selectedRow, getValueColumn);
@@ -98,6 +99,7 @@ public class Vendor extends Users{
         }
     }
     
+    // modify self account
     @Override
     public void modifySelfAccount() {
         String userID = this.getUserID().toLowerCase();
@@ -134,62 +136,52 @@ public class Vendor extends Users{
         VendorDashboard page = new VendorDashboard(VD);
         page.setVisible(true);
     }
-    
     public void toPaymentManagement(Vendor VD) {
         VendorPaymentManagement page = new VendorPaymentManagement(VD);
         page.setVisible(true);
     }
-    
     public void toComplaints(Vendor VD) {
         VendorComplaints page = new VendorComplaints(VD);
         page.setVisible(true);
     }
-    
     public void toPaymentHistory(Vendor VD) {
         VendorPaymentHistory page = new VendorPaymentHistory(VD);
         page.setVisible(true);
     }
-    
     public void toInvoice(Vendor VD) {
         VendorInvoice page = new VendorInvoice(VD);
         page.setVisible(true);
     }
-    
     public void toInvoiceReceipt(Vendor VD, String invoiceNo) {
         VendorInvoiceReceipt page = new VendorInvoiceReceipt(VD, invoiceNo);
         page.setVisible(true);
     }
-    
     public void toInvoicePayment(String invoiceNo, Vendor VD, ArrayList<Invoice> invoiceList) {
         VendorInvoicePayment page = new VendorInvoicePayment(invoiceNo, VD, invoiceList);
         page.setVisible(true);
     }
-    
     public void toViewPaidInvoice(Vendor VD, String invoiceNo, ArrayList<Payment> invoiceList) {
         VendorViewPaidInvoice page = new VendorViewPaidInvoice(invoiceNo, VD, invoiceList);
         page.setVisible(true);
     }
-    
     public void toStatement(Vendor VD) {
         VendorStatement page = new VendorStatement(VD);
         page.setVisible(true);
     }
-    
     public void toStatementReport(Vendor VD, String monthNyear) {
         VendorStatementReport page = new VendorStatementReport(VD, monthNyear);
         page.setVisible(true);
     }
-    
     public void toViewProfile(Vendor VD) {
         VendorProfile page = new VendorProfile(VD);
         page.setVisible(true);
     }
-    
-    public void toPaymentCredential(Vendor VD, String totalAmount, ArrayList itemId) {
+    public void toPaymentCredential(Vendor VD, String totalAmount, ArrayList<Invoice> itemId) {
         VendorPaymentCredential page = new VendorPaymentCredential(VD, totalAmount, itemId);
         page.setVisible(true);
     }
 
+    
     /**
      * @return the unitNo
      */

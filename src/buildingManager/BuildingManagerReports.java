@@ -7,7 +7,7 @@ package buildingManager;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import pms_parkhill_residence.HomePage;
-import classes.Users;
+import classes.User;
 
 /**
  *

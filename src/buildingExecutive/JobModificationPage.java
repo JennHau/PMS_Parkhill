@@ -21,6 +21,7 @@ import classes.Complaint;
 import classes.Employee;
 import classes.FileHandling;
 import classes.Job;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -31,7 +32,8 @@ public class JobModificationPage extends javax.swing.JFrame {
     private final Complaint complaint;
     private final BuildingExecutive BE;
     private final Employee employee;
-    private final AssignedJob assignedJob;
+    private AssignedJob assignedJob;
+    private Job job;
     
     DefaultTableModel jobTable;
     FileHandling fileHandling = new FileHandling();
@@ -39,8 +41,6 @@ public class JobModificationPage extends javax.swing.JFrame {
     
     private String selectedId;
     
-//    private String complaintId;
-//    private String employeeId;
     private String positionCode;
     
     /**
@@ -57,10 +57,6 @@ public class JobModificationPage extends javax.swing.JFrame {
         this.complaint = complaint;
         this.assignedJob = assignedJob;
         this.setPositionCode(employee.getPositionCode());
-
-//        this.setCurrentBEid(this.BE.getUserID());
-//        this.setComplaintId(complaint.getComplaintID());
-//        this.setEmployeeId(employee.getEmpID());
         
         initComponents();
         jobTable = (DefaultTableModel) jobsTableUI.getModel();
@@ -101,14 +97,15 @@ public class JobModificationPage extends javax.swing.JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
     
+    // set up available role in combo box
     private void comboBoxSetUp() {
-        employeeRoleComboBox.setSelectedItem(this.positionCode);
+        employeeRoleComboBox.setSelectedItem(this.employee.getPosition());
     }
     
-    private String getAllField(boolean add) {
+    // get all field 
+    private void getAllField(boolean add) {
         ArrayList<String> dataField = new ArrayList<>();
-        String toLine = "";
-        
+       
         dataField.add(this.positionCode);
         
         if (add) {
@@ -130,24 +127,37 @@ public class JobModificationPage extends javax.swing.JFrame {
                     if (startTimePicker.getTime()!=null) {
                         dataField.add(BE.DTF.formatTime(startTimePicker.getTime().toString()).toString());
 
-                        for (String eachData :  dataField) {
-                            toLine = toLine + eachData + BE.TF.sp;
-                        }
-                        
-                        return toLine;
+                        String[] jobData = dataField.toArray(String[]::new);  
+                       
+                        job = new Job(jobData);
+                    }
+                    else {
+                        JOptionPane.showMessageDialog (null, "Please select a default start time for the job", 
+                                                                    "JOB MODIFICATION", JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
+                else {
+                    JOptionPane.showMessageDialog (null, "The time value cannot be null", 
+                                                                "JOB MODIFICATION", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+            else {
+                JOptionPane.showMessageDialog (null, "The job item has exist.", 
+                                                            "JOB MODIFICATION", JOptionPane.INFORMATION_MESSAGE);
             }
         }
-        
-        return null;
+        else {
+            JOptionPane.showMessageDialog (null, "The job title field cannot be empty.", 
+                                                        "JOB MODIFICATION", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
     
+    // check is the job exist
     private boolean jobTitleExist(String jobTitle) {
         List<String> jobFile = fileHandling.fileRead(BE.TF.jobListFile);
         for (String eachJob : jobFile) {
-            String title = eachJob.split(BE.TF.sp)[2];
-            if (title.equals(jobTitle)) {
+            String title = eachJob.split(BE.TF.sp)[2].toLowerCase();
+            if (title.equals(jobTitle.toLowerCase())) {
                 return true;
             }
         }
@@ -483,6 +493,9 @@ public class JobModificationPage extends javax.swing.JFrame {
             
             if (jobTitle.equals(jobDesc)) {
                 this.setSelectedId(jobID);
+                
+                job = new Job(this.selectedId);
+                
                 jobTF.setText(jobTitle);
                 
                 String timeNeededValue = jobDetails[3];
@@ -532,8 +545,12 @@ public class JobModificationPage extends javax.swing.JFrame {
 
     private void deleteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBTNActionPerformed
         // TODO add your handling code here:
-
-        crud.delete(BE.TF.jobListFile, this.selectedId, 1);
+        if (job != null) {
+            job.deleteJob();
+        }
+        
+        this.job = null;
+        this.assignedJob = null;
         
         clearField();
         
@@ -542,10 +559,11 @@ public class JobModificationPage extends javax.swing.JFrame {
 
     private void updateBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBTNActionPerformed
         // TODO add your handling code here:
+        getAllField(false);
 
-        String dataLine = this.getAllField(false);
-
-        crud.update(BE.TF.jobListFile, this.selectedId, dataLine, 1);
+        if (job != null) {
+            job.updateJob();
+        }
         
         clearField();
         
@@ -554,12 +572,12 @@ public class JobModificationPage extends javax.swing.JFrame {
 
     private void addBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBTNActionPerformed
         // TODO add your handling code here:
-        String dataLine = this.getAllField(true);
+        getAllField(true);
         
-        List<String> addItem = new ArrayList<>();
-        addItem.add(dataLine);
+        if (job != null) {
+            job.addJob();
+        }
         
-        crud.create(BE.TF.jobListFile, addItem);
         clearField();
         
         tableJobSetUp();
@@ -657,61 +675,6 @@ public class JobModificationPage extends javax.swing.JFrame {
     private javax.swing.JButton updateBTN;
     // End of variables declaration//GEN-END:variables
 
-//    /**
-//     * @return the currentBEid
-//     */
-//    public String getCurrentBEid() {
-//        return currentBEid;
-//    }
-//
-//    /**
-//     * @param currentBEid the currentBEid to set
-//     */
-//    public void setCurrentBEid(String currentBEid) {
-//        this.currentBEid = currentBEid;
-//    }
-//
-//    /**
-//     * @return the jobId
-//     */
-//    public String getJobId() {
-//        return jobId;
-//    }
-//
-//    /**
-//     * @param jobId the jobId to set
-//     */
-//    public void setJobId(String jobId) {
-//        this.jobId = jobId;
-//    }
-
-//    /**
-//     * @return the complaintId
-//     */
-//    public String getComplaintId() {
-//        return complaintId;
-//    }
-//
-//    /**
-//     * @param complaintId the complaintId to set
-//     */
-//    public void setComplaintId(String complaintId) {
-//        this.complaintId = complaintId;
-//    }
-
-//    /**
-//     * @return the employeeId
-//     */
-//    public String getEmployeeId() {
-//        return employeeId;
-//    }
-//
-//    /**
-//     * @param employeeId the employeeId to set
-//     */
-//    public void setEmployeeId(String employeeId) {
-//        this.employeeId = employeeId;
-//    }
 
     /**
      * @return the selectedId

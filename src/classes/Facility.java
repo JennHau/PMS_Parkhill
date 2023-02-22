@@ -23,6 +23,7 @@ public abstract class Facility {
     private String active;
     FileHandling fh = new FileHandling();
     
+    // constructors
     public Facility() {}
     
     public void Facility(String facilityID) {

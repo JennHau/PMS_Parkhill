@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author Winson
  */
-public class Patrolling implements Status{
+public class Patrolling {
     private String patID;
     private String slot;
     private String block;
@@ -25,6 +25,7 @@ public class Patrolling implements Status{
     private String checkedAt;
     private String updatedBy;
     private String lastUpdate;
+    private String currentFile;
     
     FileHandling fh = new FileHandling();
     TextFile TF = new TextFile();
@@ -89,11 +90,6 @@ public class Patrolling implements Status{
         String newData = toString();
         
         crud.update(patScheduleFile, patID, newData, 0);
-    }
-    
-    @Override
-    public void updateStatus() {
-        
     }
     
     @Override
@@ -287,4 +283,20 @@ public class Patrolling implements Status{
     public void setLastUpdate(String lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
+
+    /**
+     * @return the currentFile
+     */
+    public String getCurrentFile() {
+        return currentFile;
+    }
+
+    /**
+     * @param currentFile the currentFile to set
+     */
+    public void setCurrentFile(String currentFile) {
+        this.currentFile = currentFile;
+    }
+    
+    
 }
