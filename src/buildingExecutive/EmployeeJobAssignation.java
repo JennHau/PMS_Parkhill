@@ -1316,7 +1316,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             }
 
             if (!clashList.isEmpty()) {
-                JOptionPane.showConfirmDialog(this, "This job has clashed with " + clashList.toString(), "Clash Alert", JOptionPane.OK_OPTION);
+                JOptionPane.showConfirmDialog(this, "This job has clashed with " + clashList.toString(), "Clash Alert", JOptionPane.INFORMATION_MESSAGE);
             }
             else {
                 assignedJob.updateJobTextFile(action);
