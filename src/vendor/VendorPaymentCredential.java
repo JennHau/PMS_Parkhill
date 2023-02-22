@@ -4,22 +4,21 @@
  */
 package vendor;
 
-import residentANDtenant.*;
+import classes.Invoice;
 import java.awt.Toolkit;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import classes.PMS_DateTimeFormatter;
+import java.awt.event.KeyEvent;
+import javax.swing.JTextField;
 
 /**
  *
  * @author Winson
  */
 public class VendorPaymentCredential extends javax.swing.JFrame {
-    private ArrayList<String> itemList;
+    private ArrayList<Invoice> itemList;
     
     private final Vendor VD;
     PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
@@ -30,7 +29,7 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
      * @param totalAmount
      * @param itemList
      */
-    public VendorPaymentCredential(Vendor VD, String totalAmount, ArrayList itemList) {
+    public VendorPaymentCredential(Vendor VD, String totalAmount, ArrayList<Invoice> itemList) {
         this.VD = VD;
         this.setItemList(itemList);
         
@@ -131,9 +130,42 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
         jLabel23.setForeground(new java.awt.Color(51, 51, 51));
         jLabel23.setText("Card Number: ");
 
+        cardNo1TF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                cardNo1TFKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                cardNo1TFKeyTyped(evt);
+            }
+        });
+
+        cardNo2TF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                cardNo2TFKeyTyped(evt);
+            }
+        });
+
+        cardNo3TF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                cardNo3TFKeyTyped(evt);
+            }
+        });
+
+        cardNo4TF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                cardNo4TFKeyTyped(evt);
+            }
+        });
+
         jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(51, 51, 51));
         jLabel24.setText("Card Holder Name:");
+
+        holderNameTF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                holderNameTFKeyTyped(evt);
+            }
+        });
 
         jLabel25.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(51, 51, 51));
@@ -143,9 +175,27 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
         jLabel26.setForeground(new java.awt.Color(51, 51, 51));
         jLabel26.setText("CVV:");
 
+        expMonthTF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                expMonthTFKeyTyped(evt);
+            }
+        });
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
         jLabel1.setText("/");
+
+        expYearTF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                expYearTFKeyTyped(evt);
+            }
+        });
+
+        cvvNoTF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                cvvNoTFKeyTyped(evt);
+            }
+        });
 
         jLabel27.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(51, 51, 51));
@@ -319,65 +369,12 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
                     
                     if (payable) {
                         if (!itemList.isEmpty()) {
-//                            ArrayList<String> paidInv = new ArrayList<>();
-//                            ArrayList<String> incompInv = (ArrayList<String>) (VD.getCurrentUnitInvoice(VD.getUnitNo())).get(0);
-//
-//                            for (String eachInv : incompInv) {
-//                                String[] invDet = eachInv.split(VD.TF.sp);
-//                                String invNo = invDet[0];
-//
-//                                for (String eachId : itemList) {
-//                                    if (eachId.equals(invNo)) {
-//                                        String deletedID = invDet[invDet.length-1];
-//                                        String issuedDate = invDet[invDet.length-2];
-//
-//                                        invDet[invDet.length-2] = VD.getUserID();
-//
-//                                        try {
-//                                            invDet[invDet.length-1] = DTF.changeFormatDate2(LocalDate.now().toString());
-//                                        } catch (ParseException ex) {
-//                                            Logger.getLogger(VendorPaymentCredential.class.getName()).log(Level.SEVERE, null, ex);
-//                                        }
-//
-//                                        String toPay = "";
-//                                        for (String eachData : invDet) {
-//                                            toPay = toPay + eachData + VD.TF.sp;
-//                                        }
-//
-//                                        toPay = toPay + issuedDate + VD.TF.sp + deletedID + VD.TF.sp;
-//
-//                                        paidInv.add(toPay);
-//                                    }
-//                                }
-//                            }
-//                            VD.crud.create(VD.TF.paymentFile, paidInv);
-
-                            for (String eachInvId : itemList) {
-//                                VD.PYM.storePayment(eachInvId, VD.getUserID());
+                            for (Invoice eachInvId : itemList) {
+                                VD.PYM.storePayment(eachInvId, VD.getUserID());
                             }
                             
                             JOptionPane.showMessageDialog (null, "Payment has been made successfully!", 
                             "PAYMENT", JOptionPane.INFORMATION_MESSAGE);
-
-                            if (ResidentTenantPaymentManagement.rtPayMan != null) {
-                                ResidentTenantPaymentManagement.rtPayMan.dispose();
-                            }
-
-                            if (ResidentTenantFacilityPaymentGateway.rtFacPay != null) {
-                                ResidentTenantFacilityPaymentGateway.rtFacPay.dispose();
-                            }
-
-                            if (ResidentTenantBookFacility.rtBookFacility != null) {
-                                ResidentTenantBookFacility.rtBookFacility.dispose();
-                            }
-
-                            if (ResidentTenantPaymentGatewayModifyFacilityBooking.rtPayFacMod != null) {
-                                ResidentTenantPaymentGatewayModifyFacilityBooking.rtPayFacMod.dispose();
-                            }
-
-                            if (ResidentTenantManageBookedFacility.rtManageBooked != null) {
-                                ResidentTenantManageBookedFacility.rtManageBooked.dispose();
-                            }
 
                             this.dispose();
                             VD.toPaymentManagement(VD);
@@ -400,6 +397,7 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_payBTNActionPerformed
 
+    // check card no validation
     private boolean checkCardNo() {
         String[] cardField = {cardNo1TF.getText(), cardNo2TF.getText(), cardNo3TF.getText(), cardNo4TF.getText()};
         
@@ -420,10 +418,12 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
         return true;
     }
     
+    // check holder name validation
     private boolean checkHolderName() {
         return (holderNameTF.getText() != null);
     }
     
+    // check expiry month validation
     private String checkExpiryMonth() {
         String[] monthList = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
         
@@ -442,6 +442,7 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
         return null;
     }
     
+    // check expiry year validation
     private String checkExpiryYear() {
         int year = Integer.valueOf(expYearTF.getText());
         
@@ -454,6 +455,7 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
         return null;
     }
     
+    // check expiry date validation
     private boolean checkExpiryDate () {
         String month = checkExpiryMonth();
         String year = checkExpiryYear();
@@ -466,6 +468,7 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
         return (enteredDate.isAfter(dateNow));
     }
     
+    // check cvv value
     private boolean checkCVV() {
         String cvvNo = cvvNoTF.getText();
         return (cvvNo.length() == 3);
@@ -476,6 +479,78 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_cancelBTNActionPerformed
 
+    private void cardNo1TFKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cardNo1TFKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cardNo1TFKeyReleased
+
+    private void cardNo1TFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cardNo1TFKeyTyped
+        // TODO add your handling code here:
+        cardFieldValidation(evt, cardNo1TF);
+    }//GEN-LAST:event_cardNo1TFKeyTyped
+
+    private void cardNo2TFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cardNo2TFKeyTyped
+        // TODO add your handling code here:
+        cardFieldValidation(evt, cardNo2TF);
+    }//GEN-LAST:event_cardNo2TFKeyTyped
+
+    private void cardNo3TFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cardNo3TFKeyTyped
+        // TODO add your handling code here:
+        cardFieldValidation(evt, cardNo3TF);
+    }//GEN-LAST:event_cardNo3TFKeyTyped
+
+    private void cardNo4TFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cardNo4TFKeyTyped
+        // TODO add your handling code here:
+        cardFieldValidation(evt, cardNo4TF);
+    }//GEN-LAST:event_cardNo4TFKeyTyped
+
+    private void holderNameTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_holderNameTFKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (!(c == KeyEvent.VK_DELETE || Character.isAlphabetic(c) || c == KeyEvent.VK_SPACE)){
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_holderNameTFKeyTyped
+
+    private void expMonthTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_expMonthTFKeyTyped
+        // TODO add your handling code here:
+        int text = expMonthTF.getText().length();
+        char c = evt.getKeyChar();
+        if (!(c == KeyEvent.VK_DELETE || Character.isDigit(c)) || text > 1){
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_expMonthTFKeyTyped
+
+    private void expYearTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_expYearTFKeyTyped
+        // TODO add your handling code here:
+        int text = expYearTF.getText().length();
+        char c = evt.getKeyChar();
+        if (!(c == KeyEvent.VK_DELETE || Character.isDigit(c)) || text > 3){
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_expYearTFKeyTyped
+
+    private void cvvNoTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cvvNoTFKeyTyped
+        // TODO add your handling code here:
+        int text = cvvNoTF.getText().length();
+        char c = evt.getKeyChar();
+        if (!(c == KeyEvent.VK_DELETE || Character.isDigit(c)) || text > 2){
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_cvvNoTFKeyTyped
+
+    // validate card field
+    private void cardFieldValidation(java.awt.event.KeyEvent evt, JTextField cardField) {
+        int text = cardField.getText().length();
+        char c = evt.getKeyChar();
+        if (!(c == KeyEvent.VK_DELETE || Character.isDigit(c)) || text > 3){
+            getToolkit().beep();
+            evt.consume();
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -553,14 +628,14 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
     /**
      * @return the itemList
      */
-    public ArrayList<String> getItemList() {
+    public ArrayList<Invoice> getItemList() {
         return itemList;
     }
 
     /**
      * @param itemList the itemList to set
      */
-    public void setItemList(ArrayList<String> itemList) {
+    public void setItemList(ArrayList<Invoice> itemList) {
         this.itemList = itemList;
     }
 }

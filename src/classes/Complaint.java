@@ -12,7 +12,7 @@ import java.util.List;
  * @author Winson
  */
 
-public class Complaint implements Status{    
+public class Complaint {    
     private String complaintID;
     private String complainerID;
     private String complaintDetails;
@@ -57,20 +57,7 @@ public class Complaint implements Status{
         this.lastUpdateDateTime = compDet[7];
     }
     
-    // update the complaint status method
-    @Override
-    public void updateStatus() {
-        String[] complaintDetails = toString().split(TF.sp);
-        
-        String complaint = "";
-        for (String eachData : complaintDetails) {
-            complaint += eachData + TF.sp;
-        }
-        
-        CRUD crud = new CRUD();
-        crud.update(TF.complaintFiles, complaintDetails[0], complaint, 0);
-    }
-    
+    // get all the complaints for a specific residence/tenants
     public List<ArrayList<Complaint>> getComplaints(String currentRTid) {
         List<ArrayList<Complaint>> complaintList = new ArrayList<>();
         ArrayList<Complaint> pendingComp = new ArrayList<>();
@@ -100,6 +87,7 @@ public class Complaint implements Status{
         return complaintList;
     }
     
+    // convert complaint to table form for residence and vendor
     public ArrayList tableFormForRTandVD(ArrayList<Complaint> complaintList) {
         ArrayList<String> tableForm = new ArrayList<>();
         
@@ -123,6 +111,7 @@ public class Complaint implements Status{
         return tableForm;
     }
     
+    // conver complaint to table form for building executive
     public ArrayList tableFormForBE(ArrayList<Complaint> complaintList) {
         ArrayList<String> tableForm = new ArrayList<>();
         
@@ -156,6 +145,7 @@ public class Complaint implements Status{
         return tableForm;
     }
     
+    // get new complaint ID
     public String getNewCompId() {
         List<String> compFile = FH.fileRead(TF.complaintFiles);
         
@@ -218,6 +208,7 @@ public class Complaint implements Status{
         return complaint;
     }
     
+    // types of complaint status
     public enum cptStatus{
         Pending,
         Progressing,

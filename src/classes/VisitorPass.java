@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author Winson
  */
-public class VisitorPass implements Status {
+public class VisitorPass {
 
     private String passID;
     private String visitorIC;
@@ -111,33 +111,6 @@ public class VisitorPass implements Status {
         }
 
         return registeredVisitor;
-    }
-
-    @Override
-    public void updateStatus() {
-//        String line, x;
-//        List<String> row = FH.fileRead("visitorPass.txt");
-//        List<String> nlst = new ArrayList<String>();
-//        System.out.println(row);
-//        String[] rowary = new String[row.size()];
-//        row.toArray(rowary);
-//        for (int j = 0; j < rowary.length; j++) {
-//            String[] values = rowary[j].split(";");
-//            if (values[0].equalsIgnoreCase(this.passID)) {
-////                values[7] = Status;
-//                line = String.join(";", values);
-//                nlst.add(line);
-//                System.out.println("checkin");
-//            } else {
-//                x = String.join(";", values);
-//                nlst.add(x);
-//            }
-//        }
-//        System.out.println(nlst);
-//        System.out.println("check in");
-//        FH.fileWrite("visitorPass.txt", false, nlst);
-            crud.update(TF.visitorPass, this.passID, toString(), 0);
-
     }
 
     public void updateVisitorPass() {

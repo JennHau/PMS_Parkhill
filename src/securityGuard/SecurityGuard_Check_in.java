@@ -7,15 +7,10 @@ package securityGuard;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Toolkit;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import classes.FileHandling;
@@ -50,6 +45,7 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
     }
 
     private final SecurityGuard SG;
+    
     String today_file = "patrollingScheduleFiles/patrollingFile_" + sg.currentdate() + ".txt";
 
     private void setCurrentProfile() {
@@ -69,7 +65,6 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
             String line = rowary[i].toString().trim();
             line.toUpperCase().split(";");
             String[] line_split = line.toUpperCase().split(";");
-            System.out.println(line_split[9]);
 
             if (line_split[6].trim().equalsIgnoreCase(SG.getUserID()) && line_split[9].trim().equalsIgnoreCase("Pending")) {
                 String id = line_split[0];
@@ -818,10 +813,9 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
         }
         pt.setCheckedAt(checkintime);
         pt.setStatus("Checked");
-        pt.updateStatus();
+        
+        SG.updateStatus(today_file, pt.toString(), pt.getPatID(), 0);
 
-//        System.out.println(lst);
-//        fh.fileWrite(this.today_file, false, lst);
         JOptionPane.showMessageDialog(null, "Checked Successful");
         DefaultTableModel table = (DefaultTableModel) pending_table.getModel();
         DefaultTableModel table1 = (DefaultTableModel) checked_table.getModel();

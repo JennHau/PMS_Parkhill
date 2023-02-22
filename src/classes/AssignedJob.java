@@ -6,7 +6,6 @@ package classes;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -120,6 +119,7 @@ public class AssignedJob extends Job{
         this.patrolCode = jobData[13];
     }
     
+    // to get all assigned job from the job file
     public ArrayList<AssignedJob> getAllAssignedJob() {
         ArrayList<AssignedJob> assignedJobList = new ArrayList<>();
         
@@ -137,6 +137,7 @@ public class AssignedJob extends Job{
         return assignedJobList;
     }
     
+    // get all assigned job for a specific employee
     public ArrayList<AssignedJob> getAssignedJobForSpecificEmployee(String employeeId) {
         ArrayList<AssignedJob> allJob = getAllAssignedJob();
         ArrayList<AssignedJob> employeeJobList = new ArrayList<>();
@@ -152,6 +153,7 @@ public class AssignedJob extends Job{
         return employeeJobList;
     }
     
+    // update job text file
     public void updateJobTextFile(int action) throws IOException {
         ArrayList<AssignedJob> assignedJob = getAllAssignedJob();
         List<String> newItemLists = new ArrayList<>();

@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import classes.FileHandling;
 import pms_parkhill_residence.HomePage;
-import classes.Users;
+import classes.User;
 
 /**
  *

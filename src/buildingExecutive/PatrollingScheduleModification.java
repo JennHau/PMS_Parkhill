@@ -13,10 +13,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
 import classes.FileHandling;
 
 /**
@@ -29,7 +27,6 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
     public static PatrollingScheduleModification patrollingSchedule;
     ArrayList<String> blockList;
 
-    
     FileHandling fh = new FileHandling();
     DefaultTableModel scheduleTable;
     
@@ -74,6 +71,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         patrollingSchedule = this;
     }
     
+    // set up current patrolling file based on the selected date (default today date)
     private void fileSetUp(String file) {
         this.patrollingScheduleFile = file;
         List<String> currentFile = fh.fileRead(this.patrollingScheduleFile);
@@ -98,6 +96,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         BE.setTableRow(scheduleTable, toTable);
     }
     
+    // get the set interval(time, level, time needed)
     private void getIntervalSet() {
         List<String> getSchedSetting = fh.fileRead(BE.TF.patScheduleModRec);
         for (String eachSet : getSchedSetting) {
@@ -110,6 +109,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         }
     }
     
+    // setup the available block combo box
     private void blockComboBoxSetUp() {
         blockTF.removeAllItems();
         blockList = BE.getAvailableBlock();
@@ -119,32 +119,28 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         }
     }
     
+    // setup the available level combo box
     private void levelComboBoxSetUp(String blockSelected) {
-        levelTF.removeAllItems();
-        String[] lvS = {"Level 1", "Level 2", "Level 1-2"};
-        String[] resLv = {"Level 1", "Level 2", "Level 3", "Level 4", 
-                         "Level 5", "Level 6", "Level 7", "Level 8", 
-                         "Level 9", "Level 10", "Level 11", "Level 12", 
-                         "Level 13", "Level 14", "Level 15", "Level 1-5", 
-                         "Level 6-10", "Level 11-15", "Level 1-10", "Level 1-15"};
         if (blockSelected.equals("S")) {
-            for (String eachLv : lvS) {
+            for (String eachLv : BE.lvS) {
                 levelTF.addItem(eachLv);
             }
         }
         else {
-            for (String eachLv : resLv) {
+            for (String eachLv : BE.resLv) {
                 levelTF.addItem(eachLv);
             }
         }
     }
     
+    // set up each combo box
     private void setEachComboBox() {
         hourComboBox.setSelectedItem(timeIntervalSet);
         levelIntervalComboBox.setSelectedItem(levelIntervalSet);
         timeNeededCB.setSelectedItem(timeRequest);
     }
     
+    // check point combo box set up
     private void checkPointSetUp(String lvSelected) {
         checkPTF.removeAllItems();
         String[] splitLv = lvSelected.split(" ");
@@ -166,6 +162,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         }
     }
     
+    // set up the form based on selected item
     private void formSetUp() {
         List<String> getRec = fh.fileRead(BE.TF.tempFile);
         for (String eachRec : getRec) {

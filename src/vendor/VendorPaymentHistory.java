@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import classes.PMS_DateTimeFormatter;
+import pms_parkhill_residence.HomePage;
 
 /**
  *
@@ -206,8 +207,8 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
         complaintsInnerTab = new javax.swing.JLabel();
         jPanel13 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
-        jPanel14 = new javax.swing.JPanel();
-        jLabel15 = new javax.swing.JLabel();
+        logoutPanel2 = new javax.swing.JPanel();
+        logoutLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -219,16 +220,16 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(153, 153, 153), null, null));
 
-        jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(13, 24, 42));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("PARKHILL RESIDENCE RESIDENT & TENANT");
+        jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(13, 24, 42));
 
-        userNameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        userNameLabel.setForeground(new java.awt.Color(102, 102, 102));
         userNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         userNameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
         userNameLabel.setText("USERNAME");
+        userNameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        userNameLabel.setForeground(new java.awt.Color(102, 102, 102));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -253,9 +254,9 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(226, 226, 226));
 
-        pendingFeeLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         pendingFeeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pendingFeeLabel.setText("Pending Fee");
+        pendingFeeLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         pendingFeeLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 pendingFeeLabelMouseClicked(evt);
@@ -265,9 +266,9 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
             }
         });
 
-        statementLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         statementLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         statementLabel.setText("Statement");
+        statementLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         statementLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 statementLabelMouseClicked(evt);
@@ -277,9 +278,9 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
             }
         });
 
-        invoiceLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         invoiceLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         invoiceLabel.setText("Invoice");
+        invoiceLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         invoiceLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 invoiceLabelMouseClicked(evt);
@@ -311,14 +312,14 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(paymentHistoryTable);
 
+        jLabel23.setText("Payment History:");
         jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel23.setText("Payment History:");
 
-        paymentHistLabel.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        paymentHistLabel.setForeground(new java.awt.Color(13, 24, 42));
         paymentHistLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         paymentHistLabel.setText("Payment History");
+        paymentHistLabel.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        paymentHistLabel.setForeground(new java.awt.Color(13, 24, 42));
         paymentHistLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 paymentHistLabelMouseClicked(evt);
@@ -328,9 +329,9 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
             }
         });
 
+        paymentHistLine.setText("jTextField1");
         paymentHistLine.setBackground(new java.awt.Color(13, 24, 42));
         paymentHistLine.setForeground(new java.awt.Color(13, 24, 42));
-        paymentHistLine.setText("jTextField1");
 
         viewStatementBTN.setText("View Statement");
         viewStatementBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -409,9 +410,9 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
             }
         });
 
+        dashBoardInnerTab2.setText("Dashboard");
         dashBoardInnerTab2.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         dashBoardInnerTab2.setForeground(new java.awt.Color(255, 255, 255));
-        dashBoardInnerTab2.setText("Dashboard");
         dashBoardInnerTab2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 dashBoardInnerTab2MouseClicked(evt);
@@ -448,9 +449,9 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
             }
         });
 
+        paymentManagementInnerTab.setText("Payment Management");
         paymentManagementInnerTab.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         paymentManagementInnerTab.setForeground(new java.awt.Color(255, 255, 255));
-        paymentManagementInnerTab.setText("Payment Management");
         paymentManagementInnerTab.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 paymentManagementInnerTabMouseClicked(evt);
@@ -487,9 +488,9 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
             }
         });
 
+        complaintsInnerTab.setText("Complaints");
         complaintsInnerTab.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         complaintsInnerTab.setForeground(new java.awt.Color(255, 255, 255));
-        complaintsInnerTab.setText("Complaints");
         complaintsInnerTab.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 complaintsInnerTabMouseClicked(evt);
@@ -526,10 +527,10 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
             }
         });
 
-        jLabel12.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
         jLabel12.setText("VIEW PROFILE");
+        jLabel12.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel12MouseClicked(evt);
@@ -556,27 +557,43 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel14.setBackground(new java.awt.Color(13, 24, 42));
+        logoutPanel2.setBackground(new java.awt.Color(13, 24, 42));
+        logoutPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutPanel2MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logoutPanel2MouseEntered(evt);
+            }
+        });
 
-        jLabel15.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
-        jLabel15.setText("LOGOUT");
+        logoutLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
+        logoutLabel2.setText("LOGOUT");
+        logoutLabel2.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        logoutLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        logoutLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutLabel2MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logoutLabel2MouseEntered(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
-        jPanel14.setLayout(jPanel14Layout);
-        jPanel14Layout.setHorizontalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel14Layout.createSequentialGroup()
+        javax.swing.GroupLayout logoutPanel2Layout = new javax.swing.GroupLayout(logoutPanel2);
+        logoutPanel2.setLayout(logoutPanel2Layout);
+        logoutPanel2Layout.setHorizontalGroup(
+            logoutPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, logoutPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(logoutLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(75, 75, 75))
         );
-        jPanel14Layout.setVerticalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel14Layout.createSequentialGroup()
+        logoutPanel2Layout.setVerticalGroup(
+            logoutPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(logoutPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel15)
+                .addComponent(logoutLabel2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -590,8 +607,8 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
             .addComponent(paymentManagementOuterTab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(complaintsOuterTab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(dashboardOuterTab2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(logoutPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -604,10 +621,10 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
                 .addComponent(paymentManagementOuterTab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(complaintsOuterTab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 386, Short.MAX_VALUE)
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(logoutPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(9, 9, 9))
         );
 
@@ -797,6 +814,28 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
         // TODO add your handling code here:
         jPanel13.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_jPanel13MouseEntered
+
+    private void logoutLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabel2MouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        new HomePage().setVisible(true);
+    }//GEN-LAST:event_logoutLabel2MouseClicked
+
+    private void logoutLabel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabel2MouseEntered
+        // TODO add your handling code here:
+        logoutLabel2.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_logoutLabel2MouseEntered
+
+    private void logoutPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutPanel2MouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        new HomePage().setVisible(true);
+    }//GEN-LAST:event_logoutPanel2MouseClicked
+
+    private void logoutPanel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutPanel2MouseEntered
+        // TODO add your handling code here:
+        logoutPanel2.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_logoutPanel2MouseEntered
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
@@ -1356,16 +1395,16 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
     private javax.swing.JLabel invoiceLabel;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel logoutLabel2;
+    private javax.swing.JPanel logoutPanel2;
     private javax.swing.JLabel paymentHistLabel;
     private javax.swing.JTextField paymentHistLine;
     private javax.swing.JTable paymentHistoryTable;

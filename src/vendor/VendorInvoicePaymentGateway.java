@@ -4,7 +4,7 @@
  */
 package vendor;
 
-import residentANDtenant.*;
+import classes.Invoice;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -22,13 +22,14 @@ public class VendorInvoicePaymentGateway extends javax.swing.JFrame {
      * @param VD
      * @param total
      */
-    public VendorInvoicePaymentGateway(String invoiceNo, Vendor VD, String total) {
+    public VendorInvoicePaymentGateway(String invoiceNo, Vendor VD, String total, ArrayList<Invoice> invoiceList) {
         initComponents();
         setWindowIcon();
         this.VD = VD;
         this.invoiceNo = invoiceNo;
         this.unitNo = this.VD.getUnitNo();
         this.total = total;
+        this.invoiceList = invoiceList;
         setUserData();
         setFixData();
     }
@@ -416,6 +417,7 @@ public class VendorInvoicePaymentGateway extends javax.swing.JFrame {
     private final String invoiceNo;
     private final String unitNo;
     private final String total;
+    private final ArrayList<Invoice> invoiceList;
     
     private void userIDTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userIDTFActionPerformed
         // TODO add your handling code here:
@@ -444,9 +446,7 @@ public class VendorInvoicePaymentGateway extends javax.swing.JFrame {
         JOptionPane.QUESTION_MESSAGE);
 
         if(result == JOptionPane.YES_OPTION){
-            ArrayList<String> itemId = new ArrayList<>();
-            itemId.add(invoiceNo);
-            VD.toPaymentCredential(VD, total, itemId);
+            VD.toPaymentCredential(VD, total, invoiceList);
         }
         
     }//GEN-LAST:event_payBTActionPerformed
@@ -1544,7 +1544,7 @@ public class VendorInvoicePaymentGateway extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VendorInvoicePaymentGateway(null, null, null).setVisible(true);
+                new VendorInvoicePaymentGateway(null, null, null, null).setVisible(true);
             }
         });
     }

@@ -4,18 +4,17 @@
  */
 package adminExecutive;
 
+import accountExecutive.AccountExecutive;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import accountExecutive.AccountExecutive;
 import classes.Complaint;
 import classes.Employee;
 import java.awt.Color;
 import java.io.File;
 import java.time.LocalDate;
-import java.util.Calendar;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -26,22 +25,21 @@ import classes.FileHandling;
 import classes.PMS_DateTimeFormatter;
 import classes.Payment;
 import classes.PropertyUnit;
-import classes.Users;
-import java.time.LocalTime;
+import classes.User;
 import residentANDtenant.ResidentTenant;
 
 /**
  *
  * @author wongj
  */
-public class AdminExecutive extends Users{
+public class AdminExecutive extends User{
     
-    FileHandling fh = new FileHandling();
-    Payment PM = new Payment();
-    PropertyUnit PU = new PropertyUnit();
-    Complaint CP = new Complaint();
-    PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
-    Employee EMP = new Employee();
+    public FileHandling fh = new FileHandling();
+    public Payment PM = new Payment();
+    public PropertyUnit PU = new PropertyUnit();
+    public Complaint CP = new Complaint();
+    public PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
+    public Employee EMP = new Employee();
     
     public AdminExecutive(){}
     

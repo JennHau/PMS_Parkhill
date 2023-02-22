@@ -854,13 +854,6 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
 
     }//GEN-LAST:event_search_id_fieldMouseEntered
 
-//    private void enablebutton() {
-//        if (id.getText().isBlank() || name.getText().isBlank() || Unitno.getText().isBlank() || ic.getText().isBlank() || check_in_datetime.datePicker.getText().isBlank() || check_in_datetime.timePicker.getText().isBlank() || check_out_datetime.datePicker.getText().isBlank() || check_out_datetime.timePicker.getText().isBlank()) {
-//            jButton1.setEnabled(false);
-//        } else {
-//            jButton1.setEnabled(true);
-//        }
-//    }
 //    enable check in button
     private void enablecheckinbutton() {
         if (checkindate.getText().isBlank() || checkindate.getText().length() < 5) {
@@ -882,6 +875,7 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
             Checkout.setEnabled(false);
         }
     }
+    
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         // TODO add your handling code here:
         dispose();
@@ -965,7 +959,8 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         fh.fileWrite("visitorpass.txt", false, nlst);
         vp.setCheckInStatus(VisitorPass.visitorPassStatus[1]);
         vp.setCheckedInAt(checkindata);
-        vp.updateStatus();
+        
+        SG.updateStatus(SG.TF.visitorPass, vp.toString(), vp.getPassID(), 0);
 
         JOptionPane.showMessageDialog(null, "Check in Successful");
         Checkin.setEnabled(false);
@@ -1011,7 +1006,9 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         fh.fileWrite("visitorpass.txt", false, nlst);
         vp.setCheckInStatus(VisitorPass.visitorPassStatus[2]);
         vp.setCheckedOutAt(checkoutdata);
-        vp.updateStatus();
+        
+        SG.updateStatus(SG.TF.visitorPass, vp.toString(), vp.getPassID(), 0);
+        
         JOptionPane.showMessageDialog(null, "Check Out Successful");
         Checkin.setEnabled(false);
         Checkout.setEnabled(false);

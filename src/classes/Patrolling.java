@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author Winson
  */
-public class Patrolling implements Status{
+public class Patrolling {
     private String patID;
     private String slot;
     private String block;
@@ -90,11 +90,6 @@ public class Patrolling implements Status{
         String newData = toString();
         
         crud.update(patScheduleFile, patID, newData, 0);
-    }
-    
-    @Override
-    public void updateStatus() {
-        crud.update(currentFile, this.patID, toString(), 0);
     }
     
     @Override

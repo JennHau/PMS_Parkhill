@@ -4,6 +4,9 @@
  */
 package classes;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
 /**
@@ -124,5 +127,18 @@ public class TextFile {
         
         String currentUsableID = initial + zero +String.valueOf(largestID);
         return currentUsableID;
+    }
+    
+    public boolean replaceFile(String fileLocation, String destination) throws IOException {
+        File dest = new File(destination);
+        File fileLoc = new File(fileLocation);
+        
+        if (dest.exists()) {
+            dest.delete();
+        }
+        
+        Files.copy(fileLoc.toPath(), dest.toPath());
+        
+        return dest.exists();
     }
 }

@@ -20,8 +20,17 @@ public class Job {
     
     FileHandling FH = new FileHandling();
     TextFile TF = new TextFile();
+    CRUD crud = new CRUD();
     
     public Job() {}
+    
+    public Job(String[] jobData) {
+        this.roleJob = jobData[0];
+        this.jobID = jobData[1];
+        this.task = jobData[2];
+        this.timeNeeded = jobData[3];
+        this.jobStartTime = jobData[4];
+    }
     
     public Job(String jobID) {
         List<String> jobList = FH.fileRead(TF.jobListFile);
@@ -72,6 +81,33 @@ public class Job {
         }
         
         return jobLists;
+    }
+    
+    public void addJob() {
+        List<String> newItem = new ArrayList<>();
+        newItem.add(toString());
+        
+        crud.create(TF.jobListFile, newItem);
+    }
+    
+    public void updateJob() {
+        crud.update(TF.jobListFile, jobID, toString(), 1);
+    }
+    
+    public void deleteJob() {
+        crud.delete(TF.jobListFile, jobID, 1);
+        crud.delete(TF.employeeJobFile, jobID, 3);
+    }
+    
+    @Override
+    public String toString() {
+        String[] jobData = {roleJob, jobID, task, timeNeeded, jobStartTime};
+        String jobLine = "";
+        for (String eachData : jobData) {
+            jobLine = jobLine + eachData + TF.sp;
+        }
+        
+        return jobLine;
     }
 
     /**

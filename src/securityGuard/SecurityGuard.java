@@ -4,6 +4,7 @@
  */
 package securityGuard;
 
+import classes.CRUD;
 import java.awt.Color;
 import java.util.List;
 import java.io.BufferedReader;
@@ -16,23 +17,21 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import classes.FileHandling;
-import classes.Users;
+import classes.User;
+import classes.Status;
+import classes.TextFile;
 
 /**
  *
@@ -40,7 +39,7 @@ import classes.Users;
  */
 
 
-public class SecurityGuard extends Users {
+public class SecurityGuard extends User implements Status{
 
     public static void main(String[] args) throws IOException {
         displayTable("test-table.txt");
@@ -55,6 +54,8 @@ public class SecurityGuard extends Users {
     
 //    diaplay table
 FileHandling fh = new FileHandling();
+TextFile TF = new TextFile();
+CRUD crud = new CRUD();
     
 public Integer count_uncheck_checkpoint() {
         
@@ -229,6 +230,10 @@ public Integer count_uncheck_checkpoint() {
     ;
         
         
+    @Override
+    public void updateStatus(String fileName, String item, String itemID, int idCol) {
+        crud.update(fileName, itemID, item, 0);
+    }
 
     public static void insertdatatofile(String f, String[] A) throws IOException {
         String filepath = f;

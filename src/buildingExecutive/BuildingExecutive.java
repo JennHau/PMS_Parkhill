@@ -5,8 +5,15 @@
 package buildingExecutive;
 
 import classes.AssignedJob;
-import java.awt.Color;
 import classes.CRUD;
+import classes.Complaint;
+import classes.Employee;
+import classes.FileHandling;
+import classes.PMS_DateTimeFormatter;
+import classes.Patrolling;
+import classes.TextFile;
+import classes.User;
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,33 +29,37 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import classes.Complaint;
-import classes.Employee;
-import classes.FileHandling;
-import classes.PMS_DateTimeFormatter;
-import classes.Patrolling;
-import classes.TextFile;
-import classes.Users;
+import classes.Status;
 
 /**
  *
  * @author Winson
  */
-public class BuildingExecutive extends Users{
-    PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
-    TextFile TF = new TextFile();
-    FileHandling fh = new FileHandling();
-    Complaint CP = new Complaint();
-    CRUD crud = new CRUD();
-    Patrolling PT = new Patrolling();
+public class BuildingExecutive extends User implements Status{
+    public PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
+    public TextFile TF = new TextFile();
+    public FileHandling fh = new FileHandling();
+    public Complaint CP = new Complaint();
+    public CRUD crud = new CRUD();
+    public Patrolling PT = new Patrolling();
     
     // Repitition
-    final int repititionON = 1;
-    final int repititionOFF = 0;
+    public final int repititionON = 1;
+    public final int repititionOFF = 0;
     
     // Assign and Unassign Job to Employee
-    final int assignedEmployee = 1;
-    final int unassignedEmployee = 0;
+    public final int assignedEmployee = 1;
+    public final int unassignedEmployee = 0;
+    
+    // available combination of level for vendor
+    public String[] lvS = {"Level 1", "Level 2", "Level 1-2"};
+        
+    // available combination of level for residence
+    public String[] resLv = {"Level 1", "Level 2", "Level 3", "Level 4", 
+                     "Level 5", "Level 6", "Level 7", "Level 8", 
+                     "Level 9", "Level 10", "Level 11", "Level 12", 
+                     "Level 13", "Level 14", "Level 15", "Level 1-5", 
+                     "Level 6-10", "Level 11-15", "Level 1-10", "Level 1-15"};
     
     public BuildingExecutive(String userID, String email, String password, String firstName,
                  String lastName, String identificationNo, String gender,
@@ -75,6 +86,15 @@ public class BuildingExecutive extends Users{
         }
         
         return empList;
+    }
+    
+    // update the complaint status method
+    @Override
+    public void updateStatus(String fileName, String item, String itemID, int idCol) {
+        String complaint = item;
+        
+        CRUD crud = new CRUD();
+        crud.update(fileName, itemID, complaint, idCol);
     }
     
     public void updateJobList() throws IOException{
@@ -128,7 +148,7 @@ public class BuildingExecutive extends Users{
     }
     
     // To get all employee job list
-    private ArrayList<ArrayList<String>> getEmployeeJobList(LocalDate localDate, LocalTime localTime) throws IOException {
+    public ArrayList<ArrayList<String>> getEmployeeJobList(LocalDate localDate, LocalTime localTime) throws IOException {
         ArrayList<Employee> employeeList = getEmployeeList();
         
         ArrayList<String> workingList = new ArrayList<>();
@@ -180,7 +200,7 @@ public class BuildingExecutive extends Users{
                 if (workingDate != null) {
                     // Compare the job with inputted date and time
                     
-                    boolean addToList = compareDateTime(localDate, localTime, workingDate, workingTime, workingEndDateTime, workingStartTime2, workingEndTime2);
+                    boolean addToList = compareDateTime(localDate, localTime, 0, workingDate, workingTime, workingEndDateTime, workingStartTime2, workingEndTime2);
                     
                     // Add the job to assigned list
                     if (addToList) {
@@ -285,23 +305,66 @@ public class BuildingExecutive extends Users{
     }
     
     // Compare the job date time with the input date and time
-    public boolean compareDateTime(LocalDate localDate, LocalTime localTime, LocalDate workingDate, LocalTime workingTime, String[] workingEndDateTime, LocalTime workingStartTime2, LocalTime workingEndTime2) {
+    public boolean compareDateTime(LocalDate localDate, LocalTime localTime, int timeRequired, LocalDate workingDate, LocalTime workingTime, String[] workingEndDateTime, LocalTime workingStartTime2, LocalTime workingEndTime2) {
         LocalDateTime selectedDateTime = LocalDateTime.of(localDate, localTime);
         LocalDateTime startDateTime = LocalDateTime.of(workingDate, workingTime);
         LocalDateTime endDateTime = LocalDateTime.of(DTF.formatDate(workingEndDateTime[0]), DTF.formatTime(workingEndDateTime[1]));
-
+        LocalDateTime selectedEndDateTime = null;
+        
+        LocalDateTime startDateTime2 = null;
+        LocalDateTime endDateTime2 = null;
+        
+        if (timeRequired != 0) {
+            selectedEndDateTime = selectedDateTime.plusMinutes(timeRequired);
+        }
+        
         boolean addToList = false;
         if ((selectedDateTime.equals(startDateTime) || selectedDateTime.isAfter(startDateTime)) && 
             (selectedDateTime.equals(endDateTime) || selectedDateTime.isBefore(endDateTime))) {
             addToList = true;
         }
         else if (workingStartTime2 != null && workingEndTime2 != null) {
-            LocalDateTime startDateTime2 = LocalDateTime.of(workingDate, workingStartTime2);
-            LocalDateTime endDateTime2 = LocalDateTime.of(workingDate.plusDays(1), workingEndTime2);
+            startDateTime2 = LocalDateTime.of(workingDate, workingStartTime2);
+            endDateTime2 = LocalDateTime.of(workingDate.plusDays(1), workingEndTime2);
 
             if ((selectedDateTime.equals(startDateTime2) || selectedDateTime.isAfter(startDateTime2)) &&
                 (selectedDateTime.equals(endDateTime2) || selectedDateTime.isBefore(endDateTime2))) {
                 addToList = true;
+            }
+        }
+        
+        if (selectedEndDateTime != null) {
+            if ((selectedEndDateTime.equals(startDateTime) || selectedEndDateTime.isAfter(startDateTime)) && 
+                (selectedEndDateTime.equals(endDateTime) || selectedEndDateTime.isBefore(endDateTime))) {
+                addToList = true;
+            }
+            else if (startDateTime2 != null && endDateTime2 != null) {
+                if ((selectedEndDateTime.equals(startDateTime2) || selectedEndDateTime.isAfter(startDateTime2)) &&
+                    (selectedEndDateTime.equals(endDateTime2) || selectedEndDateTime.isBefore(endDateTime2))) {
+                    addToList = true;
+                }
+            }
+            
+            if ((startDateTime.equals(selectedDateTime) || startDateTime.isAfter(selectedDateTime)) && 
+                (startDateTime.equals(selectedEndDateTime) || startDateTime.isBefore(selectedEndDateTime))) {
+                addToList = true;
+            }
+            else if (startDateTime2 != null && endDateTime2 != null) {
+                if ((startDateTime2.equals(selectedDateTime) || startDateTime2.isAfter(selectedDateTime)) &&
+                    (startDateTime2.equals(selectedEndDateTime) || startDateTime2.isBefore(selectedEndDateTime))) {
+                    addToList = true;
+                }
+            }
+            
+            if ((endDateTime.equals(selectedDateTime) || endDateTime.isAfter(selectedDateTime)) && 
+                (endDateTime.equals(selectedEndDateTime) || endDateTime.isBefore(selectedEndDateTime))) {
+                addToList = true;
+            }
+            else if (startDateTime2 != null && endDateTime2 != null) {
+                if ((endDateTime2.equals(selectedDateTime) || endDateTime2.isAfter(selectedDateTime)) &&
+                    (endDateTime2.equals(selectedEndDateTime) || endDateTime2.isBefore(selectedEndDateTime))) {
+                    addToList = true;
+                }
             }
         }
         
@@ -326,7 +389,7 @@ public class BuildingExecutive extends Users{
     }
     
     // get specific role of employee list
-    private ArrayList getSpecificRoleList(ArrayList<String> employeeList, String role) {
+    public ArrayList getSpecificRoleList(ArrayList<String> employeeList, String role) {
         ArrayList<String> specificRoleList = new ArrayList<>();
         
         for (String employeeInfo : employeeList) {
@@ -341,7 +404,7 @@ public class BuildingExecutive extends Users{
     }
     
     // search function
-    private ArrayList searchFunction(ArrayList<String> employeeList, String searchText) {
+    public ArrayList searchFunction(ArrayList<String> employeeList, String searchText) {
         ArrayList<String> searchedList = new ArrayList<>();
         
         for (String employeeInfo : employeeList) {
@@ -591,7 +654,7 @@ public class BuildingExecutive extends Users{
     }
     
     // get the level sequence
-    private ArrayList getLevelSequence(int selectedLevel) {
+    public ArrayList getLevelSequence(int selectedLevel) {
         ArrayList<String> levelValue = new ArrayList<>();
         switch (selectedLevel) {
             case 5 -> {

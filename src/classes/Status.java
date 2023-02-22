@@ -8,6 +8,6 @@ package classes;
  *
  * @author Winson
  */
-interface Status {
-    void updateStatus();
+public interface Status {
+    void updateStatus(String fileName, String item, String itemID, int idCol);
 }

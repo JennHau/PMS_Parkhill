@@ -4,7 +4,7 @@
  */
 package pms_parkhill_residence;
 
-import classes.Users;
+import classes.User;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Toolkit;
@@ -266,7 +266,7 @@ public class ResetPasswordVerify extends javax.swing.JFrame {
     private void verifyBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verifyBtActionPerformed
         // TODO add your handling code here:
         try{
-            Users users = new Users();
+            User users = new User();
             boolean valid = users.resetPasswordVerify(emailTF.getText(),
                 phoneNoTF.getText(), IDNoTF.getText());
             if (valid) {

@@ -21,3 +21,5 @@ scg;MS;Morning Shift (8am-8pm);12h;08:00:00;
 scg;NS;Night Shift (8pm-8am);12h;20:00:00;
 ptl;PT;Patrolling;1h;-;
 cmp;00;Complaints;0h;-; 
+scg;20;Help Help Help;2h;20:30;
+tcn;21;Set Up Patrolling System;1h;22:00;

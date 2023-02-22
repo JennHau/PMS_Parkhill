@@ -4,7 +4,7 @@
  */
 package pms_parkhill_residence;
 
-import classes.Users;
+import classes.User;
 import accountExecutive.AccountExecutive;
 import accountExecutive.AccountExecutiveDashboard;
 import adminExecutive.AdminExecutive;
@@ -258,7 +258,7 @@ public class SignInPage extends javax.swing.JFrame {
     private void signInBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signInBtActionPerformed
         // TODO add your handling code here:
         try{
-            String[] userData = new Users().login(email.getText(), String.valueOf(password.getPassword()));
+            String[] userData = new User().login(email.getText(), String.valueOf(password.getPassword()));
             if (userData != null) {
                 userPage(userData);
                 dispose();

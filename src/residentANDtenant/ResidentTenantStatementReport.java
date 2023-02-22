@@ -372,6 +372,7 @@ public class ResidentTenantStatementReport extends javax.swing.JFrame {
         }
     }
     
+    // get the total amount
     private void calculateTotal() {
         double totalAmount = 0;
         double totalPayments = 0;
@@ -395,6 +396,7 @@ public class ResidentTenantStatementReport extends javax.swing.JFrame {
         balanceLabel.setText("RM" + String.format("%.02f", totalBalance));
     }
     
+    // get all the issues date for combo box
     private void setIssuedDate() {
         List<String> statementFile = RT.FH.fileRead(RT.TF.statementFile);
         for (String eachState : statementFile) {
@@ -409,6 +411,7 @@ public class ResidentTenantStatementReport extends javax.swing.JFrame {
         }
     }
     
+    // set up report details
     private void setReportDetails() {
         periodLabel.setText(monthNyear);
         unitNoLabel.setText(RT.getUnitNo());
