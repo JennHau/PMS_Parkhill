@@ -302,4 +302,6 @@ public class Patrolling implements Status{
     public void setCurrentFile(String currentFile) {
         this.currentFile = currentFile;
     }
+    
+    
 }
