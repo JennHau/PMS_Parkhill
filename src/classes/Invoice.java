@@ -81,15 +81,6 @@ public class Invoice {
         this.deleteID = invoiceData[10];
     }
     
-    // store new invoice into text file
-    public void issueInvoice() {
-        List<String> newData = new ArrayList<>();
-        newData.add(invoiceNo +";"+ unitNo +";"+ feeType +";"+ unitCategory +";"+
-            consumption +";"+ unit +";"+ unitPrice +";"+ totalPrice +";"+
-            period +";"+ issuedDate+";"+ deleteID +";");
-        fh.fileWrite("invoices.txt", true, newData);
-    }
-    
     // extract all specific fee type invoice details
     public List<String> displayInvoiceDetails(String feeTypeName, String target,
             String status, String monthYear) {
@@ -194,26 +185,6 @@ public class Invoice {
         }
         return availableInvoices;
     }
-    
-//    // method to extract specific invoice details
-//    public List<String> extractOneInvoiceDetails(Invoice INV) {
-//        List<String> RavailableFees = new ArrayList<>();
-//        
-//        for (int i=0; i<INV.availableFees.size(); i++) {
-//            String[] paymentDetails = INV.availableFees.get(i).split(";");
-//            String eInvoiceNo = paymentDetails[0];
-//            String feeType = paymentDetails[2];
-//            String issueDate = paymentDetails[9];
-//            String consump = paymentDetails[4];
-//            String unit = paymentDetails[5];
-//            String unitPrice = paymentDetails[6];
-//            String totalPrice = paymentDetails[7];
-//            
-//            RavailableFees.add(feeType +";"+ issueDate +";"+ consump +";"+
-//                    unit +";"+ unitPrice +";"+ totalPrice +";");
-//        } 
-//        return RavailableFees;
-//    }
     
     public ArrayList<Invoice> getCurrentUnitInvoice(String unitNo) {
         ArrayList<Invoice> incompleteInvoice = new ArrayList<>();     

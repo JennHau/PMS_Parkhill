@@ -726,7 +726,7 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
                     List<String> receiptDetails = new ArrayList<>();
                     String feeType = String.valueOf(tableModel.getValueAt(row, 2));
                     receiptDetails.add(invoiceNo +";"+ feeType +";");
-                    PM.issueReceipt(receiptDetails);
+                    AE.issueReceipt(receiptDetails);
                     setTable();
                     JOptionPane.showMessageDialog (null, "Receipt has been issued!", 
                                     "ISSUE RECEIPT", JOptionPane.INFORMATION_MESSAGE);
@@ -1038,7 +1038,7 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
                     String cDetails = invoiceNo +";"+ feeType +";";
                     receiptDetails.add(cDetails);
                 } 
-                    PM.issueReceipt(receiptDetails);
+                    AE.issueReceipt(receiptDetails);
                     setTable();
                     JOptionPane.showMessageDialog (null, "Receipts have been issued!", 
                                     "ISSUE RECEIPT", JOptionPane.INFORMATION_MESSAGE);

@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableCellRenderer;
 import classes.Facility;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import pms_parkhill_residence.HomePage;
 
 /**
@@ -72,14 +74,18 @@ public class AdminExecutiveManageBookedFacility extends javax.swing.JFrame {
                 Object value = getModel().getValueAt(rowIndex,columnIndex);
 
                 if(columnIndex == 4){
-                    if(value.equals("SELECT")) {
-                        componenet.setBackground(new Color(0,70,126));
+                    if(value.equals("PAST")){
+                        componenet.setBackground(new Color(255, 0, 0));
                         componenet.setForeground(new Color(255, 255, 255));
-                    } else if(value.equals("SELECTED")) {
-                        componenet.setBackground(new Color(51,51,51));
+
+                    } else if(value.equals("SELECTED")){
+                        componenet.setBackground(new Color(102,102,102));
                         componenet.setForeground(new Color(255, 255, 255));
                     }
-
+                    else {
+                        componenet.setBackground(new Color(0,70,126));
+                        componenet.setForeground(new Color(255, 255, 255));
+                    }
                 }
 
                 else {
@@ -1200,7 +1206,6 @@ public class AdminExecutiveManageBookedFacility extends javax.swing.JFrame {
             String variation = (String)variationCB.getSelectedItem();
             List<String> availableList = AE.extractFacilityTimeSlot(facilityID, variation, pickDate, bookingID);
 
-
             for (int i = 0; i < availableList.size(); i++) {
                 String[] employeeDetails = availableList.get(i).split(";");
                 String facilityName = employeeDetails[0];
@@ -1209,12 +1214,20 @@ public class AdminExecutiveManageBookedFacility extends javax.swing.JFrame {
                 String bookedBy = employeeDetails[3];
                 String action = employeeDetails[4];
 
+                LocalDateTime dateTime = AE.DTF.combineStringDateTime(pickDate, endTime);
+
+                if (dateTime.isBefore(LocalDateTime.now())) {
+                    action = "PAST";
+                }
+
                 String[] tbData = {facilityName, startTime, endTime, bookedBy, action};
                 tableModel.addRow(tbData);
             }
-        } else {
+        } 
+        else {
             warningMessage.setText("Invalid date!");
         }
+
         setTable2();
     }
     

@@ -347,7 +347,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
             String type = String.valueOf(typeCB.getSelectedItem());
             String unitNo = unitNoTF.getText();
             String squareFoot = squareFootTF.getText();
-            AE.PU.modifyUnit(unitNo, type, squareFoot);
+            AE.modifyUnit(unitNo, type, squareFoot);
             
             JOptionPane.showMessageDialog (null, "Property unit has been modified!", 
                          "MODIFY PROPERTY UNIT", JOptionPane.INFORMATION_MESSAGE);
@@ -428,7 +428,7 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
             JOptionPane.QUESTION_MESSAGE);
 
             if(result == JOptionPane.YES_OPTION){
-                AE.PU.deleteUnit(unitNo);
+                AE.deleteUnit(unitNo);
                 JOptionPane.showMessageDialog (null, "The property unit and its "
                         + "respective user(s) have been deleted!", 
                         "DELETE PROPERTY UNIT", JOptionPane.INFORMATION_MESSAGE);
