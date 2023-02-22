@@ -5,8 +5,15 @@
 package buildingExecutive;
 
 import classes.AssignedJob;
-import java.awt.Color;
 import classes.CRUD;
+import classes.Complaint;
+import classes.Employee;
+import classes.FileHandling;
+import classes.PMS_DateTimeFormatter;
+import classes.Patrolling;
+import classes.TextFile;
+import classes.Users;
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,39 +29,33 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import classes.Complaint;
-import classes.Employee;
-import classes.FileHandling;
-import classes.PMS_DateTimeFormatter;
-import classes.Patrolling;
-import classes.TextFile;
-import classes.Users;
+import classes.Status;
 
 /**
  *
  * @author Winson
  */
-public class BuildingExecutive extends Users{
-    PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
-    TextFile TF = new TextFile();
-    FileHandling fh = new FileHandling();
-    Complaint CP = new Complaint();
-    CRUD crud = new CRUD();
-    Patrolling PT = new Patrolling();
+public class BuildingExecutive extends Users implements Status{
+    public PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
+    public TextFile TF = new TextFile();
+    public FileHandling fh = new FileHandling();
+    public Complaint CP = new Complaint();
+    public CRUD crud = new CRUD();
+    public Patrolling PT = new Patrolling();
     
     // Repitition
-    final int repititionON = 1;
-    final int repititionOFF = 0;
+    public final int repititionON = 1;
+    public final int repititionOFF = 0;
     
     // Assign and Unassign Job to Employee
-    final int assignedEmployee = 1;
-    final int unassignedEmployee = 0;
+    public final int assignedEmployee = 1;
+    public final int unassignedEmployee = 0;
     
     // available combination of level for vendor
-    protected String[] lvS = {"Level 1", "Level 2", "Level 1-2"};
+    public String[] lvS = {"Level 1", "Level 2", "Level 1-2"};
         
     // available combination of level for residence
-    protected String[] resLv = {"Level 1", "Level 2", "Level 3", "Level 4", 
+    public String[] resLv = {"Level 1", "Level 2", "Level 3", "Level 4", 
                      "Level 5", "Level 6", "Level 7", "Level 8", 
                      "Level 9", "Level 10", "Level 11", "Level 12", 
                      "Level 13", "Level 14", "Level 15", "Level 1-5", 
@@ -85,6 +86,15 @@ public class BuildingExecutive extends Users{
         }
         
         return empList;
+    }
+    
+    // update the complaint status method
+    @Override
+    public void updateStatus(String fileName, String item, String itemID, int idCol) {
+        String complaint = item;
+        
+        CRUD crud = new CRUD();
+        crud.update(fileName, itemID, complaint, idCol);
     }
     
     public void updateJobList() throws IOException{
@@ -138,7 +148,7 @@ public class BuildingExecutive extends Users{
     }
     
     // To get all employee job list
-    private ArrayList<ArrayList<String>> getEmployeeJobList(LocalDate localDate, LocalTime localTime) throws IOException {
+    public ArrayList<ArrayList<String>> getEmployeeJobList(LocalDate localDate, LocalTime localTime) throws IOException {
         ArrayList<Employee> employeeList = getEmployeeList();
         
         ArrayList<String> workingList = new ArrayList<>();
@@ -379,7 +389,7 @@ public class BuildingExecutive extends Users{
     }
     
     // get specific role of employee list
-    private ArrayList getSpecificRoleList(ArrayList<String> employeeList, String role) {
+    public ArrayList getSpecificRoleList(ArrayList<String> employeeList, String role) {
         ArrayList<String> specificRoleList = new ArrayList<>();
         
         for (String employeeInfo : employeeList) {
@@ -394,7 +404,7 @@ public class BuildingExecutive extends Users{
     }
     
     // search function
-    private ArrayList searchFunction(ArrayList<String> employeeList, String searchText) {
+    public ArrayList searchFunction(ArrayList<String> employeeList, String searchText) {
         ArrayList<String> searchedList = new ArrayList<>();
         
         for (String employeeInfo : employeeList) {
@@ -644,7 +654,7 @@ public class BuildingExecutive extends Users{
     }
     
     // get the level sequence
-    private ArrayList getLevelSequence(int selectedLevel) {
+    public ArrayList getLevelSequence(int selectedLevel) {
         ArrayList<String> levelValue = new ArrayList<>();
         switch (selectedLevel) {
             case 5 -> {

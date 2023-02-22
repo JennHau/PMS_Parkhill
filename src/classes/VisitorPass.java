@@ -11,7 +11,8 @@ import java.util.List;
  *
  * @author Winson
  */
-public class VisitorPass implements Status{
+public class VisitorPass {
+
     private String passID;
     private String visitorIC;
     private String visitorName;
@@ -24,15 +25,17 @@ public class VisitorPass implements Status{
     private String checkedOutAt;
     private String residentId;
     private String lastUpdate;
-    
+
     private final FileHandling FH = new FileHandling();
     private final TextFile TF = new TextFile();
+    
     private final CRUD crud = new CRUD();
-    
+
     public static String[] visitorPassStatus = {"Registered", "Checked-In", "Checked-Out"};
-    
-    public VisitorPass() {}
-    
+
+    public VisitorPass() {
+    }
+
     public VisitorPass(String[] passData) {
         this.passID = passData[0];
         this.visitorIC = passData[1];
@@ -47,14 +50,14 @@ public class VisitorPass implements Status{
         this.residentId = passData[10];
         this.lastUpdate = passData[11];
     }
-    
+
     public VisitorPass(String passId) {
         List<String> visitorFile = FH.fileRead(TF.visitorPass);
-        
+
         for (String eachPass : visitorFile) {
             String[] passData = eachPass.split(TF.sp);
             String pId = passData[0];
-            
+
             if (pId.equals(passId)) {
                 this.passID = pId;
                 this.visitorIC = passData[1];
@@ -71,10 +74,10 @@ public class VisitorPass implements Status{
             }
         }
     }
-    
+
     public ArrayList<VisitorPass> getCurrentUserRegisteredVisitor(String userID) {
         ArrayList<VisitorPass> registeredVisitor = new ArrayList<>();
-        
+
         List<String> visitorFiles = FH.fileRead(TF.visitorPass);
         
         boolean firstLine = true;
@@ -92,19 +95,29 @@ public class VisitorPass implements Status{
             firstLine = false;
         }
         
+        firstLine = true;
+        for (String eachVis : visitorFiles) {
+            if (!firstLine) {
+                String[] passData = eachVis.split(TF.sp);
+            
+                VisitorPass visitorPass = new VisitorPass(passData);
+
+                if (visitorPass.getResidentId().equals(userID)) {
+                    registeredVisitor.add(visitorPass);
+                }
+            }
+            
+            firstLine = false;
+        }
+
         return registeredVisitor;
     }
-    
-    @Override
-    public void updateStatus() {
-        
-    }
-    
+
     public void updateVisitorPass() {
         List<String> updateList = new ArrayList<>();
-        
+
         ArrayList<VisitorPass> visitorPass = getCurrentUserRegisteredVisitor(this.residentId);
-        
+
         boolean found = false;
         for (VisitorPass eachVis : visitorPass) {
             if (eachVis.getPassID().equals(this.passID)) {
@@ -113,7 +126,7 @@ public class VisitorPass implements Status{
         }
 
         String passLine = this.toString();
-        
+
         if (found) {
             crud.update(TF.visitorPass, passID, passLine, 0);
         } else {
@@ -121,46 +134,45 @@ public class VisitorPass implements Status{
             crud.create(TF.visitorPass, updateList);
         }
     }
-    
+
     public void removeVisitorPass() {
         crud.delete(TF.visitorPass, this.passID, 0);
     }
-    
+
     public String generateNewPassId() {
         List<String> passFile = FH.fileRead(TF.visitorPass);
-        
+
         String passCode = "vsp";
         int minimumId = 210000;
-        
+
         boolean firstLine = true;
         for (String eachPass : passFile) {
             if (!firstLine) {
                 String[] passDet = eachPass.split(TF.sp);
-            
+
                 int passId = Integer.valueOf(passDet[0].replace(passCode, ""));
                 if (passId > minimumId) {
                     minimumId = passId;
                 }
             }
-            
+
             firstLine = false;
         }
-        
+
         return passCode + (minimumId + 1);
     }
-    
+
     @Override
     public String toString() {
         String[] visitorPassData = {passID, visitorIC, visitorName, carPlate, visitorContact, date, time, checkInStatus, checkedInAt, checkedOutAt, residentId, lastUpdate};
-        
+
         String data = "";
         for (String eachData : visitorPassData) {
             data = data + eachData + TF.sp;
         }
-        
+
         return data;
     }
-    
 
     /**
      * @return the passID

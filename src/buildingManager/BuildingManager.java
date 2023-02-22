@@ -27,7 +27,7 @@ import classes.Users;
  */
 public class BuildingManager extends Users{
     
-    FileHandling fh = new FileHandling();
+    public FileHandling fh = new FileHandling();
     
     // constructor for Building Manager
     public BuildingManager (String userID, String email, String password, String firstName,

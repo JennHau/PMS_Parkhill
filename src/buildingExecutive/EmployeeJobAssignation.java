@@ -1144,7 +1144,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
         complaint.setStatusUpdatedBy(this.BE.getUserID());
         complaint.setLastUpdateDateTime(BE.DTF.currentDateTime());
         
-        complaint.updateStatus();
+        BE.updateStatus(BE.TF.complaintFiles, complaint.toString(), complaint.getComplaintID(), 0);
     }
     
     // get all field for the job

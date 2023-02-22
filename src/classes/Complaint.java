@@ -12,7 +12,7 @@ import java.util.List;
  * @author Winson
  */
 
-public class Complaint implements Status{    
+public class Complaint {    
     private String complaintID;
     private String complainerID;
     private String complaintDetails;
@@ -55,15 +55,6 @@ public class Complaint implements Status{
         this.complaintStatus = compDet[5];
         this.statusUpdatedBy = compDet[6];
         this.lastUpdateDateTime = compDet[7];
-    }
-    
-    // update the complaint status method
-    @Override
-    public void updateStatus() {
-        String complaint = toString();
-        
-        CRUD crud = new CRUD();
-        crud.update(TF.complaintFiles, this.complaintID, complaint, 0);
     }
     
     // get all the complaints for a specific residence/tenants

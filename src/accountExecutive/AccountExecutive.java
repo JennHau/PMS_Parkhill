@@ -10,7 +10,6 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JLabel;
@@ -29,9 +28,9 @@ import classes.Users;
  */
 public class AccountExecutive extends Users {
 
-    FileHandling fh = new FileHandling();
-    Payment PYM = new Payment();
-    PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
+    public FileHandling fh = new FileHandling();
+    public Payment PYM = new Payment();
+    public PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
 
     public AccountExecutive() {}
     
