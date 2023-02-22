@@ -1,4 +1,4 @@
 employeeType;initial;
 Security Guard;scg;
 Cleaner;cln;
-Technician;thc;
+Technician;tcn;
