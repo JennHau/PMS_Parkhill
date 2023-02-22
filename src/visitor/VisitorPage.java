@@ -230,7 +230,7 @@ public class VisitorPage extends javax.swing.JFrame {
         }
 
         if (id_consist) {
-            JOptionPane.showMessageDialog(null, "Sign in successful, Welcome " + vst_id);
+            JOptionPane.showMessageDialog(null, "Sign in successful, Welcome " + vst_id.toUpperCase());
 
             visitor_display_detail visitor = new visitor_display_detail(vst_id);
 //        add.setSize(400, 300);

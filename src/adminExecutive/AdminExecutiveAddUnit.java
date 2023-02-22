@@ -326,7 +326,7 @@ public class AdminExecutiveAddUnit extends javax.swing.JFrame {
                     
                     PropertyUnit PU = new PropertyUnit(newUnitNo.toUpperCase(),
                             newType, Integer.parseInt(squareFoot), "unsold", "-");
-                    PU.addUnit();
+                    AE.addUnit(PU);
 
                     JOptionPane.showMessageDialog (null, "New unit has been added!", 
                                     "ADD PROPERTY UNIT", JOptionPane.INFORMATION_MESSAGE);

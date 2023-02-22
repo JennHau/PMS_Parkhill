@@ -18,6 +18,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import classes.FileHandling;
+import classes.Invoice;
 import classes.PMS_DateTimeFormatter;
 import classes.Payment;
 import classes.Users;
@@ -183,6 +184,16 @@ public class AccountExecutive extends Users {
         return monthNYear;
     }
 
+    // store new invoice into text file
+    public void issueInvoice(Invoice INV) {
+        List<String> newData = new ArrayList<>();
+        newData.add(INV.getInvoiceNo() +";"+ INV.getUnitNo() +";"+ INV.getFeeType()
+                +";"+ INV.getUnitCategory() +";"+ INV.getConsumption() +";"+
+                INV.getUnit() +";"+ INV.getUnitPrice() +";"+ INV.getTotalPrice()
+                +";"+ INV.getPeriod() +";"+ INV.getIssuedDate()+";"+ INV.getDeleteID() +";");
+        fh.fileWrite("invoices.txt", true, newData);
+    }
+    
     // a text file to link userID and invoiceNo just in case ownership 
     // transfer in the future
     public void createUserTransactionLink(String period, String unitNo) {
@@ -231,6 +242,123 @@ public class AccountExecutive extends Users {
         
     }
 
+    // store newly issued receipt
+    public void issueReceipt(List<String> receiptDetails) {
+        String[] receiptDetailsArray = new String[receiptDetails.size()];
+        receiptDetails.toArray(receiptDetailsArray);
+
+        try {
+            List<String> newData = new ArrayList<>();
+
+            for (int i = 0; i < receiptDetails.size(); i++) {
+                String[] receiptFullDetails = receiptDetailsArray[i].split(";");
+                String invoiceNo = receiptFullDetails[0];
+                String feeType = receiptFullDetails[1];
+
+                List<String> paymentList = fh.fileRead("payment.txt");
+                String[] paymentArray = new String[paymentList.size()];
+                paymentList.toArray(paymentArray);
+
+                for (int j = 1; j < paymentList.size(); j++) {
+                    String[] paymentFullDetails = paymentArray[j].split(";");
+                    String pInvoiceNo = paymentFullDetails[0];
+                    String pFeeType = paymentFullDetails[2];
+
+                    if (pInvoiceNo.equals(invoiceNo) && pFeeType.equals(feeType)) {
+                        newData.add(paymentArray[j]);
+                    }
+                }
+            }
+            fh.fileWrite("receipt.txt", true, newData);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    // store charges late payment fee into account
+    public void chargeLatePaymentFee(String invoiceNo, String latePaymentFee) {
+        try {
+            List<String> invoicesList = fh.fileRead("invoices.txt");
+            String[] invoicesArray = new String[invoicesList.size()];
+            invoicesList.toArray(invoicesArray);
+            String unitNo = "-";
+            String period = "-";
+            boolean check = false;
+
+            // check whethe late payment charges are charged before
+            for (int i = 1; i < invoicesList.size(); i++) {
+                String[] invoiceDetails = invoicesArray[i].split(";");
+                Invoice INV = new Invoice(invoiceDetails);
+//                String eInvoiceNo = invoiceDetails[0];
+//                String eUnitNo = invoiceDetails[1];
+//                String feeType = invoiceDetails[2];
+//                String ePeriod = invoiceDetails[8];
+
+                if (INV.getInvoiceNo().equals(invoiceNo) &&
+                        INV.getFeeType().equals("Late Payment Charges")) {
+                    check = true;
+                }
+                
+                if (INV.getInvoiceNo().equals(invoiceNo)) {
+                    unitNo = INV.getUnitNo(); period = INV.getPeriod();
+                }
+            }
+
+            List<String> newData = new ArrayList<>();
+            // modify to latest late payment charge is record existed
+            if (check == true) {
+                newData.add(invoicesArray[0]);
+                for (int i = 1; i < invoicesList.size(); i++) {
+                    String[] invoiceDetails = invoicesArray[i].split(";");
+                    Invoice INV = new Invoice(invoiceDetails);
+//                    String nInvoiceNo = invoiceDetails[0];
+//                    String nUnitNo = invoiceDetails[1];
+//                    String nFeeType = invoiceDetails[2];
+//                    String nPeriod = invoiceDetails[8];
+                    if (INV.getInvoiceNo().equals(invoiceNo)
+                            && INV.getFeeType().equals("Late Payment Charges")) {
+
+                        String generatedDate = this.todayDate();
+                        newData.add(invoiceNo + ";" + INV.getUnitNo() + ";" +
+                                INV.getFeeType() + ";" + "-" + ";"+ "-" + ";" +
+                                "-" + ";" + "0.00" + ";" + latePaymentFee + ";"
+                                + INV.getPeriod() + ";" + generatedDate + ";" +
+                                "-" +";");
+                    } else {
+                        newData.add(invoicesArray[i]);
+                    }
+                }
+                fh.fileWrite("invoices.txt", false, newData);
+
+            // add new late payment charges if record not found
+            } else if (check == false) {
+                String generatedDate = this.todayDate();
+                newData.add(invoiceNo + ";" + unitNo + ";" + "Late Payment Charges" + ";" + "-"
+                        + ";" + "-" + ";" + "-" + ";" + "0.00" + ";" + latePaymentFee + ";"
+                        + period + ";" + generatedDate + ";"+ "-" +";");
+
+                fh.fileWrite("invoices.txt", true, newData);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    // store newly issued statement 
+    public void issueStatement(List<String> availableStatement) {
+        try {
+            List<String> newData = new ArrayList<>();
+            String todayDate = todayDate();
+            for (String statements : availableStatement) {
+                newData.add(statements + todayDate +";"+ "-" +";");
+            }
+            fh.fileWrite("statements.txt", true, newData);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     // method to get both resident and tenant name based on unitNo
     public List<String> extractUnitUsers(String unitNo) {
         List<String> userName = new ArrayList<String>();

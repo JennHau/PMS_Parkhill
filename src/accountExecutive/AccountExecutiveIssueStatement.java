@@ -776,7 +776,7 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
                         String cDetails = monthYear +";"+ unitNo +";";
                         statementDetails.add(cDetails);
                     }
-                        PM.issueStatement(statementDetails);
+                        AE.issueStatement(statementDetails);
                         setTable();
                         JOptionPane.showMessageDialog (null, "Statements have been issued!", 
                                         "ISSUE STATEMENT", JOptionPane.INFORMATION_MESSAGE);
@@ -812,7 +812,7 @@ public class AccountExecutiveIssueStatement extends javax.swing.JFrame {
                     String cDetails = monthYear +";"+ unitNo +";";
                     statementDetails.add(cDetails);
 
-                    PM.issueStatement(statementDetails);
+                    AE.issueStatement(statementDetails);
                     setTable();
                     JOptionPane.showMessageDialog (null, "Statement has been issued!", 
                                     "ISSUE STATEMENT", JOptionPane.INFORMATION_MESSAGE);

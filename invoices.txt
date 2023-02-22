@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 invoiceNo;unitNo;feeType;target;consumption;unit;unitPrice(RM);totalPrice(RM);period;issuedDate;deleteID;
 A-02-0212023;A-02-02;Gas;Residential;125.46;kWh;0.12;15.05;1/2023;06/01/2023;-;
 S-01-0112023;S-01-01;Management Fee;Commercial;1000;Square Feet;0.33;330.00;1/2023;06/01/2023;-;
@@ -165,6 +165,9 @@ B-15-03112022;B-15-03;Gas;Residential;234.47;kWh;0.12;28.14;11/2022;08/02/2023;-
 B-15-03A112022;B-15-03A;Gas;Residential;242.63;kWh;0.12;29.12;11/2022;08/02/2023;-;
 B-15-05112022;B-15-05;Gas;Residential;113.82;kWh;0.12;13.66;11/2022;08/02/2023;-;
 
+=======
+=======
+<<<<<<< HEAD
 =======
 invoiceNo;unitNo;feeType;target;consumption;unit;unitPrice(RM);totalPrice(RM);period;issuedDate;deleteID;
 A-01-01112022;A-01-01;Gas;Residential;175.7;kWh;0.12;21.08;11/2022;01/12/2022;-;

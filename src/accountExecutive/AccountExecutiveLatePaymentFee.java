@@ -271,14 +271,15 @@ public class AccountExecutiveLatePaymentFee extends javax.swing.JFrame {
                 float latePaymentFee = Float.valueOf(lateChargeTF.getText());
                 String lateCharges = df.format(latePaymentFee);
                 
-                PM.chargeLatePaymentFee(invoiceNo, lateCharges);
+                AE.chargeLatePaymentFee(invoiceNo, lateCharges);
                 JOptionPane.showMessageDialog (null, "Late payment fee has been charged!", 
                                 "LATE PAYMENT CHARGES", JOptionPane.INFORMATION_MESSAGE);
-                dispose();
+                
                 if (AccountExecutiveIssueOutstandingFee.aceOutstanding != null) {
                     AccountExecutiveIssueOutstandingFee.aceOutstanding.dispose();
                 }
                 new AccountExecutiveIssueOutstandingFee(AE).setVisible(true);
+                dispose();
             }
         } else {
             warningLabel.setForeground(Color.red);

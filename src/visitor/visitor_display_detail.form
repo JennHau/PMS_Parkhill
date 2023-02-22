@@ -297,7 +297,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jfield5" min="-2" pref="135" max="-2" attributes="0"/>
+                      <Component id="visitorname" min="-2" pref="135" max="-2" attributes="0"/>
                       <EmptySpace pref="36" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -306,14 +306,14 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jfield5" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="visitorname" min="-2" pref="20" max="-2" attributes="0"/>
                       <EmptySpace pref="7" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="jfield5">
+            <Component class="javax.swing.JLabel" name="visitorname">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="SamsungOneUILatin 700C" size="14" style="1"/>
@@ -457,7 +457,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jfield20" min="-2" pref="135" max="-2" attributes="0"/>
+                      <Component id="visitorid" min="-2" pref="135" max="-2" attributes="0"/>
                       <EmptySpace pref="36" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -466,14 +466,14 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace pref="9" max="32767" attributes="0"/>
-                      <Component id="jfield20" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="visitorid" min="-2" pref="20" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="jfield20">
+            <Component class="javax.swing.JLabel" name="visitorid">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="SamsungOneUILatin 700C" size="14" style="1"/>
