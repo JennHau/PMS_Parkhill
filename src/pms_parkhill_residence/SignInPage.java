@@ -310,7 +310,7 @@ public class SignInPage extends javax.swing.JFrame {
     }//GEN-LAST:event_forgotPasswordLabelMouseExited
 
     private void forgotPasswordLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_forgotPasswordLabelMouseClicked
-        // TODO add your handling code here:
+         // TODO add your handling code here:
         dispose();
         new ResetPasswordVerify().setVisible(true);
     }//GEN-LAST:event_forgotPasswordLabelMouseClicked

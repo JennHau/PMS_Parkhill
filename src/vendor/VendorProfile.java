@@ -9,7 +9,6 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -17,8 +16,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import classes.Users;
 import classes.Validation;
+import pms_parkhill_residence.HomePage;
 
 /**
  *
@@ -129,12 +128,10 @@ public class VendorProfile extends javax.swing.JFrame {
         paymentManagementInnerTab = new javax.swing.JLabel();
         complaintsOuterTab = new javax.swing.JPanel();
         complaintsInnerTab = new javax.swing.JLabel();
-        jPanel12 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
         jPanel13 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
-        jPanel14 = new javax.swing.JPanel();
-        jLabel15 = new javax.swing.JLabel();
+        logoutPanel2 = new javax.swing.JPanel();
+        logoutLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
@@ -146,16 +143,16 @@ public class VendorProfile extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(153, 153, 153), null, null));
 
-        jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(13, 24, 42));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("PARKHILL RESIDENCE VENDOR");
+        jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(13, 24, 42));
 
-        userNameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        userNameLabel.setForeground(new java.awt.Color(102, 102, 102));
         userNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         userNameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
         userNameLabel.setText("USERNAME");
+        userNameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        userNameLabel.setForeground(new java.awt.Color(102, 102, 102));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -180,44 +177,44 @@ public class VendorProfile extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(226, 226, 226));
 
+        jLabel23.setText("Resident ID:");
         jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel23.setText("Resident ID:");
 
-        jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 1, 24)); // NOI18N
-        jLabel24.setForeground(new java.awt.Color(51, 51, 51));
         jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel24.setText("Resident / Tenant Profile:");
+        jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 1, 24)); // NOI18N
+        jLabel24.setForeground(new java.awt.Color(51, 51, 51));
 
         rsdIdTF.setEnabled(false);
 
+        jLabel25.setText("First Name:");
         jLabel25.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel25.setText("First Name:");
 
+        jLabel26.setText("Identification No.:");
         jLabel26.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel26.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel26.setText("Identification No.:");
 
+        jLabel27.setText("Email: ");
         jLabel27.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel27.setText("Email: ");
 
+        jLabel28.setText("Last Name:");
         jLabel28.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel28.setText("Last Name:");
 
+        jLabel29.setText("Gender:");
         jLabel29.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel29.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel29.setText("Gender:");
 
+        jLabel30.setText("Contact No.:");
         jLabel30.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel30.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel30.setText("Contact No.:");
 
+        jLabel31.setText("Unit No.:");
         jLabel31.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel31.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel31.setText("Unit No.:");
 
         firstNameTF.setEnabled(false);
 
@@ -251,9 +248,9 @@ public class VendorProfile extends javax.swing.JFrame {
         genderCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
         genderCB.setEnabled(false);
 
-        profilePicLabel.setBackground(new java.awt.Color(102, 102, 102));
         profilePicLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         profilePicLabel.setText("Profile Picture");
+        profilePicLabel.setBackground(new java.awt.Color(102, 102, 102));
 
         editContactBTN.setText("Edit");
         editContactBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -277,9 +274,9 @@ public class VendorProfile extends javax.swing.JFrame {
             }
         });
 
+        jLabel14.setText("- Include at least one number (0-9)");
         jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel14.setText("- Include at least one number (0-9)");
         jLabel14.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jLabel14MouseEntered(evt);
@@ -289,9 +286,9 @@ public class VendorProfile extends javax.swing.JFrame {
             }
         });
 
+        jLabel7.setText("Minimum 8 characters and includes the following:");
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel7.setText("Minimum 8 characters and includes the following:");
         jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jLabel7MouseEntered(evt);
@@ -301,9 +298,9 @@ public class VendorProfile extends javax.swing.JFrame {
             }
         });
 
+        jLabel32.setText("Password:");
         jLabel32.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel32.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel32.setText("Password:");
 
         editPasswordBTN.setText("Edit");
         editPasswordBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -312,9 +309,9 @@ public class VendorProfile extends javax.swing.JFrame {
             }
         });
 
+        jLabel16.setText("- Include at least one special chatacter (example: !, @, #, $)");
         jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel16.setText("- Include at least one special chatacter (example: !, @, #, $)");
         jLabel16.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jLabel16MouseEntered(evt);
@@ -324,9 +321,9 @@ public class VendorProfile extends javax.swing.JFrame {
             }
         });
 
+        jLabel11.setText("- Include at least one uppercase character (A-Z)");
         jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel11.setText("- Include at least one uppercase character (A-Z)");
         jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jLabel11MouseEntered(evt);
@@ -336,9 +333,9 @@ public class VendorProfile extends javax.swing.JFrame {
             }
         });
 
+        jLabel13.setText("- Include at least one lowercase character (a-z)");
         jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel13.setText("- Include at least one lowercase character (a-z)");
         jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jLabel13MouseEntered(evt);
@@ -519,9 +516,9 @@ public class VendorProfile extends javax.swing.JFrame {
             }
         });
 
+        dashBoardInnerTab2.setText("Dashboard");
         dashBoardInnerTab2.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         dashBoardInnerTab2.setForeground(new java.awt.Color(255, 255, 255));
-        dashBoardInnerTab2.setText("Dashboard");
         dashBoardInnerTab2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 dashBoardInnerTab2MouseClicked(evt);
@@ -558,9 +555,9 @@ public class VendorProfile extends javax.swing.JFrame {
             }
         });
 
+        paymentManagementInnerTab.setText("Payment Management");
         paymentManagementInnerTab.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         paymentManagementInnerTab.setForeground(new java.awt.Color(255, 255, 255));
-        paymentManagementInnerTab.setText("Payment Management");
         paymentManagementInnerTab.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 paymentManagementInnerTabMouseClicked(evt);
@@ -597,9 +594,9 @@ public class VendorProfile extends javax.swing.JFrame {
             }
         });
 
+        complaintsInnerTab.setText("Complaints");
         complaintsInnerTab.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         complaintsInnerTab.setForeground(new java.awt.Color(255, 255, 255));
-        complaintsInnerTab.setText("Complaints");
         complaintsInnerTab.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 complaintsInnerTabMouseClicked(evt);
@@ -626,30 +623,6 @@ public class VendorProfile extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel12.setBackground(new java.awt.Color(13, 24, 42));
-
-        jLabel10.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
-        jLabel10.setText("LOGOUT");
-
-        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
-        jPanel12.setLayout(jPanel12Layout);
-        jPanel12Layout.setHorizontalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75))
-        );
-        jPanel12Layout.setVerticalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel10)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         jPanel13.setBackground(new java.awt.Color(13, 50, 79));
         jPanel13.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -660,10 +633,10 @@ public class VendorProfile extends javax.swing.JFrame {
             }
         });
 
-        jLabel12.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
         jLabel12.setText("VIEW PROFILE");
+        jLabel12.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel12MouseClicked(evt);
@@ -690,27 +663,43 @@ public class VendorProfile extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel14.setBackground(new java.awt.Color(13, 24, 42));
+        logoutPanel2.setBackground(new java.awt.Color(13, 24, 42));
+        logoutPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutPanel2MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logoutPanel2MouseEntered(evt);
+            }
+        });
 
-        jLabel15.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
-        jLabel15.setText("LOGOUT");
+        logoutLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
+        logoutLabel2.setText("LOGOUT");
+        logoutLabel2.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+        logoutLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        logoutLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutLabel2MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logoutLabel2MouseEntered(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
-        jPanel14.setLayout(jPanel14Layout);
-        jPanel14Layout.setHorizontalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel14Layout.createSequentialGroup()
+        javax.swing.GroupLayout logoutPanel2Layout = new javax.swing.GroupLayout(logoutPanel2);
+        logoutPanel2.setLayout(logoutPanel2Layout);
+        logoutPanel2Layout.setHorizontalGroup(
+            logoutPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, logoutPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(logoutLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(75, 75, 75))
         );
-        jPanel14Layout.setVerticalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel14Layout.createSequentialGroup()
+        logoutPanel2Layout.setVerticalGroup(
+            logoutPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(logoutPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel15)
+                .addComponent(logoutLabel2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -719,21 +708,19 @@ public class VendorProfile extends javax.swing.JFrame {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(80, 80, 80)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(paymentManagementOuterTab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(complaintsOuterTab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(dashboardOuterTab2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel5Layout.createSequentialGroup()
-                    .addGap(10, 10, 10)
-                    .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addContainerGap()))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(80, 80, 80)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(paymentManagementOuterTab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(complaintsOuterTab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(dashboardOuterTab2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(logoutPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -746,16 +733,11 @@ public class VendorProfile extends javax.swing.JFrame {
                 .addComponent(paymentManagementOuterTab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(complaintsOuterTab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 392, Short.MAX_VALUE)
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(logoutPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(9, 9, 9))
-            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                    .addContainerGap(681, Short.MAX_VALUE)
-                    .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(11, 11, 11)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -803,6 +785,7 @@ public class VendorProfile extends javax.swing.JFrame {
                     try {
                         //Display the image in the jLabel
                         setImageIcon(filePath);
+                        updateBTN.setEnabled(true);
                     } catch (IOException ex) {
                         Logger.getLogger(VendorProfile.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -840,6 +823,12 @@ public class VendorProfile extends javax.swing.JFrame {
                     Vendor user_temp = new Vendor(userID, email, password, firstName, lastName, idNo, gender, phoneNo, unitNo);
                     user_temp.modifySelfAccount();
                     VD = user_temp;
+                    
+                    try {
+                        VD.TF.replaceFile(filePath, previousProfilePicPath);
+                    } catch (IOException ex) {
+                        Logger.getLogger(VendorProfile.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     
                     JOptionPane.showMessageDialog (null, "Personal profile has been updated!", 
                                     "UPDATE PERSONAL PROFILE", JOptionPane.INFORMATION_MESSAGE);
@@ -1004,26 +993,41 @@ public class VendorProfile extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabel16MouseExited
 
-    private boolean replaceFile(String fileLocation, String destination) throws IOException {
-        File dest = new File(destination);
-        File fileLoc = new File(fileLocation);
-        
-        if (dest.exists()) {
-            dest.delete();
-        }
-        
-        Files.copy(fileLoc.toPath(), dest.toPath());
-        
-        return dest.exists();
-    }
-    
+    private void logoutLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabel2MouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        new HomePage().setVisible(true);
+    }//GEN-LAST:event_logoutLabel2MouseClicked
+
+    private void logoutLabel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabel2MouseEntered
+        // TODO add your handling code here:
+        logoutLabel2.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_logoutLabel2MouseEntered
+
+    private void logoutPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutPanel2MouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        new HomePage().setVisible(true);
+    }//GEN-LAST:event_logoutPanel2MouseClicked
+
+    private void logoutPanel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutPanel2MouseEntered
+        // TODO add your handling code here:
+        logoutPanel2.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_logoutPanel2MouseEntered
+
     private void setImageIcon(String fileLocation) throws IOException {
         profilePicLabel.setText("");
         File imagePath = new File(fileLocation);
-        ImageIcon profilePic = new ImageIcon(ImageIO.read(imagePath));
-        Image imageSize = (profilePic).getImage().getScaledInstance(158, 168, Image.SCALE_SMOOTH);
-        profilePic = new ImageIcon(imageSize);
-        profilePicLabel.setIcon(profilePic);
+        
+        if (imagePath.exists()) {
+            ImageIcon profilePic = new ImageIcon(ImageIO.read(imagePath));
+            Image imageSize = (profilePic).getImage().getScaledInstance(158, 168, Image.SCALE_SMOOTH);
+            profilePic = new ImageIcon(imageSize);
+            profilePicLabel.setIcon(profilePic);
+        }
+        else {
+            profilePicLabel.setText("No Images");
+        }
     }
     
     private void setWindowIcon() {
@@ -1055,262 +1059,6 @@ public class VendorProfile extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(VendorProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -1333,12 +1081,10 @@ public class VendorProfile extends javax.swing.JFrame {
     private javax.swing.JTextField firstNameTF;
     private javax.swing.JComboBox<String> genderCB;
     private javax.swing.JTextField icTF;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel23;
@@ -1353,15 +1099,15 @@ public class VendorProfile extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTextField lastNameTF;
+    private javax.swing.JLabel logoutLabel2;
+    private javax.swing.JPanel logoutPanel2;
     private javax.swing.JPasswordField passwordTF;
     private javax.swing.JLabel paymentManagementInnerTab;
     private javax.swing.JPanel paymentManagementOuterTab;

@@ -891,8 +891,7 @@ public class AdminExecutiveManageBookedFacility extends javax.swing.JFrame {
         datePicker1.setDate(LocalDate.parse(date));
         variationCB.setSelectedItem(variation);
     }
-    
-    
+
     private void availableTimeSlotTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availableTimeSlotTableMouseClicked
         // TODO add your handling code here:
         DefaultTableModel tableModel = (DefaultTableModel)availableTimeSlotTable.getModel();

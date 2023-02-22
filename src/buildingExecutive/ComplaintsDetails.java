@@ -17,7 +17,6 @@ import classes.FileHandling;
 public class ComplaintsDetails extends javax.swing.JFrame {
     private final BuildingExecutive BE;
     
-//    private Users complainer;
     private final Complaint complaint;
     FileHandling fh = new FileHandling();
     
@@ -424,6 +423,7 @@ public class ComplaintsDetails extends javax.swing.JFrame {
     private void statusBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusBTNActionPerformed
         // TODO add your handling code here:
         complaint.setComplaintStatus(statusBTN.getText());
+        
         if (complaint.getComplaintStatus().equals(Complaint.cptStatus.Progressing.toString())) {
             statusComboBox.setSelectedItem("Progressing");
             statusBTN.setText("Completed");
@@ -432,33 +432,17 @@ public class ComplaintsDetails extends javax.swing.JFrame {
             statusComboBox.setSelectedItem("Completed");
             statusBTN.setText("Completed");
             statusBTN.setEnabled(false);
-//          statusComboBox.setEnabled(true);
             statusComboBox.removeItem("Pending");
         }
         
         complaint.setStatusUpdatedBy(this.BE.getUserID());
         complaint.setLastUpdateDateTime(BE.DTF.currentDateTime());
         
-        BE.CP.updateStatus();
+        complaint.updateStatus();
     }//GEN-LAST:event_statusBTNActionPerformed
 
     private void statusComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusComboBoxActionPerformed
-//        // TODO add your handling code here:
-//        if (statusComboBox.getSelectedItem() != null) {
-//            String selectedStatus = statusComboBox.getSelectedItem().toString();
-//            
-//            switch(selectedStatus) {
-//                case "Progressing" -> {
-//                    statusBTN.setText("Complete");
-//                    statusComboBox.setEnabled(false);
-//                    assignBTN.setEnabled(false);
-//                    statusBTN.setEnabled(true);
-//                    
-//                    complaint.setComplaintStatus(selectedStatus);
-//                    BE.updateComplaintStatus(this.complaint);
-//                }
-//            }
-//        }
+
     }//GEN-LAST:event_statusComboBoxActionPerformed
 
     /**

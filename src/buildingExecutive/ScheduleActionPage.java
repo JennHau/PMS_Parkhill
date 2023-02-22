@@ -54,6 +54,7 @@ public class ScheduleActionPage extends javax.swing.JFrame {
         timeSpinner.setEnabled(false);
     }
     
+    // set up block
     private void blockComboBoxSetUp() {
         ArrayList<String> blockList = BE.getAvailableBlock();
         for (String eachBlock : blockList) {
@@ -61,29 +62,23 @@ public class ScheduleActionPage extends javax.swing.JFrame {
         }
     }
     
+    // set up level
     private void levelComboBoxSetUp(String blockSelected) {
-        String[] lvS = {"Level 1", "Level 2", "Level 1-2"};
-        
-        String[] resLv = {"Level 1", "Level 2", "Level 3", "Level 4", 
-                         "Level 5", "Level 6", "Level 7", "Level 8", 
-                         "Level 9", "Level 10", "Level 11", "Level 12", 
-                         "Level 13", "Level 14", "Level 15", "Level 1-5", 
-                         "Level 6-10", "Level 11-15", "Level 1-10", "Level 1-15"};
-        
         levelTF.removeAllItems();
         
         if (blockSelected.equals("S")) {
-            for (String eachLv : lvS) {
+            for (String eachLv : BE.lvS) {
                 levelTF.addItem(eachLv);
             }
         }
         else {
-            for (String eachLv : resLv) {
+            for (String eachLv : BE.resLv) {
                 levelTF.addItem(eachLv);
             }
         }
     }
     
+    // set up check point list
     private void checkPointSetUp(String lvSelected) {
         checkPTF.removeAllItems();
         
