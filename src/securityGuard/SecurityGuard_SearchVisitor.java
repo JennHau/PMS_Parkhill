@@ -87,7 +87,6 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
 
             if (line_split[5].equals(getdate)) {
                 String userdetail = getSpecificUser(line_split[10]);
-                System.out.println(userdetail);
                 String[] user_split = userdetail.split(";");
 
                 String vid = line_split[0].toUpperCase();
@@ -823,8 +822,6 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
             String icno = vp.getVisitorIC();
             String CID = vp.getCheckedInAt();
             String COD = vp.getCheckedOutAt();
-            System.out.println(CID);
-            System.out.println(COD);
 
             id.setText(visitorid);
             name.setText(visitorname);
@@ -987,7 +984,6 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
 
         List<String> row = fh.fileRead("visitorPass.txt");
         List<String> nlst = new ArrayList<String>();
-        System.out.println(row);
         String[] rowary = new String[row.size()];
         row.toArray(rowary);
         for (int j = 0; j < rowary.length; j++) {
@@ -1002,7 +998,6 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
             }
 
         }
-        System.out.println(nlst);
         fh.fileWrite("visitorpass.txt", false, nlst);
         vp.setCheckInStatus(VisitorPass.visitorPassStatus[2]);
         vp.setCheckedOutAt(checkoutdata);
@@ -1023,7 +1018,6 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         // TODO add your handling code here:
         String change_d = changedate.getText();
         try {
-            System.out.println("test" + change_d);
             todaydate.setText(sg.convertdate(change_d));
             DefaultTableModel model = (DefaultTableModel) visitorpass_table.getModel();
             model.setRowCount(0);

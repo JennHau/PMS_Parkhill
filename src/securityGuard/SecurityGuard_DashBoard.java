@@ -36,7 +36,6 @@ public class SecurityGuard_DashBoard extends javax.swing.JFrame {
         jLabel14.setText(sg.count_uncheck_checkpoint().toString());
         jLabel4.setText(sg.count_checked_checkpoint().toString());
         displaybarchart();
-        System.out.println(sg.count_today_visitor());
         jLabel25.setText(sg.count_today_visitor().toString());
         this.SG=SG;
         setCurrentProfile();

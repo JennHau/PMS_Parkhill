@@ -761,7 +761,6 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
                 List<String> lst = new ArrayList<String>();
                 lst.add(ids + ";" + rcd + ";" + icd + ";" + date + ";" + i_status + ";");
                 sg.modified_manageIncident(lst);
-                System.out.println(lst);
             }
         }
 
@@ -810,7 +809,6 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
 
     private void status_comboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_status_comboboxActionPerformed
         // TODO add your handling code here:
-        System.out.println(status_combobox.getSelectedItem());
         DefaultTableModel model = (DefaultTableModel) incident_table.getModel();
         model.setRowCount(0);
         displayTable();

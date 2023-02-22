@@ -25,7 +25,7 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
     public SecurityGuard_Add_new_incident(SecurityGuard SG) {
         initComponents();
         displayIncidentId();
-        status.setText("PENDING");
+        incidentstatus.setText("PENDING");
         DATE.setText(sg.currentdate() + " " + sg.currenttime());
         this.SG = SG;
         recordedby.setText(SG.getUserID());
@@ -47,7 +47,7 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        status = new javax.swing.JTextField();
+        incidentstatus = new javax.swing.JTextField();
         jfield = new javax.swing.JLabel();
         jfield1 = new javax.swing.JLabel();
         recordedby = new javax.swing.JTextField();
@@ -113,19 +113,19 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
-        status.setBackground(new java.awt.Color(204, 204, 204));
-        status.setEnabled(false);
-        status.setForeground(new java.awt.Color(0, 0, 0));
-        status.setHighlighter(null);
-        status.setOpaque(true);
-        status.addActionListener(new java.awt.event.ActionListener() {
+        incidentstatus.setBackground(new java.awt.Color(204, 204, 204));
+        incidentstatus.setForeground(new java.awt.Color(0, 0, 0));
+        incidentstatus.setEnabled(false);
+        incidentstatus.setHighlighter(null);
+        incidentstatus.setOpaque(true);
+        incidentstatus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                statusActionPerformed(evt);
+                incidentstatusActionPerformed(evt);
             }
         });
-        status.addKeyListener(new java.awt.event.KeyAdapter() {
+        incidentstatus.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                statusKeyReleased(evt);
+                incidentstatusKeyReleased(evt);
             }
         });
 
@@ -253,7 +253,7 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
                             .addComponent(jfield, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(recordedby)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
-                            .addComponent(status)
+                            .addComponent(incidentstatus)
                             .addComponent(incident_no)
                             .addComponent(DATE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -269,7 +269,7 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jfield, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(7, 7, 7)
-                .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(incidentstatus, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jfield1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(7, 7, 7)
@@ -304,9 +304,9 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 
-    private void statusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusActionPerformed
+    private void incidentstatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_incidentstatusActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_statusActionPerformed
+    }//GEN-LAST:event_incidentstatusActionPerformed
 
     private void recordedbyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recordedbyActionPerformed
         // TODO add your handling code here:
@@ -316,7 +316,7 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
 //        create a new incident
 
         String incident = incident_textarea.getText().trim();
-        String status = status.getText();
+        String status = incidentstatus.getText();
         String record = recordedby.getText();
         String no = incident_no.getText();
         String date = DATE.getText();
@@ -360,7 +360,6 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
                 }
             }
         }
-        System.out.println(maxnum);
         maxnum += 1;
         String show = idformat + String.valueOf(maxnum);
         incident_no.setText(show);
@@ -384,10 +383,10 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
         enablebutton();
     }//GEN-LAST:event_incident_noKeyReleased
 
-    private void statusKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_statusKeyReleased
+    private void incidentstatusKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_incidentstatusKeyReleased
         // TODO add your handling code here:
         enablebutton();
-    }//GEN-LAST:event_statusKeyReleased
+    }//GEN-LAST:event_incidentstatusKeyReleased
 
     private void recordedbyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_recordedbyKeyReleased
         // TODO add your handling code here:
@@ -461,6 +460,7 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
     private javax.swing.JButton cancel;
     private javax.swing.JTextField incident_no;
     private javax.swing.JTextArea incident_textarea;
+    private javax.swing.JTextField incidentstatus;
     private javax.swing.JButton jButton1;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JFrame jFrame2;
@@ -474,6 +474,5 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
     private javax.swing.JLabel jfield3;
     private javax.swing.JLabel jfield4;
     private javax.swing.JTextField recordedby;
-    private javax.swing.JTextField status;
     // End of variables declaration//GEN-END:variables
 }
