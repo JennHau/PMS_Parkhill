@@ -728,7 +728,7 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
         
         if (column == 7) {
             String unitNo = String.valueOf(tableModel.getValueAt(row, 2));
-            boolean check = AE.PU.restoreUnitValidation(unitNo);
+            boolean check = AE.restoreUnitValidation(unitNo);
             
             if (check) {
                 int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
@@ -741,7 +741,7 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
                 if(result == JOptionPane.YES_OPTION){
                     warningMessage.setText("");
                     String deletionID = String.valueOf(tableModel.getValueAt(row, 1));
-                    AE.PU.restoreUnit(deletionID.toLowerCase());
+                    AE.restoreUnit(deletionID.toLowerCase());
                     setTable();
                     JOptionPane.showMessageDialog (null, "Property unit has been restored!", 
                          "RESTORE PROPERTY UNIT", JOptionPane.INFORMATION_MESSAGE);

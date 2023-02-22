@@ -1800,3 +1800,4 @@ B-15-0312023;B-15-03;Management Fee;Residential;1200;Square Feet;0.3;360;1/2023;
 B-15-03A12023;B-15-03A;Management Fee;Residential;1000;Square Feet;0.3;300;1/2023;01/02/2023;-;
 B-15-0512023;B-15-05;Management Fee;Residential;800;Square Feet;0.3;240;1/2023;01/02/2023;-;
 S-02-05112022;S-02-05;Management Fee;Commercial;800;Square Feet;0.33;264.0;11/2022;16/02/2023;-;
+A-01-01112022;A-01-01;Late Payment Charges;-;-;-;0.00;0.00;11/2022;22/02/2023;-;

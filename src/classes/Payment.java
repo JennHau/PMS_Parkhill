@@ -116,39 +116,6 @@ public class Payment extends Invoice {
         fh.fileWrite(TF.paymentFile, true, newData);
     }
     
-    // store newly issued receipt
-    public void issueReceipt(List<String> receiptDetails) {
-        String[] receiptDetailsArray = new String[receiptDetails.size()];
-        receiptDetails.toArray(receiptDetailsArray);
-
-        try {
-            List<String> newData = new ArrayList<>();
-
-            for (int i = 0; i < receiptDetails.size(); i++) {
-                String[] receiptFullDetails = receiptDetailsArray[i].split(";");
-                String invoiceNo = receiptFullDetails[0];
-                String feeType = receiptFullDetails[1];
-
-                List<String> paymentList = fh.fileRead("payment.txt");
-                String[] paymentArray = new String[paymentList.size()];
-                paymentList.toArray(paymentArray);
-
-                for (int j = 1; j < paymentList.size(); j++) {
-                    String[] paymentFullDetails = paymentArray[j].split(";");
-                    String pInvoiceNo = paymentFullDetails[0];
-                    String pFeeType = paymentFullDetails[2];
-
-                    if (pInvoiceNo.equals(invoiceNo) && pFeeType.equals(feeType)) {
-                        newData.add(paymentArray[j]);
-                    }
-                }
-            }
-            fh.fileWrite("receipt.txt", true, newData);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
     public List<String> extractAllUserList(String type) {
         List<String> availableList = new ArrayList<>();
         
@@ -311,70 +278,6 @@ public class Payment extends Invoice {
         return availablePendingPayment;
     }
     
-    // store charges late payment fee into account
-    public void chargeLatePaymentFee(String invoiceNo, String latePaymentFee) {
-        try {
-            List<String> invoicesList = fh.fileRead("invoices.txt");
-            String[] invoicesArray = new String[invoicesList.size()];
-            invoicesList.toArray(invoicesArray);
-            String unitNo = "-";
-            String period = "-";
-            boolean check = false;
-
-            // check whethe late payment charges are charged before
-            for (int i = 1; i < invoicesList.size(); i++) {
-                String[] invoiceDetails = invoicesArray[i].split(";");
-                String eInvoiceNo = invoiceDetails[0];
-                String eUnitNo = invoiceDetails[1];
-                String feeType = invoiceDetails[2];
-                String ePeriod = invoiceDetails[8];
-
-                if (eInvoiceNo.equals(invoiceNo) && feeType.equals("Late Payment Charges")) {
-                    check = true;
-                }
-                
-                if (eInvoiceNo.equals(invoiceNo)) {
-                    unitNo = eUnitNo; period = ePeriod;
-                }
-            }
-
-            List<String> newData = new ArrayList<>();
-            // modify to latest late payment charge is record existed
-            if (check == true) {
-                for (int i = 1; i < invoicesList.size(); i++) {
-                    String[] invoiceDetails = invoicesArray[i].split(";");
-                    String nInvoiceNo = invoiceDetails[0];
-                    String nUnitNo = invoiceDetails[1];
-                    String nFeeType = invoiceDetails[2];
-                    String nPeriod = invoiceDetails[8];
-                    if (nInvoiceNo.equals(invoiceNo)
-                            && nFeeType.equals("Late Payment Charges")) {
-
-                        String generatedDate = this.todayDate();
-                        newData.add(invoiceNo + ";" + nUnitNo + ";" + nFeeType + ";" + "-" + ";"
-                                + "-" + ";" + "-" + ";" + "-" + ";" + latePaymentFee + ";"
-                                + nPeriod + ";" + generatedDate + ";" + "-" +";");
-                    } else {
-                        newData.add(invoicesArray[i]);
-                    }
-                }
-                fh.fileWrite("invoices.txt", false, newData);
-
-            // add new late payment charges if record not found
-            } else if (check == false) {
-                String generatedDate = this.todayDate();
-                newData.add(invoiceNo + ";" + unitNo + ";" + "Late Payment Charges" + ";" + "-"
-                        + ";" + "-" + ";" + "-" + ";" + "-" + ";" + latePaymentFee + ";"
-                        + period + ";" + generatedDate + ";"+ "-" +";");
-
-                fh.fileWrite("invoices.txt", true, newData);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
     // extract all unit that having outstanding fee
     public boolean checkOutstandingFee(String unitNo) {
         List<String> oustandingFee = displayAllPayment("PENDING");
@@ -389,20 +292,6 @@ public class Payment extends Invoice {
                 return false;
             }
         } return true;
-    }
-    
-    // store newly issued statement 
-    public void issueStatement(List<String> availableStatement) {
-        try {
-            List<String> newData = new ArrayList<>();
-            String todayDate = todayDate();
-            for (String statements : availableStatement) {
-                newData.add(statements + todayDate +";"+ "-" +";");
-            }
-            fh.fileWrite("statements.txt", true, newData);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
     
     // extract specific unit statement details based on monthYear

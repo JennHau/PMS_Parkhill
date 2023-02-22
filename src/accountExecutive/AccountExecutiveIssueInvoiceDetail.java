@@ -817,7 +817,7 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                         Invoice INV = new Invoice(invoiceNo, unitNo, feeType,
                                 target, consumption, unit, unitPrice, totalPrice,
                                 period, generatedDate, "-");
-                        INV.issueInvoice();
+                        AE.issueInvoice(INV);
                         AE.createUserTransactionLink(period, unitNo);
                     }
                         
@@ -862,7 +862,7 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                     Invoice INV = new Invoice(invoiceNo, unitNo, feeType,
                             target, consumption, unit, unitPrice, totalPrice,
                             period, generatedDate, "-");
-                    INV.issueInvoice();
+                    AE.issueInvoice(INV);
                     AE.createUserTransactionLink(period, unitNo);
                     setTable();
                     JOptionPane.showMessageDialog (null, "Invoice has been issued!", 
