@@ -1239,6 +1239,8 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         
         disableManageButton();
         
+        cleanField();
+        
         patrollingScheduleTableSetUp();
     }//GEN-LAST:event_selectDateBTNActionPerformed
 
