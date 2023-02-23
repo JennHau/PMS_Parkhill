@@ -312,7 +312,7 @@ public class ResidentTenant extends User {
         }
     }
     
-    // to modify self account
+    // resident & tenant to modify self account
     @Override
     public void modifySelfAccount() {
         String userID = this.getUserID().toLowerCase();
