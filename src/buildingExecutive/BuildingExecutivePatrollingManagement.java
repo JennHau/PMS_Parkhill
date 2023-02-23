@@ -1244,8 +1244,14 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
     private void manageScheduleBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageScheduleBTNActionPerformed
         // TODO add your handling code here:
-        BE.toScheduleModification(this.BE, patrollingScheduleFile, inputDate);
-        this.setAlwaysOnTop(false);
+        int result = JOptionPane.showConfirmDialog(null,"This action will remove all the assigned patrolling and added slot. Are you sure to continue?", "PATROLLING SCHEDULE",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE);
+
+        if(result == JOptionPane.YES_OPTION){
+            BE.toScheduleModification(this.BE, patrollingScheduleFile, inputDate);
+            this.setAlwaysOnTop(false);
+        }
     }//GEN-LAST:event_manageScheduleBTNActionPerformed
 
     private void removeSlotBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeSlotBTNActionPerformed
