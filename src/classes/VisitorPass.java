@@ -12,7 +12,6 @@ import java.util.List;
  * @author Winson
  */
 public class VisitorPass {
-
     private String passID;
     private String visitorIC;
     private String visitorName;

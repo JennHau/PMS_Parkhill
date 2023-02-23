@@ -166,7 +166,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="timeCheckedPicker" max="32767" attributes="0"/>
-                                      <Component id="checkpointsTF" max="32767" attributes="0"/>
+                                      <Component id="checkpointComboBox" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -289,11 +289,11 @@
                               <Component id="slotTF" alignment="0" min="-2" pref="30" max="-2" attributes="0"/>
                               <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                                   <Component id="jLabel26" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                                  <Component id="checkpointsTF" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                                   <Component id="jLabel34" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                                  <Component id="checkpointComboBox" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="3" attributes="0">
@@ -321,7 +321,7 @@
                       </Group>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jSeparator2" pref="5" max="32767" attributes="0"/>
+                  <Component id="jSeparator2" pref="4" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="removeEmpBTN" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
@@ -364,7 +364,7 @@
                     <Column editable="false" title="SECURITY ID" type="java.lang.Object"/>
                     <Column editable="false" title="SECURITY NAME" type="java.lang.Object"/>
                     <Column editable="false" title="STATUS" type="java.lang.Object"/>
-                    <Column editable="false" title="ASSIGNEE ID" type="java.lang.Object"/>
+                    <Column editable="false" title="UPDATE BY" type="java.lang.Object"/>
                     <Column editable="false" title="ACTION" type="java.lang.Object"/>
                   </Table>
                 </Property>
@@ -588,11 +588,6 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="checkpointsTF">
-          <Properties>
-            <Property name="enabled" type="boolean" value="false"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JLabel" name="jLabel36">
           <Properties>
             <Property name="text" type="java.lang.String" value="Status: "/>
@@ -727,6 +722,20 @@
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="checkpointComboBox">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="checkpointComboBoxActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

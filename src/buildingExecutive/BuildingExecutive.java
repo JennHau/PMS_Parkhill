@@ -29,13 +29,13 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import classes.Status;
+import classes.StatusAction;
 
 /**
  *
  * @author Winson
  */
-public class BuildingExecutive extends User implements Status{
+public class BuildingExecutive extends User implements StatusAction{
     public PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
     public TextFile TF = new TextFile();
     public FileHandling fh = new FileHandling();
@@ -472,6 +472,12 @@ public class BuildingExecutive extends User implements Status{
         }
         
         return null;
+    }
+    
+    public void updatePatrolling(String patScheduleFile, Patrolling patrolling) {
+        String newData = patrolling.toString();
+        
+        crud.update(patScheduleFile, patrolling.getPatID(), newData, 0);
     }
     
     // get new job id

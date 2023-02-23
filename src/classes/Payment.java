@@ -524,18 +524,18 @@ public class Payment extends Invoice {
         for (Invoice eachInv : invoiceList) {
             String[] inv = {eachInv.getInvoiceNo(), eachInv.getFeeType()};
             String invKey = concatenateKey(inv);
-            
+
             boolean notFound = true;
             for (Payment eachPm : paymentList) {
                 String[] pay = {eachPm.getInvoiceNo(), eachPm.getFeeType()};
                 String payKey = concatenateKey(pay);
-                
+
                 if (invKey.equals(payKey)) {
                     notFound = false;
                     break;
                 }
             }
-            
+
             if (notFound) {
                 incompList.add(eachInv);
             }

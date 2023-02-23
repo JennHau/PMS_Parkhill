@@ -28,7 +28,6 @@ import javax.swing.JOptionPane;
  * @author Winson
  */
 public class JobModificationPage extends javax.swing.JFrame {
-//    private String currentBEid;
     private final Complaint complaint;
     private final BuildingExecutive BE;
     private final Employee employee;
@@ -143,7 +142,7 @@ public class JobModificationPage extends javax.swing.JFrame {
             }
             else {
                 JOptionPane.showMessageDialog (null, "The job item has exist.", 
-                                                            "JOB MODIFICATION", JOptionPane.INFORMATION_MESSAGE);
+                                                        "JOB MODIFICATION", JOptionPane.INFORMATION_MESSAGE);
             }
         }
         else {
@@ -157,8 +156,10 @@ public class JobModificationPage extends javax.swing.JFrame {
         List<String> jobFile = fileHandling.fileRead(BE.TF.jobListFile);
         for (String eachJob : jobFile) {
             String title = eachJob.split(BE.TF.sp)[2].toLowerCase();
-            if (title.equals(jobTitle.toLowerCase())) {
-                return true;
+            if (!(eachJob.split(BE.TF.sp)[1]).equals(this.job.getJobID())) {
+                if (title.equals(jobTitle.toLowerCase())) {
+                    return true;
+                }
             }
         }
         
