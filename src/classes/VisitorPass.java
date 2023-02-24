@@ -93,21 +93,6 @@ public class VisitorPass {
             
             firstLine = false;
         }
-        
-        firstLine = true;
-        for (String eachVis : visitorFiles) {
-            if (!firstLine) {
-                String[] passData = eachVis.split(TF.sp);
-            
-                VisitorPass visitorPass = new VisitorPass(passData);
-
-                if (visitorPass.getResidentId().equals(userID)) {
-                    registeredVisitor.add(visitorPass);
-                }
-            }
-            
-            firstLine = false;
-        }
 
         return registeredVisitor;
     }

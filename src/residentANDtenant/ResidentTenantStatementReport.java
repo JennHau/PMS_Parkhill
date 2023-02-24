@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import classes.FileHandling;
+import java.awt.Toolkit;
 
 
 /**
@@ -178,6 +179,13 @@ public class ResidentTenantStatementReport extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(statementTable);
+        if (statementTable.getColumnModel().getColumnCount() > 0) {
+            statementTable.getColumnModel().getColumn(0).setResizable(false);
+            statementTable.getColumnModel().getColumn(1).setResizable(false);
+            statementTable.getColumnModel().getColumn(2).setResizable(false);
+            statementTable.getColumnModel().getColumn(3).setResizable(false);
+            statementTable.getColumnModel().getColumn(4).setResizable(false);
+        }
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -264,11 +272,11 @@ public class ResidentTenantStatementReport extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(amountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(amountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(paymentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(paymentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 788, Short.MAX_VALUE)
                             .addComponent(jSeparator3)
@@ -367,9 +375,15 @@ public class ResidentTenantStatementReport extends javax.swing.JFrame {
             
             tableDesignSetUp();
             
+            setWindowIcon();
+            
         } catch (ParseException ex) {
             System.out.println(ex);
         }
+    }
+    
+    private void setWindowIcon() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
     
     // get the total amount

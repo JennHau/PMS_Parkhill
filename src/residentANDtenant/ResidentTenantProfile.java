@@ -188,7 +188,7 @@ public class ResidentTenantProfile extends javax.swing.JFrame {
         jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 1, 24)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(51, 51, 51));
         jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel24.setText("Resident / Tenant Profile:");
+        jLabel24.setText("Resident & Tenant Profile:");
 
         rsdIdTF.setEnabled(false);
 

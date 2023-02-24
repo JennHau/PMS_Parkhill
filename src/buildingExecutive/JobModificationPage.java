@@ -115,7 +115,7 @@ public class JobModificationPage extends javax.swing.JFrame {
         }
         
         if (jobTF.getText() != null) {
-            if (!jobTitleExist(jobTF.getText())) {
+            if (!jobTitleExist(jobTF.getText()) || add) {
                 dataField.add(jobTF.getText());
                 
                 if (Integer.valueOf(timeNeededSpinner.getValue().toString()) != 0 && timeValueCB.getSelectedItem()!=null) {
@@ -153,12 +153,14 @@ public class JobModificationPage extends javax.swing.JFrame {
     
     // check is the job exist
     private boolean jobTitleExist(String jobTitle) {
-        List<String> jobFile = fileHandling.fileRead(BE.TF.jobListFile);
-        for (String eachJob : jobFile) {
-            String title = eachJob.split(BE.TF.sp)[2].toLowerCase();
-            if (!(eachJob.split(BE.TF.sp)[1]).equals(this.job.getJobID())) {
-                if (title.equals(jobTitle.toLowerCase())) {
-                    return true;
+        if (this.job != null) {
+            List<String> jobFile = fileHandling.fileRead(BE.TF.jobListFile);
+            for (String eachJob : jobFile) {
+                String title = eachJob.split(BE.TF.sp)[2].toLowerCase();
+                if (!(eachJob.split(BE.TF.sp)[1]).equals(this.job.getJobID())) {
+                    if (title.equals(jobTitle.toLowerCase())) {
+                        return true;
+                    }
                 }
             }
         }

@@ -182,7 +182,7 @@ public class VendorProfile extends javax.swing.JFrame {
         jLabel23.setForeground(new java.awt.Color(51, 51, 51));
 
         jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel24.setText("Resident / Tenant Profile:");
+        jLabel24.setText("Vendor Profile:");
         jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 1, 24)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(51, 51, 51));
 

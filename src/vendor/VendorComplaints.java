@@ -209,16 +209,16 @@ public class VendorComplaints extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(153, 153, 153), null, null));
 
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("PARKHILL RESIDENCE VENDOR");
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(13, 24, 42));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel2.setText("PARKHILL RESIDENCE VENDOR");
 
+        userNameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        userNameLabel.setForeground(new java.awt.Color(102, 102, 102));
         userNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         userNameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
         userNameLabel.setText("USERNAME");
-        userNameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        userNameLabel.setForeground(new java.awt.Color(102, 102, 102));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -243,9 +243,9 @@ public class VendorComplaints extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(226, 226, 226));
 
-        jLabel23.setText("Pending & Progressing Complaints:");
         jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel23.setText("Pending & Progressing Complaints:");
 
         penProgCompTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         penProgCompTable.setForeground(new java.awt.Color(51, 51, 51));
@@ -259,7 +259,15 @@ public class VendorComplaints extends javax.swing.JFrame {
             new String [] {
                 "COMPLAINT ID", "DESCRIPTION", "DATE", "TIME", "STATUS", "ACTION"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         penProgCompTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
         penProgCompTable.setRowHeight(25);
         penProgCompTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -268,6 +276,14 @@ public class VendorComplaints extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(penProgCompTable);
+        if (penProgCompTable.getColumnModel().getColumnCount() > 0) {
+            penProgCompTable.getColumnModel().getColumn(0).setResizable(false);
+            penProgCompTable.getColumnModel().getColumn(1).setResizable(false);
+            penProgCompTable.getColumnModel().getColumn(2).setResizable(false);
+            penProgCompTable.getColumnModel().getColumn(3).setResizable(false);
+            penProgCompTable.getColumnModel().getColumn(4).setResizable(false);
+            penProgCompTable.getColumnModel().getColumn(5).setResizable(false);
+        }
 
         registerBTN.setText("Add New");
         registerBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -282,15 +298,15 @@ public class VendorComplaints extends javax.swing.JFrame {
         jPanel4.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         jPanel4.setForeground(new java.awt.Color(255, 255, 255));
 
-        jLabel24.setText("Complaint ID: ");
         jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel24.setText("Complaint ID: ");
 
         complaintIdTF.setEnabled(false);
 
-        jLabel27.setText("Complaint Details:");
         jLabel27.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel27.setText("Complaint Details:");
 
         deleteBTN.setText("Delete");
         deleteBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -313,9 +329,9 @@ public class VendorComplaints extends javax.swing.JFrame {
         compDetTA.setRows(5);
         jScrollPane2.setViewportView(compDetTA);
 
-        jLabel28.setText("Status:");
         jLabel28.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel28.setText("Status:");
 
         compStatusTF.setEnabled(false);
 
@@ -373,13 +389,13 @@ public class VendorComplaints extends javax.swing.JFrame {
                 .addGap(15, 15, 15))
         );
 
-        jLabel25.setText("Complaints Form:");
         jLabel25.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel25.setText("Complaints Form:");
 
-        jLabel26.setText("Completed Complaints:");
         jLabel26.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel26.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel26.setText("Completed Complaints:");
 
         completedCompTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         completedCompTable.setForeground(new java.awt.Color(51, 51, 51));
@@ -393,7 +409,15 @@ public class VendorComplaints extends javax.swing.JFrame {
             new String [] {
                 "COMPLAINT ID", "DESCRIPTION", "DATE", "TIME", "STATUS", "ACTION"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         completedCompTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
         completedCompTable.setRowHeight(25);
         completedCompTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -402,6 +426,14 @@ public class VendorComplaints extends javax.swing.JFrame {
             }
         });
         jScrollPane3.setViewportView(completedCompTable);
+        if (completedCompTable.getColumnModel().getColumnCount() > 0) {
+            completedCompTable.getColumnModel().getColumn(0).setResizable(false);
+            completedCompTable.getColumnModel().getColumn(1).setResizable(false);
+            completedCompTable.getColumnModel().getColumn(2).setResizable(false);
+            completedCompTable.getColumnModel().getColumn(3).setResizable(false);
+            completedCompTable.getColumnModel().getColumn(4).setResizable(false);
+            completedCompTable.getColumnModel().getColumn(5).setResizable(false);
+        }
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -469,9 +501,9 @@ public class VendorComplaints extends javax.swing.JFrame {
             }
         });
 
-        dashBoardInnerTab2.setText("Dashboard");
         dashBoardInnerTab2.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         dashBoardInnerTab2.setForeground(new java.awt.Color(255, 255, 255));
+        dashBoardInnerTab2.setText("Dashboard");
         dashBoardInnerTab2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 dashBoardInnerTab2MouseClicked(evt);
@@ -508,9 +540,9 @@ public class VendorComplaints extends javax.swing.JFrame {
             }
         });
 
-        paymentManagementInnerTab.setText("Payment Management");
         paymentManagementInnerTab.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         paymentManagementInnerTab.setForeground(new java.awt.Color(255, 255, 255));
+        paymentManagementInnerTab.setText("Payment Management");
         paymentManagementInnerTab.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 paymentManagementInnerTabMouseClicked(evt);
@@ -547,9 +579,9 @@ public class VendorComplaints extends javax.swing.JFrame {
             }
         });
 
-        complaintsInnerTab.setText("Complaints");
         complaintsInnerTab.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         complaintsInnerTab.setForeground(new java.awt.Color(255, 255, 255));
+        complaintsInnerTab.setText("Complaints");
         complaintsInnerTab.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 complaintsInnerTabMouseClicked(evt);
@@ -586,10 +618,10 @@ public class VendorComplaints extends javax.swing.JFrame {
             }
         });
 
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
-        jLabel12.setText("VIEW PROFILE");
         jLabel12.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
+        jLabel12.setText("VIEW PROFILE");
         jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel12MouseClicked(evt);
@@ -626,10 +658,10 @@ public class VendorComplaints extends javax.swing.JFrame {
             }
         });
 
-        logoutLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
-        logoutLabel2.setText("LOGOUT");
         logoutLabel2.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
         logoutLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        logoutLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
+        logoutLabel2.setText("LOGOUT");
         logoutLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 logoutLabel2MouseClicked(evt);

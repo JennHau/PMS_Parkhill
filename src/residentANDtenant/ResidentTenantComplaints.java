@@ -268,7 +268,15 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
             new String [] {
                 "COMPLAINT ID", "DESCRIPTION", "DATE", "TIME", "STATUS", "ACTION"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         penProgCompTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
         penProgCompTable.setRowHeight(25);
         penProgCompTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -277,6 +285,14 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(penProgCompTable);
+        if (penProgCompTable.getColumnModel().getColumnCount() > 0) {
+            penProgCompTable.getColumnModel().getColumn(0).setResizable(false);
+            penProgCompTable.getColumnModel().getColumn(1).setResizable(false);
+            penProgCompTable.getColumnModel().getColumn(2).setResizable(false);
+            penProgCompTable.getColumnModel().getColumn(3).setResizable(false);
+            penProgCompTable.getColumnModel().getColumn(4).setResizable(false);
+            penProgCompTable.getColumnModel().getColumn(5).setResizable(false);
+        }
 
         registerBTN.setText("Add New");
         registerBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -402,7 +418,15 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
             new String [] {
                 "COMPLAINT ID", "DESCRIPTION", "DATE", "TIME", "STATUS", "ACTION"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         completedCompTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
         completedCompTable.setRowHeight(25);
         completedCompTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -411,6 +435,14 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
             }
         });
         jScrollPane3.setViewportView(completedCompTable);
+        if (completedCompTable.getColumnModel().getColumnCount() > 0) {
+            completedCompTable.getColumnModel().getColumn(0).setResizable(false);
+            completedCompTable.getColumnModel().getColumn(1).setResizable(false);
+            completedCompTable.getColumnModel().getColumn(2).setResizable(false);
+            completedCompTable.getColumnModel().getColumn(3).setResizable(false);
+            completedCompTable.getColumnModel().getColumn(4).setResizable(false);
+            completedCompTable.getColumnModel().getColumn(5).setResizable(false);
+        }
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);

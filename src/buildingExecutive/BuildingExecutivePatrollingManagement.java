@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import classes.FileHandling;
 import classes.Patrolling;
+import java.util.Arrays;
 import pms_parkhill_residence.HomePage;
 
 /**
@@ -200,6 +201,9 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         securityNameTF.setText("");
         contactNoTF.setText("");
         remarksTA.setText("");
+        patID = null;
+        patrolling = null;
+        assignedJob = null;
     }
     
     // set up current building executive profile
@@ -453,6 +457,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
         jLabel33.setForeground(new java.awt.Color(51, 51, 51));
 
         updateBTN.setText("Update");
+        updateBTN.setEnabled(false);
         updateBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 updateBTNActionPerformed(evt);
@@ -1059,6 +1064,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                 String[] patDet = scheduleFile.get(selectedRow+1).split(BE.TF.sp);
                 
                 patrolling = new Patrolling(patDet);
+                patID = patrolling.getPatID();
                 
                 String checkedAt = patrolling.getCheckedAt();
 
@@ -1160,10 +1166,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
 
             try {
                 updatePatShceduleFromJobFile();
-                employeeIdComboBoxSetUp();
-                updateBTN.setEnabled(false);
-                removeSlotBTN.setEnabled(false);
-                removeEmpBTN.setEnabled(false);
+//                employeeIdComboBoxSetUp();
                 cleanField();
                 
                 patrolling = null;
@@ -1171,6 +1174,10 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(BuildingExecutivePatrollingManagement.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
+            updateBTN.setEnabled(false);
+            removeSlotBTN.setEnabled(false);
+            removeEmpBTN.setEnabled(false);
         }
     }//GEN-LAST:event_updateBTNActionPerformed
     
@@ -1202,6 +1209,8 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             
             cleanField();
             
+            updateBTN.setEnabled(false);
+            removeEmpBTN.setEnabled(false);
             removeSlotBTN.setEnabled(false);
             assignedJob = null;
             patrolling = null;
@@ -1262,7 +1271,7 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
                 + "remove this slot?", "PATROLLING SCHEDULE",
         JOptionPane.YES_NO_OPTION,
         JOptionPane.QUESTION_MESSAGE);
-
+        
         if(result == JOptionPane.YES_OPTION){
             ArrayList<String> updatedSched = new ArrayList<>();
             List<String> allSlots = fh.fileRead(patrollingScheduleFile);
@@ -1284,13 +1293,15 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
             patrollingScheduleTableSetUp();
 
             fieldAction(false);
-            updateBTN.setEnabled(false);
-            removeSlotBTN.setEnabled(false);
-            removeEmpBTN.setEnabled(false);
+            
             cleanField();
             
             assignedJob = null;
             patrolling = null;
+            
+            updateBTN.setEnabled(false);
+            removeSlotBTN.setEnabled(false);
+            removeEmpBTN.setEnabled(false);
         }
     }//GEN-LAST:event_removeSlotBTNActionPerformed
 
@@ -1437,10 +1448,14 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     private void checkpointComboBoxSetUp(String patrolLevel) {
         checkpointComboBox.removeAllItems();
         
+        int firstLv;
+        int secLv;
+        
         String levelRange = patrolLevel.replace("Level ", "");
         String[] eachLevel = levelRange.split(BE.TF.empty);
-        int firstLv = Integer.parseInt(eachLevel[0]);
-        int secLv = Integer.parseInt(eachLevel[1]);
+        firstLv = Integer.parseInt(eachLevel[0]);
+        
+        secLv = (eachLevel.length != 1) ? Integer.parseInt(eachLevel[1]) : firstLv;
         
         for (int countLv = firstLv; countLv < secLv + 1; countLv++) {
             checkpointComboBox.addItem("Level " + countLv);
@@ -1449,7 +1464,9 @@ public class BuildingExecutivePatrollingManagement extends javax.swing.JFrame {
     
     // delete patrolling in job file
     private void deletePatScheduleFromJobFile() throws IOException {
-        assignedJob.updateJobTextFile(assignedJob.deleteItem);
+        if (assignedJob != null) {
+            assignedJob.updateJobTextFile(assignedJob.deleteItem);
+        }
         
         removeEmpBTN.setEnabled(false);
         updateBTN.setEnabled(false);

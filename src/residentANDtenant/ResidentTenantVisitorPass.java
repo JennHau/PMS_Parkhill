@@ -16,6 +16,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import classes.PMS_DateTimeFormatter;
 import classes.VisitorPass;
+import java.awt.event.KeyEvent;
+import java.util.Arrays;
 import pms_parkhill_residence.HomePage;
 
 /**
@@ -92,16 +94,34 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
             if (status.equals(visitorStatus)) {
                 String action = "VIEW";
                 
-                if (status.equals("Registered")) {
+                String date = eachPass.getDate();
+                String time = eachPass.getTime();
+                String[] dateTime = {date, time};
+                
+                if (status.equals(VisitorPass.visitorPassStatus[0])) {
                     action = "MODIFY";
+                    dateTimeLabel.setText("Expected Check-In Date & Time");
                 }
                 
+                if (status.equals(VisitorPass.visitorPassStatus[1])) {
+                    dateTime = eachPass.getCheckedInAt().split(" ");
+                    dateTimeLabel.setText("Checked-In Date & Time");
+                }
+                
+                if (status.equals(VisitorPass.visitorPassStatus[2])) {
+                    dateTime = eachPass.getCheckedOutAt().split(" ");
+                    dateTimeLabel.setText("Checked-Out Date & Time");
+                }
+                
+                date = dateTime[0];
+                time = dateTime[1];
+                
                 String tableLine = eachPass.getPassID().toUpperCase() + RT.TF.sp + eachPass.getVisitorName() + RT.TF.sp + 
-                                    eachPass.getCarPlate() + RT.TF.sp + eachPass.getDate() + RT.TF.sp + 
-                                    eachPass.getTime() + RT.TF.sp + status + RT.TF.sp + 
+                                    eachPass.getCarPlate() + RT.TF.sp + date + RT.TF.sp + 
+                                    time + RT.TF.sp + status + RT.TF.sp + 
                                     action + RT.TF.sp;
 
-                if (status.equals(VisitorPass.visitorPassStatus[0])) {
+                if (status.equals(visitorStatus)) {
                     toTable.add(tableLine);
                 }
             }
@@ -183,7 +203,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
         visitorCarPlateTF = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
         visitorContactTF = new javax.swing.JTextField();
-        jLabel30 = new javax.swing.JLabel();
+        dateTimeLabel = new javax.swing.JLabel();
         dateTimePicker = new com.github.lgooddatepicker.components.DateTimePicker();
         deleteBTN = new javax.swing.JButton();
         saveBTN = new javax.swing.JButton();
@@ -266,7 +286,15 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
             new String [] {
                 "PASS ID", "VISITOR NAME", "CAR PLATE", "DATE", "TIME", "STATUS", "ACTION"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         registeredVisitorTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         registeredVisitorTable.setForeground(new java.awt.Color(51, 51, 51));
         registeredVisitorTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
@@ -275,8 +303,20 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 registeredVisitorTableMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                registeredVisitorTableMouseEntered(evt);
+            }
         });
         jScrollPane1.setViewportView(registeredVisitorTable);
+        if (registeredVisitorTable.getColumnModel().getColumnCount() > 0) {
+            registeredVisitorTable.getColumnModel().getColumn(0).setResizable(false);
+            registeredVisitorTable.getColumnModel().getColumn(1).setResizable(false);
+            registeredVisitorTable.getColumnModel().getColumn(2).setResizable(false);
+            registeredVisitorTable.getColumnModel().getColumn(3).setResizable(false);
+            registeredVisitorTable.getColumnModel().getColumn(4).setResizable(false);
+            registeredVisitorTable.getColumnModel().getColumn(5).setResizable(false);
+            registeredVisitorTable.getColumnModel().getColumn(6).setResizable(false);
+        }
 
         registerBTN.setText("Register");
         registerBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -301,9 +341,21 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
         jLabel27.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(51, 51, 51));
 
+        visitorIcTF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                visitorIcTFKeyTyped(evt);
+            }
+        });
+
         jLabel26.setText("Visitor Name:");
         jLabel26.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel26.setForeground(new java.awt.Color(51, 51, 51));
+
+        visitorNameTF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                visitorNameTFKeyTyped(evt);
+            }
+        });
 
         jLabel28.setText("Car Plate:");
         jLabel28.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
@@ -313,9 +365,15 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
         jLabel29.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel29.setForeground(new java.awt.Color(51, 51, 51));
 
-        jLabel30.setText("Check-In Date & Time:");
-        jLabel30.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
-        jLabel30.setForeground(new java.awt.Color(51, 51, 51));
+        visitorContactTF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                visitorContactTFKeyTyped(evt);
+            }
+        });
+
+        dateTimeLabel.setText("Expected Check-In Date & Time:");
+        dateTimeLabel.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        dateTimeLabel.setForeground(new java.awt.Color(51, 51, 51));
 
         deleteBTN.setText("Delete");
         deleteBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -346,7 +404,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
                         .addGap(60, 60, 60))
                     .addComponent(jSeparator2)
                     .addComponent(dateTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(dateTimeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -397,7 +455,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
                             .addComponent(visitorCarPlateTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(visitorContactTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(20, 20, 20)
-                .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(dateTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(dateTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -847,6 +905,8 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
         
         saveBTN.setEnabled(true);
         deleteBTN.setEnabled(false);
+        
+        dateTimeLabel.setText("Expected Check-In Date & Time");
     }//GEN-LAST:event_registerBTNActionPerformed
 
     private void registeredVisitorTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registeredVisitorTableMouseClicked
@@ -1067,6 +1127,39 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
         logoutPanel2.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_logoutPanel2MouseEntered
 
+    private void visitorIcTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_visitorIcTFKeyTyped
+        // TODO add your handling code here:
+        int text = visitorIcTF.getText().length();
+        char c = evt.getKeyChar();
+        if (!(c == KeyEvent.VK_DELETE || Character.isDigit(c)) || text > 11){
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_visitorIcTFKeyTyped
+
+    private void visitorNameTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_visitorNameTFKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (!(c == KeyEvent.VK_DELETE || Character.isAlphabetic(c) || c == KeyEvent.VK_SPACE)){
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_visitorNameTFKeyTyped
+
+    private void visitorContactTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_visitorContactTFKeyTyped
+        // TODO add your handling code here:
+        int text = visitorContactTF.getText().length();
+        char c = evt.getKeyChar();
+        if (!(c == KeyEvent.VK_DELETE || Character.isDigit(c)) || text > 11){
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_visitorContactTFKeyTyped
+
+    private void registeredVisitorTableMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registeredVisitorTableMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_registeredVisitorTableMouseEntered
+
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
@@ -1075,29 +1168,43 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
         if (colSel == 6) {
             this.setPassID(table.getValueAt(rowSel, 0).toString().toLowerCase());
             
-            String visitorDet = RT.getVisitorDetails(passID);
+            VisitorPass visPass = new VisitorPass(this.passID);
             
-            if (visitorDet != null) {
-                String[] visitorInfo = visitorDet.split(RT.TF.sp);
-                String visIC = visitorInfo[1];
-                String visName = visitorInfo[2];
-                String carPlate = visitorInfo[3].toUpperCase();
-                String contact = visitorInfo[4];
-                String date = visitorInfo[5];
-                String time = visitorInfo[6];
-                
-                passIdTF.setText(passID.toUpperCase());
-                visitorIcTF.setText(visIC);
-                visitorIcTF.setEnabled(false);
-                visitorNameTF.setText(visName);
-                visitorNameTF.setEnabled(false);
-                visitorCarPlateTF.setText(carPlate);
-                visitorContactTF.setText(contact);
-                dateTimePicker.datePicker.setDate(DTF.formatDate(date));
-                dateTimePicker.timePicker.setTime(DTF.formatTime(time));
+            String visIC = visPass.getVisitorIC();
+            String visName = visPass.getVisitorName();
+            String carPlate = visPass.getCarPlate();
+            String contact = visPass.getVisitorContact();
+            
+            String date = visPass.getDate();
+            String time = visPass.getTime();
+            String[] dateTime = {date, time};
+            
+            String status = statusCB.getSelectedItem().toString();
+            
+            if (status.equals(VisitorPass.visitorPassStatus[1])) {
+                dateTime = visPass.getCheckedInAt().split(" ");
+                dateTimeLabel.setText("Checked-In Date & Time");
+            } else if (status.equals(VisitorPass.visitorPassStatus[2])) {
+                dateTime = visPass.getCheckedOutAt().split(" ");
+                dateTimeLabel.setText("Checked-Out Date & Time");
+            } else {
+                dateTimeLabel.setText("Expected Check-In Date & Time");
             }
             
-            if (statusCB.getSelectedItem().toString().equals("Registered")) {
+            date = dateTime[0];
+            time = dateTime[1];
+
+            passIdTF.setText(passID.toUpperCase());
+            visitorIcTF.setText(visIC);
+            visitorIcTF.setEnabled(false);
+            visitorNameTF.setText(visName);
+            visitorNameTF.setEnabled(false);
+            visitorCarPlateTF.setText(carPlate);
+            visitorContactTF.setText(contact);
+            dateTimePicker.datePicker.setDate(DTF.formatDate(date));
+            dateTimePicker.timePicker.setTime(DTF.formatTime(time));
+            
+            if (status.equals(VisitorPass.visitorPassStatus[0])) {
                 dateTimePicker.setEnabled(true);
                 visitorCarPlateTF.setEnabled(true);
                 deleteBTN.setEnabled(true);
@@ -1137,134 +1244,6 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ResidentTenantVisitorPass.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -1279,6 +1258,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
     private javax.swing.JPanel complaintsOuterTab;
     private javax.swing.JLabel dashBoardInnerTab;
     private javax.swing.JPanel dashboardOuterTab;
+    private javax.swing.JLabel dateTimeLabel;
     private com.github.lgooddatepicker.components.DateTimePicker dateTimePicker;
     private javax.swing.JButton deleteBTN;
     private javax.swing.JLabel facilityBookingInnerTab;
@@ -1292,7 +1272,6 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
-    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel13;
