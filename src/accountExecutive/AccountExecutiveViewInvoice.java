@@ -30,14 +30,13 @@ public class AccountExecutiveViewInvoice extends javax.swing.JFrame {
      * @param AE
      * @param paymentList
      */
-    public AccountExecutiveViewInvoice(Invoice INV, AccountExecutive AE,
-                        ArrayList<Payment> paymentList) {
+    public AccountExecutiveViewInvoice(Invoice INV, AccountExecutive AE) {
         initComponents();
         setWindowIcon();
         this.AE = AE;
         this.INV = INV;
         setFixData();
-        setTable(paymentList);
+        setTable(INV.getAvailableFees());
         setTableDesign();
     }
 
@@ -730,8 +729,8 @@ public class AccountExecutiveViewInvoice extends javax.swing.JFrame {
     
     private void backLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backLabelMouseClicked
         // TODO add your handling code here:
-        dispose();
         new AccountExecutiveIssueInvoiceDetail(AE).setVisible(true);
+        dispose();
     }//GEN-LAST:event_backLabelMouseClicked
 
     private void backLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backLabelMouseEntered
@@ -742,6 +741,7 @@ public class AccountExecutiveViewInvoice extends javax.swing.JFrame {
     private void backPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backPanelMouseClicked
         // TODO add your handling code here:
 //        new ResidentTenantInvoicePaymentGateway(invoiceNo, AE, total).setVisible(true);
+        new AccountExecutiveIssueInvoiceDetail(AE).setVisible(true);
         dispose();
     }//GEN-LAST:event_backPanelMouseClicked
 
@@ -936,9 +936,8 @@ public class AccountExecutiveViewInvoice extends javax.swing.JFrame {
         generatedDate.setText(String.valueOf(LocalDate.now()));
     }
     
-    private void setTable(ArrayList<Payment> paymentList) {
+    private void setTable(ArrayList<Invoice> paymentList) {
 //        List<String> paymentFeesDetails = INV.extractOneInvoiceDetails(INV);
-        
         float subTotal = 0.00f;
         DefaultTableModel tableModel = (DefaultTableModel)invoiceTable.getModel();
         
@@ -997,7 +996,7 @@ public class AccountExecutiveViewInvoice extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutiveViewInvoice(null, null, null).setVisible(true);
+                new AccountExecutiveViewInvoice(null, null).setVisible(true);
             }
         });
     }

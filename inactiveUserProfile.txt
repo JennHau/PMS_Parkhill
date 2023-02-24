@@ -1,3 +1,6 @@
 deleteID;userID;email;password;firstName;lastName;identificationNo;gender;phoneNo;unitNo;deletedDateTime;
-dlt000001;tnt000151;wong@gmaillsdkskd.com;Parkhill@1234;Hello;Wong;324234;Male;2343-234929384;C-01-01;2023-02-16T16:06:59.178610700;
+dlt000001;tnt000151;wong@gmaillsdkskd.com;Parkhill@1234;Ahmad;Shamere;324234;Male;2343-234929384;C-01-01;2023-02-16T16:06:59.178610700;
+dlt000002;tnt000152;chingliying@gmail.com;Parkhill@1234;Ching;Li Ying;324234;Male;2343-234929384;C-01-01;2023-02-16T16:06:59.178610700;
 dlt000003;Parkhill;parkhill@gmail.com;Parkhill@123;Parkill;Residence;-;-;-;C-01-01;2023-02-16T16:07:12.533716500;
+dlt000004;Parkhill;parkhill@gmail.com;Parkhill@123;Parkill;Residence;-;-;-;A-20-20;2023-02-24T15:54:09.200511300;
+dlt000005;Parkhill;parkhill@gmail.com;Parkhill@123;Parkill;Residence;-;-;-;A-20-20;2023-02-24T15:59:00.157954400;

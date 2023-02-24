@@ -388,7 +388,8 @@ public class AdminExecutive extends User{
         
         List<String> newData = new ArrayList<>();
         
-        for (int i = 0; i < propertyList.size(); i++) {
+        newData.add(propertyList.get(0));
+        for (int i = 1; i < propertyList.size(); i++) {
             String[] propertyDetails = propertyList.get(i).split(";");
             PropertyUnit PU = new PropertyUnit(propertyDetails);
             String eUnitNo = PU.getUnitNo();

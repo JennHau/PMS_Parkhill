@@ -147,6 +147,12 @@ public class SignInPage extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 visitorLabelMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                visitorLabelMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                visitorLabelMouseExited(evt);
+            }
         });
 
         warningMessage.setForeground(new java.awt.Color(255, 0, 0));
@@ -328,9 +334,20 @@ public class SignInPage extends javax.swing.JFrame {
 
     private void visitorLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorLabelMouseClicked
         // TODO add your handling code here:
-         dispose();
+        dispose();
         new visitor.VisitorPage().setVisible(true);
     }//GEN-LAST:event_visitorLabelMouseClicked
+
+    private void visitorLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorLabelMouseEntered
+        // TODO add your handling code here:
+        visitorLabel.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+        visitorLabel.setForeground(Color.blue);
+    }//GEN-LAST:event_visitorLabelMouseEntered
+
+    private void visitorLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorLabelMouseExited
+        // TODO add your handling code here:
+        visitorLabel.setForeground(new Color(153,153,153));
+    }//GEN-LAST:event_visitorLabelMouseExited
 
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));

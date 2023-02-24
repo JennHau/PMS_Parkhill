@@ -1799,3 +1799,8 @@ B-15-0212023;B-15-02;Management Fee;Residential;800;Square Feet;0.3;240;01/2023;
 B-15-0312023;B-15-03;Management Fee;Residential;1200;Square Feet;0.3;360;01/2023;tnt000148;15/02/2023;01/02/2023;-;
 B-15-03A12023;B-15-03A;Management Fee;Residential;1000;Square Feet;0.3;300;01/2023;tnt000149;15/02/2023;01/02/2023;-;
 B-15-0512023;B-15-05;Management Fee;Residential;800;Square Feet;0.3;240;01/2023;tnt000150;15/02/2023;01/02/2023;-;
+S-02-03A112022;S-02-03A;Management Fee;Commercial;1000;Square Feet;0.33;330.0;11/2022;vdr000009;24/02/2023;24/02/2023;-;
+S-02-03112022;S-02-03;Management Fee;Commercial;1200;Square Feet;0.33;396.0;11/2022;vdr000008;24/02/2023;24/02/2023;-;
+S-02-02112022;S-02-02;Management Fee;Commercial;800;Square Feet;0.33;264.0;11/2022;vdr000007;24/02/2023;24/02/2023;-;
+S-02-01112022;S-02-01;Management Fee;Commercial;1000;Square Feet;0.33;330.0;11/2022;vdr000006;24/02/2023;24/02/2023;-;
+S-01-05112022;S-01-05;Management Fee;Commercial;800;Square Feet;0.33;264.0;11/2022;vdr000005;24/02/2023;24/02/2023;-;

@@ -68,7 +68,7 @@ public class AdminExecutiveModifyEmployee extends javax.swing.JFrame {
         deleteBt = new javax.swing.JButton();
         positionTF = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PARKHILL RESIDENCE");
         setBackground(new java.awt.Color(13, 24, 42));
         setResizable(false);
@@ -209,9 +209,9 @@ public class AdminExecutiveModifyEmployee extends javax.swing.JFrame {
 
         genderCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-PLEASE SELECT-", "Male", "Female" }));
 
+        deleteBt.setText("DELETE");
         deleteBt.setBackground(new java.awt.Color(255, 0, 0));
         deleteBt.setForeground(new java.awt.Color(255, 255, 255));
-        deleteBt.setText("DELETE");
         deleteBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteBtActionPerformed(evt);

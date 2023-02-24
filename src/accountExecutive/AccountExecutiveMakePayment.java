@@ -23,16 +23,15 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
-     * @param PM
      * @param AE
      * @param invoiceList
      */
-    public AccountExecutiveMakePayment(Payment PM, AccountExecutive AE,
+    public AccountExecutiveMakePayment(AccountExecutive AE,
             ArrayList<Invoice> invoiceList) {
         initComponents();
         setWindowIcon();
         this.AE = AE;
-        this.PM = PM;
+        this.invoiceList = invoiceList;
         setCurrentProfile();
         setFixData();
         setTable(invoiceList);
@@ -705,8 +704,8 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
 
     private String total;
     private final AccountExecutive AE;
-    private final Payment PM;
     public static AccountExecutiveMakePayment aceMakePayment;
+    private final ArrayList<Invoice> invoiceList;
     
     private void setCurrentProfile() {
         usernameLabel.setText(AE.getFirstName() +" "+ AE.getLastName());
@@ -714,7 +713,7 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
     
     private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
         // TODO add your handling code here:
-        new AccountExecutivePaymentGateway(PM, AE).setVisible(true);
+        new AccountExecutivePaymentGateway(AE, invoiceList).setVisible(true);
     }//GEN-LAST:event_jLabel18MouseClicked
 
     private void jLabel18MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseEntered
@@ -724,7 +723,7 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
 
     private void jPanel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseClicked
         // TODO add your handling code here:
-        new AccountExecutivePaymentGateway(PM, AE).setVisible(true);
+        new AccountExecutivePaymentGateway(AE, invoiceList).setVisible(true);
     }//GEN-LAST:event_jPanel5MouseClicked
 
     private void jPanel5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseEntered
@@ -913,8 +912,8 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
     }//GEN-LAST:event_issueStatementPanelMouseEntered
 
     private void setFixData() {
-        invoiceNoLabel.setText(PM.getInvoiceNo());
-        unitNoLabel.setText(PM.getUnitNo());
+        invoiceNoLabel.setText(AE.PYM.getInvoiceNo());
+        unitNoLabel.setText(AE.PYM.getUnitNo());
     }
     
     private void setTable(ArrayList<Invoice> invoiceList) {
@@ -940,7 +939,7 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
         } 
         total = AE.currencyFormat(subTotal);
         totalLabel.setText("Total: RM" + total);
-        PM.setTotalPrice(subTotal);
+        AE.PYM.setTotalPrice(subTotal);
     }
     
     private void setWindowIcon() {
@@ -1494,7 +1493,7 @@ public class AccountExecutiveMakePayment extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountExecutiveMakePayment(null, null, null).setVisible(true);
+                new AccountExecutiveMakePayment(null, null).setVisible(true);
             }
         });
     }

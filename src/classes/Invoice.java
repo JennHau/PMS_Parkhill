@@ -27,7 +27,7 @@ public class Invoice {
     private String period;
     private String issuedDate;
     private String deleteID;
-    private List<String> availableFees;
+    private ArrayList<Invoice> availableFees;
     
     private FileHandling fh = new FileHandling();
     protected TextFile TF = new TextFile();
@@ -46,7 +46,8 @@ public class Invoice {
             if(eInvoiceNo.equals(invoiceNo)) {
                 this.invoiceNo = invoiceNo;
                 this.unitNo = unitNo;
-                availableFees.add(availableList.get(i));
+                Invoice invoice = new Invoice(invoiceDetails);
+                availableFees.add(invoice);
             }
         }
     }
@@ -207,7 +208,6 @@ public class Invoice {
             
             firstLine = false;
         }
-        
         return incompleteInvoice;
     }
     
@@ -398,5 +398,19 @@ public class Invoice {
      */
     public void setDeleteID(String deleteID) {
         this.deleteID = deleteID;
+    }
+
+    /**
+     * @return the availableFees
+     */
+    public ArrayList<Invoice> getAvailableFees() {
+        return availableFees;
+    }
+
+    /**
+     * @param availableFees the availableFees to set
+     */
+    public void setAvailableFees(ArrayList<Invoice> availableFees) {
+        this.availableFees = availableFees;
     }
 }

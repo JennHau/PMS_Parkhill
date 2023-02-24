@@ -46,6 +46,7 @@ public class Payment extends Invoice {
     // extract all payments details for display
     public List<String> displayAllPayment(String status) {
         List<String> pendingPaymentList = new ArrayList<String>();
+        
         try {
             // get all unpaid payments
             if (status.equals("PENDING")) {
