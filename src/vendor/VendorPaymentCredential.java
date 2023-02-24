@@ -369,6 +369,7 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
                     
                     if (payable) {
                         if (!itemList.isEmpty()) {
+                            
                             for (Invoice eachInvId : itemList) {
                                 VD.PYM.storePayment(eachInvId, VD.getUserID());
                             }
@@ -376,7 +377,12 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog (null, "Payment has been made successfully!", 
                             "PAYMENT", JOptionPane.INFORMATION_MESSAGE);
 
-                            this.dispose();
+                            dispose();
+                            
+                            if (VendorPaymentManagement.vdPayMan != null) {
+                                VendorPaymentManagement.vdPayMan.dispose();
+                            }
+                            
                             VD.toPaymentManagement(VD);
                         }
                     }

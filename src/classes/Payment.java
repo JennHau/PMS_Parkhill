@@ -519,6 +519,7 @@ public class Payment extends Invoice {
         ArrayList<Invoice> incompList = new ArrayList<>();
         
         ArrayList<Invoice> invoiceList = getInvoiceOriginalMethod(unitNo);
+        
         ArrayList<Payment> paymentList = getCurrentUnitPayment(unitNo);
         
         for (Invoice eachInv : invoiceList) {

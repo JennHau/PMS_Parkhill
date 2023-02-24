@@ -61,7 +61,7 @@ public class VendorDashboard extends javax.swing.JFrame {
         completedCompLabel.setText(String.valueOf(completedComplaints.size()));
         
         // Set pending fee amount
-        ArrayList<Invoice> pendingFee = VD.PYM.getCurrentUnitInvoice(VD.getUserID());
+        ArrayList<Invoice> pendingFee = VD.PYM.getCurrentUnitInvoice(VD.getUnitNo());
         ArrayList<Payment> paidInv = VD.PYM.getCurrentUnitPayment(this.VD.getUnitNo());
         
         double totalPending = 0;
@@ -76,7 +76,7 @@ public class VendorDashboard extends javax.swing.JFrame {
             double feeTotal = eachFee.getTotalPrice();
             totalPaid += feeTotal;
         }
-        pendingFeeLabel.setText(String.format("%.02f", totalPaid));
+        paidFeeLabel.setText(String.format("%.02f", totalPaid));
     }
     
     // set up year combo box

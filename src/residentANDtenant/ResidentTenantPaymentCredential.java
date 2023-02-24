@@ -434,6 +434,10 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
                             ResidentTenantManageBookedFacility.rtManageBooked.dispose();
                         }
                         
+                        if (ResidentTenantFacilityPaymentGateway.rtFacPay != null) {
+                            ResidentTenantFacilityPaymentGateway.rtFacPay.dispose();
+                        }
+                        
                         this.dispose();
 
                         if (forFacility) {
