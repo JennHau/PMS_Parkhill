@@ -324,12 +324,13 @@ public class BuildingManagerAddAllocation extends javax.swing.JFrame {
         String id = allocationIDTF.getText().toLowerCase();
         String type = (String)typeCB.getSelectedItem();
         String desc = descTF.getText();
-        String amount = BM.currencyFormat
-                (Float.parseFloat(allocationAmountLabel.getText()));
+        String amount = allocationAmountLabel.getText();
         
         if(!type.equals("-PLEASE SELECT-") && !desc.equals("")&& !amount.equals("")
                 && warningMessage.getText().equals("")) {
             warningMessage.setText("");
+            amount = BM.currencyFormat
+                (Float.parseFloat(allocationAmountLabel.getText()));
             int result = JOptionPane.showConfirmDialog(null,"Are you sure to "
                     + "add this budget allocation?",
                     "ADD BUDGET ALLOCATION",
