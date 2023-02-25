@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import classes.FileHandling;
+import java.awt.Toolkit;
 
 
 /**
@@ -39,6 +40,8 @@ public class VendorStatementReport extends javax.swing.JFrame {
         stateTab = (DefaultTableModel) statementTable.getModel();
         
         setDefault();
+        
+        setWindowIcon();
     }
 
     /**
@@ -154,7 +157,7 @@ public class VendorStatementReport extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("STATEMENT REPORT");
 
-        statementTable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        statementTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         statementTable.setForeground(new java.awt.Color(51, 51, 51));
         statementTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -180,6 +183,13 @@ public class VendorStatementReport extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(statementTable);
+        if (statementTable.getColumnModel().getColumnCount() > 0) {
+            statementTable.getColumnModel().getColumn(0).setResizable(false);
+            statementTable.getColumnModel().getColumn(1).setResizable(false);
+            statementTable.getColumnModel().getColumn(2).setResizable(false);
+            statementTable.getColumnModel().getColumn(3).setResizable(false);
+            statementTable.getColumnModel().getColumn(4).setResizable(false);
+        }
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -266,11 +276,11 @@ public class VendorStatementReport extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(amountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(amountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(paymentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(paymentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 788, Short.MAX_VALUE)
                             .addComponent(jSeparator3)
@@ -356,6 +366,10 @@ public class VendorStatementReport extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
+    private void setWindowIcon() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
+    }
+    
     private void setDefault() {
         try {
             ArrayList<String> statementList = VD.PYM.displayOneStatement(VD.getUnitNo(), monthNyear);
@@ -411,7 +425,7 @@ public class VendorStatementReport extends javax.swing.JFrame {
     
     private void tableDesignSetUp() {
         int[] columnIgnore = {2};
-        int[] columnLength = {120, 150, 218, 150, 150};
+        int[] columnLength = {110, 150, 268, 130, 130};
         VD.setTableDesign(statementTable, jLabel2, columnLength, columnIgnore);
     }
     

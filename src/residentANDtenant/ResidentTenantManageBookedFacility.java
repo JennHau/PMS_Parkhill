@@ -900,7 +900,7 @@ public class ResidentTenantManageBookedFacility extends javax.swing.JFrame {
 
         if(result == JOptionPane.YES_OPTION){
             RT.deleteFacilityBooking(bookingID);
-            JOptionPane.showMessageDialog (null, "Facility Booking has been deleted!", 
+            JOptionPane.showMessageDialog (null, "Facility Booking has been deleted! Please contact admin for refund (If any). Thank you.", 
                             "DELETE FACILITY BOOKING", JOptionPane.INFORMATION_MESSAGE);
             dispose();
             RT.toBookedFacility(RT);

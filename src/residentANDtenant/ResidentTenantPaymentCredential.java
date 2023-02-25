@@ -245,6 +245,8 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
 
         jLabel7.setText("3-digits");
 
+        messageTF.setForeground(new java.awt.Color(255, 0, 0));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -434,6 +436,10 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
                             ResidentTenantManageBookedFacility.rtManageBooked.dispose();
                         }
                         
+                        if (ResidentTenantFacilityPaymentGateway.rtFacPay != null) {
+                            ResidentTenantFacilityPaymentGateway.rtFacPay.dispose();
+                        }
+                        
                         this.dispose();
 
                         if (forFacility) {
@@ -448,7 +454,7 @@ public class ResidentTenantPaymentCredential extends javax.swing.JFrame {
                     }
                 }
                 else {
-                    messageTF.setText("Please enter a correct expiration date of the card.");
+                    messageTF.setText("Please enter a valid expiration date of the card.");
                 }
             }
             else {

@@ -179,6 +179,4 @@ public class Job {
     public void setJobStartTime(String startTime) {
         this.jobStartTime = startTime;
     }
-    
-    
 }

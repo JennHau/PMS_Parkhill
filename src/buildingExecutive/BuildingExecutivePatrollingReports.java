@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
     DefaultTableModel patRepTab;
     String patrollingScheduleFile;
     String fileDefaultFormat = "patrollingScheduleFiles/patrollingFile_";
+    private String selectedDate;
     /**
      * Creates new form homePage
      * @param BE
@@ -40,9 +42,13 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
     
     private void runDefaultSetUp() {
         patRepTab = (DefaultTableModel) patrollingReportTable.getModel();
-        comboBoxSetUp();
         
         setWindowIcon();
+        
+        datePicker.setDateToToday();
+        selectedDate = BE.DTF.formatDate(datePicker.getDate().toString()).toString();
+        
+        tableSetup();
         
         setPatrollingReportTableDesign();
         
@@ -52,33 +58,35 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
     private void tableSetup() {
         ArrayList<String> toTableItems = new ArrayList<>();
         
-        String selectedDate = (dateCB.getSelectedItem() != null) ? dateCB.getSelectedItem().toString() : null;
-        
         if (selectedDate != null) {
             patrollingScheduleFile = fileDefaultFormat + selectedDate + ".txt";
-            List<String> patrollingSched = BE.fh.fileRead(patrollingScheduleFile);
             
-            int itemNo = 1;
-            boolean firstLine = true;
-            for (String eachSched : patrollingSched) {
-                if (!firstLine) {
-                    String[] schedItem = eachSched.split(BE.TF.sp);
-                    String scgId = schedItem[6];
-                    if (!scgId.equals(BE.TF.empty)) {
-                        String[] items = {String.valueOf(itemNo), schedItem[1], schedItem[2] + " - " + schedItem[3], schedItem[4], schedItem[5], scgId.toUpperCase(), schedItem[7], schedItem[9], schedItem[10]};
-
-                        String addItem = "";
-                        for (String eachItem : items) {
-                            addItem = addItem + eachItem + BE.TF.sp;
-                        }
-
-                        toTableItems.add(addItem);
-
-                        itemNo++;
-                    }
-                }
+            File file = new File(patrollingScheduleFile);
+            if (file.exists()) {
+                List<String> patrollingSched = BE.fh.fileRead(patrollingScheduleFile);            
                 
-                firstLine = false;
+                int itemNo = 1;
+                boolean firstLine = true;
+                for (String eachSched : patrollingSched) {
+                    if (!firstLine) {
+                        String[] schedItem = eachSched.split(BE.TF.sp);
+                        String scgId = schedItem[6];
+                        if (!scgId.equals(BE.TF.empty)) {
+                            String[] items = {String.valueOf(itemNo), schedItem[1], schedItem[2] + " - " + schedItem[3], schedItem[4], schedItem[5], scgId.toUpperCase(), schedItem[7], schedItem[9], schedItem[10]};
+
+                            String addItem = "";
+                            for (String eachItem : items) {
+                                addItem = addItem + eachItem + BE.TF.sp;
+                            }
+
+                            toTableItems.add(addItem);
+
+                            itemNo++;
+                        }
+                    }
+
+                    firstLine = false;
+                }
             }
             
             if (toTableItems.isEmpty()) {
@@ -91,44 +99,6 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
             
             BE.setTableRow(patRepTab, toTableItems);  
         }
-    }
-    
-    // set up combo box for date
-    private void comboBoxSetUp() {
-        ArrayList<String> availableScheduleRec = new ArrayList<>();
-        
-        List<String> patScheRecord = BE.fh.fileRead(BE.TF.patScheduleModRec);
-        
-        boolean firstLine = true;
-        for (String eachRec : patScheRecord) {
-            if (!firstLine) {
-                String dateId = eachRec.split(BE.TF.sp)[0];
-                if (!availableScheduleRec.contains(dateId)) {
-                    availableScheduleRec.add(dateId);
-                }
-            }
-            
-            firstLine = false;
-        }
-        
-        for (int item1 = 0; item1 < availableScheduleRec.size() - 1; item1++) {
-            for (int item2 = item1+1; item2 < availableScheduleRec.size(); item2++) {
-                LocalDate date1 = BE.DTF.formatDate(availableScheduleRec.get(item1));
-                LocalDate date2 = BE.DTF.formatDate(availableScheduleRec.get(item2));
-                
-                if (date2.isAfter(date1)) {
-                    availableScheduleRec.set(item1, date2.toString());
-                    availableScheduleRec.set(item2, date1.toString());
-                }
-            }
-        }
-        
-        dateCB.removeAllItems();
-        for (String eachDate : availableScheduleRec) {
-            dateCB.addItem(eachDate);
-        }
-        
-        dateCB.setSelectedItem(0);
     }
     
     private void setPatrollingReportTableDesign() {
@@ -164,7 +134,6 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         complaintsLabel = new javax.swing.JLabel();
         employeeJobLabel = new javax.swing.JLabel();
-        dateCB = new javax.swing.JComboBox<>();
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         viewBTN = new javax.swing.JButton();
@@ -190,6 +159,8 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
         }
         ;
         warningMsg = new javax.swing.JLabel();
+        datePicker = new com.github.lgooddatepicker.components.DatePicker();
+        dateSelectBTN = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jobAssignationTab = new javax.swing.JPanel();
@@ -217,16 +188,16 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(153, 153, 153), null, null));
 
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("PARKHILL RESIDENCE BUILDING EXECUTIVE");
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(13, 24, 42));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel2.setText("PARKHILL RESIDENCE BUILDING EXECUTIVE");
 
+        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
         jLabel7.setText("USERNAME");
-        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -251,10 +222,10 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(226, 226, 226));
 
-        patrollingLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        patrollingLabel.setText("Patrolling");
         patrollingLabel.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         patrollingLabel.setForeground(new java.awt.Color(13, 24, 42));
+        patrollingLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        patrollingLabel.setText("Patrolling");
         patrollingLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 patrollingLabelMouseClicked(evt);
@@ -264,13 +235,13 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
             }
         });
 
-        pendingFeeLine.setText("jTextField1");
         pendingFeeLine.setBackground(new java.awt.Color(13, 24, 42));
         pendingFeeLine.setForeground(new java.awt.Color(13, 24, 42));
+        pendingFeeLine.setText("jTextField1");
 
+        complaintsLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         complaintsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         complaintsLabel.setText("Complaints");
-        complaintsLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         complaintsLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 complaintsLabelMouseClicked(evt);
@@ -280,9 +251,9 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
             }
         });
 
+        employeeJobLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         employeeJobLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         employeeJobLabel.setText("Employee Job");
-        employeeJobLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         employeeJobLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 employeeJobLabelMouseClicked(evt);
@@ -292,20 +263,13 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
             }
         });
 
-        dateCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        dateCB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dateCBActionPerformed(evt);
-            }
-        });
-
-        jLabel23.setText("Patrolling Report");
         jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel23.setText("Patrolling Report");
 
-        jLabel24.setText("Date: ");
         jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel24.setText("Date: ");
 
         viewBTN.setText("View");
         viewBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -350,8 +314,16 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
             patrollingReportTable.getColumnModel().getColumn(8).setResizable(false);
         }
 
+        warningMsg.setForeground(new java.awt.Color(255, 0, 0));
         warningMsg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         warningMsg.setText("jLabel4");
+
+        dateSelectBTN.setText("SELECT");
+        dateSelectBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dateSelectBTNActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -383,10 +355,12 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
                                     .addGroup(jPanel6Layout.createSequentialGroup()
                                         .addComponent(jLabel24)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(dateCB, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(110, 110, 110)
+                                        .addComponent(datePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(dateSelectBTN)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(warningMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 283, Short.MAX_VALUE))))))
+                                .addGap(0, 276, Short.MAX_VALUE))))))
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(458, 458, 458)
                 .addComponent(viewBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -410,10 +384,12 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
                 .addComponent(jLabel23)
                 .addGap(5, 5, 5)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(warningMsg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(warningMsg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(dateSelectBTN))
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel24)
-                        .addComponent(dateCB)))
+                        .addComponent(datePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(10, 10, 10)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14)
@@ -436,9 +412,9 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
             }
         });
 
-        jobAssignationInnerTab.setText("Job Assignation");
         jobAssignationInnerTab.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jobAssignationInnerTab.setForeground(new java.awt.Color(255, 255, 255));
+        jobAssignationInnerTab.setText("Job Assignation");
         jobAssignationInnerTab.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jobAssignationInnerTabMouseClicked(evt);
@@ -472,10 +448,10 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setText("Complaints");
         jLabel5.setBackground(new java.awt.Color(13, 24, 42));
         jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Complaints");
         jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel5MouseClicked(evt);
@@ -509,9 +485,9 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
             }
         });
 
-        jLabel8.setText("Reports");
         jLabel8.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Reports");
         jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel8MouseClicked(evt);
@@ -545,10 +521,10 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
             }
         });
 
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
-        jLabel11.setText("VIEW PROFILE");
         jLabel11.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
+        jLabel11.setText("VIEW PROFILE");
         jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel11MouseClicked(evt);
@@ -582,9 +558,9 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setText("Patrolling Management");
         jLabel6.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Patrolling Management");
         jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel6MouseClicked(evt);
@@ -618,9 +594,9 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
             }
         });
 
-        BEdashboardInnerPanel.setText("Dashboard");
         BEdashboardInnerPanel.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         BEdashboardInnerPanel.setForeground(new java.awt.Color(255, 255, 255));
+        BEdashboardInnerPanel.setText("Dashboard");
         BEdashboardInnerPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 BEdashboardInnerPanelMouseClicked(evt);
@@ -657,10 +633,10 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
             }
         });
 
-        logoutLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
-        logoutLabel1.setText("LOGOUT");
         logoutLabel1.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
         logoutLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        logoutLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
+        logoutLabel1.setText("LOGOUT");
         logoutLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 logoutLabel1MouseClicked(evt);
@@ -780,14 +756,10 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_complaintsLabelMouseClicked
 
-    private void dateCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dateCBActionPerformed
-        tableSetup();
-    }//GEN-LAST:event_dateCBActionPerformed
-
     private void viewBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewBTNActionPerformed
         // TODO add your handling code here:
         ArrayList<String> tableData = BE.getTableData(patRepTab);
-        String reportTitle = "Patrolling Report - " + dateCB.getSelectedItem().toString();
+        String reportTitle = "Patrolling Report - " + selectedDate;
         
         if (!tableData.isEmpty()) {
             BE.toAllReportsPage(BE, reportTitle, tableData);
@@ -932,6 +904,12 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
         logoutPanel1.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_logoutPanel1MouseEntered
 
+    private void dateSelectBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dateSelectBTNActionPerformed
+        // TODO add your handling code here:
+        selectedDate = BE.DTF.formatDate(datePicker.getDate().toString()).toString();
+        tableSetup();
+    }//GEN-LAST:event_dateSelectBTNActionPerformed
+
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
@@ -974,7 +952,8 @@ public class BuildingExecutivePatrollingReports extends javax.swing.JFrame {
     private javax.swing.JLabel BEdashboardInnerPanel;
     private javax.swing.JPanel BEdashboardOuterPanel;
     private javax.swing.JLabel complaintsLabel;
-    private javax.swing.JComboBox<String> dateCB;
+    private com.github.lgooddatepicker.components.DatePicker datePicker;
+    private javax.swing.JButton dateSelectBTN;
     private javax.swing.JLabel employeeJobLabel;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;

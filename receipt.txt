@@ -1,5 +1,4 @@
 invoiceNo;unitNo;feeType;target;consumption;unit;unitPrice(RM);totalPrice(RM);period;paymentBy;paymentDate;issuedDate;deleteID;
-A-01-01112022;A-01-01;Gas;Residential;175.7;kWh;0.12;21.08;11/2022;tnt000001;15/12/2022;01/12/2022;-;
 A-01-02112022;A-01-02;Gas;Residential;113.31;kWh;0.12;13.6;11/2022;tnt000002;15/12/2022;01/12/2022;-;
 A-01-03112022;A-01-03;Gas;Residential;3.99;kWh;0.12;0.48;11/2022;tnt000003;15/12/2022;01/12/2022;-;
 A-01-03A112022;A-01-03A;Gas;Residential;137.35;kWh;0.12;16.48;11/2022;tnt000004;15/12/2022;01/12/2022;-;
@@ -1799,3 +1798,5 @@ B-15-0212023;B-15-02;Management Fee;Residential;800;Square Feet;0.3;240;1/2023;t
 B-15-0312023;B-15-03;Management Fee;Residential;1200;Square Feet;0.3;360;1/2023;tnt000148;15/12/2022;01/02/2023;-;
 B-15-03A12023;B-15-03A;Management Fee;Residential;1000;Square Feet;0.3;300;1/2023;tnt000149;15/12/2022;01/02/2023;-;
 B-15-0512023;B-15-05;Management Fee;Residential;800;Square Feet;0.3;240;01/2023;tnt000150;15/02/2023;01/02/2023;-;
+S-01-01122022;S-01-01;Gas;Commercial;175.7;kWh;0.12;30.8;12/2022;vdr000001;24/02/2023;01/12/2022;-;
+S-01-01122022;S-01-01;Management Fee;Commercial;800;Square Feet;0.33;400.0;12/2022;vdr000001;24/02/2023;16/02/2023;-;

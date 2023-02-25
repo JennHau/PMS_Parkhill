@@ -18,6 +18,8 @@ import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import classes.PMS_DateTimeFormatter;
+import classes.Payment;
+import javax.swing.JOptionPane;
 import pms_parkhill_residence.HomePage;
 
 /**
@@ -56,7 +58,7 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
     }
     
     private void paymentHistoryTableSetUp() throws ParseException {
-        ArrayList<String> receiptList = VD.PYM.extractSingleReceiptData(VD.getUnitNo());
+        ArrayList<Payment> paymentList = VD.PYM.getCurrentUnitPayment(VD.getUnitNo());
         ArrayList<String> sortedList;
         
         ArrayList<String> arrangedList = new ArrayList<>();
@@ -64,21 +66,19 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
         
         ArrayList<String> existedIdList = new ArrayList<>();
                 
-        for (String eachHist : receiptList) {
-            String[] histData = eachHist.split(VD.TF.sp);
-            String invoiceNo = histData[0];
+        for (Payment eachHist : paymentList) {
+            String invoiceNo = eachHist.getInvoiceNo();
             
             LocalDate latestDate = null;
             String feeTypes = "";
             if (!existedIdList.contains(invoiceNo)) {
-                for (String hist : receiptList) {
-                    String[] eachHistData = hist.split(VD.TF.sp);
-                    String histInv = eachHistData[0];
+                for (Payment hist : paymentList) {
+                    String histInv = hist.getInvoiceNo();
                     if (histInv.equals(invoiceNo)) {
-                        String type = eachHistData[2];
+                        String type = hist.getFeeType();
                         feeTypes = feeTypes + type + ",";
                         
-                        LocalDate paymentDate = VD.DTF.formatDate2(eachHistData[10]);
+                        LocalDate paymentDate = VD.DTF.formatDate2(hist.getPaymentDate());
                         if (latestDate != null) {
                             if (paymentDate.isAfter(latestDate)) {
                                 latestDate = paymentDate;
@@ -685,6 +685,11 @@ public class VendorPaymentHistory extends javax.swing.JFrame {
                     VD.toInvoiceReceipt(VD, recInvNo);
                     break;
                 }
+            }
+            
+            if (notFound) {
+                JOptionPane.showMessageDialog (null, "The receipt is not issued. Please contact admin for any inquiries.", 
+                                                        "RECEIPT NOT ISSUED", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }//GEN-LAST:event_paymentHistoryTableMouseClicked

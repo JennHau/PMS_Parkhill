@@ -810,7 +810,7 @@ public class AdminExecutiveUnitManagement extends javax.swing.JFrame {
         if (column == 5) {
             String unitNo = String.valueOf(tableModel.getValueAt(row, 1));
             String squareFoot = String.valueOf(tableModel.getValueAt(row, 2));
-            String type = String.valueOf(typeCB.getSelectedItem());
+            String type = String.valueOf(typeCB.getSelectedItem()).toLowerCase();
             
             new AdminExecutiveModifyUnit(type, unitNo, squareFoot, AE).setVisible(true);
         }

@@ -19,7 +19,7 @@ import pms_parkhill_residence.HomePage;
  * @author wongj
  */
 public class VendorPaymentManagement extends javax.swing.JFrame {
-    public static VendorPaymentManagement rtPayMan;
+    public static VendorPaymentManagement vdPayMan;
     private final Vendor VD;
     
     DefaultTableModel penFeeTab; 
@@ -29,7 +29,7 @@ public class VendorPaymentManagement extends javax.swing.JFrame {
      * @param VD
      */
     public VendorPaymentManagement(Vendor VD) {
-        rtPayMan = this;
+        vdPayMan = this;
         this.VD = VD;
         
         initComponents();
@@ -47,14 +47,13 @@ public class VendorPaymentManagement extends javax.swing.JFrame {
         ArrayList<Invoice> incompleteInv = VD.PYM.getCurrentUnitInvoice(VD.getUnitNo());
         ArrayList<String> toTable = new ArrayList<>();
         
-        float totalAmount = 0;
+        double totalAmount = 0;
         int itemNo = 1;
         for (Invoice eachIncomp : incompleteInv) {
             String itemID = eachIncomp.getInvoiceNo();
             String itemDet = eachIncomp.getFeeType();
+            float amount = eachIncomp.getTotalPrice();
             
-            double amount = VD.PYM.getTotalPricePerInvoice(itemID, incompleteInv);
-
             String[] list = {String.valueOf(itemNo), itemID.toUpperCase(), itemDet, String.format("%.02f", amount)};
 
             String combined = "";
@@ -648,11 +647,17 @@ public class VendorPaymentManagement extends javax.swing.JFrame {
     private void payAllBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payAllBTNActionPerformed
         // TODO add your handling code here:
         ArrayList<Invoice> invoiceList = new ArrayList<>();
+        ArrayList<String> invoiceId = new ArrayList<>();
+        
         int tableSize = pendingFeeTable.getRowCount();
         for (int count = 0; count < tableSize; count++) {
             String invNo = pendingFeeTable.getValueAt(count, 1).toString();
-            ArrayList<Invoice> invoices = VD.PYM.getSameUnpaidInvoiceNo(this.VD.getUnitNo(), invNo.toLowerCase());
-            invoiceList.addAll(invoices);
+            
+            if (!invoiceId.contains(invNo)) {
+                ArrayList<Invoice> invoices = VD.PYM.getSameUnpaidInvoiceNo(this.VD.getUnitNo(), invNo);
+                invoiceList.addAll(invoices);
+                invoiceId.add(invNo);
+            }
         }
         
         String totalAmount = totalPendingFeeTF.getText();

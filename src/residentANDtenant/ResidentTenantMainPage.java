@@ -78,15 +78,15 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
         }
         visitorLabel.setText(String.valueOf(countVisitor));
         
-        ArrayList<Invoice> unpaidInv = RT.PYM.getCurrentUnitInvoice(RT.getUserID());
+        ArrayList<Invoice> unpaidInv = RT.PYM.getCurrentUnitInvoice(RT.getUnitNo());
         double totalAmount = 0;
         for (Invoice eachFee : unpaidInv) {
-            double feeTotal = eachFee.getUnitPrice();
+            double feeTotal = eachFee.getTotalPrice();
             totalAmount += feeTotal;
         }
         pendingFeeLabel.setText(String.format("%.02f", totalAmount));
         
-        ArrayList<String> facilities = RT.getCurrentUnitBookedFacility(RT.getUserID());
+        ArrayList<String> facilities = RT.getCurrentUnitBookedFacility(RT.getUnitNo());
         int bookedFacility = facilities.size();
         facilityLabel.setText(String.valueOf(bookedFacility));
     }
@@ -482,7 +482,7 @@ public class ResidentTenantMainPage extends javax.swing.JFrame {
         jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(13, 24, 42));
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel17.setText("TODAY BOOKED");
+        jLabel17.setText("TOTAL BOOKED");
 
         facilityLabel.setFont(new java.awt.Font("MS PGothic", 1, 36)); // NOI18N
         facilityLabel.setForeground(new java.awt.Color(13, 50, 79));

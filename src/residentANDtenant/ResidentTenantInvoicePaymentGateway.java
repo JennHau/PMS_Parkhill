@@ -14,6 +14,8 @@ import classes.Invoice;
  * @author wongj
  */
 public class ResidentTenantInvoicePaymentGateway extends javax.swing.JFrame {
+    public static ResidentTenantInvoicePaymentGateway rtInvPG;
+    
     private final ResidentTenant RT;
     
     /**
@@ -33,6 +35,8 @@ public class ResidentTenantInvoicePaymentGateway extends javax.swing.JFrame {
         this.invoiceList = invoiceList;
         setUserData();
         setFixData();
+        
+        rtInvPG = this;
     }
 
     /**

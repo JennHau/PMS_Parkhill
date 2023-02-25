@@ -51,6 +51,8 @@ public class VendorStatement extends javax.swing.JFrame {
         }
         
         tableDesignSetUp();
+        
+        setCurrentUserProfile();
     }
     
     private void statementTableSetUp() throws ParseException {
@@ -67,6 +69,10 @@ public class VendorStatement extends javax.swing.JFrame {
         int[] columnIgnore = {2};
         int[] columnLength = {90, 160, 467, 130, 130};
         VD.setTableDesign(statementTableSetUp, jLabel2, columnLength, columnIgnore);
+    }
+    
+    private void setCurrentUserProfile() {
+        userNameLabel.setText(VD.getFirstName() + " " + VD.getLastName());
     }
     
     private void monthComboBoxSetUp() throws ParseException {
@@ -174,16 +180,16 @@ public class VendorStatement extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(153, 153, 153), null, null));
 
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("PARKHILL RESIDENCE VENDOR");
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(13, 24, 42));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel2.setText("PARKHILL RESIDENCE VENDOR");
 
+        userNameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        userNameLabel.setForeground(new java.awt.Color(102, 102, 102));
         userNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         userNameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
         userNameLabel.setText("USERNAME");
-        userNameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        userNameLabel.setForeground(new java.awt.Color(102, 102, 102));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -208,9 +214,9 @@ public class VendorStatement extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(226, 226, 226));
 
+        pendingFeeLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         pendingFeeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pendingFeeLabel.setText("Pending Fee");
-        pendingFeeLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         pendingFeeLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 pendingFeeLabelMouseClicked(evt);
@@ -220,19 +226,19 @@ public class VendorStatement extends javax.swing.JFrame {
             }
         });
 
-        statementLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        statementLabel.setText("Statement");
         statementLabel.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         statementLabel.setForeground(new java.awt.Color(13, 24, 42));
+        statementLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        statementLabel.setText("Statement");
         statementLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 statementLabelMouseEntered(evt);
             }
         });
 
+        invoiceLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         invoiceLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         invoiceLabel.setText("Invoice");
-        invoiceLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         invoiceLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 invoiceLabelMouseClicked(evt);
@@ -242,9 +248,9 @@ public class VendorStatement extends javax.swing.JFrame {
             }
         });
 
-        statementLine.setText("jTextField1");
         statementLine.setBackground(new java.awt.Color(13, 24, 42));
         statementLine.setForeground(new java.awt.Color(13, 24, 42));
+        statementLine.setText("jTextField1");
 
         statementTableSetUp.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         statementTableSetUp.setForeground(new java.awt.Color(51, 51, 51));
@@ -258,18 +264,33 @@ public class VendorStatement extends javax.swing.JFrame {
             new String [] {
                 "DATE", "TRANSACTIONS", "DETAILS", "AMOUNT", "PAYMENT"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         statementTableSetUp.setIntercellSpacing(new java.awt.Dimension(2, 2));
         statementTableSetUp.setRowHeight(30);
         jScrollPane1.setViewportView(statementTableSetUp);
+        if (statementTableSetUp.getColumnModel().getColumnCount() > 0) {
+            statementTableSetUp.getColumnModel().getColumn(0).setResizable(false);
+            statementTableSetUp.getColumnModel().getColumn(1).setResizable(false);
+            statementTableSetUp.getColumnModel().getColumn(2).setResizable(false);
+            statementTableSetUp.getColumnModel().getColumn(3).setResizable(false);
+            statementTableSetUp.getColumnModel().getColumn(4).setResizable(false);
+        }
 
-        jLabel23.setText("Statement: ");
         jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel23.setText("Statement: ");
 
+        paymentHistLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         paymentHistLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         paymentHistLabel.setText("Payment History");
-        paymentHistLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         paymentHistLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 paymentHistLabelMouseClicked(evt);
@@ -286,9 +307,9 @@ public class VendorStatement extends javax.swing.JFrame {
             }
         });
 
-        jLabel24.setText("Month/Year: ");
         jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel24.setText("Month/Year: ");
 
         monthCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         monthCB.addActionListener(new java.awt.event.ActionListener() {
@@ -375,9 +396,9 @@ public class VendorStatement extends javax.swing.JFrame {
             }
         });
 
-        dashBoardInnerTab2.setText("Dashboard");
         dashBoardInnerTab2.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         dashBoardInnerTab2.setForeground(new java.awt.Color(255, 255, 255));
+        dashBoardInnerTab2.setText("Dashboard");
         dashBoardInnerTab2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 dashBoardInnerTab2MouseClicked(evt);
@@ -414,9 +435,9 @@ public class VendorStatement extends javax.swing.JFrame {
             }
         });
 
-        paymentManagementInnerTab.setText("Payment Management");
         paymentManagementInnerTab.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         paymentManagementInnerTab.setForeground(new java.awt.Color(255, 255, 255));
+        paymentManagementInnerTab.setText("Payment Management");
         paymentManagementInnerTab.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 paymentManagementInnerTabMouseClicked(evt);
@@ -453,9 +474,9 @@ public class VendorStatement extends javax.swing.JFrame {
             }
         });
 
-        complaintsInnerTab.setText("Complaints");
         complaintsInnerTab.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         complaintsInnerTab.setForeground(new java.awt.Color(255, 255, 255));
+        complaintsInnerTab.setText("Complaints");
         complaintsInnerTab.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 complaintsInnerTabMouseClicked(evt);
@@ -492,10 +513,10 @@ public class VendorStatement extends javax.swing.JFrame {
             }
         });
 
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
-        jLabel12.setText("VIEW PROFILE");
         jLabel12.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
+        jLabel12.setText("VIEW PROFILE");
         jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel12MouseClicked(evt);
@@ -532,10 +553,10 @@ public class VendorStatement extends javax.swing.JFrame {
             }
         });
 
-        logoutLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
-        logoutLabel2.setText("LOGOUT");
         logoutLabel2.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
         logoutLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        logoutLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
+        logoutLabel2.setText("LOGOUT");
         logoutLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 logoutLabel2MouseClicked(evt);

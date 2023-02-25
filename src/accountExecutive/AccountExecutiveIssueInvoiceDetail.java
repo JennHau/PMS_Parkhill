@@ -869,9 +869,9 @@ public class AccountExecutiveIssueInvoiceDetail extends javax.swing.JFrame {
                                     "ISSUE INVOICE", JOptionPane.INFORMATION_MESSAGE);
                 }
             } else if (statusCB.getSelectedItem() == "ISSUED"){
-                ArrayList<Payment> paymentList = AE.PYM.getSamePaidInvoiceNo(unitNo, invoiceNo);
+//                ArrayList<Invoice> paymentList = AE.PYM.getSameUnpaidInvoiceNo(unitNo, invoiceNo);
                 Invoice INV = new Invoice(invoiceNo);
-                new AccountExecutiveViewInvoice(INV, AE, paymentList).setVisible(true);
+                new AccountExecutiveViewInvoice(INV, AE).setVisible(true);
                 dispose();
             }
         }

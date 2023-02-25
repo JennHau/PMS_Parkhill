@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import classes.FileHandling;
+import java.awt.Toolkit;
 
 /**
  *
@@ -39,6 +40,12 @@ public class BuildingExecutivePatrollingReportPage extends javax.swing.JFrame {
             setField(reportTitle);
             tableDesign();
         }
+        
+        setWindowIcon();
+    }
+    
+    private void setWindowIcon() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
     
     private void tableDesign() {

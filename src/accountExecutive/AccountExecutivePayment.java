@@ -687,8 +687,8 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
             String invoiceNo = String.valueOf(tableModel.getValueAt(row, 0));
             String unitNo = String.valueOf(tableModel.getValueAt(row, 2));
             ArrayList<Invoice> invoiceList = AE.PYM.getSameUnpaidInvoiceNo(unitNo, invoiceNo);
-            PM.setInvoiceNo(invoiceNo); PM.setUnitNo(unitNo);
-            AccountExecutiveMakePayment ae = new AccountExecutiveMakePayment(PM, AE, invoiceList);
+            AE.PYM.setInvoiceNo(invoiceNo); AE.PYM.setUnitNo(unitNo);
+            AccountExecutiveMakePayment ae = new AccountExecutiveMakePayment(AE, invoiceList);
             ae.setVisible(true);
             dispose();
         } else if (column == 6 && action.equals("ISSUE RECEIPT")) {
@@ -918,10 +918,10 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
                 String issueDate = pendingPaymentDetails[1];
                 String unitNo = pendingPaymentDetails[2];
                 String feeType = pendingPaymentDetails[3];
-                String totalPrice = pendingPaymentDetails[4];
+                Float totalPrice = Float.parseFloat(pendingPaymentDetails[4]);
 
-                String tbData[] = {invoiceNo, issueDate, unitNo, feeType, totalPrice, 
-                    "-", "MAKE PAYMENT"};
+                String tbData[] = {invoiceNo, issueDate, unitNo, feeType,
+                    AE.currencyFormat(totalPrice), "-", "MAKE PAYMENT"};
                 tableModel.addRow(tbData);
             }
         } else if (status.equals("PAID")) {
@@ -935,11 +935,11 @@ public class AccountExecutivePayment extends javax.swing.JFrame {
                 String issueDate = pendingPaymentDetails[1];
                 String unitNo = pendingPaymentDetails[2];
                 String feeType = pendingPaymentDetails[3];
-                String totalPrice = pendingPaymentDetails[4];
+                Float totalPrice = Float.parseFloat(pendingPaymentDetails[4]);
                 String paymentDate = pendingPaymentDetails[5];
 
-                String tbData[] = {invoiceNo, issueDate, unitNo, feeType, totalPrice, 
-                    paymentDate, "ISSUE RECEIPT"};
+                String tbData[] = {invoiceNo, issueDate, unitNo, feeType,
+                    AE.currencyFormat(totalPrice), paymentDate, "ISSUE RECEIPT"};
                 tableModel.addRow(tbData);
             }
         }

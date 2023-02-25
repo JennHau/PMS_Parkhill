@@ -258,16 +258,16 @@ public class VendorInvoice extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(153, 153, 153), null, null));
 
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("PARKHILL RESIDENCE VENDOR");
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(13, 24, 42));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel2.setText("PARKHILL RESIDENCE VENDOR");
 
+        userNameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        userNameLabel.setForeground(new java.awt.Color(102, 102, 102));
         userNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         userNameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profileIcon.jpg"))); // NOI18N
         userNameLabel.setText("USERNAME");
-        userNameLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        userNameLabel.setForeground(new java.awt.Color(102, 102, 102));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -292,9 +292,9 @@ public class VendorInvoice extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(226, 226, 226));
 
+        pendingFeeLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         pendingFeeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pendingFeeLabel.setText("Pending Fee");
-        pendingFeeLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         pendingFeeLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 pendingFeeLabelMouseClicked(evt);
@@ -304,9 +304,9 @@ public class VendorInvoice extends javax.swing.JFrame {
             }
         });
 
+        statementLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         statementLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         statementLabel.setText("Statement");
-        statementLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         statementLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 statementLabelMouseClicked(evt);
@@ -316,14 +316,14 @@ public class VendorInvoice extends javax.swing.JFrame {
             }
         });
 
-        invoiceLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        invoiceLabel.setText("Invoice");
         invoiceLabel.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         invoiceLabel.setForeground(new java.awt.Color(13, 24, 42));
+        invoiceLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        invoiceLabel.setText("Invoice");
 
-        invoiceLine.setText("jTextField1");
         invoiceLine.setBackground(new java.awt.Color(13, 24, 42));
         invoiceLine.setForeground(new java.awt.Color(13, 24, 42));
+        invoiceLine.setText("jTextField1");
 
         invoiceIncompleteTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         invoiceIncompleteTable.setForeground(new java.awt.Color(51, 51, 51));
@@ -337,7 +337,15 @@ public class VendorInvoice extends javax.swing.JFrame {
             new String [] {
                 "INVOICE NO.", "FEE TYPE", "TOTAL PRICE (RM)", "ACTION"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         invoiceIncompleteTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
         invoiceIncompleteTable.setRowHeight(25);
         invoiceIncompleteTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -347,16 +355,19 @@ public class VendorInvoice extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(invoiceIncompleteTable);
         if (invoiceIncompleteTable.getColumnModel().getColumnCount() > 0) {
+            invoiceIncompleteTable.getColumnModel().getColumn(0).setResizable(false);
+            invoiceIncompleteTable.getColumnModel().getColumn(1).setResizable(false);
             invoiceIncompleteTable.getColumnModel().getColumn(2).setResizable(false);
+            invoiceIncompleteTable.getColumnModel().getColumn(3).setResizable(false);
         }
 
-        jLabel23.setText("Invoice: ");
         jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel23.setText("Invoice: ");
 
+        paymentHistLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         paymentHistLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         paymentHistLabel.setText("Payment History");
-        paymentHistLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         paymentHistLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 paymentHistLabelMouseClicked(evt);
@@ -373,9 +384,9 @@ public class VendorInvoice extends javax.swing.JFrame {
             }
         });
 
-        jLabel24.setText("Incomplete Invoice:  ");
         jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel24.setText("Incomplete Invoice:  ");
 
         invoiceCompleteTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         invoiceCompleteTable.setForeground(new java.awt.Color(51, 51, 51));
@@ -389,7 +400,15 @@ public class VendorInvoice extends javax.swing.JFrame {
             new String [] {
                 "INVOICE NO.", "FEE TYPE", "TOTAL PRICE (RM)", "PAID BY", "ACTION"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         invoiceCompleteTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
         invoiceCompleteTable.setRowHeight(25);
         invoiceCompleteTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -398,10 +417,17 @@ public class VendorInvoice extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(invoiceCompleteTable);
+        if (invoiceCompleteTable.getColumnModel().getColumnCount() > 0) {
+            invoiceCompleteTable.getColumnModel().getColumn(0).setResizable(false);
+            invoiceCompleteTable.getColumnModel().getColumn(1).setResizable(false);
+            invoiceCompleteTable.getColumnModel().getColumn(2).setResizable(false);
+            invoiceCompleteTable.getColumnModel().getColumn(3).setResizable(false);
+            invoiceCompleteTable.getColumnModel().getColumn(4).setResizable(false);
+        }
 
-        jLabel25.setText("Completed Invoice:  ");
         jLabel25.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel25.setText("Completed Invoice:  ");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -480,9 +506,9 @@ public class VendorInvoice extends javax.swing.JFrame {
             }
         });
 
-        dashBoardInnerTab2.setText("Dashboard");
         dashBoardInnerTab2.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         dashBoardInnerTab2.setForeground(new java.awt.Color(255, 255, 255));
+        dashBoardInnerTab2.setText("Dashboard");
         dashBoardInnerTab2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 dashBoardInnerTab2MouseClicked(evt);
@@ -519,9 +545,9 @@ public class VendorInvoice extends javax.swing.JFrame {
             }
         });
 
-        paymentManagementInnerTab.setText("Payment Management");
         paymentManagementInnerTab.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         paymentManagementInnerTab.setForeground(new java.awt.Color(255, 255, 255));
+        paymentManagementInnerTab.setText("Payment Management");
         paymentManagementInnerTab.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 paymentManagementInnerTabMouseClicked(evt);
@@ -558,9 +584,9 @@ public class VendorInvoice extends javax.swing.JFrame {
             }
         });
 
-        complaintsInnerTab.setText("Complaints");
         complaintsInnerTab.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         complaintsInnerTab.setForeground(new java.awt.Color(255, 255, 255));
+        complaintsInnerTab.setText("Complaints");
         complaintsInnerTab.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 complaintsInnerTabMouseClicked(evt);
@@ -597,10 +623,10 @@ public class VendorInvoice extends javax.swing.JFrame {
             }
         });
 
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
-        jLabel12.setText("VIEW PROFILE");
         jLabel12.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
+        jLabel12.setText("VIEW PROFILE");
         jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel12MouseClicked(evt);
@@ -637,10 +663,10 @@ public class VendorInvoice extends javax.swing.JFrame {
             }
         });
 
-        logoutLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
-        logoutLabel2.setText("LOGOUT");
         logoutLabel2.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
         logoutLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        logoutLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
+        logoutLabel2.setText("LOGOUT");
         logoutLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 logoutLabel2MouseClicked(evt);
@@ -914,6 +940,7 @@ public class VendorInvoice extends javax.swing.JFrame {
             String invNo = invoiceIncompleteTable.getValueAt(rowCount, 0).toString();
             if (!invNo.equals(invoiceNo)) {
                 invIncompTab.removeRow(rowCount);
+                rowCount--;
             }
         }
         
@@ -922,6 +949,7 @@ public class VendorInvoice extends javax.swing.JFrame {
             String invNo = invoiceCompleteTable.getValueAt(rowCount, 0).toString();
             if (!invNo.equals(invoiceNo)) {
                 invCompTab.removeRow(rowCount);
+                rowCount--;
             }
         }
     }

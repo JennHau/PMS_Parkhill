@@ -301,6 +301,7 @@ public class BuildingManagerManageCapital extends javax.swing.JFrame {
             BuildingManagerBudgetPlanning.bmBudgetPlanning.dispose();
         }
         new BuildingManagerBudgetPlanning(BM).setVisible(true);
+        dispose();
     }//GEN-LAST:event_cancelBtActionPerformed
 
     private void capitalAmountTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_capitalAmountTFKeyTyped

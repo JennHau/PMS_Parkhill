@@ -337,7 +337,15 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
             new String [] {
                 "INVOICE NO.", "FEE TYPE", "TOTAL PRICE (RM)", "ACTION"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         invoiceIncompleteTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
         invoiceIncompleteTable.setRowHeight(25);
         invoiceIncompleteTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -347,7 +355,10 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(invoiceIncompleteTable);
         if (invoiceIncompleteTable.getColumnModel().getColumnCount() > 0) {
+            invoiceIncompleteTable.getColumnModel().getColumn(0).setResizable(false);
+            invoiceIncompleteTable.getColumnModel().getColumn(1).setResizable(false);
             invoiceIncompleteTable.getColumnModel().getColumn(2).setResizable(false);
+            invoiceIncompleteTable.getColumnModel().getColumn(3).setResizable(false);
         }
 
         jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
@@ -389,7 +400,15 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
             new String [] {
                 "INVOICE NO.", "FEE TYPE", "TOTAL PRICE (RM)", "PAID BY", "ACTION"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         invoiceCompleteTable.setIntercellSpacing(new java.awt.Dimension(1, 1));
         invoiceCompleteTable.setRowHeight(25);
         invoiceCompleteTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -398,6 +417,13 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(invoiceCompleteTable);
+        if (invoiceCompleteTable.getColumnModel().getColumnCount() > 0) {
+            invoiceCompleteTable.getColumnModel().getColumn(0).setResizable(false);
+            invoiceCompleteTable.getColumnModel().getColumn(1).setResizable(false);
+            invoiceCompleteTable.getColumnModel().getColumn(2).setResizable(false);
+            invoiceCompleteTable.getColumnModel().getColumn(3).setResizable(false);
+            invoiceCompleteTable.getColumnModel().getColumn(4).setResizable(false);
+        }
 
         jLabel25.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(51, 51, 51));
@@ -1050,6 +1076,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
             String invNo = invoiceIncompleteTable.getValueAt(rowCount, 0).toString();
             if (!invNo.equals(invoiceNo)) {
                 invIncompTab.removeRow(rowCount);
+                rowCount--;
             }
         }
         
@@ -1058,6 +1085,7 @@ public class ResidentTenantInvoice extends javax.swing.JFrame {
             String invNo = invoiceCompleteTable.getValueAt(rowCount, 0).toString();
             if (!invNo.equals(invoiceNo)) {
                 invCompTab.removeRow(rowCount);
+                rowCount--;
             }
         }
     }

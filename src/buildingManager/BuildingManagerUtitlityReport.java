@@ -89,7 +89,7 @@ public class BuildingManagerUtitlityReport extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Customer Receipt");
+        setTitle("Utility Report");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));

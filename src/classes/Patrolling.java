@@ -86,12 +86,6 @@ public class Patrolling {
         return patList;
     }
     
-    public void updatePatrolling(String patScheduleFile) {
-        String newData = toString();
-        
-        crud.update(patScheduleFile, patID, newData, 0);
-    }
-    
     @Override
     public String toString() {
         String[] patData = {patID, slot, block, level, checkpoints, checkBefore, patSecID, patSecName, patRemarks, status, checkedAt, updatedBy, lastUpdate};

@@ -100,7 +100,7 @@ public class AccountExecutiveViewStatement extends javax.swing.JFrame {
         jSeparator6 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Customer Receipt");
+        setTitle("Statement Report");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));

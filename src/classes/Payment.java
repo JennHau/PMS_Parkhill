@@ -46,6 +46,7 @@ public class Payment extends Invoice {
     // extract all payments details for display
     public List<String> displayAllPayment(String status) {
         List<String> pendingPaymentList = new ArrayList<String>();
+        
         try {
             // get all unpaid payments
             if (status.equals("PENDING")) {
@@ -494,6 +495,21 @@ public class Payment extends Invoice {
         return super.getCurrentUnitInvoice(unitNo);
     }
     
+    // get the all the available invoice code for a unit
+    public ArrayList getInvoiceCode(String unitNo) {
+        ArrayList<String> invoiceCode = new ArrayList<>();
+
+        ArrayList<Invoice> invoices = getInvoiceOriginalMethod(unitNo);
+        
+        for (Invoice eachInv : invoices) {
+            if (!invoiceCode.contains(eachInv.getInvoiceNo())) {
+                invoiceCode.add(eachInv.getInvoiceNo());
+            }
+        }
+        
+        return invoiceCode;
+    }
+    
     // get current unit issued statement
     public ArrayList getIssuedStatement(String unitNo) {
         ArrayList<String> statement = new ArrayList<>();
@@ -519,23 +535,24 @@ public class Payment extends Invoice {
         ArrayList<Invoice> incompList = new ArrayList<>();
         
         ArrayList<Invoice> invoiceList = getInvoiceOriginalMethod(unitNo);
+        
         ArrayList<Payment> paymentList = getCurrentUnitPayment(unitNo);
         
         for (Invoice eachInv : invoiceList) {
             String[] inv = {eachInv.getInvoiceNo(), eachInv.getFeeType()};
             String invKey = concatenateKey(inv);
-            
+
             boolean notFound = true;
             for (Payment eachPm : paymentList) {
                 String[] pay = {eachPm.getInvoiceNo(), eachPm.getFeeType()};
                 String payKey = concatenateKey(pay);
-                
+
                 if (invKey.equals(payKey)) {
                     notFound = false;
                     break;
                 }
             }
-            
+
             if (notFound) {
                 incompList.add(eachInv);
             }

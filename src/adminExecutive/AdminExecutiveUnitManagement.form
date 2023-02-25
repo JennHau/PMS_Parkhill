@@ -216,6 +216,9 @@
           <SubComponents>
             <Component class="javax.swing.JTable" name="unitTable">
               <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="14" style="1"/>
+                </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="6" rowCount="0">
                     <Column editable="false" title="NO." type="java.lang.Object"/>
@@ -225,9 +228,6 @@
                     <Column editable="false" title="DATE OF SOLD" type="java.lang.Object"/>
                     <Column editable="false" title="ACTION" type="java.lang.Object"/>
                   </Table>
-                </Property>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Segoe UI" size="14" style="1"/>
                 </Property>
                 <Property name="intercellSpacing" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[2, 2]"/>

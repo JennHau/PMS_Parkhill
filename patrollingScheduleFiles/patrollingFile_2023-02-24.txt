@@ -1,6 +1,6 @@
 id;slot;block;level;checkpoints;checkBefore;securityID;securityName;remarks;status;checkedAt;updatedBy;lastUpdate;
 1;00:00;A;Level 1-5;Level 5;01:00;-;-;-;Unassign;-;-;-;
-2;00:00;B;Level 11-15;Level 15;17:00;scg184576;Yushuha EFG; ;Pending;10:00;bde000001;2023-02-23 09:03;
+2;00:00;A;Level 6-10;Level 10;01:00;-;-;-;Unassign;-;-;-;
 3;00:00;A;Level 11-15;Level 15;01:00;-;-;-;Unassign;-;-;-;
 4;00:00;B;Level 1-5;Level 5;01:00;-;-;-;Unassign;-;-;-;
 5;00:00;B;Level 6-10;Level 10;01:00;-;-;-;Unassign;-;-;-;
@@ -16,7 +16,8 @@ id;slot;block;level;checkpoints;checkBefore;securityID;securityName;remarks;stat
 15;16:00;A;Level 1-5;Level 5;17:00;-;-;-;Unassign;-;-;-;
 16;16:00;A;Level 6-10;Level 10;17:00;-;-;-;Unassign;-;-;-;
 17;16:00;A;Level 11-15;Level 15;17:00;-;-;-;Unassign;-;-;-;
-18;16:00;B;Level 1-5;Level 4;17:00;-;-; ;Unassign;-;bde000001;2023-02-23 10:06;
-19;16:00;B;Level 6-10;Level 9;17:00;-;-;-;Unassign;-;bde000001;2023-02-23 10:07;
-20;16:00;B;Level 11-15;Level 15;17:00;scg184576;Yushuha EFG; ;Checked;10:00;bde000001;2023-02-23 09:03;
+18;16:00;B;Level 1-5;Level 5;17:00;-;-;-;Unassign;-;-;-;
+19;16:00;B;Level 6-10;Level 10;17:00;-;-;-;Unassign;-;-;-;
+20;16:00;B;Level 11-15;Level 15;17:00;-;-;-;Unassign;-;-;-;
 21;16:00;S;Level 1-2;Level 2;17:00;-;-;-;Unassign;-;-;-;
+22;14:00;S;Level 1-2;Level 2;16:00;-;-;-;Unassign;-;-;-;

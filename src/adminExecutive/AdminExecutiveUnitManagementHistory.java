@@ -990,7 +990,7 @@ public class AdminExecutiveUnitManagementHistory extends javax.swing.JFrame {
            
         List<String> availableList = 
                 AE.PU.extractAllPropertiesHistory(String.valueOf
-                                (typeCB.getSelectedItem()));
+                                (typeCB.getSelectedItem()).toLowerCase());
         
         String[] propertiesArray = new String[availableList.size()];
         availableList.toArray(propertiesArray);

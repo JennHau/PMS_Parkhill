@@ -63,18 +63,18 @@ public class ResidentTenant extends User {
         }
     }
     
-    // get specific visitor details based on pass id
-    public String getVisitorDetails(String passId) {
-        List<String> visitorFile = FH.fileRead(TF.visitorPass);
-        for (String eachVis : visitorFile) {
-            String pID = eachVis.split(TF.sp)[0];
-            if (pID.equals(passId)) {
-                return eachVis;
-            }
-        }
-        
-        return null;
-    }
+//    // get specific visitor details based on pass id
+//    public String getVisitorDetails(String passId) {
+//        List<String> visitorFile = FH.fileRead(TF.visitorPass);
+//        for (String eachVis : visitorFile) {
+//            String pID = eachVis.split(TF.sp)[0];
+//            if (pID.equals(passId)) {
+//                return eachVis;
+//            }
+//        }
+//        
+//        return null;
+//    }
     
     // get booked facility for this current resident
     public ArrayList getCurrentUnitBookedFacility(String unitNo) {
@@ -312,7 +312,7 @@ public class ResidentTenant extends User {
         }
     }
     
-    // to modify self account
+    // resident & tenant to modify self account
     @Override
     public void modifySelfAccount() {
         String userID = this.getUserID().toLowerCase();

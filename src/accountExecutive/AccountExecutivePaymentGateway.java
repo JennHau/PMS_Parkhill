@@ -4,10 +4,12 @@
  */
 package accountExecutive;
 
+import classes.Invoice;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
 import classes.Payment;
+import java.util.ArrayList;
 
 /**
  *
@@ -17,14 +19,15 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
 
     /**
      * Creates new form homePage
-     * @param PM
      * @param AE
+     * @param invoiceList
      */
-    public AccountExecutivePaymentGateway(Payment PM, AccountExecutive AE) {
+    public AccountExecutivePaymentGateway(AccountExecutive AE, 
+                            ArrayList<Invoice> invoiceList) {
         initComponents();
         setWindowIcon();
         this.AE = AE;
-        this.PM = PM;
+        this.invoiceList = invoiceList;
         setFixData();
         setPayerCB();
     }
@@ -404,7 +407,7 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private final AccountExecutive AE;
-    private final Payment PM;
+    private final ArrayList<Invoice> invoiceList;
     
     private void userIDTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userIDTFActionPerformed
         // TODO add your handling code here:
@@ -433,7 +436,10 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
             JOptionPane.QUESTION_MESSAGE);
 
             if(result == JOptionPane.YES_OPTION){
-//                PM.storePayment(PM.getInvoiceNo(), userIDTF.getText());
+                for (Invoice eachInvId : invoiceList) {
+                    AE.PYM.storePayment(eachInvId, userIDTF.getText());
+                }
+                
                 JOptionPane.showMessageDialog (null, "Payment has been made successfully!", 
                     "PAYMENT", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
@@ -489,8 +495,8 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
     }//GEN-LAST:event_phoneNoTFActionPerformed
 
     private void setFixData() {
-        String invoiceNo = PM.getInvoiceNo();
-        String unitNo = PM.getUnitNo();
+        String invoiceNo = AE.PYM.getInvoiceNo();
+        String unitNo = AE.PYM.getUnitNo();
         invoiceNoLabel.setText(invoiceNo);
         unitNoLabel.setText(unitNo);
         
@@ -503,11 +509,11 @@ public class AccountExecutivePaymentGateway extends javax.swing.JFrame {
             cPeriod = period.substring(0, 1) +"/"+ period.substring(1);
         }
         periodLabel.setText(cPeriod); totalLabel.setText("Total: RM" + 
-                                AE.currencyFormat(PM.getTotalPrice()));
+                                AE.currencyFormat(AE.PYM.getTotalPrice()));
    }
     
     private void setPayerCB() {
-        List<String> userName = AE.extractUnitUsers(PM.getUnitNo());
+        List<String> userName = AE.extractUnitUsers(AE.PYM.getUnitNo());
         payerCB.addItem("-Please Select-");
         for (String userName1 : userName) {
             payerCB.addItem(userName1);

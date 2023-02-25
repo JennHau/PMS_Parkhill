@@ -452,32 +452,10 @@ public class AdminExecutiveModifyUnit extends javax.swing.JFrame {
     private void setTable() {
         DefaultTableModel tableModel = (DefaultTableModel)propertyUnitTable.getModel();
         tableModel.setRowCount(0);
-//        List<String> availableList = 
-//                AE.extractAllProperties(type.toLowerCase());
-//        
-//        String[] propertiesArray = new String[availableList.size()];
-//        availableList.toArray(propertiesArray);
-//        
-//        for (int i = 0; i < availableList.size(); i++) {
-//            String[] propertyDetails = propertiesArray[i].split(";");
-//            String unitNo = propertyDetails[0];
-//            String squareFoot = propertyDetails[1];
-//            String status = propertyDetails[2];
-//            String dateOfSold = propertyDetails[3];
-//            
-//            String[] tbData = {String.valueOf(i+1), unitNo, squareFoot, status,
-//                dateOfSold};
-//            tableModel.addRow(tbData);
-//        }
-        List<PropertyUnit> propertyList = AE.PU.extractAllProperties(String.valueOf
-                            (typeCB.getSelectedItem()).toLowerCase());
-        
-//        String[] propertiesArray = new String[availableList.size()];
-//        availableList.toArray(propertiesArray);
+        List<PropertyUnit> propertyList = AE.PU.extractAllProperties(type);
         
         int i = 0;
         for (PropertyUnit eachUnit:propertyList) {
-//            String[] propertyDetails = propertiesArray[i].split(";");
             String unitNo = eachUnit.getUnitNo();
             String squareFoot = String.valueOf(eachUnit.getSquareFeet());
             String status = eachUnit.getStatus();
