@@ -29,6 +29,7 @@ import classes.VisitorPass;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.table.TableCellRenderer;
+import pms_parkhill_residence.HomePage;
 
 /**
  *
@@ -105,6 +106,7 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         if (model.getRowCount() == 0) {
             Object[] rowData = {"No data available"};
             model.addRow(rowData);
+            Checkin.setEnabled(false);
         }
 
     }
@@ -131,13 +133,12 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
-        jPanel13 = new javax.swing.JPanel();
+        ViewProfile = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jPanel14 = new javax.swing.JPanel();
-        jLabel12 = new javax.swing.JLabel();
+        Logout = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         username = new javax.swing.JLabel();
@@ -356,26 +357,15 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
 
             jPanel11.setBackground(new java.awt.Color(13, 24, 42));
 
-            jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/notificationIcon.png"))); // NOI18N
-            jLabel9.setText(" NOTIFICATIONS");
-            jLabel9.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-            jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-
             javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
             jPanel11.setLayout(jPanel11Layout);
             jPanel11Layout.setHorizontalGroup(
                 jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(75, 75, 75))
+                .addGap(0, 269, Short.MAX_VALUE)
             );
             jPanel11Layout.setVerticalGroup(
                 jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel11Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jLabel9)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 34, Short.MAX_VALUE)
             );
 
             jPanel12.setBackground(new java.awt.Color(13, 24, 42));
@@ -401,25 +391,30 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             );
 
-            jPanel13.setBackground(new java.awt.Color(13, 24, 42));
+            ViewProfile.setBackground(new java.awt.Color(13, 24, 42));
 
             jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewProfileIcon.png"))); // NOI18N
             jLabel11.setText("VIEW PROFILE");
             jLabel11.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
             jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+            jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    jLabel11MouseClicked(evt);
+                }
+            });
 
-            javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
-            jPanel13.setLayout(jPanel13Layout);
-            jPanel13Layout.setHorizontalGroup(
-                jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
+            javax.swing.GroupLayout ViewProfileLayout = new javax.swing.GroupLayout(ViewProfile);
+            ViewProfile.setLayout(ViewProfileLayout);
+            ViewProfileLayout.setHorizontalGroup(
+                ViewProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ViewProfileLayout.createSequentialGroup()
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(75, 75, 75))
             );
-            jPanel13Layout.setVerticalGroup(
-                jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel13Layout.createSequentialGroup()
+            ViewProfileLayout.setVerticalGroup(
+                ViewProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(ViewProfileLayout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(jLabel11)
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -427,10 +422,15 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
 
             jPanel14.setBackground(new java.awt.Color(13, 24, 42));
 
-            jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
-            jLabel12.setText("LOGOUT");
-            jLabel12.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
-            jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+            Logout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logoutIcon.png"))); // NOI18N
+            Logout.setText("LOGOUT");
+            Logout.setFont(new java.awt.Font("Agency FB", 1, 18)); // NOI18N
+            Logout.setForeground(new java.awt.Color(255, 255, 255));
+            Logout.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    LogoutMouseClicked(evt);
+                }
+            });
 
             javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
             jPanel14.setLayout(jPanel14Layout);
@@ -438,14 +438,14 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
                 jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel14Layout.createSequentialGroup()
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Logout, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(75, 75, 75))
             );
             jPanel14Layout.setVerticalGroup(
                 jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel14Layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jLabel12)
+                    .addComponent(Logout)
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             );
 
@@ -464,7 +464,7 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
                         .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(ViewProfile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -491,7 +491,7 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ViewProfile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(9, 9, 9))
@@ -1043,6 +1043,18 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_changedatePropertyChange
 
+    private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
+        // TODO add your handling code here:
+        dispose();
+        new SecurityGuardViewProfile(SG).setVisible(true);
+    }//GEN-LAST:event_jLabel11MouseClicked
+
+    private void LogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LogoutMouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        new HomePage().setVisible(true);
+    }//GEN-LAST:event_LogoutMouseClicked
+
     private void setWindowIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
@@ -1214,8 +1226,10 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
     private javax.swing.JButton Checkout;
     private javax.swing.JLabel Jfieild;
     private javax.swing.JLabel Jfieild1;
+    private javax.swing.JLabel Logout;
     private javax.swing.JLabel SearchVisitor;
     private javax.swing.JTextField Unitno;
+    private javax.swing.JPanel ViewProfile;
     private com.github.lgooddatepicker.components.DatePicker changedate;
     private javax.swing.JButton changedatebutton;
     private javax.swing.JTextField checkindate;
@@ -1226,18 +1240,15 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
