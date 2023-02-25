@@ -54,8 +54,7 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
         for (Invoice eachIncomp : incompleteInv) {
             String itemID = eachIncomp.getInvoiceNo();
             String itemDet = eachIncomp.getFeeType();
-            
-            double amount = RT.PYM.getTotalPricePerInvoice(itemID, incompleteInv);
+            float amount = eachIncomp.getTotalPrice();
 
             String[] list = {String.valueOf(itemNo), itemID.toUpperCase(), itemDet, String.format("%.02f", amount)};
 
@@ -745,11 +744,17 @@ public class ResidentTenantPaymentManagement extends javax.swing.JFrame {
     private void payAllBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payAllBTNActionPerformed
         // TODO add your handling code here:
         ArrayList<Invoice> invoiceList = new ArrayList<>();
+        ArrayList<String> invoiceId = new ArrayList<>();
+        
         int tableSize = pendingFeeTable.getRowCount();
         for (int count = 0; count < tableSize; count++) {
             String invNo = pendingFeeTable.getValueAt(count, 1).toString();
-            ArrayList<Invoice> invoices = RT.PYM.getSameUnpaidInvoiceNo(this.RT.getUnitNo(), invNo.toLowerCase());
-            invoiceList.addAll(invoices);
+            
+            if (!invoiceId.contains(invNo)) {
+                ArrayList<Invoice> invoices = RT.PYM.getSameUnpaidInvoiceNo(this.RT.getUnitNo(), invNo);
+                invoiceList.addAll(invoices);
+                invoiceId.add(invNo);
+            }
         }
         
         String totalAmount = totalPendingFeeTF.getText();

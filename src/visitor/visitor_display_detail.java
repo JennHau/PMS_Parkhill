@@ -54,16 +54,16 @@ public class visitor_display_detail extends javax.swing.JFrame {
         visitorname = new javax.swing.JLabel();
         jfield11 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
-        jfield17 = new javax.swing.JLabel();
+        icno = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
-        jfield18 = new javax.swing.JLabel();
+        carplate = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
-        jfield19 = new javax.swing.JLabel();
-        jPanel11 = new javax.swing.JPanel();
+        visitorcontact = new javax.swing.JLabel();
+        visitorID = new javax.swing.JPanel();
         visitorid = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
-        jfield16 = new javax.swing.JLabel();
-        jPanel13 = new javax.swing.JPanel();
+        registeredby = new javax.swing.JLabel();
+        visitdate = new javax.swing.JPanel();
         jfield21 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -158,10 +158,10 @@ public class visitor_display_detail extends javax.swing.JFrame {
         jfield11.setText("VISITOR NAME");
         jfield11.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
-        jfield17.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
-        jfield17.setForeground(new java.awt.Color(153, 153, 153));
-        jfield17.setText("VISITOR NAME");
-        jfield17.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        icno.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
+        icno.setForeground(new java.awt.Color(153, 153, 153));
+        icno.setText("VISITOR NAME");
+        icno.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -169,21 +169,21 @@ public class visitor_display_detail extends javax.swing.JFrame {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jfield17, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(icno, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(36, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                 .addContainerGap(7, Short.MAX_VALUE)
-                .addComponent(jfield17, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(icno, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        jfield18.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
-        jfield18.setForeground(new java.awt.Color(153, 153, 153));
-        jfield18.setText("VISITOR NAME");
-        jfield18.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        carplate.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
+        carplate.setForeground(new java.awt.Color(153, 153, 153));
+        carplate.setText("VISITOR NAME");
+        carplate.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -191,21 +191,21 @@ public class visitor_display_detail extends javax.swing.JFrame {
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jfield18, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(carplate, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(24, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addContainerGap(7, Short.MAX_VALUE)
-                .addComponent(jfield18, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(carplate, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        jfield19.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
-        jfield19.setForeground(new java.awt.Color(153, 153, 153));
-        jfield19.setText("VISITOR NAME");
-        jfield19.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        visitorcontact.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
+        visitorcontact.setForeground(new java.awt.Color(153, 153, 153));
+        visitorcontact.setText("VISITOR NAME");
+        visitorcontact.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -213,14 +213,14 @@ public class visitor_display_detail extends javax.swing.JFrame {
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jfield19, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(visitorcontact, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(36, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jfield19, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(visitorcontact, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -229,27 +229,27 @@ public class visitor_display_detail extends javax.swing.JFrame {
         visitorid.setText("VISITOR NAME");
         visitorid.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
-        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
-        jPanel11.setLayout(jPanel11Layout);
-        jPanel11Layout.setHorizontalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel11Layout.createSequentialGroup()
+        javax.swing.GroupLayout visitorIDLayout = new javax.swing.GroupLayout(visitorID);
+        visitorID.setLayout(visitorIDLayout);
+        visitorIDLayout.setHorizontalGroup(
+            visitorIDLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(visitorIDLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(visitorid, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(36, Short.MAX_VALUE))
         );
-        jPanel11Layout.setVerticalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
+        visitorIDLayout.setVerticalGroup(
+            visitorIDLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, visitorIDLayout.createSequentialGroup()
                 .addContainerGap(9, Short.MAX_VALUE)
                 .addComponent(visitorid, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        jfield16.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
-        jfield16.setForeground(new java.awt.Color(153, 153, 153));
-        jfield16.setText("VISITOR NAME");
-        jfield16.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        registeredby.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
+        registeredby.setForeground(new java.awt.Color(153, 153, 153));
+        registeredby.setText("VISITOR NAME");
+        registeredby.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
@@ -257,25 +257,25 @@ public class visitor_display_detail extends javax.swing.JFrame {
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jfield16, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(registeredby, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jfield16, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(registeredby, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(9, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
-        jPanel13.setLayout(jPanel13Layout);
-        jPanel13Layout.setHorizontalGroup(
-            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout visitdateLayout = new javax.swing.GroupLayout(visitdate);
+        visitdate.setLayout(visitdateLayout);
+        visitdateLayout.setHorizontalGroup(
+            visitdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 171, Short.MAX_VALUE)
         );
-        jPanel13Layout.setVerticalGroup(
-            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        visitdateLayout.setVerticalGroup(
+            visitdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 35, Short.MAX_VALUE)
         );
 
@@ -326,12 +326,12 @@ public class visitor_display_detail extends javax.swing.JFrame {
                         .addComponent(jfield4, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(503, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(visitorID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(254, 254, 254)
-                    .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(visitdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(257, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
@@ -340,7 +340,7 @@ public class visitor_display_detail extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addComponent(jfield4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(visitorID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(13, 13, 13)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -370,7 +370,7 @@ public class visitor_display_detail extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(225, 225, 225)
-                    .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(visitdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(122, Short.MAX_VALUE)))
         );
 
@@ -407,11 +407,11 @@ public class visitor_display_detail extends javax.swing.JFrame {
             String[] line_split = line.toUpperCase().split(";");
             if (line_split[0].equalsIgnoreCase(id)) {
                 visitorname.setText(line_split[2]);
-                jfield17.setText(line_split[1]);
-                jfield18.setText(line_split[3]);
-                jfield19.setText(line_split[4]);
+                icno.setText(line_split[1]);
+                carplate.setText(line_split[3]);
+                visitorcontact.setText(line_split[4]);
                 jfield21.setText(line_split[5]);
-                jfield16.setText(line_split[10]);
+                registeredby.setText(line_split[10]);
 
             }
         }
@@ -452,13 +452,13 @@ public class visitor_display_detail extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel carplate;
+    private javax.swing.JLabel icno;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel8;
@@ -466,16 +466,16 @@ public class visitor_display_detail extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel jfield10;
     private javax.swing.JLabel jfield11;
-    private javax.swing.JLabel jfield16;
-    private javax.swing.JLabel jfield17;
-    private javax.swing.JLabel jfield18;
-    private javax.swing.JLabel jfield19;
     private javax.swing.JLabel jfield21;
     private javax.swing.JLabel jfield4;
     private javax.swing.JLabel jfield6;
     private javax.swing.JLabel jfield7;
     private javax.swing.JLabel jfield8;
     private javax.swing.JLabel jfield9;
+    private javax.swing.JLabel registeredby;
+    private javax.swing.JPanel visitdate;
+    private javax.swing.JPanel visitorID;
+    private javax.swing.JLabel visitorcontact;
     private javax.swing.JLabel visitorid;
     private javax.swing.JLabel visitorname;
     // End of variables declaration//GEN-END:variables

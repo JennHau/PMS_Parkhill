@@ -185,7 +185,7 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
         incident = new javax.swing.JTextArea();
         jfield1 = new javax.swing.JLabel();
         visitor_id2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        updatebtn = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         datetime = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
@@ -602,13 +602,13 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
         visitor_id2.setText("Recorded By:");
         jPanel6.add(visitor_id2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 460, 100, 20));
 
-        jButton1.setText("UPDATE");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        updatebtn.setText("UPDATE");
+        updatebtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                updatebtnActionPerformed(evt);
             }
         });
-        jPanel6.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 570, 110, -1));
+        jPanel6.add(updatebtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 570, 110, -1));
 
         jButton2.setText("Create");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -735,7 +735,7 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
 
     }//GEN-LAST:event_incident_tableMouseClicked
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void updatebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updatebtnActionPerformed
         // TODO add your handling code here:
 
         int i = incident_table.getSelectedRow();
@@ -761,7 +761,6 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
                 List<String> lst = new ArrayList<String>();
                 lst.add(ids + ";" + rcd + ";" + icd + ";" + date + ";" + i_status + ";");
                 sg.modified_manageIncident(lst);
-                System.out.println(lst);
             }
         }
 
@@ -772,7 +771,7 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
         status.setText(" ");
 
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_updatebtnActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -810,15 +809,14 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
 
     private void status_comboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_status_comboboxActionPerformed
         // TODO add your handling code here:
-        System.out.println(status_combobox.getSelectedItem());
         DefaultTableModel model = (DefaultTableModel) incident_table.getModel();
         model.setRowCount(0);
         displayTable();
         if (status_combobox.getSelectedItem().toString().equalsIgnoreCase("progressing") || status_combobox.getSelectedItem().toString().equalsIgnoreCase("completed")) {
-            jButton1.hide();
+            updatebtn.hide();
             incident.setEnabled(false);
         } else {
-            jButton1.show();
+            updatebtn.show();
             incident.setEnabled(true);
 
         }
@@ -1125,7 +1123,6 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
     private javax.swing.JTextArea incident;
     private javax.swing.JTextField incident_id;
     private javax.swing.JTable incident_table;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1158,6 +1155,7 @@ public class SecurityGuard_ManageIncident extends javax.swing.JFrame {
     private javax.swing.JTextField search_id_field;
     private javax.swing.JTextField status;
     private javax.swing.JComboBox<String> status_combobox;
+    private javax.swing.JButton updatebtn;
     private javax.swing.JLabel username;
     private javax.swing.JLabel visitor_id;
     private javax.swing.JLabel visitor_id1;

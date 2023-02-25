@@ -225,48 +225,48 @@
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="7" rowCount="4">
-                    <Column editable="true" title="PASS ID" type="java.lang.Object"/>
-                    <Column editable="true" title="VISITOR NAME" type="java.lang.Object"/>
-                    <Column editable="true" title="CAR PLATE" type="java.lang.Object"/>
-                    <Column editable="true" title="DATE" type="java.lang.Object"/>
-                    <Column editable="true" title="TIME" type="java.lang.Object"/>
-                    <Column editable="true" title="STATUS" type="java.lang.Object"/>
-                    <Column editable="true" title="ACTION" type="java.lang.Object"/>
+                    <Column editable="false" title="PASS ID" type="java.lang.Object"/>
+                    <Column editable="false" title="VISITOR NAME" type="java.lang.Object"/>
+                    <Column editable="false" title="CAR PLATE" type="java.lang.Object"/>
+                    <Column editable="false" title="DATE" type="java.lang.Object"/>
+                    <Column editable="false" title="TIME" type="java.lang.Object"/>
+                    <Column editable="false" title="STATUS" type="java.lang.Object"/>
+                    <Column editable="false" title="ACTION" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
@@ -289,6 +289,7 @@
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="registeredVisitorTableMouseClicked"/>
+                <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="registeredVisitorTableMouseEntered"/>
               </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable()&#xa;{&#xa;    @Override&#xa;&#xa;    public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){&#xa;        Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);&#xa;&#xa;        Object value = getModel().getValueAt(rowIndex,columnIndex);&#xa;&#xa;        if(columnIndex == 6){&#xa;            componenet.setBackground(new Color(0,70,126));&#xa;            componenet.setForeground(new Color(255, 255, 255));&#xa;        }&#xa;&#xa;        else {&#xa;            if (rowIndex%2 == 0) {&#xa;                componenet.setBackground(new Color(249, 249, 249));&#xa;                componenet.setForeground(new Color (102, 102, 102));&#xa;            } else {&#xa;                componenet.setBackground(new Color(225, 225, 225));&#xa;                componenet.setForeground(new Color (102, 102, 102));&#xa;            }&#xa;&#xa;        }&#xa;&#xa;        return componenet;&#xa;    }&#xa;&#xa;}&#xa;&#xa;"/>
@@ -341,7 +342,7 @@
                           </Group>
                           <Component id="jSeparator2" alignment="0" max="32767" attributes="0"/>
                           <Component id="dateTimePicker" alignment="0" min="-2" pref="280" max="-2" attributes="0"/>
-                          <Component id="jLabel30" alignment="0" max="32767" attributes="0"/>
+                          <Component id="dateTimeLabel" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel24" min="-2" pref="55" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -408,7 +409,7 @@
                           </Group>
                       </Group>
                       <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                      <Component id="jLabel30" min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="dateTimeLabel" min="-2" pref="25" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                       <Component id="dateTimePicker" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -454,6 +455,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="visitorIcTF">
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="visitorIcTFKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel26">
               <Properties>
@@ -467,6 +471,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="visitorNameTF">
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="visitorNameTFKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel28">
               <Properties>
@@ -493,10 +500,13 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="visitorContactTF">
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="visitorContactTFKeyTyped"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel30">
+            <Component class="javax.swing.JLabel" name="dateTimeLabel">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Check-In Date &amp; Time:"/>
+                <Property name="text" type="java.lang.String" value="Expected Check-In Date &amp; Time:"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Yu Gothic UI" size="14" style="1"/>
                 </Property>

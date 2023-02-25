@@ -29,13 +29,13 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import classes.Status;
+import classes.StatusAction;
 
 /**
  *
  * @author Winson
  */
-public class BuildingExecutive extends User implements Status{
+public class BuildingExecutive extends User implements StatusAction{
     public PMS_DateTimeFormatter DTF = new PMS_DateTimeFormatter();
     public TextFile TF = new TextFile();
     public FileHandling fh = new FileHandling();
@@ -50,16 +50,6 @@ public class BuildingExecutive extends User implements Status{
     // Assign and Unassign Job to Employee
     public final int assignedEmployee = 1;
     public final int unassignedEmployee = 0;
-    
-    // available combination of level for vendor
-    public String[] lvS = {"Level 1", "Level 2", "Level 1-2"};
-        
-    // available combination of level for residence
-    public String[] resLv = {"Level 1", "Level 2", "Level 3", "Level 4", 
-                     "Level 5", "Level 6", "Level 7", "Level 8", 
-                     "Level 9", "Level 10", "Level 11", "Level 12", 
-                     "Level 13", "Level 14", "Level 15", "Level 1-5", 
-                     "Level 6-10", "Level 11-15", "Level 1-10", "Level 1-15"};
     
     public BuildingExecutive(String userID, String email, String password, String firstName,
                  String lastName, String identificationNo, String gender,
@@ -474,6 +464,12 @@ public class BuildingExecutive extends User implements Status{
         return null;
     }
     
+    public void updatePatrolling(String patScheduleFile, Patrolling patrolling) {
+        String newData = patrolling.toString();
+        
+        crud.update(patScheduleFile, patrolling.getPatID(), newData, 0);
+    }
+    
     // get new job id
     public String getNewTaskId(String fileName, int idColumn) {
         List<String> readFile = fh.fileRead(fileName);
@@ -856,4 +852,14 @@ public class BuildingExecutive extends User implements Status{
         BuildingExecutiveViewProfile page = new BuildingExecutiveViewProfile(BE);
         page.setVisible(true);
     }
+    
+    // available combination of level for vendor
+    public String[] lvS = {"Level 1", "Level 2", "Level 1-2"};
+        
+    // available combination of level for residence
+    public String[] resLv = {"Level 1", "Level 2", "Level 3", "Level 4", 
+                     "Level 5", "Level 6", "Level 7", "Level 8", 
+                     "Level 9", "Level 10", "Level 11", "Level 12", 
+                     "Level 13", "Level 14", "Level 15", "Level 1-5", 
+                     "Level 6-10", "Level 11-15", "Level 1-10", "Level 1-15"};
 }

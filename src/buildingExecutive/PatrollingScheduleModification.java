@@ -121,6 +121,8 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
     
     // setup the available level combo box
     private void levelComboBoxSetUp(String blockSelected) {
+        levelTF.removeAllItems();
+        
         if (blockSelected.equals("S")) {
             for (String eachLv : BE.lvS) {
                 levelTF.addItem(eachLv);
@@ -829,6 +831,8 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         checkPTF.setEnabled(false);
         
         saveBTN.setEnabled(true);
+        
+        blockComboBoxSetUp();
     }//GEN-LAST:event_addRowBTNActionPerformed
 
     private void blockTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blockTFActionPerformed
@@ -891,7 +895,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
                                 eachLine.split(BE.TF.sp)[3] + BE.TF.sp +
                                 eachField[3] + BE.TF.sp + eachField[5] + BE.TF.sp +
                                 BE.TF.empty + BE.TF.sp + BE.TF.empty + BE.TF.sp + BE.TF.empty +
-                                BE.TF.sp + BE.TF.empty + BE.TF.sp + BE.TF.empty + BE.TF.sp + 
+                                BE.TF.sp + "Unassign" + BE.TF.sp + BE.TF.empty + BE.TF.sp + 
                                 BE.TF.empty + BE.TF.sp + BE.TF.empty + BE.TF.sp);
             }
             else {
@@ -904,7 +908,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
                             eachField[1] + BE.TF.sp + eachField[2] + BE.TF.sp +
                             eachField[3] + BE.TF.sp + eachField[5] + BE.TF.sp +
                             BE.TF.empty + BE.TF.sp + BE.TF.empty + BE.TF.sp + BE.TF.empty +
-                            BE.TF.sp + BE.TF.empty + BE.TF.sp + BE.TF.empty + BE.TF.sp + 
+                            BE.TF.sp + "Unassign" + BE.TF.sp + BE.TF.empty + BE.TF.sp + 
                             BE.TF.empty + BE.TF.sp + BE.TF.empty + BE.TF.sp);
         }
         
@@ -921,7 +925,7 @@ public class PatrollingScheduleModification extends javax.swing.JFrame {
         int selHour = Integer.valueOf(timeSpinner.getSelectedItem().toString());
         
         if (slotTimePicker.getTime()!= null) {
-            endTimeTF.setText(slotTimePicker.getTime().plusHours(selHour).plusSeconds(1).toString());
+            endTimeTF.setText(slotTimePicker.getTime().plusHours(selHour).toString());
         }
     }//GEN-LAST:event_timeSpinnerActionPerformed
 

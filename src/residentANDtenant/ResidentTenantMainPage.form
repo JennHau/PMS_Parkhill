@@ -621,7 +621,7 @@
                       <Color blue="2a" green="18" red="d" type="rgb"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="0"/>
-                    <Property name="text" type="java.lang.String" value="TODAY BOOKED"/>
+                    <Property name="text" type="java.lang.String" value="TOTAL BOOKED"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="facilityLabel">

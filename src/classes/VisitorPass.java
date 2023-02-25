@@ -12,7 +12,6 @@ import java.util.List;
  * @author Winson
  */
 public class VisitorPass {
-
     private String passID;
     private String visitorIC;
     private String visitorName;
@@ -81,21 +80,6 @@ public class VisitorPass {
         List<String> visitorFiles = FH.fileRead(TF.visitorPass);
         
         boolean firstLine = true;
-        for (String eachVis : visitorFiles) {
-            if (!firstLine) {
-                String[] passData = eachVis.split(TF.sp);
-            
-                VisitorPass visitorPass = new VisitorPass(passData);
-
-                if (visitorPass.getResidentId().equals(userID)) {
-                    registeredVisitor.add(visitorPass);
-                }
-            }
-            
-            firstLine = false;
-        }
-        
-        firstLine = true;
         for (String eachVis : visitorFiles) {
             if (!firstLine) {
                 String[] passData = eachVis.split(TF.sp);

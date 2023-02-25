@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import classes.FileHandling;
+import java.awt.Toolkit;
 
 
 /**
@@ -20,7 +21,6 @@ public class ResidentTenantFacilityBookingReceipt extends javax.swing.JFrame {
     /**
      * Creates new form custReceipt
      * @param RT
-     * @param user
      * @param bookingID
      */
     public ResidentTenantFacilityBookingReceipt(ResidentTenant RT, String bookingID) {
@@ -28,6 +28,8 @@ public class ResidentTenantFacilityBookingReceipt extends javax.swing.JFrame {
         this.RT = RT;
         this.bookingID = bookingID;
         setDefault();
+        
+        setWindowIcon();
     }
 
     /**
@@ -342,6 +344,10 @@ public class ResidentTenantFacilityBookingReceipt extends javax.swing.JFrame {
         }
         
         tableDesignSetUp();
+    }
+    
+    private void setWindowIcon() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/windowIcon.png")));
     }
     
     private void tableDesignSetUp() {

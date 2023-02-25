@@ -205,7 +205,6 @@ public class VisitorPage extends javax.swing.JFrame {
 
     private void Visitor_signin_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Visitor_signin_buttonActionPerformed
         // TODO add your handling code here:
-        System.out.println("sign in");
         boolean id_consist = false;
         String vst_id = VisitorCode.getText().trim();
 
@@ -218,11 +217,9 @@ public class VisitorPage extends javax.swing.JFrame {
             line.toUpperCase().split(";");
             String[] line_split = line.toUpperCase().split(";");
             if (line_split[0].equalsIgnoreCase(vst_id)) {
-                System.out.println("found");
                 id_consist = true;
                 break;
             } else {
-                System.out.println("not-found");
                 id_consist = false;
 
             }

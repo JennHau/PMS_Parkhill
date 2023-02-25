@@ -97,10 +97,10 @@
                               <Component id="jfield2" alignment="0" min="-2" pref="180" max="-2" attributes="0"/>
                               <Component id="jfield1" alignment="0" min="-2" pref="180" max="-2" attributes="0"/>
                               <Component id="jfield" alignment="0" min="-2" pref="179" max="-2" attributes="0"/>
-                              <Component id="Recorded_By" alignment="0" max="32767" attributes="0"/>
+                              <Component id="recordedby" alignment="0" max="32767" attributes="0"/>
                               <Component id="jScrollPane1" alignment="0" pref="288" max="32767" attributes="0"/>
-                              <Component id="jTextField1" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jTextField3" alignment="0" max="32767" attributes="0"/>
+                              <Component id="incidentstatus" alignment="0" max="32767" attributes="0"/>
+                              <Component id="incident_no" alignment="0" max="32767" attributes="0"/>
                               <Component id="DATE" alignment="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -116,15 +116,15 @@
                   <EmptySpace pref="7" max="32767" attributes="0"/>
                   <Component id="jfield4" min="-2" pref="20" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-                  <Component id="jTextField3" min="-2" pref="36" max="-2" attributes="0"/>
+                  <Component id="incident_no" min="-2" pref="36" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jfield" min="-2" pref="20" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-                  <Component id="jTextField1" min="-2" pref="36" max="-2" attributes="0"/>
+                  <Component id="incidentstatus" min="-2" pref="36" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jfield1" min="-2" pref="20" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-                  <Component id="Recorded_By" min="-2" pref="36" max="-2" attributes="0"/>
+                  <Component id="recordedby" min="-2" pref="36" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jfield2" min="-2" pref="20" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -186,7 +186,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JTextField" name="jTextField1">
+        <Component class="javax.swing.JTextField" name="incidentstatus">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cc" green="cc" red="cc" type="rgb"/>
@@ -201,8 +201,8 @@
             <Property name="opaque" type="boolean" value="true"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField1ActionPerformed"/>
-            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField1KeyReleased"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="incidentstatusActionPerformed"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="incidentstatusKeyReleased"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jfield">
@@ -229,7 +229,7 @@
             <Property name="horizontalTextPosition" type="int" value="2"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="Recorded_By">
+        <Component class="javax.swing.JTextField" name="recordedby">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cc" green="cc" red="cc" type="rgb"/>
@@ -241,8 +241,8 @@
             <Property name="opaque" type="boolean" value="true"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Recorded_ByActionPerformed"/>
-            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="Recorded_ByKeyReleased"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="recordedbyActionPerformed"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="recordedbyKeyReleased"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jfield2">
@@ -276,7 +276,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTextArea" name="jTextArea1">
+            <Component class="javax.swing.JTextArea" name="incident_textarea">
               <Properties>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
@@ -285,7 +285,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextArea1KeyReleased"/>
+                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="incident_textareaKeyReleased"/>
               </Events>
             </Component>
           </SubComponents>
@@ -320,7 +320,7 @@
             <Property name="horizontalTextPosition" type="int" value="2"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField3">
+        <Component class="javax.swing.JTextField" name="incident_no">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cc" green="cc" red="cc" type="rgb"/>
@@ -335,8 +335,8 @@
             <Property name="opaque" type="boolean" value="true"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField3ActionPerformed"/>
-            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField3KeyReleased"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="incident_noActionPerformed"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="incident_noKeyReleased"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="cancel">

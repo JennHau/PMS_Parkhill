@@ -78,7 +78,7 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
 
         String[] rowlist = new String[row.size()];
         row.toArray(rowlist);
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel) visitorpass_table.getModel();
 
         for (int i = 1; i < rowlist.length; i++) {
             String line = rowlist[i].toString().trim();
@@ -87,7 +87,6 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
 
             if (line_split[5].equals(getdate)) {
                 String userdetail = getSpecificUser(line_split[10]);
-                System.out.println(userdetail);
                 String[] user_split = userdetail.split(";");
 
                 String vid = line_split[0].toUpperCase();
@@ -147,7 +146,7 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         visitor_id = new javax.swing.JLabel();
         search_id_field = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable()
+        visitorpass_table = new javax.swing.JTable()
         {@Override
 
             public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){
@@ -568,7 +567,7 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
             });
             jPanel6.add(search_id_field, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 30, 130, -1));
 
-            jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            visitorpass_table.setModel(new javax.swing.table.DefaultTableModel(
                 new Object [][] {
 
                 },
@@ -584,14 +583,14 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
                     return canEdit [columnIndex];
                 }
             });
-            jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
-            jTable1.setRowHeight(30);
-            jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            visitorpass_table.setIntercellSpacing(new java.awt.Dimension(2, 2));
+            visitorpass_table.setRowHeight(30);
+            visitorpass_table.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    jTable1MouseClicked(evt);
+                    visitorpass_tableMouseClicked(evt);
                 }
             });
-            jScrollPane1.setViewportView(jTable1);
+            jScrollPane1.setViewportView(visitorpass_table);
 
             jPanel6.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 100, 960, 310));
 
@@ -790,10 +789,10 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
     private void search_id_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_id_fieldKeyReleased
         // TODO add your handling code here:
 
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel) visitorpass_table.getModel();
         String search = search_id_field.getText();
         TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(model);
-        jTable1.setRowSorter(tr);
+        visitorpass_table.setRowSorter(tr);
         tr.setRowFilter(RowFilter.regexFilter(search));
 
 
@@ -810,12 +809,12 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
     }//GEN-LAST:event_dashboardMouseClicked
 
 //    get all value to display when action clicked
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    private void visitorpass_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorpass_tableMouseClicked
         // TODO add your handling code here:
-        int index = jTable1.getSelectedRow();
-        if (jTable1.getSelectedColumn() == 7 && index != -1) {
-            int selectedModelIndex = jTable1.convertRowIndexToModel(index);
-            DefaultTableModel model1 = (DefaultTableModel) jTable1.getModel();
+        int index = visitorpass_table.getSelectedRow();
+        if (visitorpass_table.getSelectedColumn() == 7 && index != -1) {
+            int selectedModelIndex = visitorpass_table.convertRowIndexToModel(index);
+            DefaultTableModel model1 = (DefaultTableModel) visitorpass_table.getModel();
             String visitorid = model1.getValueAt(selectedModelIndex, 0).toString();
             vp = new VisitorPass(visitorid.toLowerCase());
             String visitorname = vp.getVisitorName();
@@ -823,8 +822,6 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
             String icno = vp.getVisitorIC();
             String CID = vp.getCheckedInAt();
             String COD = vp.getCheckedOutAt();
-            System.out.println(CID);
-            System.out.println(COD);
 
             id.setText(visitorid);
             name.setText(visitorname);
@@ -840,7 +837,7 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
             }
 
 
-    }//GEN-LAST:event_jTable1MouseClicked
+    }//GEN-LAST:event_visitorpass_tableMouseClicked
     }
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
@@ -930,8 +927,8 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
     private void CheckinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckinActionPerformed
         // TODO add your handling code here:
 
-        int i = jTable1.getSelectedRow();
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        int i = visitorpass_table.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel) visitorpass_table.getModel();
         String ids = model.getValueAt(i, 0).toString();
         String c_date = sg.currentdate().toString();
         String c_time = sg.currenttime();
@@ -975,8 +972,8 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
     private void CheckoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckoutActionPerformed
         // TODO add your handling code here:
 
-        int i = jTable1.getSelectedRow();
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        int i = visitorpass_table.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel) visitorpass_table.getModel();
         String ids = model.getValueAt(i, 0).toString();
         String c_date = sg.currentdate().toString();
         String c_time = sg.currenttime();
@@ -987,7 +984,6 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
 
         List<String> row = fh.fileRead("visitorPass.txt");
         List<String> nlst = new ArrayList<String>();
-        System.out.println(row);
         String[] rowary = new String[row.size()];
         row.toArray(rowary);
         for (int j = 0; j < rowary.length; j++) {
@@ -1002,7 +998,6 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
             }
 
         }
-        System.out.println(nlst);
         fh.fileWrite("visitorpass.txt", false, nlst);
         vp.setCheckInStatus(VisitorPass.visitorPassStatus[2]);
         vp.setCheckedOutAt(checkoutdata);
@@ -1023,9 +1018,8 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
         // TODO add your handling code here:
         String change_d = changedate.getText();
         try {
-            System.out.println("test" + change_d);
             todaydate.setText(sg.convertdate(change_d));
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            DefaultTableModel model = (DefaultTableModel) visitorpass_table.getModel();
             model.setRowCount(0);
             displayTable();
 
@@ -1038,7 +1032,7 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
     private void setTableDesign() {
         int[] colummnIgnore = {0};
         int[] columnLength = {100, 100, 100, 100, 175, 175, 100, 110};
-        sg.setTableDesign(jTable1, visitor_id6, columnLength, colummnIgnore);
+        sg.setTableDesign(visitorpass_table, visitor_id6, columnLength, colummnIgnore);
     }
     private void changedateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changedateMouseClicked
         // TODO add your handling code here:
@@ -1258,7 +1252,6 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel jfield;
     private javax.swing.JTextField name;
     private javax.swing.JTextField search_id_field;
@@ -1269,5 +1262,6 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
     private javax.swing.JLabel visitor_id2;
     private javax.swing.JLabel visitor_id3;
     private javax.swing.JLabel visitor_id6;
+    private javax.swing.JTable visitorpass_table;
     // End of variables declaration//GEN-END:variables
 }

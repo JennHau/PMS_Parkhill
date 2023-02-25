@@ -787,7 +787,6 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
         // TODO add your handling code here:
 //        String patrollingScheduleFileFormat = "patrollingScheduleFiles/patrollingFile_";
         String checkintime = sg.coverttimeTolocaltime(chk_time.getText());
-        System.out.println(checkintime);
         TableModel model = pending_table.getModel();
         int index = pending_table.getSelectedRow();
         String line, x;
@@ -795,7 +794,6 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
 
         List<String> row = fh.fileRead(this.today_file);
         List<String> lst = new ArrayList<String>();
-        System.out.println(row);
         String[] rowary = new String[row.size()];
         row.toArray(rowary);
         for (int i = 0; i < rowary.length; i++) {

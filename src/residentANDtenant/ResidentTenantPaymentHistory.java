@@ -18,6 +18,8 @@ import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import classes.PMS_DateTimeFormatter;
+import classes.Payment;
+import javax.swing.JOptionPane;
 import pms_parkhill_residence.HomePage;
 
 /**
@@ -56,7 +58,7 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
     
     // set up payment history table
     private void paymentHistoryTableSetUp() throws ParseException {
-        ArrayList<String> receiptList = RT.PYM.extractSingleReceiptData(this.RT.getUnitNo());
+        ArrayList<Payment> paymentList = RT.PYM.getCurrentUnitPayment(RT.getUnitNo());
         ArrayList<String> facilityPay = RT.PYM.getCurrentUnitFacilityPayment(this.RT.getUnitNo());
         ArrayList<String> sortedList;
         
@@ -65,21 +67,19 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
         
         ArrayList<String> existedIdList = new ArrayList<>();
                 
-        for (String eachHist : receiptList) {
-            String[] histData = eachHist.split(RT.TF.sp);
-            String invoiceNo = histData[0];
+        for (Payment eachHist : paymentList) {
+            String invoiceNo = eachHist.getInvoiceNo();
             
             LocalDate latestDate = null;
             String feeTypes = "";
             if (!existedIdList.contains(invoiceNo)) {
-                for (String hist : receiptList) {
-                    String[] eachHistData = hist.split(RT.TF.sp);
-                    String histInv = eachHistData[0];
+                for (Payment hist : paymentList) {
+                    String histInv = hist.getInvoiceNo();
                     if (histInv.equals(invoiceNo)) {
-                        String type = eachHistData[2];
+                        String type = hist.getFeeType();
                         feeTypes = feeTypes + type + ",";
                         
-                        LocalDate paymentDate = RT.DTF.formatDate2(eachHistData[10]);
+                        LocalDate paymentDate = RT.DTF.formatDate2(hist.getPaymentDate());
                         if (latestDate != null) {
                             if (paymentDate.isAfter(latestDate)) {
                                 latestDate = paymentDate;
@@ -797,10 +797,16 @@ public class ResidentTenantPaymentHistory extends javax.swing.JFrame {
                     String bookingId = bookingDet[0];
 
                     if (bookingId.equals(itemID.toLowerCase())) {
+                        notFound = false;
                         RT.toFacilityReceipt(RT, bookingId);
                         break;
                     }
                 }
+            }
+            
+            if (notFound) {
+                JOptionPane.showMessageDialog (null, "The receipt is not issued. Please contact admin for any inquiries.", 
+                                                        "RECEIPT NOT ISSUED", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }//GEN-LAST:event_paymentHistoryTableMouseClicked

@@ -481,7 +481,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             }
         });
 
-        jLabel20.setText("Repitition:");
+        jLabel20.setText("Repetition:");
         jLabel20.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(51, 51, 51));
 
@@ -972,6 +972,7 @@ public class EmployeeJobAssignation extends javax.swing.JFrame {
             messagesTF.setText("");
             jobComboBox.setEnabled(true);
             jobComboBox.removeItem("Patrolling");
+            jobComboBox.removeItem("Complaint");
             repititionCheckBox.setEnabled(true);
             timeNeededSpinner.setEnabled(true);
             hrsMinsComboBox.setEnabled(true);

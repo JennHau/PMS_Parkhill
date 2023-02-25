@@ -211,20 +211,6 @@ public class Invoice {
         return incompleteInvoice;
     }
     
-    public ArrayList getInvoiceCode(String unitNo) {
-        ArrayList<String> invoiceCode = new ArrayList<>();
-
-        ArrayList<Invoice> invoices = getCurrentUnitInvoice(unitNo);
-        
-        for (Invoice eachInv : invoices) {
-            if (!invoiceCode.contains(eachInv.getInvoiceNo())) {
-                invoiceCode.add(eachInv.getInvoiceNo());
-            }
-        }
-        
-        return invoiceCode;
-    }
-    
     // convert today date to dd/MM/yyyy format
     public String todayDate() {
         Date date = new Date();

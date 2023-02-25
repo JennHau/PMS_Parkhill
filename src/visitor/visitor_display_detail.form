@@ -151,7 +151,7 @@
                           <EmptySpace pref="503" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="jPanel11" min="-2" max="-2" attributes="0"/>
+                          <Component id="visitorID" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -159,7 +159,7 @@
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="254" max="-2" attributes="0"/>
-                      <Component id="jPanel13" min="-2" max="-2" attributes="0"/>
+                      <Component id="visitdate" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="257" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -171,7 +171,7 @@
                   <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                   <Component id="jfield4" min="-2" pref="20" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jPanel11" min="-2" max="-2" attributes="0"/>
+                  <Component id="visitorID" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
                   <Component id="jSeparator1" min="-2" pref="3" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -208,7 +208,7 @@
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="225" max="-2" attributes="0"/>
-                      <Component id="jPanel13" min="-2" max="-2" attributes="0"/>
+                      <Component id="visitdate" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="122" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -346,7 +346,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jfield17" min="-2" pref="135" max="-2" attributes="0"/>
+                      <Component id="icno" min="-2" pref="135" max="-2" attributes="0"/>
                       <EmptySpace pref="36" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -355,14 +355,14 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace pref="7" max="32767" attributes="0"/>
-                      <Component id="jfield17" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="icno" min="-2" pref="20" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="jfield17">
+            <Component class="javax.swing.JLabel" name="icno">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="SamsungOneUILatin 700C" size="14" style="1"/>
@@ -383,7 +383,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jfield18" min="-2" pref="135" max="-2" attributes="0"/>
+                      <Component id="carplate" min="-2" pref="135" max="-2" attributes="0"/>
                       <EmptySpace pref="24" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -392,14 +392,14 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace pref="7" max="32767" attributes="0"/>
-                      <Component id="jfield18" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="carplate" min="-2" pref="20" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="jfield18">
+            <Component class="javax.swing.JLabel" name="carplate">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="SamsungOneUILatin 700C" size="14" style="1"/>
@@ -420,7 +420,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jfield19" min="-2" pref="135" max="-2" attributes="0"/>
+                      <Component id="visitorcontact" min="-2" pref="135" max="-2" attributes="0"/>
                       <EmptySpace pref="36" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -429,14 +429,14 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jfield19" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="visitorcontact" min="-2" pref="20" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="jfield19">
+            <Component class="javax.swing.JLabel" name="visitorcontact">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="SamsungOneUILatin 700C" size="14" style="1"/>
@@ -450,7 +450,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="jPanel11">
+        <Container class="javax.swing.JPanel" name="visitorID">
 
           <Layout>
             <DimensionLayout dim="0">
@@ -494,7 +494,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jfield16" min="-2" pref="135" max="-2" attributes="0"/>
+                      <Component id="registeredby" min="-2" pref="135" max="-2" attributes="0"/>
                       <EmptySpace pref="19" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -503,14 +503,14 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jfield16" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="registeredby" min="-2" pref="20" max="-2" attributes="0"/>
                       <EmptySpace pref="9" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="jfield16">
+            <Component class="javax.swing.JLabel" name="registeredby">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="SamsungOneUILatin 700C" size="14" style="1"/>
@@ -524,7 +524,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="jPanel13">
+        <Container class="javax.swing.JPanel" name="visitdate">
 
           <Layout>
             <DimensionLayout dim="0">

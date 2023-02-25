@@ -59,17 +59,22 @@ public class Complaint {
     
     // get all the complaints for a specific residence/tenants
     public List<ArrayList<Complaint>> getComplaints(String currentRTid) {
+        // declare new variable for different arraylist
         List<ArrayList<Complaint>> complaintList = new ArrayList<>();
         ArrayList<Complaint> pendingComp = new ArrayList<>();
         ArrayList<Complaint> progressingComp = new ArrayList<>();
         ArrayList<Complaint> completedComp = new ArrayList<>();
         
+        // get data from text file
         List<String> complaints = FH.fileRead(TF.complaintFiles);
+        // loop data
         for (String eachComp : complaints) {
             String[] compDet = eachComp.split(TF.sp);
             
+            // create new complaint object by passing string array
             Complaint complaint = new Complaint(compDet);
             
+            // get only the complaint reported by the current resident/tenant
             if (complaint.getComplainerID().toLowerCase().equals(currentRTid) || currentRTid == null) {
                 String status = complaint.getComplaintStatus();
                 switch (status) {
@@ -80,6 +85,7 @@ public class Complaint {
             }
         }
         
+        // combine 3 different arraylist in 1 arraylist
         complaintList.add(pendingComp);
         complaintList.add(progressingComp);
         complaintList.add(completedComp);

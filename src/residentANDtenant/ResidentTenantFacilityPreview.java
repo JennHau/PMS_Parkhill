@@ -98,7 +98,7 @@ public class ResidentTenantFacilityPreview extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(13, 24, 42));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("ADMIN EXECUTIVE");
+        jLabel2.setText("PARKHILL RESIDENCE RESIDENT & TENANT");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(102, 102, 102));

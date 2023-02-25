@@ -227,6 +227,8 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
 
         jLabel7.setText("3-digits");
 
+        messageTF.setForeground(new java.awt.Color(255, 0, 0));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -369,6 +371,7 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
                     
                     if (payable) {
                         if (!itemList.isEmpty()) {
+                            
                             for (Invoice eachInvId : itemList) {
                                 VD.PYM.storePayment(eachInvId, VD.getUserID());
                             }
@@ -376,7 +379,12 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog (null, "Payment has been made successfully!", 
                             "PAYMENT", JOptionPane.INFORMATION_MESSAGE);
 
-                            this.dispose();
+                            dispose();
+                            
+                            if (VendorPaymentManagement.vdPayMan != null) {
+                                VendorPaymentManagement.vdPayMan.dispose();
+                            }
+                            
                             VD.toPaymentManagement(VD);
                         }
                     }
@@ -385,7 +393,7 @@ public class VendorPaymentCredential extends javax.swing.JFrame {
                     }
                 }
                 else {
-                    messageTF.setText("Please enter a correct expiration date of the card.");
+                    messageTF.setText("Please enter a valid expiration date of the card.");
                 }
             }
             else {
