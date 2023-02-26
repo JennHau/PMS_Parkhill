@@ -101,7 +101,6 @@ public class PropertyUnit {
         List<String> availableList = new ArrayList<>();
         
         List<String> userList = fh.fileRead("userProfile.txt");
-        
         switch (type) {
             case "Commercial" -> {
                 for (int i = 1; i < userList.size(); i++) {
@@ -132,7 +131,7 @@ public class PropertyUnit {
                     String uniNo = userDetails[8];
                     
                     for (int j = 1; j < userList.size(); j++) {
-                        String[] userDetails2 = userList.get(i).split(";");
+                        String[] userDetails2 = userList.get(j).split(";");
                         String userID = userDetails2[0];
                         String uniNo2 = userDetails2[8];
                         if (uniNo.equals(uniNo2) && !uniNo.startsWith("S") 
