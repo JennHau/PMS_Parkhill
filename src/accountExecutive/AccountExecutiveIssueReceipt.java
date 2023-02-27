@@ -986,12 +986,12 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
                 String invoiceNo = pendingReceiptDetails[0];
                 String unitNo = pendingReceiptDetails[1];
                 String feeType = pendingReceiptDetails[2];
-                String totalPrice = pendingReceiptDetails[3];
+                Float totalPrice = Float.parseFloat(pendingReceiptDetails[3]);
                 String paymentDate = pendingReceiptDetails[4];
                 String paidBy = pendingReceiptDetails[5];
 
-                String tbData[] = {invoiceNo, unitNo, feeType, totalPrice, 
-                    paymentDate, paidBy, "ISSUE RECEIPT"};
+                String tbData[] = {invoiceNo, unitNo, feeType, 
+                    AE.currencyFormat(totalPrice), paymentDate, paidBy, "ISSUE RECEIPT"};
                 tableModel.addRow(tbData);
             }
         } else if (status.equals("ISSUED")) {
@@ -1004,12 +1004,13 @@ public class AccountExecutiveIssueReceipt extends javax.swing.JFrame {
                 String invoiceNo = issuedReceiptDetails[0];
                 String unitNo = issuedReceiptDetails[1];
                 String feeType = issuedReceiptDetails[2];
-                String totalPrice = issuedReceiptDetails[3];
+                Float totalPrice = Float.parseFloat(issuedReceiptDetails[3]);
                 String paymentDate = issuedReceiptDetails[4];
                 String paidBy = issuedReceiptDetails[5];
 
-                String tbData[] = {invoiceNo, unitNo, feeType, totalPrice, 
-                    paymentDate, paidBy, "VIEW RECEIPT"};
+                String tbData[] = {invoiceNo, unitNo, feeType,
+                    AE.currencyFormat(totalPrice), paymentDate, paidBy,
+                    "VIEW RECEIPT"};
                 tableModel.addRow(tbData);
             }
         }
