@@ -85,9 +85,12 @@ public class SecurityGuard_SearchVisitor extends javax.swing.JFrame {
             String line = rowlist[i].toString().trim();
             String[] line_split = line.split(";");
             String getdate = todaydate.getText().toString();
-
+            
             if (line_split[5].equals(getdate)) {
                 String userdetail = getSpecificUser(line_split[10]);
+                System.out.println(line_split[5]);
+                System.out.println(getdate);
+                System.out.println(userdetail);
                 String[] user_split = userdetail.split(";");
 
                 String vid = line_split[0].toUpperCase();

@@ -318,7 +318,7 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
         String incident = incident_textarea.getText().trim();
         String status = incidentstatus.getText();
         String record = recordedby.getText();
-        String no = incident_no.getText();
+        String no = incident_no.getText().toLowerCase();
         String date = DATE.getText();
         SecurityGuard sg = new SecurityGuard();
 
@@ -362,7 +362,7 @@ public class SecurityGuard_Add_new_incident extends javax.swing.JFrame {
         }
         maxnum += 1;
         String show = idformat + String.valueOf(maxnum);
-        incident_no.setText(show);
+        incident_no.setText(show.toUpperCase());
     }
 
 //    ENABLE BUTTON IF TEXT AREA IS FILL

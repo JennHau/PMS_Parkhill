@@ -83,11 +83,12 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
             label.setSize(200, 50);
             Font fn = new Font("callibri", Font.PLAIN, 14);
             label.setFont(fn);
-            label.setForeground(Color.RED);
+            label.setForeground(Color.GRAY);
             label.setVisible(true);
             pending_table.add(label);
             pending_table.setFillsViewportHeight(true);
         }
+      
 
     }
 
@@ -795,19 +796,19 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
         List<String> lst = new ArrayList<String>();
         String[] rowary = new String[row.size()];
         row.toArray(rowary);
-        for (int i = 0; i < rowary.length; i++) {
-            String[] values = rowary[i].split(";");
-            if (values[0].equalsIgnoreCase(pt.getPatID())) {
-                values[9] = "CHECKED";
-                values[10] = checkintime;
-                line = String.join(";", values);
-                lst.add(line);
-            } else {
-                x = String.join(";", values);
-                lst.add(x);
-            }
-
-        }
+//        for (int i = 0; i < rowary.length; i++) {
+//            String[] values = rowary[i].split(";");
+//            if (values[0].equalsIgnoreCase(pt.getPatID())) {
+//                values[9] = "CHECKED";
+//                values[10] = checkintime;
+//                line = String.join(";", values);
+//                lst.add(line);
+//            } else {
+//                x = String.join(";", values);
+//                lst.add(x);
+//            }
+//
+//        }
         pt.setCheckedAt(checkintime);
         pt.setStatus("Checked");
 

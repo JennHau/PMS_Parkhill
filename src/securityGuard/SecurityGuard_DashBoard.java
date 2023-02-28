@@ -34,10 +34,10 @@ public class SecurityGuard_DashBoard extends javax.swing.JFrame {
     public SecurityGuard_DashBoard(SecurityGuard SG) {
         initComponents();
         setWindowIcon();
-        jLabel14.setText(sg.count_uncheck_checkpoint().toString());
+        uncheckpoint.setText(sg.count_uncheck_checkpoint().toString());
         jLabel4.setText(sg.count_checked_checkpoint().toString());
         displaybarchart();
-        jLabel25.setText(sg.count_today_visitor().toString());
+        upcoming_visitor.setText(sg.count_today_visitor().toString());
         this.SG=SG;
         setCurrentProfile();
     }
@@ -109,13 +109,13 @@ public class SecurityGuard_DashBoard extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jPanel15 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
+        upcoming_visitor = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jPanel19 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         jPanel20 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
+        uncheckpoint = new javax.swing.JLabel();
         jPanel21 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -169,7 +169,7 @@ public class SecurityGuard_DashBoard extends javax.swing.JFrame {
 
         SearchVisitor.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         SearchVisitor.setForeground(new java.awt.Color(255, 255, 255));
-        SearchVisitor.setText("Search Visitor Pass");
+        SearchVisitor.setText("Manage Visitor Pass");
         SearchVisitor.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 SearchVisitorMouseClicked(evt);
@@ -182,8 +182,8 @@ public class SecurityGuard_DashBoard extends javax.swing.JFrame {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(SearchVisitor, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75))
+                .addComponent(SearchVisitor, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(45, 45, 45))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -462,9 +462,9 @@ public class SecurityGuard_DashBoard extends javax.swing.JFrame {
         jLabel17.setForeground(new java.awt.Color(0, 0, 0));
         jLabel17.setText("UPCOMING VISITOR ");
 
-        jLabel25.setFont(new java.awt.Font("SansSerif", 1, 36)); // NOI18N
-        jLabel25.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel25.setText("50");
+        upcoming_visitor.setFont(new java.awt.Font("SansSerif", 1, 36)); // NOI18N
+        upcoming_visitor.setForeground(new java.awt.Color(0, 0, 0));
+        upcoming_visitor.setText("50");
 
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
@@ -477,7 +477,7 @@ public class SecurityGuard_DashBoard extends javax.swing.JFrame {
                         .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(106, 106, 106))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel15Layout.createSequentialGroup()
-                        .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(upcoming_visitor, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(176, 176, 176))))
         );
         jPanel15Layout.setVerticalGroup(
@@ -486,7 +486,7 @@ public class SecurityGuard_DashBoard extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(upcoming_visitor, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(38, Short.MAX_VALUE))
         );
 
@@ -532,31 +532,31 @@ public class SecurityGuard_DashBoard extends javax.swing.JFrame {
         jLabel21.setForeground(new java.awt.Color(0, 0, 0));
         jLabel21.setText("UNCHECK POINT");
 
-        jLabel14.setFont(new java.awt.Font("SansSerif", 1, 36)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel14.setText("50");
+        uncheckpoint.setFont(new java.awt.Font("SansSerif", 1, 36)); // NOI18N
+        uncheckpoint.setForeground(new java.awt.Color(0, 0, 0));
+        uncheckpoint.setText("50");
 
         javax.swing.GroupLayout jPanel20Layout = new javax.swing.GroupLayout(jPanel20);
         jPanel20.setLayout(jPanel20Layout);
         jPanel20Layout.setHorizontalGroup(
             jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel20Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(71, 71, 71))
-            .addGroup(jPanel20Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(jLabel21)
                 .addContainerGap(24, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel20Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(uncheckpoint, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(59, 59, 59))
         );
         jPanel20Layout.setVerticalGroup(
             jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel20Layout.createSequentialGroup()
                 .addContainerGap(7, Short.MAX_VALUE)
                 .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(uncheckpoint, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49))
         );
 
         jPanel21.setBackground(new java.awt.Color(255, 255, 255));
@@ -578,18 +578,18 @@ public class SecurityGuard_DashBoard extends javax.swing.JFrame {
                 .addContainerGap(24, Short.MAX_VALUE)
                 .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel21Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(70, 70, 70))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel21Layout.createSequentialGroup()
                         .addComponent(jLabel20)
-                        .addGap(20, 20, 20))))
+                        .addGap(20, 20, 20))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel21Layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(60, 60, 60))))
         );
         jPanel21Layout.setVerticalGroup(
             jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel21Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -862,14 +862,12 @@ public class SecurityGuard_DashBoard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -896,6 +894,8 @@ public class SecurityGuard_DashBoard extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JLabel uncheckpoint;
+    private javax.swing.JLabel upcoming_visitor;
     private javax.swing.JLabel username;
     // End of variables declaration//GEN-END:variables
 }

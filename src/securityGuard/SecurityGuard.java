@@ -56,12 +56,12 @@ public class SecurityGuard extends User implements StatusAction{
 FileHandling fh = new FileHandling();
 TextFile TF = new TextFile();
 CRUD crud = new CRUD();
+String today_file = "patrollingScheduleFiles/patrollingFile_" + this.currentdate() + ".txt";
     
 public Integer count_uncheck_checkpoint() {
         
-        String patrollingScheduleFileFormat = "patrollingScheduleFiles/patrollingFile_";
 //        sg.currentdate()
-        List<String> row = fh.fileRead(patrollingScheduleFileFormat + "2023-01-31.txt");
+        List<String> row = fh.fileRead(this.today_file);
         String[] rowary = new String[row.size()];
         row.toArray(rowary);
         int number = 0;
@@ -70,7 +70,7 @@ public Integer count_uncheck_checkpoint() {
             line.toUpperCase().split(";");
             String[] line_split = line.toUpperCase().split(";");
 
-            if (!line_split[9].equalsIgnoreCase("CHECKED")) {
+            if (line_split[9].equalsIgnoreCase("Pending")) {
                 number++;
             }
         }
@@ -102,7 +102,7 @@ public Integer count_uncheck_checkpoint() {
     public Integer count_checked_checkpoint() {
         String patrollingScheduleFileFormat = "patrollingScheduleFiles/patrollingFile_";
 //        sg.currentdate()
-        List<String> row = fh.fileRead(patrollingScheduleFileFormat + "2023-01-31.txt");
+        List<String> row = fh.fileRead(this.today_file);
         String[] rowary = new String[row.size()];
         row.toArray(rowary);
         int number = 0;
@@ -111,7 +111,7 @@ public Integer count_uncheck_checkpoint() {
             line.toUpperCase().split(";");
             String[] line_split = line.toUpperCase().split(";");
 
-            if (line_split[9].equalsIgnoreCase("CHECKED")) {
+            if (line_split[9].equalsIgnoreCase("Checked")) {
                 number++;
             }
         }

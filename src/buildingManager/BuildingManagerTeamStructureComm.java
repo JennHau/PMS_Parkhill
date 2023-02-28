@@ -202,7 +202,7 @@ public class BuildingManagerTeamStructureComm extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Myanmar Text", 1, 36)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(102, 102, 102));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel14.setText("TEAM STRUCTURE [COMMITEE]");
+        jLabel14.setText("TEAM STRUCTURE [COMMITTEE]");
 
         jLabel15.setFont(new java.awt.Font("SamsungOneUILatin 700C", 1, 14)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(153, 153, 153));

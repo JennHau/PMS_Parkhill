@@ -42,6 +42,11 @@ public class User{
     /**
      * @return the userID
      */
+   
+     public String getFirstName() {
+        return firstName;
+    }
+     
     public String getUserID() {
         return userID;
     }
@@ -56,9 +61,7 @@ public class User{
     /**
      * @return the firstName
      */
-    public String getFirstName() {
-        return firstName;
-    }
+   
 
     /**
      * @param firstName the firstName to set

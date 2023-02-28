@@ -1,7 +1,7 @@
 unitNo;Target;squareFeet;status;dateOfSold;
 A-01-01;Residential;1000;sold;31/01/2023;
 A-01-02;Residential;800;sold;01/11/2022;
-A-01-03;Residential;1200;sold;01/11/2022;
+A-01-03;Residential;1300;sold;01/11/2022;
 A-01-03A;Residential;1000;sold;01/11/2022;
 A-01-05;Residential;800;sold;01/11/2022;
 A-02-01;Residential;1000;sold;01/11/2022;

@@ -1,4 +1,4 @@
 employeeID;email;name;phoneNo;position;identificationNo;gender;
-scg000001;ali@gmail.com;Ali Muhammad;017-365-4759;Security Guard;953564-12-1234;Female;
 cln000001;aisha@gmail.com;Aisha Fattima;015-273-4956;Cleaner;876546-13-6467;Female;
 tcn000001;yushuha@gmail.com;Yushuha Sanjit;019-234-5784;Technician;790192-37-2945;Male;
+scg000001;ali@gmail.com;Ali Muhammad;017-365-4759;Security Guard;953564-12-1234;Female;
