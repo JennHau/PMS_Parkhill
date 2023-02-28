@@ -72,7 +72,7 @@ public class VendorComplaints extends javax.swing.JFrame {
         ArrayList<Complaint> progressingComp = currentRTcomplaints.get(1);
         ArrayList<Complaint> completedComp = currentRTcomplaints.get(2);
         
-        pendingComp.addAll(progressingComp);
+        completedComp.addAll(progressingComp);
         
         VD.setTableRow(pendingProgressTable, VD.CP.tableFormForRTandVD(pendingComp));
         VD.setTableRow(completedTable, VD.CP.tableFormForRTandVD(completedComp));
@@ -950,11 +950,6 @@ public class VendorComplaints extends javax.swing.JFrame {
                 saveBTN.setEnabled(true);
                 deleteBTN.setEnabled(true);
                 compDetTA.setEnabled(true);
-            }
-            else if (compStatus.equals(Complaint.cptStatus.Progressing.toString())) {
-                saveBTN.setEnabled(false);
-                deleteBTN.setEnabled(true);
-                compDetTA.setEnabled(false);
             }
             else {
                 saveBTN.setEnabled(false);

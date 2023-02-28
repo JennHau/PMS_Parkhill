@@ -16,6 +16,7 @@ import javax.swing.table.TableModel;
 import classes.FileHandling;
 import classes.Patrolling;
 import java.awt.Component;
+import java.io.File;
 import javax.swing.table.TableCellRenderer;
 import pms_parkhill_residence.HomePage;
 
@@ -56,40 +57,46 @@ public class SecurityGuard_Check_in extends javax.swing.JFrame {
 //    DISPLAY UNCHECKED CHECK POINT TABLE
     public void CheckpointTable() {
         sg.currentdate();
-        List<String> row = fh.fileRead(this.today_file);
-        String[] rowary = new String[row.size()];
-        row.toArray(rowary);
+        
+        File checkFile = new File(this.today_file);
+        
+        if (checkFile.exists()) {
+            List<String> row = fh.fileRead(this.today_file);
+            String[] rowary = new String[row.size()];
+            row.toArray(rowary);
 
-        DefaultTableModel model = (DefaultTableModel) pending_table.getModel();
+            DefaultTableModel model = (DefaultTableModel) pending_table.getModel();
 
-        for (int i = 1; i < rowary.length; i++) {
-            String line = rowary[i].toString().trim();
-            line.toUpperCase().split(";");
-            String[] line_split = line.toUpperCase().split(";");
+            for (int i = 1; i < rowary.length; i++) {
+                String line = rowary[i].toString().trim();
+                line.toUpperCase().split(";");
+                String[] line_split = line.toUpperCase().split(";");
 
-            if (line_split[6].trim().equalsIgnoreCase(SG.getUserID()) && line_split[9].trim().equalsIgnoreCase("Pending")) {
-                String id = line_split[0];
-                String block = line_split[2];
-                String level = line_split[3];
-                String checkpoint = line_split[4];
-                String checkbf = sg.coverttimeToPm(line_split[5]);
-                String[] AR = {id, block, level, checkpoint, checkbf, "CHECK IN"};
-                model.addRow(AR);
+                if (line_split[6].trim().equalsIgnoreCase(SG.getUserID()) && line_split[9].trim().equalsIgnoreCase("Pending")) {
+                    String id = line_split[0];
+                    String block = line_split[2];
+                    String level = line_split[3];
+                    String checkpoint = line_split[4];
+                    String checkbf = sg.coverttimeToPm(line_split[5]);
+                    String[] AR = {id, block, level, checkpoint, checkbf, "CHECK IN"};
+                    model.addRow(AR);
+                }
+
             }
-
+            if (model.getRowCount() == 0) {
+                JLabel label = new JLabel("No CheckPoint available");
+                label.setSize(200, 50);
+                Font fn = new Font("callibri", Font.PLAIN, 14);
+                label.setFont(fn);
+                label.setForeground(Color.GRAY);
+                label.setVisible(true);
+                pending_table.add(label);
+                pending_table.setFillsViewportHeight(true);
+            }
         }
-        if (model.getRowCount() == 0) {
-            JLabel label = new JLabel("No CheckPoint available");
-            label.setSize(200, 50);
-            Font fn = new Font("callibri", Font.PLAIN, 14);
-            label.setFont(fn);
-            label.setForeground(Color.GRAY);
-            label.setVisible(true);
-            pending_table.add(label);
-            pending_table.setFillsViewportHeight(true);
+        else {
+            JOptionPane.showMessageDialog(this, "No patrolling assigned.", "NO PATROLLING", JOptionPane.INFORMATION_MESSAGE);
         }
-      
-
     }
 
     /**

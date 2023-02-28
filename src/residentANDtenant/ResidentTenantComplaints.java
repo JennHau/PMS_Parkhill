@@ -76,7 +76,7 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
         ArrayList<Complaint> progressingComp = currentRTcomplaints.get(1);
         ArrayList<Complaint> completedComp = currentRTcomplaints.get(2);
         
-        pendingComp.addAll(progressingComp);
+        completedComp.addAll(progressingComp);
         
         RT.setTableRow(pendingProgressTable, RT.CP.tableFormForRTandVD(pendingComp));
         RT.setTableRow(completedTable, RT.CP.tableFormForRTandVD(completedComp));
@@ -1080,11 +1080,6 @@ public class ResidentTenantComplaints extends javax.swing.JFrame {
                 saveBTN.setEnabled(true);
                 deleteBTN.setEnabled(true);
                 compDetTA.setEnabled(true);
-            }
-            else if (compStatus.equals(Complaint.cptStatus.Progressing.toString())) {
-                saveBTN.setEnabled(false);
-                deleteBTN.setEnabled(true);
-                compDetTA.setEnabled(false);
             }
             else {
                 saveBTN.setEnabled(false);

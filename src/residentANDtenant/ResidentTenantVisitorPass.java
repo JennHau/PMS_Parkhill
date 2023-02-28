@@ -1103,6 +1103,7 @@ public class ResidentTenantVisitorPass extends javax.swing.JFrame {
     private void statusCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusCBActionPerformed
         // TODO add your handling code here:
         registeredVisitorTableSetUp();
+        clearField();
     }//GEN-LAST:event_statusCBActionPerformed
 
     private void logoutLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabel2MouseClicked

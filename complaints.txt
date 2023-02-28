@@ -9,5 +9,5 @@ cmp456676;tnt000002;edsfgsd;2023-02-16;15:31:17;Progressing;bde000001;2023-02-22
 cmp456677;tnt000005;Hello World;2023-02-17;22:10;Pending;bde000001;2023-02-22 22:20;
 cmp456678;vdr000001;Hello Testing testing 123 123;2023-02-21;15:28;Completed;bde000001;2023-02-22 14:15;
 cmp456679;vdr000001;Testing Testing;2023-02-24;18:23;Pending;-;-;
-cmp456680;tnt000001;This is a testing complaint;2023-02-25;00:14;Progressing;bde000001;2023-02-25 03:12;
+cmp456680;tnt000001;This is a testing complaint;2023-02-25;00:14;Completed;bde000001;2023-02-25 03:12;
 cmp456681;tnt000001;Test 2;2023-02-25;00:14;Pending;-;-;

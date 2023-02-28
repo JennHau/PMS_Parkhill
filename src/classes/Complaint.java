@@ -100,7 +100,7 @@ public class Complaint {
         for (Complaint comp : complaintList) {
             String action = "MODIFY";
             
-            if (comp.getComplaintStatus().equals(Complaint.cptStatus.Completed.name())) {
+            if (!comp.getComplaintStatus().equals(Complaint.cptStatus.Pending.name())) {
                 action = "VIEW";
             }
             
