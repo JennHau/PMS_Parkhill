@@ -101,7 +101,6 @@ public class PropertyUnit {
         List<String> availableList = new ArrayList<>();
         
         List<String> userList = fh.fileRead("userProfile.txt");
-        
         switch (type) {
             case "Commercial" -> {
                 for (int i = 1; i < userList.size(); i++) {
