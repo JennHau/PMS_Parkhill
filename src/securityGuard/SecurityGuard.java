@@ -61,21 +61,27 @@ String today_file = "patrollingScheduleFiles/patrollingFile_" + this.currentdate
 public Integer count_uncheck_checkpoint() {
         
 //        sg.currentdate()
-        List<String> row = fh.fileRead(this.today_file);
-        String[] rowary = new String[row.size()];
-        row.toArray(rowary);
-        int number = 0;
-        for (int i = 1; i < rowary.length; i++) {
-            String line = rowary[i].toString().trim();
-            line.toUpperCase().split(";");
-            String[] line_split = line.toUpperCase().split(";");
+        File file = new File(today_file);
+        
+        if(file.exists()) {
+            List<String> row = fh.fileRead(this.today_file);
+            String[] rowary = new String[row.size()];
+            row.toArray(rowary);
+            int number = 0;
+            for (int i = 1; i < rowary.length; i++) {
+                String line = rowary[i].toString().trim();
+                line.toUpperCase().split(";");
+                String[] line_split = line.toUpperCase().split(";");
 
-            if (line_split[9].equalsIgnoreCase("Pending")) {
-                number++;
+                if (line_split[9].equalsIgnoreCase("Pending")) {
+                    number++;
+                }
             }
+    //         System.out.println(number);
+            return number;
         }
-//         System.out.println(number);
-        return number;
+        
+        return 0;
     }
 
     //    To count the number of visitor that will come on the current date
@@ -94,29 +100,35 @@ public Integer count_uncheck_checkpoint() {
                 number++;
             }
         }
-         System.out.println(number);
+        
         return number;
     }
 
     //    To count the number of checkpoint that check
     public Integer count_checked_checkpoint() {
-        String patrollingScheduleFileFormat = "patrollingScheduleFiles/patrollingFile_";
+        
 //        sg.currentdate()
-        List<String> row = fh.fileRead(this.today_file);
-        String[] rowary = new String[row.size()];
-        row.toArray(rowary);
-        int number = 0;
-        for (int i = 1; i < rowary.length; i++) {
-            String line = rowary[i].toString().trim();
-            line.toUpperCase().split(";");
-            String[] line_split = line.toUpperCase().split(";");
+        File file = new File(this.today_file);
+        
+        if (file.exists()) {
+            List<String> row = fh.fileRead(this.today_file);
+            String[] rowary = new String[row.size()];
+            row.toArray(rowary);
+            int number = 0;
+            for (int i = 1; i < rowary.length; i++) {
+                String line = rowary[i].toString().trim();
+                line.toUpperCase().split(";");
+                String[] line_split = line.toUpperCase().split(";");
 
-            if (line_split[9].equalsIgnoreCase("Checked")) {
-                number++;
+                if (line_split[9].equalsIgnoreCase("Checked")) {
+                    number++;
+                }
             }
+    //         System.out.println(number);
+            return number;
         }
-//         System.out.println(number);
-        return number;
+        
+        return 0;
     }
 
 //    interface 
