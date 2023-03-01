@@ -245,7 +245,7 @@ public class VendorComplaints extends javax.swing.JFrame {
 
         jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel23.setText("Pending & Progressing Complaints:");
+        jLabel23.setText("Pending Complaints:");
 
         penProgCompTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         penProgCompTable.setForeground(new java.awt.Color(51, 51, 51));
@@ -395,7 +395,7 @@ public class VendorComplaints extends javax.swing.JFrame {
 
         jLabel26.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
         jLabel26.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel26.setText("Completed Complaints:");
+        jLabel26.setText("Progressing & Completed Complaints:");
 
         completedCompTable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         completedCompTable.setForeground(new java.awt.Color(51, 51, 51));
