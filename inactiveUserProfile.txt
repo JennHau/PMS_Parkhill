@@ -4,3 +4,5 @@ dlt000002;tnt000152;chingliying@gmail.com;Parkhill@1234;Ching;Li Ying;324234;Mal
 dlt000003;Parkhill;parkhill@gmail.com;Parkhill@123;Parkill;Residence;-;-;-;C-01-01;2023-02-16T16:07:12.533716500;
 dlt000004;Parkhill;parkhill@gmail.com;Parkhill@123;Parkill;Residence;-;-;-;A-20-20;2023-02-24T15:54:09.200511300;
 dlt000005;Parkhill;parkhill@gmail.com;Parkhill@123;Parkill;Residence;-;-;-;A-20-20;2023-02-24T15:59:00.157954400;
+dlt000006;tnt000153;abc543@gmail.com;Parkhill@1234;Hello;Wong;020343-12-0435;Male;019-342-5545;A-16-01;2023-03-15T00:45:17.131578500;
+dlt000007;Parkhill;parkhill@gmail.com;Parkhill@123;Parkill;Residence;-;-;-;A-16-01;2023-03-15T00:45:25.503744200;

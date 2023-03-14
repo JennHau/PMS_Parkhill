@@ -142,7 +142,7 @@ public class AdminExecutiveManageBookedFacility extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         datePicker1 = new com.github.lgooddatepicker.components.DatePicker();
         jLabel20 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        searchIcon = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         bookingIDLabel = new javax.swing.JLabel();
         cancelBt2 = new javax.swing.JButton();
@@ -300,13 +300,13 @@ public class AdminExecutiveManageBookedFacility extends javax.swing.JFrame {
         jLabel20.setText("DATE:");
         jLabel20.setForeground(new java.awt.Color(153, 153, 153));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/searchIcon.png"))); // NOI18N
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+        searchIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/searchIcon.png"))); // NOI18N
+        searchIcon.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
+                searchIconMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel1MouseEntered(evt);
+                searchIconMouseEntered(evt);
             }
         });
 
@@ -381,7 +381,7 @@ public class AdminExecutiveManageBookedFacility extends javax.swing.JFrame {
                                     .addGroup(jPanel6Layout.createSequentialGroup()
                                         .addComponent(datePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                        .addComponent(searchIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(365, 365, 365)
                         .addComponent(cancelBt2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -415,7 +415,7 @@ public class AdminExecutiveManageBookedFacility extends javax.swing.JFrame {
                                     .addComponent(variationCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel17)
                                     .addComponent(datePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(searchIcon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -936,15 +936,15 @@ public class AdminExecutiveManageBookedFacility extends javax.swing.JFrame {
         setTable();
     }//GEN-LAST:event_variationCBActionPerformed
 
-    private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
+    private void searchIconMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchIconMouseEntered
         // TODO add your handling code here:
-        jLabel1.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_jLabel1MouseEntered
+        searchIcon.setCursor(Cursor.getDefaultCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_searchIconMouseEntered
 
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+    private void searchIconMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchIconMouseClicked
         // TODO add your handling code here:
         setTable();
-    }//GEN-LAST:event_jLabel1MouseClicked
+    }//GEN-LAST:event_searchIconMouseClicked
 
     private void cancelBt2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBt2ActionPerformed
         // TODO add your handling code here:
@@ -1198,9 +1198,10 @@ public class AdminExecutiveManageBookedFacility extends javax.swing.JFrame {
     }
     
     private void setTable() {
+        DefaultTableModel tableModel = (DefaultTableModel)availableTimeSlotTable.getModel();
         if(!datePicker1.getDate().isBefore(LocalDate.now())) {
             warningMessage.setText("");
-            DefaultTableModel tableModel = (DefaultTableModel)availableTimeSlotTable.getModel();
+            
             tableModel.setRowCount(0);
             String pickDate = String.valueOf(datePicker1.getDate());
             String variation = (String)variationCB.getSelectedItem();
@@ -1226,6 +1227,7 @@ public class AdminExecutiveManageBookedFacility extends javax.swing.JFrame {
         } 
         else {
             warningMessage.setText("Invalid date!");
+            tableModel.setRowCount(0);
         }
 
         setTable2();
@@ -17701,7 +17703,6 @@ public class AdminExecutiveManageBookedFacility extends javax.swing.JFrame {
     private javax.swing.JLabel facilityManageLabel;
     private javax.swing.JPanel facilityManagePanel;
     private javax.swing.JLabel facilityTypeLabel;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
@@ -17719,6 +17720,7 @@ public class AdminExecutiveManageBookedFacility extends javax.swing.JFrame {
     private javax.swing.JPanel logoutPanel;
     private javax.swing.JLabel rTManageLabel;
     private javax.swing.JPanel rTMangePanel;
+    private javax.swing.JLabel searchIcon;
     private javax.swing.JTable slctedTimeSlotTable;
     private javax.swing.JLabel unitManageLabel;
     private javax.swing.JPanel unitManagePanel;

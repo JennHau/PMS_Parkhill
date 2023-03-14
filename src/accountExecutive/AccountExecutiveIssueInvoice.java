@@ -744,7 +744,6 @@ public class AccountExecutiveIssueInvoice extends javax.swing.JFrame {
     private void settingIconMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingIconMouseClicked
         // TODO add your handling code here:
         new AccountExecutiveFeeTypeSetting(AE).setVisible(true);
-        dispose();
     }//GEN-LAST:event_settingIconMouseClicked
 
     private void invoiceTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_invoiceTableMouseClicked

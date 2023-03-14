@@ -446,6 +446,9 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
 
     private void cancelBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtActionPerformed
         // TODO add your handling code here:
+        if (AccountExecutiveIssueInvoice.aceIssueInvoice != null) {
+            AccountExecutiveIssueInvoice.aceIssueInvoice.dispose();
+        } 
         dispose();
         AccountExecutiveIssueInvoice aei = new AccountExecutiveIssueInvoice(AE);
         aei.setVisible(true);
@@ -510,10 +513,10 @@ public class AccountExecutiveFeeTypeSetting extends javax.swing.JFrame {
                 if(result == JOptionPane.YES_OPTION){
                     AE.deleteFeeTypes(feeTypesName, target);
                     setTable();
+                    feeTypeNameTF.setText(""); targetCB.setSelectedIndex(0);
+                    unitTF.setText(""); unitPriceTF.setText("");
                     JOptionPane.showMessageDialog (null, "Fee Type has been deleted!", 
                                 "DELETE FEE TYPE", JOptionPane.INFORMATION_MESSAGE);
-                    dispose();
-                    new AccountExecutiveIssueInvoice(AE).setVisible(true);
                 }
         } catch (Exception e) {
             e.printStackTrace();
